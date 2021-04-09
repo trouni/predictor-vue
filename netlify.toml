@@ -1,0 +1,18 @@
+[build]
+publish = "dist/"
+command = "yarn build"
+
+[build.environment]
+NODE_ENV = "production"
+# TODO: Add staging API url
+VUE_APP_API_URL = "https://staging.predictor-app.com"
+
+[context.production.environment]
+# TODO: Add production API url
+VUE_APP_API_URL = "https://www.predictor-app.com"
+
+# Redirect rule for compatibility with Vue Router
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
