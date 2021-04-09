@@ -4,12 +4,12 @@ export default [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/views/home.vue'),
+    component: () => import('@/views/Home'),
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login.vue'),
+    component: () => import('@/views/Login'),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
