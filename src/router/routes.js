@@ -37,12 +37,12 @@ export default [
       },
     },
   },
-  {
-    path: '/path',
-    name: 'route-name',
-    // component: () => import('@/views/view-component.vue'),
-    meta: {
-      authRequired: true,
-    },
-  },
+  // {
+  //   path: '/path',
+  //   name: 'route-name',
+  //   // component: () => import('@/views/view-component.vue'),
+  //   meta: {
+  //     authRequired: true,
+  //   },
+  // },
 ]
