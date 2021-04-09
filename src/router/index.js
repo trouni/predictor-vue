@@ -43,9 +43,9 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
   // but the resolved route does not. We put it in `meta` to
   // indicate that it's a hook we created, rather than part of
   // Vue Router (yet?).
-  try {
-    // For each matched route...
-    routeTo.matched.forEach(async route => {
+  // For each matched route...
+  routeTo.matched.forEach(async route => {
+    try {
       await new Promise((resolve, reject) => {
         // If a `beforeResolve` hook is defined, call it with
         // the same arguments as the `beforeEnter` hook.
@@ -70,11 +70,11 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
           resolve()
         }
       })
-    })
-    // If a `beforeResolve` hook chose to redirect, just return.
-  } catch (error) {
-    return
-  }
+    } catch (error) {
+      // If a `beforeResolve` hook chose to redirect, just return.
+      return
+    }
+  })
 
   // If we reach this point, continue resolving the route.
   next()
