@@ -6,7 +6,7 @@ export default function dispatchActionForAllModules(
   { modules = allModules, modulePrefix = '', flags = {} } = {}
 ) {
   // For every module...
-  for (const moduleName in modules) {
+  Object.keys(modules).forEach(moduleName => {
     const moduleDefinition = modules[moduleName]
 
     // If the action is defined on the module...
@@ -29,7 +29,7 @@ export default function dispatchActionForAllModules(
         flags,
       })
     }
-  }
+  })
 
   // If this is the root and at least one non-namespaced module
   // was found with the action...

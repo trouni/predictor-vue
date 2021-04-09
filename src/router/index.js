@@ -45,7 +45,7 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
   // Vue Router (yet?).
   try {
     // For each matched route...
-    for (const route of routeTo.matched) {
+    routeTo.matched.forEach(async route => {
       await new Promise((resolve, reject) => {
         // If a `beforeResolve` hook is defined, call it with
         // the same arguments as the `beforeEnter` hook.
@@ -70,7 +70,7 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
           resolve()
         }
       })
-    }
+    })
     // If a `beforeResolve` hook chose to redirect, just return.
   } catch (error) {
     return
