@@ -29,7 +29,6 @@ service.interceptors.response.use(
     return response
   },
   error => {
-    console.log(error.response.status)
     if (store.getters['auth/loggedIn'] && error.response.status === 401) {
       store.dispatch('auth/logOut')
     }
