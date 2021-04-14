@@ -57,12 +57,6 @@ export default [
         props: route => ({ competitionId: parseInt(route.params.id) }),
       },
       {
-        path: '/league/:id',
-        name: 'league',
-        component: () => import('@/views/League'),
-        props: route => ({ id: parseInt(route.params.id) }),
-      },
-      {
         path: 'leagues/new',
         name: 'new_league',
         component: () => import('@/views/LeagueNew'),
@@ -71,6 +65,12 @@ export default [
         },
       },
     ],
+  },
+  {
+    path: '/league/:id',
+    name: 'league',
+    component: () => import('@/views/League'),
+    props: route => ({ id: parseInt(route.params.id) }),
   },
   {
     path: '/matches',
