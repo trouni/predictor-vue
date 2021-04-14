@@ -21,6 +21,9 @@ export const getters = {
   loggedIn(state) {
     return !!state.currentUser && !!state.headers
   },
+  currentUser(state) {
+    return state.currentUser
+  },
   headers(state) {
     return state.headers
   },
@@ -34,7 +37,7 @@ export const actions = {
   // Logs in the current user.
   logIn({ commit }, { email, password } = {}) {
     return logIn({ email, password }).then(response => {
-      const user = response.data
+      const user = response.data.data
       const headers = response.headers
       commit('SET_CURRENT_USER', user)
       commit('SET_AUTH_HEADERS', headers)
