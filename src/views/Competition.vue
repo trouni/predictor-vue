@@ -1,14 +1,22 @@
 <template>
   <div>
-    <h1>Competition #{{ id }}</h1>
+    <h1>
+      <BaseLink :to="{ name: 'competition', params: { id: id } }">
+        Competition #{{ id }}
+      </BaseLink>
+    </h1>
 
     <div v-if="$route.name === 'competition'">
-      <BaseLink :to="{ name: 'leagues', params: { competitionId: id } }">
-        <BaseButton>View Leagues</BaseButton>
+      <BaseLink :to="{ name: 'leaderboard', params: { competitionId: id } }">
+        <BaseButton>View Leaderboard</BaseButton>
       </BaseLink>
 
       <BaseLink :to="{ name: 'matches', query: { competitionId: id } }">
         <BaseButton>View Matches</BaseButton>
+      </BaseLink>
+
+      <BaseLink :to="{ name: 'new_league', params: { competitionId: id } }">
+        <BaseButton>New League</BaseButton>
       </BaseLink>
     </div>
 
@@ -27,3 +35,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+a:not(:first-child) {
+  margin-left: 1em;
+}
+</style>

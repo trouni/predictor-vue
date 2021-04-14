@@ -51,15 +51,16 @@ export default [
     props: route => ({ id: parseInt(route.params.id) }),
     children: [
       {
-        path: 'leagues',
-        name: 'leagues',
-        component: () => import('@/views/Leagues'),
+        path: 'leaderboard',
+        name: 'leaderboard',
+        component: () => import('@/views/Leaderboard'),
         props: route => ({ competitionId: parseInt(route.params.id) }),
       },
       {
         path: 'leagues/new',
         name: 'new_league',
         component: () => import('@/views/LeagueNew'),
+        props: route => ({ competitionId: parseInt(route.params.id) }),
         meta: {
           authRequired: true,
         },
@@ -67,18 +68,12 @@ export default [
     ],
   },
   {
-    path: '/league/:id',
-    name: 'league',
-    component: () => import('@/views/League'),
-    props: route => ({ id: parseInt(route.params.id) }),
-  },
-  {
     path: '/matches',
     name: 'matches',
     component: () => import('@/views/Matches'),
     props: route => ({
-      competitionId: route.query.competitionId,
-      userId: route.query.userId,
+      competitionId: parseInt(route.query.competitionId),
+      userId: parseInt(route.query.userId),
     }),
     meta: {
       authRequired: true,

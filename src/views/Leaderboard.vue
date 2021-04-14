@@ -1,12 +1,10 @@
 <template>
   <div>
-    <h1>Leagues</h1>
+    <h1>Leaderboard</h1>
     <p>Competition #{{ competitionId }}</p>
     <ul>
       <li v-for="league in leagues" :key="league.id">
-        <BaseLink :to="{ name: 'league', params: { id: league.id } }">{{
-          league.name
-        }}</BaseLink>
+        Leaderboard for {{ league.name }}
       </li>
     </ul>
   </div>
