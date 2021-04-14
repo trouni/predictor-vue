@@ -77,8 +77,8 @@ export default [
     name: 'matches',
     component: () => import('@/views/Matches'),
     props: route => ({
-      competitionId: route.query.competition_id,
-      userId: route.query.user_id,
+      competitionId: route.query.competitionId,
+      userId: route.query.userId,
     }),
     meta: {
       authRequired: true,

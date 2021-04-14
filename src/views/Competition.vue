@@ -6,6 +6,10 @@
       <BaseLink :to="{ name: 'leagues', params: { competitionId: id } }">
         <BaseButton>View Leagues</BaseButton>
       </BaseLink>
+
+      <BaseLink :to="{ name: 'matches', query: { competitionId: id } }">
+        <BaseButton>View Matches</BaseButton>
+      </BaseLink>
     </div>
 
     <RouterView v-else></RouterView>
