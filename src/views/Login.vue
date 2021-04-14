@@ -2,18 +2,18 @@
   <div>
     <p v-if="register">
       Already got an account?
-      <button @click="register = false">Log in</button>
+      <BaseButton @click="register = false">Log in</BaseButton>
     </p>
     <p v-else>
       Need an account?
-      <button @click="register = true">Register</button>
+      <BaseButton @click="register = true">Register</BaseButton>
     </p>
     <div>
       <h3>
         {{ register ? 'Sign up' : 'Sign in' }}
       </h3>
       <p v-if="authError" v-html="authError"></p>
-      <input
+      <BaseInputText
         v-model="email"
         label="Email"
         name="email"
@@ -22,7 +22,7 @@
         @keypress.enter="tryToLogIn"
       />
 
-      <input
+      <BaseInputText
         id="password"
         v-model="password"
         label="Password"
@@ -31,9 +31,9 @@
         @keypress.enter="tryToLogIn"
       />
       <div>
-        <button large :disabled="processingForm" @click="submit">
+        <BaseButton :disabled="processingForm" @click="submit">
           {{ register ? 'Sign up' : 'Login' }}
-        </button>
+        </BaseButton>
       </div>
     </div>
   </div>
