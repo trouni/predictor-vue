@@ -1,7 +1,8 @@
 import Vue from 'vue'
+import '@/plugins/fontawesome'
 import router from '@/router'
 import store from '@/store'
-import App from './App.vue'
+import App from '@/App.vue'
 
 // Globally register all `_base`-prefixed components
 import '@/components/_globals'
