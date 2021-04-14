@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>User #{{ id }}</h1>
+    <BaseObjectPreview :object="user" />
   </div>
 </template>
 
@@ -9,8 +10,28 @@ export default {
   props: {
     id: {
       type: Number,
-      default: null,
       required: true,
+    },
+  },
+
+  async mounted() {
+    this.fetchUser()
+  },
+
+  data() {
+    return {
+      loading: false,
+      user: null,
+    }
+  },
+
+  methods: {
+    async fetchUser() {
+      this.loading = true
+      this.user = await this.$store.dispatch('users/fetchUser', {
+        userId: this.id,
+      })
+      this.loading = false
     },
   },
 }

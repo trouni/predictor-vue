@@ -73,7 +73,9 @@ export default [
     component: () => import('@/views/Matches'),
     props: route => ({
       competitionId: parseInt(route.query.competitionId),
-      userId: parseInt(route.query.userId),
+      userId:
+        parseInt(route.query.userId) ||
+        parseInt(store.getters['auth/currentUser']?.id),
     }),
     meta: {
       authRequired: true,

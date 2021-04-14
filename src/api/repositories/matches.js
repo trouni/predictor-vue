@@ -1,8 +1,8 @@
 import Repository from './repository'
 
 export default {
-  get(filters) {
-    return Repository.get('/matches', null, { params: filters })
+  get(params) {
+    return Repository.get('/matches', { params })
   },
   postPrediction(matchId, choice) {
     return Repository.get(`/matches/${matchId}/predictions`, { choice })
