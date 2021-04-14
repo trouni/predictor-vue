@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   props: {
     competitionId: {
@@ -16,7 +18,7 @@ export default {
     },
     userId: {
       type: Number,
-      default: null,
+      default: store.getters['auth/currentUser']?.id,
       required: false,
     },
   },
