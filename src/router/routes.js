@@ -51,9 +51,9 @@ export default [
     props: route => ({ id: parseInt(route.params.id) }),
     children: [
       {
-        path: 'leaderboard',
-        name: 'leaderboard',
-        component: () => import('@/views/Leaderboard'),
+        path: 'leaderboards',
+        name: 'leaderboards',
+        component: () => import('@/views/Leaderboards'),
         props: route => ({ competitionId: parseInt(route.params.id) }),
       },
       {
