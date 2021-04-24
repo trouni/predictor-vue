@@ -1,13 +1,16 @@
 import Repository from './repository'
 
 export default {
-  getLeaderboard(competitionId) {
-    return Repository.get(`/competitions/${competitionId}/leaderboard`)
+  getLeaderboards(competitionId) {
+    return Repository.get(`/competitions/${competitionId}/leaderboards`)
   },
-  postLeague(competitionId, league) {
-    return Repository.post(`/competitions/${competitionId}/leagues`, league)
+  postLeaderboard(competitionId, leaderboard) {
+    return Repository.post(
+      `/competitions/${competitionId}/leaderboards`,
+      leaderboard
+    )
   },
-  deleteLeague(leagueId) {
-    return Repository.delete(`/leagues/${leagueId}`)
+  deleteLeaderboard(leaderboardId) {
+    return Repository.delete(`/leaderboards/${leaderboardId}`)
   },
 }

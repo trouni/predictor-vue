@@ -57,9 +57,9 @@ export default [
         props: route => ({ competitionId: parseInt(route.params.id) }),
       },
       {
-        path: 'leagues/new',
-        name: 'new_league',
-        component: () => import('@/views/LeagueNew'),
+        path: 'leaderboards/new',
+        name: 'new_leaderboard',
+        component: () => import('@/views/LeaderboardNew'),
         props: route => ({ competitionId: parseInt(route.params.id) }),
         meta: {
           authRequired: true,

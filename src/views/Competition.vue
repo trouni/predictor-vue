@@ -15,8 +15,10 @@
         <BaseButton>View Matches</BaseButton>
       </BaseLink>
 
-      <BaseLink :to="{ name: 'new_league', params: { competitionId: id } }">
-        <BaseButton>New League</BaseButton>
+      <BaseLink
+        :to="{ name: 'new_leaderboard', params: { competitionId: id } }"
+      >
+        <BaseButton>New Leaderboard</BaseButton>
       </BaseLink>
     </div>
 
