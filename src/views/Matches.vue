@@ -3,17 +3,11 @@
     <h1>Matches</h1>
     <p v-if="competitionId">Competition {{ competitionId }}</p>
     <p v-if="userId">User {{ userId }}</p>
-    <BaseObjectPreview
-      v-for="match in matches"
-      :key="match.id"
-      :object="matches"
-    />
+    <p>{{ matches }}</p>
   </div>
 </template>
 
 <script>
-import store from '@/store'
-
 export default {
   props: {
     competitionId: {
@@ -23,7 +17,7 @@ export default {
     },
     userId: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
 
@@ -41,9 +35,10 @@ export default {
   methods: {
     async fetchMatches() {
       this.loading = true
-      const filters = { userId: this.userId }
+      const filters = {}
+      if (this.userId) filters['userId'] = this.userId
       if (this.competitionId) filters['competitionId'] = this.competitionId
-      this.matches = await store.dispatch('matches/fetchMatches', filters)
+      this.matches = await this.$store.dispatch('matches/fetchMatches', filters)
       this.loading = false
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>User #{{ id }}</h1>
-    <BaseObjectPreview :object="user" />
+    <p>{{ user }}</p>
   </div>
 </template>
 

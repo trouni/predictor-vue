@@ -8,7 +8,7 @@
 
     <div v-if="$route.name === 'competition'">
       <BaseLink :to="{ name: 'leaderboard', params: { competitionId: id } }">
-        <BaseButton>View Leaderboard</BaseButton>
+        <BaseButton>View Leaderboards</BaseButton>
       </BaseLink>
 
       <BaseLink :to="{ name: 'matches', query: { competitionId: id } }">
