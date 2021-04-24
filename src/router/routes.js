@@ -40,11 +40,6 @@ export default [
     },
   },
   {
-    path: '/competitions',
-    name: 'competitions',
-    component: () => import('@/views/Competitions'),
-  },
-  {
     path: '/competitions/:id',
     name: 'competition',
     component: () => import('@/views/Competition'),
@@ -73,9 +68,7 @@ export default [
     component: () => import('@/views/Matches'),
     props: route => ({
       competitionId: parseInt(route.query.competitionId),
-      userId:
-        parseInt(route.query.userId) ||
-        parseInt(store.getters['auth/currentUser']?.id),
+      userId: parseInt(route.query.userId),
     }),
     meta: {
       authRequired: true,
