@@ -5,11 +5,11 @@ command = "yarn build --mode=development"
 [build.environment]
 NODE_ENV = "production"
 # TODO: Add staging API url
-VUE_APP_API_URL = "https://staging.predictor-app.com"
+VUE_APP_API_URL = "http://predict-to-win.herokuapp.com"
 
 [context.production.environment]
 # TODO: Add production API url
-VUE_APP_API_URL = "https://www.predictor-app.com"
+VUE_APP_API_URL = "http://predict-to-win.herokuapp.com"
 
 # Redirect rule for compatibility with Vue Router
 [[redirects]]
