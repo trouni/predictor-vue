@@ -6,10 +6,10 @@ command = "yarn build"
 # Build Previews
 NODE_ENV = "production"
 YARN_FLAGS = "--production=false"
-VUE_APP_API_URL = "http://predict-to-win.herokuapp.com"
+VUE_APP_API_URL = "https://predict-to-win.herokuapp.com"
 
 [context.production.environment]
-VUE_APP_API_URL = "http://predict-to-win.herokuapp.com"
+VUE_APP_API_URL = "https://predict-to-win.herokuapp.com"
 
 # Redirect rule for compatibility with Vue Router
 [[redirects]]
