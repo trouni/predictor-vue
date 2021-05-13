@@ -8,15 +8,17 @@
 
     <div v-if="$route.name === 'competition'">
       <BaseLink :to="{ name: 'leaderboard', params: { competitionId: id } }">
-        <BaseButton>View Leaderboard</BaseButton>
+        <BaseButton>View Leaderboards</BaseButton>
       </BaseLink>
 
       <BaseLink :to="{ name: 'matches', query: { competitionId: id } }">
         <BaseButton>View Matches</BaseButton>
       </BaseLink>
 
-      <BaseLink :to="{ name: 'new_league', params: { competitionId: id } }">
-        <BaseButton>New League</BaseButton>
+      <BaseLink
+        :to="{ name: 'new_leaderboard', params: { competitionId: id } }"
+      >
+        <BaseButton>New Leaderboard</BaseButton>
       </BaseLink>
     </div>
 

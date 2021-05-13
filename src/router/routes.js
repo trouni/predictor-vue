@@ -40,26 +40,21 @@ export default [
     },
   },
   {
-    path: '/competitions',
-    name: 'competitions',
-    component: () => import('@/views/Competitions'),
-  },
-  {
     path: '/competitions/:id',
     name: 'competition',
     component: () => import('@/views/Competition'),
     props: route => ({ id: parseInt(route.params.id) }),
     children: [
       {
-        path: 'leaderboard',
-        name: 'leaderboard',
-        component: () => import('@/views/Leaderboard'),
+        path: 'leaderboards',
+        name: 'leaderboards',
+        component: () => import('@/views/Leaderboards'),
         props: route => ({ competitionId: parseInt(route.params.id) }),
       },
       {
-        path: 'leagues/new',
-        name: 'new_league',
-        component: () => import('@/views/LeagueNew'),
+        path: 'leaderboards/new',
+        name: 'new_leaderboard',
+        component: () => import('@/views/LeaderboardNew'),
         props: route => ({ competitionId: parseInt(route.params.id) }),
         meta: {
           authRequired: true,

@@ -21,8 +21,9 @@ export default {
           title: 'Home',
         },
         {
-          name: 'competitions',
-          title: 'Competitions',
+          name: 'competition',
+          params: { id: 1 },
+          title: 'Competition',
         },
       ],
       loggedInNavRoutes: [

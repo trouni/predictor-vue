@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Create League for Competition #{{ competitionId }}</h1>
+    <h1>Create Leaderboard for Competition #{{ competitionId }}</h1>
   </div>
 </template>
 

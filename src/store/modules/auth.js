@@ -47,10 +47,9 @@ export const actions = {
 
   // Logs out the current user.
   logOut({ commit }) {
-    return logOut().then(() => {
-      commit('SET_CURRENT_USER', null)
-      commit('SET_AUTH_HEADERS', null)
-    })
+    commit('SET_CURRENT_USER', null)
+    commit('SET_AUTH_HEADERS', null)
+    return logOut()
   },
 
   signup(_, credentials) {

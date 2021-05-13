@@ -3,8 +3,8 @@
     <h1>Leaderboard</h1>
     <p>Competition #{{ competitionId }}</p>
     <ul>
-      <li v-for="league in leagues" :key="league.id">
-        Leaderboard for {{ league.name }}
+      <li v-for="leaderboard in leaderboards" :key="leaderboard.id">
+        Leaderboard for {{ leaderboard.name }}
       </li>
     </ul>
   </div>
@@ -18,18 +18,11 @@ export default {
       required: true,
     },
   },
+
   data() {
     return {
-      leagues: [
-        {
-          id: 1,
-          name: 'Admin League',
-        },
-        {
-          id: 2,
-          name: 'Other League',
-        },
-      ],
+      loading: false,
+      leaderboards: [],
     }
   },
 }
