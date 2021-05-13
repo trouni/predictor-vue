@@ -1,14 +1,14 @@
 [build]
 publish = "dist/"
-command = "yarn install --production=false && yarn build"
+command = "yarn build"
 
 [build.environment]
+# Build Previews
 NODE_ENV = "production"
-# TODO: Add staging API url
+YARN_FLAGS = "--production=false"
 VUE_APP_API_URL = "http://predict-to-win.herokuapp.com"
 
 [context.production.environment]
-# TODO: Add production API url
 VUE_APP_API_URL = "http://predict-to-win.herokuapp.com"
 
 # Redirect rule for compatibility with Vue Router
