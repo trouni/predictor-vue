@@ -1,0 +1,43 @@
+<template>
+  <div>
+    <h1>
+      <BaseLink :to="{ name: 'competition', params: { id: id } }">
+        Competition #{{ id }}
+      </BaseLink>
+    </h1>
+
+    <div v-if="$route.name === 'competition'">
+      <BaseLink :to="{ name: 'leaderboard', params: { competitionId: id } }">
+        <BaseButton>View Leaderboard</BaseButton>
+      </BaseLink>
+
+      <BaseLink :to="{ name: 'matches', query: { competitionId: id } }">
+        <BaseButton>View Matches</BaseButton>
+      </BaseLink>
+
+      <BaseLink :to="{ name: 'new_league', params: { competitionId: id } }">
+        <BaseButton>New League</BaseButton>
+      </BaseLink>
+    </div>
+
+    <RouterView v-else></RouterView>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    id: {
+      type: Number,
+      default: null,
+      required: true,
+    },
+  },
+}
+</script>
+
+<style scoped>
+a:not(:first-child) {
+  margin-left: 1em;
+}
+</style>

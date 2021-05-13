@@ -39,12 +39,62 @@ export default [
       },
     },
   },
-  // {
-  //   path: '/path',
-  //   name: 'route-name',
-  //   // component: () => import('@/views/view-component.vue'),
-  //   meta: {
-  //     authRequired: true,
-  //   },
-  // },
+  {
+    path: '/competitions',
+    name: 'competitions',
+    component: () => import('@/views/Competitions'),
+  },
+  {
+    path: '/competitions/:id',
+    name: 'competition',
+    component: () => import('@/views/Competition'),
+    props: route => ({ id: parseInt(route.params.id) }),
+    children: [
+      {
+        path: 'leaderboard',
+        name: 'leaderboard',
+        component: () => import('@/views/Leaderboard'),
+        props: route => ({ competitionId: parseInt(route.params.id) }),
+      },
+      {
+        path: 'leagues/new',
+        name: 'new_league',
+        component: () => import('@/views/LeagueNew'),
+        props: route => ({ competitionId: parseInt(route.params.id) }),
+        meta: {
+          authRequired: true,
+        },
+      },
+    ],
+  },
+  {
+    path: '/matches',
+    name: 'matches',
+    component: () => import('@/views/Matches'),
+    props: route => ({
+      competitionId: parseInt(route.query.competitionId),
+      userId: parseInt(route.query.userId),
+    }),
+    meta: {
+      authRequired: true,
+    },
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/UserProfile'),
+    props: () => ({ id: store.getters['auth/currentUser'].id }),
+    meta: {
+      authRequired: true,
+    },
+  },
+  {
+    path: '/users/:id',
+    name: 'user',
+    component: () => import('@/views/UserProfile'),
+    props: route => ({ id: parseInt(route.params.id) }),
+    meta: {
+      authRequired: true,
+    },
+  },
 ]
