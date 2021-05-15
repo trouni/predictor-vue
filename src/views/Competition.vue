@@ -1,13 +1,7 @@
 <template>
   <div>
-    <h1>
-      <BaseLink :to="{ name: 'competition', params: { id: id } }">
-        Competition #{{ id }}
-      </BaseLink>
-    </h1>
-
     <div v-if="$route.name === 'competition'">
-      <BaseLink :to="{ name: 'leaderboard', params: { competitionId: id } }">
+      <BaseLink :to="{ name: 'leaderboards', params: { competitionId: id } }">
         <BaseButton>View Leaderboards</BaseButton>
       </BaseLink>
 

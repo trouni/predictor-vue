@@ -1,13 +1,5 @@
 <template>
-  <div>
-    <h1>Leaderboard</h1>
-    <p>Competition #{{ competitionId }}</p>
-    <ul>
-      <li v-for="leaderboard in leaderboards" :key="leaderboard.id">
-        Leaderboard for {{ leaderboard.name }}
-      </li>
-    </ul>
-  </div>
+  <div> </div>
 </template>
 
 <script>

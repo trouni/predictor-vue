@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h1>Create Leaderboard for Competition #{{ competitionId }}</h1>
-  </div>
+  <div> </div>
 </template>
 
 <script>
