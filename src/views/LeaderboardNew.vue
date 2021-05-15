@@ -1,5 +1,5 @@
 <template>
-  <div> </div>
+  <div>New Leaderboard</div>
 </template>
 
 <script>

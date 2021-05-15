@@ -88,6 +88,16 @@ export default [
         },
       },
       {
+        path: '/leaderboards/:id',
+        name: 'leaderboard',
+        component: () => import('@/views/Leaderboard'),
+        props: route => ({ id: parseInt(route.params.id) }),
+        meta: {
+          authRequired: true,
+          title: 'Leaderboard',
+        },
+      },
+      {
         path: '/profile',
         name: 'profile',
         component: () => import('@/views/UserProfile'),

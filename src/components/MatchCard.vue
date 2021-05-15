@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- TODO: Implement match/prediction card -->
-    <TeamThumbnail :team="match.teamHome"></TeamThumbnail>
-    vs
-    <TeamThumbnail :team="match.teamAway"></TeamThumbnail>
+    <PredictionChoiceTeam :team="match.teamHome" />
+    <PredictionChoiceDraw />
+    <PredictionChoiceTeam :team="match.teamAway" />
     <small>
       {{ new Date(match.kickoffTime).toLocaleDateString() }}
     </small>
@@ -11,10 +11,11 @@
 </template>
 
 <script>
-import TeamThumbnail from './TeamThumbnail'
+import PredictionChoiceTeam from './PredictionChoiceTeam'
+import PredictionChoiceDraw from './PredictionChoiceDraw'
 
 export default {
-  components: { TeamThumbnail },
+  components: { PredictionChoiceTeam, PredictionChoiceDraw },
 
   props: {
     match: {
