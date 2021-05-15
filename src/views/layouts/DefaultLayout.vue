@@ -4,15 +4,15 @@
     <main>
       <RouterView :key="$route.fullPath"></RouterView>
     </main>
-    <NavBar />
+    <FooterNav />
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
-import NavBar from '@/components/NavBar'
+import FooterNav from '@/components/FooterNav'
 
 export default {
-  components: { Header, NavBar },
+  components: { Header, FooterNav },
 }
 </script>
