@@ -14,13 +14,13 @@ import NavBarRoutes from './NavBarRoutes'
 
 export default {
   components: { NavBarRoutes },
-
   data() {
     return {
       persistentNavRoutes: [
         {
           name: 'home',
           title: 'Home',
+          fontAwesomeClass: 'home'
         },
         // {
         //   name: 'competition',
@@ -32,26 +32,25 @@ export default {
         {
           name: 'matches',
           title: 'Matches',
+          fontAwesomeClass: 'futbol',
         },
         {
           name: 'leaderboards',
           params: { id: 1 },
           title: 'Leaderboards',
+          fontAwesomeClass: 'trophy'
         },
-        // TODO: Move below items to hamburger menu
         {
           name: 'profile',
           title: 'Profile',
-        },
-        {
-          name: 'logout',
-          title: 'Log out',
+          fontAwesomeClass: 'user'
         },
       ],
       loggedOutNavRoutes: [
         {
           name: 'login',
           title: 'Log in',
+          fontAwesomeClass: 'sign-in-alt'
         },
       ],
     }
@@ -72,13 +71,23 @@ export default {
 }
 
 .container {
-  padding: 0;
+  padding: 0 $size-grid-padding;
   margin: 0 0 $size-grid-padding;
   text-align: center;
   list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5em;
   a {
     display: inline-block;
-    margin-right: $size-grid-padding;
   }
 }
+
+// TODO: Hide when non-mobile
+// @media (min-width: 768px) {
+//   #footer-nav {
+//     display: none;
+//   }
+// }
+
 </style>

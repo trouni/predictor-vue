@@ -1,6 +1,7 @@
 <script>
 // Allows stubbing BaseLink in unit tests
 const BaseLink = 'BaseLink'
+const BaseIcon = 'BaseIcon'
 export default {
   // Functional components are stateless, meaning they can't
   // have data, computed properties, etc and they have no
@@ -33,7 +34,7 @@ export default {
         exact-active-class='active'
       >
         <li>
-          <a>{processRoute(route).title}</a>
+          <BaseIcon name={route.fontAwesomeClass} />
         </li>
       </BaseLink>
     ))
@@ -44,10 +45,13 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 
-.active a {
-  font-weight: 600;
-  color: $color-link-text-active;
+a.active {
+  color: $dark-gray;
   text-decoration: none;
   cursor: default;
+}
+
+a {
+  color: $gray;
 }
 </style>
