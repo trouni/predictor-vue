@@ -40,16 +40,10 @@ export default {
           title: 'Leaderboards',
           fontAwesomeClass: 'trophy'
         },
-        // TODO: Move below items to hamburger menu
         {
           name: 'profile',
           title: 'Profile',
           fontAwesomeClass: 'user'
-        },
-        {
-          name: 'logout',
-          title: 'Log out',
-          fontAwesomeClass: 'sign-out-alt'
         },
       ],
       loggedOutNavRoutes: [

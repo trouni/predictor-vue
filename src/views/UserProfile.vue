@@ -2,6 +2,9 @@
   <div>
     <h1>User #{{ id }}</h1>
     <p>{{ user }}</p>
+    <BaseLink :to="{ name: 'logout' }">
+      <p>Log out <BaseIcon name="sign-out-alt" /></p>
+    </BaseLink>
   </div>
 </template>
 
