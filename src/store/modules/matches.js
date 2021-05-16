@@ -11,9 +11,12 @@ export const mutations = {}
 
 export const actions = {
   fetchMatches(_, filters) {
-    return MatchesRepository.get(filters).then(response => {
-      const matches = response.data
-      return matches
-    })
+    return MatchesRepository.get(filters).then(response => response.data)
+  },
+  setPrediction(_, { match, choice }) {
+    const action = match.prediction ? 'patchPrediction' : 'postPrediction'
+    return MatchesRepository[action](match.id, choice).then(
+      response => response.data
+    )
   },
 }
