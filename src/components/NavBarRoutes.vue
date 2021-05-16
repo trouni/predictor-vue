@@ -46,8 +46,7 @@ export default {
 @import '@/styles';
 
 a.active {
-  font-weight: 600;
-  color: #363636 !important;
+  color: $dark-gray;
   text-decoration: none;
   cursor: default;
 }

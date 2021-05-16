@@ -71,8 +71,8 @@ export default {
 }
 
 .container {
-  padding: 0 16px;
-  margin: 0 0 1.3rem;
+  padding: 0 $size-grid-padding;
+  margin: 0 0 $size-grid-padding;
   text-align: center;
   list-style-type: none;
   display: flex;
