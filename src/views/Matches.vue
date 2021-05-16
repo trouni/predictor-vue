@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h1>Matches</h1>
-    <p v-if="competitionId">Competition {{ competitionId }}</p>
-    <p v-if="userId">User {{ userId }}</p>
     <MatchCard v-for="match in matches" :key="match.id" :match="match" />
   </div>
 </template>

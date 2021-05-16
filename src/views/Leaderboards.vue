@@ -1,22 +1,33 @@
 <template>
   <div>
-    <h1>Leaderboard</h1>
-    <p>Competition #{{ competitionId }}</p>
-    <ul>
-      <li v-for="leaderboard in leaderboards" :key="leaderboard.id">
-        Leaderboard for {{ leaderboard.name }}
-      </li>
-    </ul>
+    <LeaderboardCard
+      v-for="leaderboard in leaderboards"
+      :key="leaderboard.id"
+      :leaderboard="leaderboard"
+    />
   </div>
 </template>
 
 <script>
+import LeaderboardCard from '@/components/LeaderboardCard'
+
 export default {
+  components: { LeaderboardCard },
+
   props: {
     competitionId: {
       type: Number,
-      required: true,
+      default: null,
+      required: false,
     },
+    userId: {
+      type: Number,
+      required: false,
+    },
+  },
+
+  async mounted() {
+    this.fetchLeaderboards()
   },
 
   data() {
@@ -24,6 +35,17 @@ export default {
       loading: false,
       leaderboards: [],
     }
+  },
+
+  methods: {
+    async fetchLeaderboards() {
+      this.loading = true
+      this.leaderboards = await this.$store.dispatch(
+        'leaderboards/fetchLeaderboards',
+        this.competitionId
+      )
+      this.loading = false
+    },
   },
 }
 </script>

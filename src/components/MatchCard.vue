@@ -1,27 +1,22 @@
 <template>
   <div>
-    <ul>
-      <li>
-        <p
-          >{{ match.id }}: {{ match.teamHome.name }} vs
-          {{ match.teamAway.name }}
-          <small>
-            ({{ new Date(match.kickoffTime).toLocaleDateString() }})
-          </small>
-        </p>
-        <p>{{
-          match.status === 'finished'
-            ? `${match.teamHome.score} : ${match.teamAway.score}`
-            : match.status
-        }}</p>
-        <p v-if="match.prediction">{{ match.prediction }}</p>
-      </li>
-    </ul>
+    <!-- TODO: Implement match/prediction card -->
+    <PredictionChoiceTeam :team="match.teamHome" />
+    <PredictionChoiceDraw />
+    <PredictionChoiceTeam :team="match.teamAway" />
+    <small>
+      {{ new Date(match.kickoffTime).toLocaleDateString() }}
+    </small>
   </div>
 </template>
 
 <script>
+import PredictionChoiceTeam from './PredictionChoiceTeam'
+import PredictionChoiceDraw from './PredictionChoiceDraw'
+
 export default {
+  components: { PredictionChoiceTeam, PredictionChoiceDraw },
+
   props: {
     match: {
       type: Object,

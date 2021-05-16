@@ -7,23 +7,6 @@ export default [
     component: () => import('@/views/Home'),
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/Login'),
-    meta: {
-      beforeResolve(routeTo, routeFrom, next) {
-        // If the user is already logged in
-        if (store.getters['auth/loggedIn']) {
-          // Redirect to the home page instead
-          next({ name: 'home' })
-        } else {
-          // Continue to the login page
-          next()
-        }
-      },
-    },
-  },
-  {
     path: '/logout',
     name: 'logout',
     meta: {
@@ -40,56 +23,99 @@ export default [
     },
   },
   {
-    path: '/competitions/:id',
-    name: 'competition',
-    component: () => import('@/views/Competition'),
-    props: route => ({ id: parseInt(route.params.id) }),
+    path: '/',
+    component: () => import('@/views/layouts/DefaultLayout'),
     children: [
       {
-        path: 'leaderboards',
-        name: 'leaderboards',
-        component: () => import('@/views/Leaderboards'),
-        props: route => ({ competitionId: parseInt(route.params.id) }),
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/Login'),
+        meta: {
+          beforeResolve(routeTo, routeFrom, next) {
+            // If the user is already logged in
+            if (store.getters['auth/loggedIn']) {
+              // Redirect to the home page instead
+              next({ name: 'home' })
+            } else {
+              // Continue to the login page
+              next()
+            }
+          },
+        },
       },
       {
-        path: 'leaderboards/new',
-        name: 'new_leaderboard',
-        component: () => import('@/views/LeaderboardNew'),
-        props: route => ({ competitionId: parseInt(route.params.id) }),
+        path: '/competitions/:id',
+        name: 'competition',
+        component: () => import('@/views/Competition'),
+        props: route => ({ id: parseInt(route.params.id) }),
+        meta: {
+          title: 'Competitions',
+        },
+        children: [
+          {
+            path: 'leaderboards',
+            name: 'leaderboards',
+            component: () => import('@/views/Leaderboards'),
+            props: route => ({ competitionId: parseInt(route.params.id) }),
+            meta: {
+              authRequired: true,
+              title: 'Leaderboards',
+            },
+          },
+          {
+            path: 'leaderboards/new',
+            name: 'new_leaderboard',
+            component: () => import('@/views/LeaderboardNew'),
+            props: route => ({ competitionId: parseInt(route.params.id) }),
+            meta: {
+              authRequired: true,
+              title: 'New Leaderboard',
+            },
+          },
+        ],
+      },
+      {
+        path: '/matches',
+        name: 'matches',
+        component: () => import('@/views/Matches'),
+        props: route => ({
+          competitionId: parseInt(route.query.competitionId),
+          userId: parseInt(route.query.userId),
+        }),
+        meta: {
+          authRequired: true,
+          title: 'Matches',
+        },
+      },
+      {
+        path: '/leaderboards/:id',
+        name: 'leaderboard',
+        component: () => import('@/views/Leaderboard'),
+        props: route => ({ id: parseInt(route.params.id) }),
+        meta: {
+          authRequired: true,
+          title: 'Leaderboard',
+        },
+      },
+      {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('@/views/UserProfile'),
+        props: () => ({ id: store.getters['auth/currentUser'].id }),
+        meta: {
+          authRequired: true,
+          title: 'Profile',
+        },
+      },
+      {
+        path: '/users/:id',
+        name: 'user',
+        component: () => import('@/views/UserProfile'),
+        props: route => ({ id: parseInt(route.params.id) }),
         meta: {
           authRequired: true,
         },
       },
     ],
-  },
-  {
-    path: '/matches',
-    name: 'matches',
-    component: () => import('@/views/Matches'),
-    props: route => ({
-      competitionId: parseInt(route.query.competitionId),
-      userId: parseInt(route.query.userId),
-    }),
-    meta: {
-      authRequired: true,
-    },
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: () => import('@/views/UserProfile'),
-    props: () => ({ id: store.getters['auth/currentUser'].id }),
-    meta: {
-      authRequired: true,
-    },
-  },
-  {
-    path: '/users/:id',
-    name: 'user',
-    component: () => import('@/views/UserProfile'),
-    props: route => ({ id: parseInt(route.params.id) }),
-    meta: {
-      authRequired: true,
-    },
   },
 ]

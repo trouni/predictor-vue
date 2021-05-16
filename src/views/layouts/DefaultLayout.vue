@@ -1,16 +1,18 @@
 <template>
   <div>
+    <Header />
     <main>
-      <h1>Homepage</h1>
+      <RouterView :key="$route.fullPath"></RouterView>
     </main>
     <FooterNav />
   </div>
 </template>
 
 <script>
+import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 
 export default {
-  components: { FooterNav },
+  components: { Header, FooterNav },
 }
 </script>
