@@ -1,11 +1,5 @@
 <template>
   <div>
-    <LeaderboardRanking />
-    <LeaderboardRanking />
-    <LeaderboardRanking />
-    <LeaderboardRanking />
-    <LeaderboardRanking />
-    <LeaderboardRanking />
     <LeaderboardCard
       v-for="leaderboard in leaderboards"
       :key="leaderboard.id"
@@ -16,10 +10,9 @@
 
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
-import LeaderboardRanking from '@/components/LeaderboardRanking'
 
 export default {
-  components: { LeaderboardCard, LeaderboardRanking },
+  components: { LeaderboardCard },
 
   props: {
     competitionId: {
