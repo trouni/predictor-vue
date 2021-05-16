@@ -45,9 +45,9 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 
-.active a {
+a.active {
   font-weight: 600;
-  color: $color-link-text-active;
+  color: #363636 !important;
   text-decoration: none;
   cursor: default;
 }
