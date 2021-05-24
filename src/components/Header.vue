@@ -47,18 +47,6 @@ img {
   margin-right: $spacer;
 }
 
-select {
-  outline: none;
-  -webkit-appearance: none;
-  // font: 14px 'Open Sans', sans-serif;
-  font-size: 18px;
-  cursor: pointer;
-  border: none;
-  min-width: 180px;
-  padding: $spacer ($spacer * 2);
-  background: transparent url('https://i.imgur.com/hRbauFc.png') no-repeat scroll right center;
-}
-
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
   .justify-content {
