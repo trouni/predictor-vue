@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="d-flex">
+    <div class="d-flex justify-content-center">
       <img alt="football graphic" src="../assets/football.png" width="40px" height="40px" />
       <h1> European Championship</h1>
     </div>
@@ -24,6 +24,10 @@
 
 .justify-content {
   justify-content: space-between;
+}
+
+.justify-content-center {
+ justify-content: center;
 }
 
 .d-flex {
