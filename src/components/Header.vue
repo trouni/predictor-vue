@@ -1,5 +1,65 @@
 <template>
-  <div>
-    <h1>{{ $route.meta.title }}</h1>
+  <div class="container">
+    <div class="d-flex">
+      <img alt="football graphic" src="../assets/football.png" width="40px" height="40px" />
+      <h1> European Championship</h1>
+    </div>
+    <div class="d-flex justify-content">
+      <div class="mx-5">
+        <BaseIcon name="angle-left" />
+      </div>
+      <h3>Group Stage </h3>
+      <div class="mx-5">
+        <BaseIcon name="angle-right" />
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import '@/styles';
+.container {
+  padding: $spacer;
+}
+
+.justify-content {
+  justify-content: space-between;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+}
+
+.mx-5 {
+  margin: 0 16px;
+}
+
+h3 {
+  margin: ($spacer / 2);
+}
+
+img {
+  margin-right: $spacer;
+}
+
+select {
+  outline: none;
+  -webkit-appearance: none;
+  // font: 14px 'Open Sans', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  min-width: 180px;
+  padding: $spacer ($spacer * 2);
+  background: transparent url('https://i.imgur.com/hRbauFc.png') no-repeat scroll right center;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .justify-content {
+    justify-content: center;
+  }
+}
+
+</style>
