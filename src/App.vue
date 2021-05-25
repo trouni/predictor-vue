@@ -27,7 +27,6 @@ export default {
 }
 body {
   background: linear-gradient(167.4deg, $purple 0%, $teal 88.73%);
-  min-height: 100vh;
 }
 #app {
   @extend %typography-small;
