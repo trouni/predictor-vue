@@ -18,6 +18,7 @@ export default {
 // https://github.com/rstacruz/nprogress
 @import '~nprogress/nprogress.css';
 // Style variables and utilities from src/styles.
+@import './assets/tailwind.css';
 @import '@/styles';
 *,
 *::before,
@@ -25,7 +26,8 @@ export default {
   box-sizing: border-box;
 }
 body {
-  background: $color-body-bg;
+  background: linear-gradient(167.4deg, $purple 0%, $teal 88.73%);
+  min-height: 100vh;
 }
 #app {
   @extend %typography-small;

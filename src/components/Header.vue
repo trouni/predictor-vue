@@ -20,6 +20,7 @@
 @import '@/styles';
 .container {
   padding: $spacer;
+  color: $white;
 }
 
 .justify-content {
@@ -39,8 +40,13 @@
   margin: 0 16px;
 }
 
+h1 {
+  color: $white;
+}
+
 h3 {
   margin: ($spacer / 2);
+  color: $white;
 }
 
 img {

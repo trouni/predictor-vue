@@ -1,5 +1,5 @@
 <template>
-  <div id="footer-nav">
+  <div id="footer-nav" class="pt-3">
     <ul class="container">
       <NavBarRoutes :routes="persistentNavRoutes" />
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
@@ -65,6 +65,7 @@ export default {
 @import '@/styles';
 
 #footer-nav {
+  background-color: $white;
   position: fixed;
   bottom: 0;
   width: 100%;
