@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <!-- TODO: Implement match/prediction card -->
-    <PredictionChoiceTeam :team="match.teamHome" />
-    <PredictionChoiceDraw />
-    <PredictionChoiceTeam :team="match.teamAway" />
+  <div class="bg-match-card rounded-2xl text-center m-3">
+    <div class="flex align justify-evenly">
+      <PredictionChoiceTeam :team="match.teamHome" class="w-1/3" />
+      <div class="flex flex-col my-2 items-center justify-start px-3 h-full">
+        <p class="mb-1 h-8 leading-none flex items-center text-sm">vs</p>
+        <div class="flex-grow">
+          <PredictionChoiceDraw class="w-1/3" />
+        </div>
+      </div>
+      <PredictionChoiceTeam :team="match.teamAway" class="w-1/3" />
+    </div>
     <small>
       {{ new Date(match.kickoffTime).toLocaleDateString() }}
     </small>
@@ -36,3 +42,5 @@ export default {
   },
 }
 </script>
+
+<style lang="scss"></style>
