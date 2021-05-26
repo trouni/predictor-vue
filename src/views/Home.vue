@@ -46,7 +46,7 @@ export default {
       },
       {
         title: 'Create/Join a League',
-        description: 'Join in with friends and compete for the highest score.',
+        description: 'Join friends and compete for the highest score.',
         img: `${require('../assets/player.png')}`,
       },
       {
@@ -75,13 +75,14 @@ export default {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   font-size: 32px;
   font-weight: bold;
+  line-height: 1em;
 }
 
 .banner p {
   font-size: 20px;
   color: white;
   opacity: 0.8;
-  margin: $spacer 0;
+  margin: ($spacer * 1.5) 0;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 .banner-container {
@@ -97,5 +98,14 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: ($spacer * 2) 0 ($spacer * 10) 0;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .steps {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: ($spacer * 4) 0 ($spacer * 4) 0;
+  }
 }
 </style>
