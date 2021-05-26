@@ -12,7 +12,7 @@ button {
   padding: $size-button-padding;
   color: $color-button-text;
   cursor: pointer;
-  background: $color-button-bg;
+  background: $red;
   border: none;
   &:disabled {
     cursor: not-allowed;
