@@ -26,6 +26,12 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
+      badge: {
+        default: colors.coolGray,
+        selected: '#3B82F6',
+        correct: '#84CC16',
+        wrong: '#F87171',
+      },
     },
     spacing: {
       px: '1px',
@@ -157,6 +163,7 @@ module.exports = {
       0: '0px',
       2: '2px',
       4: '4px',
+      6: '6px',
       8: '8px',
     },
     boxShadow: {
@@ -171,6 +178,8 @@ module.exports = {
         '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+      'inner-md': 'inset 2px 2px 2px rgba(0, 0, 0, 0.33)',
+      'inner-lg': 'inset 4px 6px 4px rgba(0, 0, 0, 0.33)',
       none: 'none',
     },
     contrast: {
