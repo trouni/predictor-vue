@@ -3,7 +3,7 @@
     class="shadow-inner-lg rounded-full h-20 w-20 flex items-center justify-center overflow-hidden bg-contain"
     :style="`background-image: url(${flag});`"
   >
-    <p class="text-glow text-4xl">{{ score }}</p>
+    <p class="text-glow text-4xl select-none">{{ score }}</p>
   </div>
 </template>
 
