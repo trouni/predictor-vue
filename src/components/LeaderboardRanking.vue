@@ -1,34 +1,37 @@
 <template>
   <div class="d-flex ranking w-100">
     <div class="d-flex">
-    <div class="position w-50">
-      <p>20th</p>
+      <div class="position w-50">
+        <p>{{ position }}</p>
+      </div>
+      <!-- <div class="direction w-50">
+        <p><BaseIcon name="caret-up" /></p>
+        <p><BaseIcon name="caret-down" /></p>
+        <p>-</p>
+      </div> -->
+      <div class="w-50 d-flex">
+        <img
+          src="https://kitt.lewagon.com/placeholder/users/yannklein"
+          alt="use photo"
+          class="avatar"
+        />
+      </div>
+      <div class="name w-100"> {{ user.name }}</div>
     </div>
-    <div class="direction w-50">
-      <p><BaseIcon name="caret-up" /></p>
-      <!-- <p><BaseIcon name="caret-down" /></p> -->
-      <!-- <p>-</p> -->
-    </div>
-    <div class="w-50 d-flex">
-      <img src="https://kitt.lewagon.com/placeholder/users/yannklein" alt="use photo" class="avatar">
-    </div>
-    <div class="name w-100">
-      Yann Klein
-    </div>
-    </div>
-    <div class="points w-50">
-      118
-    </div>
+    <div class="points w-50"> {{ user.points }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  // props: {
-  //   user: {
-  //     type: Object
-  //   },
-  // },
+  props: {
+    user: {
+      type: Object,
+    },
+    position: {
+      type: Number,
+    },
+  },
 }
 </script>
 
@@ -66,7 +69,7 @@ export default {
 
 .ranking {
   background-color: white;
-  padding: 8px 4px
+  padding: 8px 4px;
 }
 
 .ranking p {
@@ -75,7 +78,7 @@ export default {
 
 .avatar {
   border-radius: 50%;
-  width: 30px
+  width: 30px;
 }
 
 .position {
@@ -99,6 +102,4 @@ export default {
 .fa-caret-down {
   color: $red;
 }
-
 </style>
-
