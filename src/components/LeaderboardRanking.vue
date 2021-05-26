@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex ranking w-100">
+  <div class="d-flex ranking w-100 mt-1">
     <div class="d-flex">
       <div class="position w-50">
-        <p>{{ position }}</p>
+        <p>{{ position + 1 }}</p>
       </div>
       <!-- <div class="direction w-50">
         <p><BaseIcon name="caret-up" /></p>
@@ -83,6 +83,7 @@ export default {
 
 .position {
   padding: 0 4px;
+  color: $purple;
 }
 
 .name {

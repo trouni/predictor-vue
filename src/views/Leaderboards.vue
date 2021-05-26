@@ -1,10 +1,11 @@
 <template>
   <div>
-    <LeaderboardCard
+    <!-- <LeaderboardCard
       v-for="leaderboard in leaderboards"
       :key="leaderboard.id"
       :leaderboard="leaderboard"
-    />
+    /> -->
+    <LeaderboardCard :key="leaderboards[0].id" :leaderboard="leaderboards[0]" />
   </div>
 </template>
 
