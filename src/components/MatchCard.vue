@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-2xl text-center m-2 p-2 bg-white">
+  <div class="rounded-2xl text-center my-5 mx-2 p-2 bg-white shadow">
     <div class="flex align justify-evenly">
       <PredictionChoiceTeam
         class="w-1/3"
