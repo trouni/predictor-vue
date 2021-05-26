@@ -56,6 +56,7 @@ h1 {
 h3 {
   margin: ($spacer / 2);
   color: $white;
+  font-weight: lighter;
 }
 
 img {
