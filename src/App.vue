@@ -18,6 +18,7 @@ export default {
 // https://github.com/rstacruz/nprogress
 @import '~nprogress/nprogress.css';
 // Style variables and utilities from src/styles.
+@import './assets/tailwind.css';
 @import '@/styles';
 *,
 *::before,

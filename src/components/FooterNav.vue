@@ -1,6 +1,6 @@
 <template>
-  <div id="footer-nav">
-    <ul class="container">
+  <div id="footer-nav" class="pt-5">
+    <ul class="footer-container">
       <NavBarRoutes :routes="persistentNavRoutes" />
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
@@ -20,7 +20,7 @@ export default {
         {
           name: 'home',
           title: 'Home',
-          fontAwesomeClass: 'home'
+          fontAwesomeClass: 'home',
         },
         // {
         //   name: 'competition',
@@ -38,19 +38,19 @@ export default {
           name: 'leaderboards',
           params: { id: 1 },
           title: 'Leaderboards',
-          fontAwesomeClass: 'trophy'
+          fontAwesomeClass: 'trophy',
         },
         {
           name: 'profile',
           title: 'Profile',
-          fontAwesomeClass: 'user'
+          fontAwesomeClass: 'user',
         },
       ],
       loggedOutNavRoutes: [
         {
           name: 'login',
           title: 'Log in',
-          fontAwesomeClass: 'sign-in-alt'
+          fontAwesomeClass: 'sign-in-alt',
         },
       ],
     }
@@ -65,12 +65,13 @@ export default {
 @import '@/styles';
 
 #footer-nav {
+  background-color: $white;
   position: fixed;
   bottom: 0;
   width: 100%;
 }
 
-.container {
+.footer-container {
   padding: 0 $size-grid-padding;
   margin: 0 0 $size-grid-padding;
   text-align: center;
@@ -89,5 +90,4 @@ export default {
 //     display: none;
 //   }
 // }
-
 </style>
