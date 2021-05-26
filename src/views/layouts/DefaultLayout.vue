@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Header />
+    <Header :title="$route.meta.title" :img="$route.meta.img" />
     <main id="wrapper-main">
       <div class="p-4">
         <RouterView :key="$route.fullPath"></RouterView>

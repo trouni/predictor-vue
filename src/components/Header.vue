@@ -3,10 +3,10 @@
     <div class="d-flex justify-content-center">
       <img
         alt="football graphic"
-        src="../assets/football.png"
+        :src="require('../assets/' + img)"
         class="header-img"
       />
-      <h1> European Championship</h1>
+      <h1> {{ title }}</h1>
     </div>
     <div class="d-flex justify-content">
       <div class="mx-5">
@@ -19,6 +19,21 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    img: {
+      type: String,
+      required: true,
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 @import '@/styles';
