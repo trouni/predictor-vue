@@ -1,6 +1,6 @@
 <template>
   <div id="footer-nav" class="pt-5">
-    <ul class="container">
+    <ul class="footer-container">
       <NavBarRoutes :routes="persistentNavRoutes" />
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
@@ -71,7 +71,7 @@ export default {
   width: 100%;
 }
 
-.container {
+.footer-container {
   padding: 0 $size-grid-padding;
   margin: 0 0 $size-grid-padding;
   text-align: center;
