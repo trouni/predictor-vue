@@ -23,7 +23,7 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    if (response.status !== 200) {
+    if (response.status < 200 || response.status >= 300) {
       console.warn(response)
     }
     return response
