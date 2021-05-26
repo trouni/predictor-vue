@@ -1,5 +1,5 @@
 <template>
-  <div id="footer-nav" class="pt-3">
+  <div id="footer-nav" class="pt-5">
     <ul class="container">
       <NavBarRoutes :routes="persistentNavRoutes" />
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
@@ -20,7 +20,7 @@ export default {
         {
           name: 'home',
           title: 'Home',
-          fontAwesomeClass: 'home'
+          fontAwesomeClass: 'home',
         },
         // {
         //   name: 'competition',
@@ -38,19 +38,19 @@ export default {
           name: 'leaderboards',
           params: { id: 1 },
           title: 'Leaderboards',
-          fontAwesomeClass: 'trophy'
+          fontAwesomeClass: 'trophy',
         },
         {
           name: 'profile',
           title: 'Profile',
-          fontAwesomeClass: 'user'
+          fontAwesomeClass: 'user',
         },
       ],
       loggedOutNavRoutes: [
         {
           name: 'login',
           title: 'Log in',
-          fontAwesomeClass: 'sign-in-alt'
+          fontAwesomeClass: 'sign-in-alt',
         },
       ],
     }
@@ -90,5 +90,4 @@ export default {
 //     display: none;
 //   }
 // }
-
 </style>

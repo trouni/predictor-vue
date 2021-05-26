@@ -26,7 +26,7 @@ export default {
   box-sizing: border-box;
 }
 body {
-  background: linear-gradient(167.4deg, $purple 0%, $teal 88.73%);
+  background: $color-body-bg;
 }
 #app {
   @extend %typography-small;
