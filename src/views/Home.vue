@@ -6,7 +6,15 @@
           <h1>Predictor App</h1>
           <p>Join. Predict. Win.</p>
           <div class="mt-3">
-            <BaseButton> Get Started </BaseButton>
+            <BaseButton>
+              <BaseLink
+                :to="{ name: 'matches' }"
+                v-if="$store.getters['auth/loggedIn']"
+              >
+                Matches
+              </BaseLink>
+              <BaseLink :to="{ name: 'login' }" v-else> Get Started </BaseLink>
+            </BaseButton>
           </div>
         </div>
       </div>
