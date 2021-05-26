@@ -1,3 +1,4 @@
+<!-- FYI: Not being used currently -->
 <template>
   <div>
     <LeaderboardGroupSelector />
