@@ -3,7 +3,7 @@
     <p class="uppercase mb-1 h-8 leading-none flex items-center">
       {{ team.name }}
     </p>
-    <TeamBadge :flag="team.badgeUrl" :score="team.score" />
+    <TeamBadge :flag="team.badgeUrl" :score="team.score" :status="status" />
   </div>
 </template>
 
@@ -15,6 +15,10 @@ export default {
 
   props: {
     team: Object,
+    status: {
+      type: String,
+      required: false,
+    },
   },
 }
 </script>
