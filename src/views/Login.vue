@@ -19,7 +19,7 @@
         name="email"
         type="text"
         autofocus
-        @keypress.enter="tryToLogIn"
+        @keypress.enter="submit"
       />
 
       <BaseInputText
@@ -28,7 +28,7 @@
         label="Password"
         name="password"
         type="password"
-        @keypress.enter="tryToLogIn"
+        @keypress.enter="submit"
       />
       <div>
         <BaseButton :disabled="processingForm" @click="submit">
