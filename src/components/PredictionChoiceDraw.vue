@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col py-2 px-5 h-full rounded-full shadow-inner-md bg-gray-400',
+      'flex flex-col py-2 px-3 h-full rounded-full shadow-inner-md bg-gray-400',
       highlight,
     ]"
   >
