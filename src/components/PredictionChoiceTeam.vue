@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col my-2 items-center px-3">
-    <p class="uppercase mb-1 h-8 leading-none flex items-center">{{
-      team.name
-    }}</p>
+    <p class="uppercase mb-1 h-8 leading-none flex items-center">
+      {{ team.name }}
+    </p>
     <TeamBadge :flag="team.badgeUrl" :score="team.score" />
   </div>
 </template>
