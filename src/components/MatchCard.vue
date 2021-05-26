@@ -1,18 +1,26 @@
 <template>
-  <div class="bg-match-card rounded-2xl text-center m-3">
+  <div class="rounded-2xl text-center m-2 p-2 bg-white">
     <div class="flex align justify-evenly">
-      <PredictionChoiceTeam :team="match.teamHome" class="w-1/3" />
-      <div class="flex flex-col my-2 items-center justify-start px-3 h-full">
+      <PredictionChoiceTeam
+        class="w-1/3"
+        :team="match.teamHome"
+        :status="status('home')"
+      />
+      <div
+        class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
+      >
         <p class="mb-1 h-8 leading-none flex items-center text-sm">vs</p>
         <div class="flex-grow">
-          <PredictionChoiceDraw class="w-1/3" />
+          <PredictionChoiceDraw :status="status('draw')" />
         </div>
       </div>
-      <PredictionChoiceTeam :team="match.teamAway" class="w-1/3" />
+      <PredictionChoiceTeam
+        class="w-1/3"
+        :team="match.teamAway"
+        :status="status('away')"
+      />
     </div>
-    <small>
-      {{ new Date(match.kickoffTime).toLocaleDateString() }}
-    </small>
+    <p class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
 
@@ -38,6 +46,44 @@ export default {
         choice,
       })
       this.loading = false
+    },
+    status(choice) {
+      // TODO: Remove the next statement once `prediction.correct` has been added to the API
+      if (this.match.status === 'finished') {
+        this.match.prediction.correct =
+          (this.match.prediction.choice === 'draw' &&
+            this.match.teamAway.score === this.match.teamHome.score) ||
+          (this.match.prediction.choice === 'away' &&
+            this.match.teamAway.score > this.match.teamHome.score)
+      }
+      // END
+
+      if (
+        'prediction' in this.match &&
+        this.match.prediction.choice === choice &&
+        'correct' in this.match.prediction
+      ) {
+        return this.match.prediction.correct ? 'correct' : 'wrong'
+      } else {
+        return 'default'
+      }
+    },
+  },
+
+  computed: {
+    matchDate() {
+      if (this.match.status === 'finished') {
+        return 'Full Time'
+      } else if (this.match.status === 'started') {
+        return 'In Progress'
+      } else {
+        return new Date(this.match.kickoffTime).toLocaleDateString('en-GB', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      }
     },
   },
 }
