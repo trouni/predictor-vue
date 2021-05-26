@@ -5,7 +5,9 @@
       highlight,
     ]"
   >
-    <span class="uppercase text-sm leading-none text-white">DRAW</span>
+    <span class="uppercase text-sm leading-none text-white select-none">
+      DRAW
+    </span>
   </div>
 </template>
 

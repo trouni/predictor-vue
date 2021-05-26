@@ -5,19 +5,24 @@
         class="w-1/3"
         :team="match.teamHome"
         :status="status('home')"
+        @click.native="setPrediction('home')"
       />
       <div
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
         <p class="mb-1 h-8 leading-none flex items-center text-sm">vs</p>
         <div class="flex-grow">
-          <PredictionChoiceDraw :status="status('draw')" />
+          <PredictionChoiceDraw
+            :status="status('draw')"
+            @click.native="setPrediction('draw')"
+          />
         </div>
       </div>
       <PredictionChoiceTeam
         class="w-1/3"
         :team="match.teamAway"
         :status="status('away')"
+        @click.native="setPrediction('away')"
       />
     </div>
     <p class="text-xs text-gray-400">{{ matchDate }}</p>
@@ -49,7 +54,11 @@ export default {
     },
     status(choice) {
       // TODO: Remove the next statement once `prediction.correct` has been added to the API
-      if (this.match.status === 'finished') {
+      if (
+        this.match.status === 'finished' &&
+        'prediction' in this.match &&
+        'choice' in this.match.prediction
+      ) {
         this.match.prediction.correct =
           (this.match.prediction.choice === 'draw' &&
             this.match.teamAway.score === this.match.teamHome.score) ||
