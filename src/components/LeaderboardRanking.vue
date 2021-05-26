@@ -2,7 +2,7 @@
   <div class="d-flex ranking w-100 mt-1">
     <div class="d-flex">
       <div class="position w-50">
-        <p>{{ position + 1 }}</p>
+        <p>{{ ordinalize(position + 1) }}</p>
       </div>
       <!-- <div class="direction w-50">
         <p><BaseIcon name="caret-up" /></p>
@@ -30,6 +30,21 @@ export default {
     },
     position: {
       type: Number,
+    },
+  },
+  methods: {
+    ordinalize(num) {
+      if (num > 3 && num < 21) return 'th'
+      switch (num % 10) {
+        case 1:
+          return num.toString() + 'st'
+        case 2:
+          return num.toString() + 'nd'
+        case 3:
+          return num.toString() + 'rd'
+        default:
+          return num.toString() + 'th'
+      }
     },
   },
 }
