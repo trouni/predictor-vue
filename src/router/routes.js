@@ -60,6 +60,7 @@ export default [
             meta: {
               authRequired: true,
               title: 'Leaderboards',
+              img: 'trophy.png',
             },
           },
           {
@@ -70,6 +71,7 @@ export default [
             meta: {
               authRequired: true,
               title: 'New Leaderboard',
+              img: 'trophy.png',
             },
           },
         ],
@@ -84,7 +86,8 @@ export default [
         }),
         meta: {
           authRequired: true,
-          title: 'Matches',
+          title: 'Euro Championship',
+          img: 'football.png',
         },
       },
       {
@@ -95,6 +98,7 @@ export default [
         meta: {
           authRequired: true,
           title: 'Leaderboard',
+          img: 'trophy.png',
         },
       },
       {
@@ -105,6 +109,7 @@ export default [
         meta: {
           authRequired: true,
           title: 'Profile',
+          img: 'player.png',
         },
       },
       {

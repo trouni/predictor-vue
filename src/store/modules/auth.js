@@ -52,7 +52,7 @@ export const actions = {
     return logOut()
   },
 
-  signup(_, credentials) {
+  signUp(_, credentials) {
     return signUp(credentials)
       .then(response => {
         if (response.data.status !== 'success') {

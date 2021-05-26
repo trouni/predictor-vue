@@ -1,8 +1,12 @@
 <template>
-  <div class="container">
+  <div class="header-container">
     <div class="d-flex justify-content-center">
-      <img alt="football graphic" src="../assets/football.png" width="40px" height="40px" />
-      <h1> European Championship</h1>
+      <img
+        alt="football graphic"
+        :src="require('../assets/' + img)"
+        class="header-img"
+      />
+      <h1> {{ title }}</h1>
     </div>
     <div class="d-flex justify-content">
       <div class="mx-5">
@@ -16,10 +20,26 @@
   </div>
 </template>
 
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    img: {
+      type: String,
+      required: true,
+    },
+  },
+}
+</script>
+
 <style lang="scss" scoped>
 @import '@/styles';
-.container {
+.header-container {
   padding: $spacer;
+  color: $white;
 }
 
 .justify-content {
@@ -27,7 +47,7 @@
 }
 
 .justify-content-center {
- justify-content: center;
+  justify-content: center;
 }
 
 .d-flex {
@@ -39,8 +59,19 @@
   margin: 0 16px;
 }
 
+.header-img {
+  width: 24px;
+  height: 24px;
+}
+
+h1 {
+  color: $white;
+}
+
 h3 {
   margin: ($spacer / 2);
+  color: $white;
+  font-weight: lighter;
 }
 
 img {
@@ -52,6 +83,10 @@ img {
   .justify-content {
     justify-content: center;
   }
-}
 
+  .header-img {
+    width: 36px;
+    height: 36px;
+  }
+}
 </style>
