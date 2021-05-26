@@ -72,10 +72,13 @@ export default {
 
       if (
         'prediction' in this.match &&
-        this.match.prediction.choice === choice &&
-        'correct' in this.match.prediction
+        this.match.prediction.choice === choice
       ) {
-        return this.match.prediction.correct ? 'correct' : 'wrong'
+        if ('correct' in this.match.prediction) {
+          return this.match.prediction.correct ? 'correct' : 'wrong'
+        } else {
+          return 'selected'
+        }
       } else {
         return 'default'
       }
