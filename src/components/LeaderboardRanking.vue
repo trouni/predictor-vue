@@ -67,6 +67,7 @@ export default {
 .w-50 {
   width: 50px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .w-30 {
