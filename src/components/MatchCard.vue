@@ -1,5 +1,10 @@
 <template>
-  <div class="rounded-2xl text-center my-5 mx-2 p-2 bg-white shadow">
+  <div
+    :class="[
+      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition duration-300',
+      borderStyle,
+    ]"
+  >
     <div class="flex align justify-evenly">
       <PredictionChoiceTeam
         class="w-1/3"
@@ -63,28 +68,9 @@ export default {
       this.loading = false
     },
     status(choice) {
-      // TODO: Remove the next statement once `prediction.correct` has been added to the API
-      if (
-        this.match.status === 'finished' &&
-        'prediction' in this.match &&
-        'choice' in this.match.prediction
-      ) {
-        this.match.prediction.correct =
-          (this.match.prediction.choice === 'draw' &&
-            this.match.teamAway.score === this.match.teamHome.score) ||
-          (this.match.prediction.choice === 'away' &&
-            this.match.teamAway.score > this.match.teamHome.score) ||
-          (this.match.prediction.choice === 'home' &&
-            this.match.teamAway.score < this.match.teamHome.score)
-      }
-      // END
-
-      if (
-        'prediction' in this.match &&
-        this.match.prediction.choice === choice
-      ) {
-        if ('correct' in this.match.prediction) {
-          return this.match.prediction.correct ? 'correct' : 'wrong'
+      if (this.madePrediction && this.match.prediction.choice === choice) {
+        if (this.match.status === 'finished') {
+          return this.correctPrediction ? 'correct' : 'wrong'
         } else {
           return 'selected'
         }
@@ -110,6 +96,35 @@ export default {
           month: 'long',
           day: 'numeric',
         })
+      }
+    },
+    madePrediction() {
+      return 'prediction' in this.match
+    },
+    correctPrediction() {
+      return (
+        this.match.status === 'finished' &&
+        this.madePrediction &&
+        ((this.match.prediction.choice === 'draw' &&
+          this.match.teamAway.score === this.match.teamHome.score) ||
+          (this.match.prediction.choice === 'away' &&
+            this.match.teamAway.score > this.match.teamHome.score) ||
+          (this.match.prediction.choice === 'home' &&
+            this.match.teamAway.score < this.match.teamHome.score))
+      )
+    },
+    borderStyle() {
+      if (this.match.status === 'finished') {
+        // Game finished - Prediction is either right or wrong/missing
+        return this.correctPrediction
+          ? 'border-6 border-badge-correct border-opacity-20'
+          : 'border-6 border-badge-wrong border-opacity-20'
+      } else if (this.match.status === 'upcoming' && !this.madePrediction) {
+        // Game upcoming and no prediction made
+        return 'border-6 border-badge-default'
+      } else {
+        // Game upcoming and prediction already made
+        return null
       }
     },
   },

@@ -2,8 +2,8 @@
   <div
     :class="[
       'flex flex-col py-2 px-3 h-full rounded-full shadow-inner-md bg-gray-400',
-      highlight,
-      cursor,
+      highlightStyle,
+      clickableStyle,
     ]"
   >
     <span class="uppercase text-sm leading-none text-white select-none">
@@ -26,10 +26,10 @@ export default {
   },
 
   computed: {
-    highlight() {
+    highlightStyle() {
       return `border-6 border-badge-${this.status}`
     },
-    cursor() {
+    clickableStyle() {
       return this.clickable ? 'cursor-pointer' : 'cursor-default'
     },
   },
