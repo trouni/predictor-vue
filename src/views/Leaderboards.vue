@@ -1,10 +1,13 @@
 <template>
   <div>
     <LeaderboardCard
-      v-for="leaderboard in leaderboards"
-      :key="leaderboard.id"
-      :leaderboard="leaderboard"
+      :key="leaderboards[0].id"
+      :leaderboard="leaderboards[0]"
+      v-if="leaderboards.length > 0"
     />
+    <p v-else class="placeholder-text">
+      Join or create a leaderboard to get started!
+    </p>
   </div>
 </template>
 
@@ -49,3 +52,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles';
+.placeholder-text {
+  color: $purple;
+  text-align: center;
+}
+</style>
