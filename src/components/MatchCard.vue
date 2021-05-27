@@ -5,6 +5,7 @@
         class="w-1/3"
         :team="match.teamHome"
         :status="status('home')"
+        :disabled="disabled"
         @click.native="setPrediction('home')"
       />
       <div
@@ -14,6 +15,7 @@
         <div class="flex-grow">
           <PredictionChoiceDraw
             :status="status('draw')"
+            :disabled="disabled"
             @click.native="setPrediction('draw')"
           />
         </div>
@@ -22,6 +24,7 @@
         class="w-1/3"
         :team="match.teamAway"
         :status="status('away')"
+        :disabled="disabled"
         @click.native="setPrediction('away')"
       />
     </div>
@@ -41,10 +44,16 @@ export default {
       type: Object,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   methods: {
     async setPrediction(choice) {
+      if (this.disabled) return
+
       this.loading = true
       const prediction = await this.$store.dispatch(`matches/setPrediction`, {
         match: this.match,

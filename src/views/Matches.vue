@@ -1,6 +1,11 @@
 <template>
   <div>
-    <MatchCard v-for="match in matches" :key="match.id" :match="match" />
+    <MatchCard
+      v-for="match in matches"
+      :key="match.id"
+      :match="match"
+      :disabled="match.status != 'upcoming'"
+    />
   </div>
 </template>
 
