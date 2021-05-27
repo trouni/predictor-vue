@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <TopNav />
     <Header :title="$route.meta.title" :img="$route.meta.img" />
     <main id="wrapper-main">
       <div class="p-4">
@@ -13,9 +14,10 @@
 <script>
 import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
+import TopNav from '@/components/TopNav'
 
 export default {
-  components: { Header, FooterNav },
+  components: { Header, FooterNav, TopNav },
 }
 </script>
 
