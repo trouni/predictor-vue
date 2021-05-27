@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     ordinalize(num) {
-      if (num > 3 && num < 21) return 'th'
+      if (num > 3 && num < 21) return num.toString() + 'th'
       switch (num % 10) {
         case 1:
           return num.toString() + 'st'
