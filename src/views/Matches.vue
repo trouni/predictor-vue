@@ -4,7 +4,7 @@
       v-for="match in matches"
       :key="match.id"
       :match="match"
-      :disabled="match.status != 'upcoming'"
+      :selectable="match.status == 'upcoming'"
     />
   </div>
 </template>

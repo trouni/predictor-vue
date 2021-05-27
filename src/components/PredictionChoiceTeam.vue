@@ -19,7 +19,7 @@ export default {
       type: String,
       required: false,
     },
-    disabled: {
+    clickable: {
       type: Boolean,
       default: false,
     },
@@ -27,7 +27,7 @@ export default {
 
   computed: {
     cursor() {
-      return this.disabled ? 'cursor-default' : 'cursor-pointer'
+      return this.clickable ? 'cursor-pointer' : 'cursor-default'
     },
   },
 }

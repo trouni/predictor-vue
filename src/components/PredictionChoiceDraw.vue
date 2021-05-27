@@ -19,7 +19,7 @@ export default {
       type: String,
       default: 'default',
     },
-    disabled: {
+    clickable: {
       type: Boolean,
       default: false,
     },
@@ -30,7 +30,7 @@ export default {
       return `border-6 border-badge-${this.status}`
     },
     cursor() {
-      return this.disabled ? 'cursor-default' : 'cursor-pointer'
+      return this.clickable ? 'cursor-pointer' : 'cursor-default'
     },
   },
 }

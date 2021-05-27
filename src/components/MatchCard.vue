@@ -5,7 +5,7 @@
         class="w-1/3"
         :team="match.teamHome"
         :status="status('home')"
-        :disabled="disabled"
+        :clickable="!disabled"
         @click.native="setPrediction('home')"
       />
       <div
@@ -15,7 +15,7 @@
         <div class="flex-grow">
           <PredictionChoiceDraw
             :status="status('draw')"
-            :disabled="disabled"
+            :clickable="!disabled"
             @click.native="setPrediction('draw')"
           />
         </div>
@@ -24,7 +24,7 @@
         class="w-1/3"
         :team="match.teamAway"
         :status="status('away')"
-        :disabled="disabled"
+        :clickable="!disabled"
         @click.native="setPrediction('away')"
       />
     </div>
@@ -44,9 +44,9 @@ export default {
       type: Object,
       required: true,
     },
-    disabled: {
+    selectable: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
 
@@ -95,6 +95,9 @@ export default {
   },
 
   computed: {
+    disabled() {
+      return !this.selectable || this.loading
+    },
     matchDate() {
       if (this.match.status === 'finished') {
         return 'Full Time'
