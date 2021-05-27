@@ -69,6 +69,7 @@ export default {
   position: fixed;
   bottom: 0;
   width: 100%;
+  display: none;
 }
 
 .footer-container {
@@ -85,9 +86,9 @@ export default {
 }
 
 // TODO: Hide when non-mobile
-// @media (min-width: 768px) {
-//   #footer-nav {
-//     display: none;
-//   }
-// }
+@media (min-width: 100px) and (max-width: 575px) {
+  #footer-nav {
+    display: block;
+  }
+}
 </style>

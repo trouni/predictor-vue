@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TopNav />
     <main>
       <div class="banner">
         <div class="banner-container">
@@ -29,9 +30,10 @@
 <script>
 import FooterNav from '@/components/FooterNav'
 import HomeStep from '@/components/HomeStep'
+import TopNav from '@/components/TopNav'
 
 export default {
-  components: { FooterNav, HomeStep },
+  components: { FooterNav, HomeStep, TopNav },
   data() {
     return {
       steps: [],

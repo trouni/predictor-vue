@@ -1,8 +1,7 @@
 <template>
   <div id="top-nav">
-    <p>LOGO</p>
+    <BaseLink :to="{ name: 'home' }"> LOGO </BaseLink>
     <ul class="top-nav-container">
-      <NavBarRoutes :routes="persistentNavRoutes" />
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
     </ul>
@@ -17,18 +16,6 @@ export default {
   components: { NavBarRoutes },
   data() {
     return {
-      persistentNavRoutes: [
-        {
-          name: 'home',
-          title: 'Home',
-          fontAwesomeClass: 'home',
-        },
-        // {
-        //   name: 'competition',
-        //   params: { id: 1 },
-        //   title: 'Competition',
-        // },
-      ],
       loggedInNavRoutes: [
         {
           name: 'matches',
@@ -67,7 +54,7 @@ export default {
 
 #top-nav {
   background-color: $purple;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
   padding: $spacer;
@@ -100,9 +87,9 @@ export default {
 }
 
 // TODO: Hide when mobile
-// @media (min-width: 768px) {
-//   #footer-nav {
-//     display: none;
-//   }
-// }
+@media (min-width: 576px) {
+  #top-nav {
+    display: flex;
+  }
+}
 </style>
