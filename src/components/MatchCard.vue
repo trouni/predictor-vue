@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-2xl text-center m-2 p-2 bg-white">
+  <div class="rounded-2xl text-center my-5 mx-2 p-2 bg-white shadow">
     <div class="flex align justify-evenly">
       <PredictionChoiceTeam
         class="w-1/3"
@@ -46,10 +46,11 @@ export default {
   methods: {
     async setPrediction(choice) {
       this.loading = true
-      this.matches = await this.$store.dispatch(`matches/setPrediction`, {
+      const prediction = await this.$store.dispatch(`matches/setPrediction`, {
         match: this.match,
         choice,
       })
+      this.$set(this.match, 'prediction', prediction)
       this.loading = false
     },
     status(choice) {
@@ -63,16 +64,21 @@ export default {
           (this.match.prediction.choice === 'draw' &&
             this.match.teamAway.score === this.match.teamHome.score) ||
           (this.match.prediction.choice === 'away' &&
-            this.match.teamAway.score > this.match.teamHome.score)
+            this.match.teamAway.score > this.match.teamHome.score) ||
+          (this.match.prediction.choice === 'home' &&
+            this.match.teamAway.score < this.match.teamHome.score)
       }
       // END
 
       if (
         'prediction' in this.match &&
-        this.match.prediction.choice === choice &&
-        'correct' in this.match.prediction
+        this.match.prediction.choice === choice
       ) {
-        return this.match.prediction.correct ? 'correct' : 'wrong'
+        if ('correct' in this.match.prediction) {
+          return this.match.prediction.correct ? 'correct' : 'wrong'
+        } else {
+          return 'selected'
+        }
       } else {
         return 'default'
       }
