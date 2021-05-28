@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex justify-content">
     <div class="mx-5">
-      <BaseIcon name="angle-left" />
+      <BaseIcon name="angle-left" v-if="leaderboards.length !== 1" />
     </div>
     <h3> {{ leaderboard.name }} </h3>
     <div class="mx-5">
-      <BaseIcon name="angle-right" />
+      <BaseIcon name="angle-right" v-if="leaderboards.length !== 1" />
     </div>
   </div>
 </template>
