@@ -27,7 +27,7 @@ export default {
 
   computed: {
     highlightStyle() {
-      return `border-6 border-badge-${this.status}`
+      return `border-6 border-prediction-${this.status}`
     },
     clickableStyle() {
       return this.clickable ? 'cursor-pointer' : 'cursor-default'
