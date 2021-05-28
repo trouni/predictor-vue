@@ -3,9 +3,7 @@
     <div class="mx-5">
       <BaseIcon
         name="angle-left"
-        v-if="
-          leaderboards.length !== 1 && leaderboards.indexOf(leaderboard) !== 0
-        "
+        v-if="leaderboards.length !== 1 && leaderboards[0] !== leaderboard"
       />
     </div>
     <h3> {{ leaderboard.name }} </h3>
