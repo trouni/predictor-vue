@@ -34,10 +34,6 @@ export default {
   color: $white;
 }
 
-.justify-content {
-  justify-content: space-between;
-}
-
 .justify-content-center {
   justify-content: center;
 }
@@ -45,10 +41,6 @@ export default {
 .d-flex {
   display: flex;
   align-items: center;
-}
-
-.mx-5 {
-  margin: 0 16px;
 }
 
 .header-img {
@@ -60,22 +52,12 @@ h1 {
   color: $white;
 }
 
-h3 {
-  margin: ($spacer / 2);
-  color: $white;
-  font-weight: lighter;
-}
-
 img {
   margin-right: $spacer;
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-  .justify-content {
-    justify-content: center;
-  }
-
   .header-img {
     width: 36px;
     height: 36px;

@@ -96,6 +96,7 @@ export default [
           authRequired: true,
           title: 'Euro Championship',
           img: 'football.png',
+          subHeader: 'MatchesSubHeader',
         },
       },
       {

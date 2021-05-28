@@ -16,9 +16,10 @@
 import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
+import MatchesSubHeader from '@/components/MatchesSubHeader'
 
 export default {
-  components: { Header, FooterNav, LeaderboardSubHeader },
+  components: { Header, FooterNav, LeaderboardSubHeader, MatchesSubHeader },
   data() {
     return {
       leaderboards: [],
