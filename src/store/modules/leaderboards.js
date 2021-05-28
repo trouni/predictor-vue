@@ -44,7 +44,7 @@ export const actions = {
     )
   },
 
-  selectLeaderboard({ commit }, { _, leaderboardId }) {
+  selectLeaderboard({ commit }, leaderboardId) {
     commit('SET_CURRENT_LEADERBOARD', leaderboardId)
     return leaderboardId
   },
