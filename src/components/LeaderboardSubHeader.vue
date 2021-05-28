@@ -1,7 +1,12 @@
 <template>
   <div class="d-flex justify-content">
     <div class="mx-5">
-      <BaseIcon name="angle-left" v-if="leaderboards.length !== 1" />
+      <BaseIcon
+        name="angle-left"
+        v-if="
+          leaderboards.length !== 1 && leaderboards.indexOf(leaderboard) !== 0
+        "
+      />
     </div>
     <h3> {{ leaderboard.name }} </h3>
     <div class="mx-5">
