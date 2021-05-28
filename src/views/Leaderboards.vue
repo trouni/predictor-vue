@@ -27,9 +27,6 @@ export default {
       type: Number,
       required: false,
     },
-    leaderboardId: {
-      type: Number,
-    },
   },
 
   async mounted() {
@@ -41,6 +38,7 @@ export default {
       loading: false,
       leaderboards: [],
       leaderboard: null,
+      leaderboardId: this.$store.getters['leaderboards/currentLeaderboardId'],
     }
   },
 

@@ -3,7 +3,7 @@
     <div class="mx-5">
       <BaseIcon
         name="angle-left"
-        v-if="leaderboards.length !== 1 && leaderboards[0] !== leaderboard"
+        v-if="availableLeft()"
         @click.native="
           setSelectedLeaderboard(
             leaderboards[leaderboards.indexOf(leaderboard) - 1].id
@@ -15,10 +15,7 @@
     <div class="mx-5">
       <BaseIcon
         name="angle-right"
-        v-if="
-          leaderboards.length !== 1 &&
-          leaderboards[leaderboards.length - 1] !== leaderboard
-        "
+        v-if="availableRight()"
         @click.native="
           setSelectedLeaderboard(
             leaderboards[leaderboards.indexOf(leaderboard) + 1].id
@@ -36,6 +33,7 @@ export default {
       loading: false,
       leaderboards: this.$store.getters['leaderboards/leaderboards'],
       leaderboard: this.$store.getters['leaderboards/currentLeaderboard'],
+      leaderboardId: this.$store.getters['leaderboards/currentLeaderboardId'],
     }
   },
   methods: {
@@ -44,6 +42,18 @@ export default {
       this.$store.dispatch('leaderboards/selectLeaderboard', id)
       this.leaderboard = this.leaderboards.find(
         leaderboard => leaderboard.id === id
+      )
+    },
+    availableLeft() {
+      return (
+        this.leaderboards.length !== 1 &&
+        this.leaderboards[0] !== this.leaderboard
+      )
+    },
+    availableRight() {
+      return (
+        this.leaderboards.length !== 1 &&
+        this.leaderboards[this.leaderboards.length - 1] !== this.leaderboard
       )
     },
   },
