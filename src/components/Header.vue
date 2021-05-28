@@ -8,15 +8,7 @@
       />
       <h1> {{ title }}</h1>
     </div>
-    <div class="d-flex justify-content">
-      <div class="mx-5">
-        <BaseIcon name="angle-left" />
-      </div>
-      <h3>Group Stage </h3>
-      <div class="mx-5">
-        <BaseIcon name="angle-right" />
-      </div>
-    </div>
+    <slot />
   </div>
 </template>
 

@@ -1,6 +1,8 @@
 <template>
   <div class="content">
-    <Header :title="$route.meta.title" :img="$route.meta.img" />
+    <Header :title="$route.meta.title" :img="$route.meta.img">
+      <component :is="$route.meta.subHeader" />
+    </Header>
     <main id="wrapper-main">
       <div class="p-4">
         <RouterView :key="$route.fullPath"></RouterView>
@@ -13,9 +15,16 @@
 <script>
 import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
+import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 
 export default {
-  components: { Header, FooterNav },
+  components: { Header, FooterNav, LeaderboardSubHeader },
+  data() {
+    return {
+      leaderboards: [],
+      leaderboard: null,
+    }
+  },
 }
 </script>
 

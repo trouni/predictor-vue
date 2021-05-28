@@ -66,6 +66,7 @@ export default [
               authRequired: true,
               title: 'Leaderboards',
               img: 'trophy.png',
+              subHeader: 'LeaderboardSubHeader',
             },
           },
           {
