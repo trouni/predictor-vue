@@ -5,22 +5,27 @@ const LeaderboardsRepository = RepositoryFactory.get('leaderboards')
 export const state = {
   cached: [],
   leaderboards: getSavedState('leaderboards'),
-  currentLeaderboard: getSavedState('currentLeaderboard'),
+  currentLeaderboardId: parseInt(getSavedState('currentLeaderboardId')),
 }
 
 export const getters = {
-  currentLeaderboard(state) {
-    return state.currentLeaderboard
+  currentLeaderboardId(state) {
+    return state.currentLeaderboardId
   },
   leaderboards(state) {
     return state.leaderboards
   },
+  currentLeaderboard(state) {
+    return state.leaderboards.find(
+      leaderboard => leaderboard.id === state.currentLeaderboardId
+    )
+  },
 }
 
 export const mutations = {
-  SET_CURRENT_LEADERBOARD(state, newValue) {
-    state.currentLeaderboard = newValue
-    saveState('currentLeaderboard', newValue)
+  SET_CURRENT_LEADERBOARD_ID(state, newValue) {
+    state.currentLeaderboardId = newValue
+    saveState('currentLeaderboardId', newValue)
   },
   SET_LEADERBOARDS(state, newValue) {
     state.headers = newValue
@@ -34,10 +39,10 @@ export const actions = {
       response => {
         commit('SET_LEADERBOARDS', response.data)
         if (
-          window.localStorage.currentLeaderboard === undefined &&
+          window.localStorage.currentLeaderboardId === undefined &&
           response.data.length > 0
         ) {
-          commit('SET_CURRENT_LEADERBOARD', response.data[0].id)
+          commit('SET_CURRENT_LEADERBOARD_ID', response.data[0].id)
         }
         return response.data
       }
@@ -45,7 +50,7 @@ export const actions = {
   },
 
   selectLeaderboard({ commit }, leaderboardId) {
-    commit('SET_CURRENT_LEADERBOARD', leaderboardId)
+    commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
     return leaderboardId
   },
 }

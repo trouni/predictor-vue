@@ -51,9 +51,7 @@ export default {
         'leaderboards/fetchLeaderboards',
         this.competitionId
       )
-      this.leaderboard = this.leaderboards.find(
-        leaderboard => leaderboard.id === this.leaderboardId
-      )
+      this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
       this.loading = false
     },
   },
