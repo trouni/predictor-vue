@@ -83,6 +83,9 @@ img {
   .justify-content {
     justify-content: center;
   }
+  .header-container {
+    padding: $spacer * 2;
+  }
 
   .header-img {
     width: 36px;
