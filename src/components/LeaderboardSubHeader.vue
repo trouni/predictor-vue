@@ -39,8 +39,12 @@ export default {
     }
   },
   methods: {
-    setSelectedLeaderboard(id) {
+    async setSelectedLeaderboard(id) {
       console.log(id)
+      this.$store.dispatch('leaderboards/selectLeaderboard', id)
+      this.leaderboard = this.leaderboards.find(
+        leaderboard => leaderboard.id === id
+      )
     },
   },
 }
