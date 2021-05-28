@@ -4,6 +4,11 @@
       <BaseIcon
         name="angle-left"
         v-if="leaderboards.length !== 1 && leaderboards[0] !== leaderboard"
+        @click.native="
+          setSelectedLeaderboard(
+            leaderboards[leaderboards.indexOf(leaderboard) - 1].id
+          )
+        "
       />
     </div>
     <h3> {{ leaderboard.name }} </h3>
@@ -13,6 +18,11 @@
         v-if="
           leaderboards.length !== 1 &&
           leaderboards[leaderboards.length - 1] !== leaderboard
+        "
+        @click.native="
+          setSelectedLeaderboard(
+            leaderboards[leaderboards.indexOf(leaderboard) + 1].id
+          )
         "
       />
     </div>
@@ -27,6 +37,11 @@ export default {
       leaderboards: this.$store.getters['leaderboards/leaderboards'],
       leaderboard: this.$store.getters['leaderboards/currentLeaderboard'],
     }
+  },
+  methods: {
+    setSelectedLeaderboard(id) {
+      console.log(id)
+    },
   },
 }
 </script>
