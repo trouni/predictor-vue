@@ -75,6 +75,7 @@ export const actions = {
     return leaderboardId
   },
   joinLeaderboard({ commit }, password) {
+    console.log('in store...')
     return LeaderboardsRepository.joinLeaderboard(password).then(response => {
       commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
       return response.data

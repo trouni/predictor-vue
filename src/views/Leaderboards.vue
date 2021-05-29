@@ -14,6 +14,7 @@
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
 import { mapGetters, mapActions } from 'vuex'
+import store from '@/store'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
@@ -30,6 +31,20 @@ export default {
       type: Number,
       required: false,
     },
+  },
+  beforeRouteEnter(to, _from, next) {
+    console.log(to.params)
+    if (to.params.password) {
+      store.dispatch('leaderboards/joinLeaderboard', to.params.password)
+      next({
+        name: 'leaderboards',
+      })
+      // don't have access to "this"
+      // this.$router.push({
+      //   name: 'home',
+      //   params: { competitionId: leaderboard.competition_id },
+      // })
+    }
   },
 
   async mounted() {
@@ -52,6 +67,7 @@ export default {
   methods: {
     ...mapActions({
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
+      joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
   },
 }

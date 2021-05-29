@@ -47,14 +47,27 @@ export default [
         path: '/join/:password',
         name: 'join',
         component: () => import('@/views/Leaderboards'),
+        props: route => ({
+          competitionId: 1,
+          password: route.params.password,
+          leaderboardId: parseInt(
+            store.getters['leaderboards/currentLeaderboard']
+          ),
+        }),
         meta: {
+          title: 'Leaderboards',
+          img: 'trophy.png',
+          subHeader: 'LeaderboardSubHeader',
           beforeResolve(routeTo, routeFrom, next) {
-            // If the user is already logged in
             if (store.getters['auth/loggedIn']) {
-              // Redirect to the home page instead
-              next({ name: 'leaderboards' })
+              console.log(routeTo.params)
+              // this doesn't work so moved it to "beforeRouteEnter"
+              this.$store.dispatch(
+                'leaderboards/joinLeaderboard',
+                routeTo.params
+              )
+              next({ name: 'leaderboards', params: { competitionId: 1 } })
             } else {
-              // Continue to the login page
               next({ name: 'login' })
             }
           },
