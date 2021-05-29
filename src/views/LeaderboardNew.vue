@@ -30,7 +30,7 @@ export default {
     return {
       name: '',
       processingForm: false,
-      leaderboardId: nul,
+      leaderboardId: null,
     }
   },
   methods: {
