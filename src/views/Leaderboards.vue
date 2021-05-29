@@ -1,5 +1,6 @@
 <template>
   <div>
+    <BaseLink :to="{ name: 'new_leaderboard' }"> ➕ </BaseLink>
     <ShareButton :password="leaderboard.password" />
     <LeaderboardCard
       :key="leaderboard.id"
