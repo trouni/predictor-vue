@@ -66,6 +66,7 @@ export default [
               authRequired: true,
               title: 'Leaderboards',
               img: 'trophy.png',
+              subHeader: 'LeaderboardSubHeader',
             },
           },
           {
@@ -95,6 +96,7 @@ export default [
           authRequired: true,
           title: 'Euro Championship',
           img: 'football.png',
+          subHeader: 'MatchesSubHeader',
         },
       },
       {
