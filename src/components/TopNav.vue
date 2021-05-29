@@ -1,7 +1,7 @@
 <template>
-  <div id="footer-nav" class="pt-5">
-    <ul class="footer-container">
-      <NavBarRoutes :routes="persistentNavRoutes" />
+  <div id="top-nav">
+    <BaseLink :to="{ name: 'home' }"> LOGO </BaseLink>
+    <ul class="top-nav-container">
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
     </ul>
@@ -16,18 +16,6 @@ export default {
   components: { NavBarRoutes },
   data() {
     return {
-      persistentNavRoutes: [
-        {
-          name: 'home',
-          title: 'Home',
-          fontAwesomeClass: 'home',
-        },
-        // {
-        //   name: 'competition',
-        //   params: { id: 1 },
-        //   title: 'Competition',
-        // },
-      ],
       loggedInNavRoutes: [
         {
           name: 'matches',
@@ -64,31 +52,44 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 
-#footer-nav {
-  background-color: $white;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+#top-nav {
+  background-color: $purple;
   display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacer;
+  color: white;
+  height: 64px;
+  a {
+    opacity: 0.7;
+    margin: $spacer * 2;
+    color: white;
+  }
+  .active {
+    opacity: 1;
+  }
+  a:hover {
+    opacity: 1;
+  }
 }
 
-.footer-container {
+.top-nav-container {
   padding: 0 $size-grid-padding;
-  margin: 0 0 $size-grid-padding;
   text-align: center;
   list-style-type: none;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 1.5em;
   a {
     display: inline-block;
   }
 }
 
-// TODO: Hide when non-mobile
-@media (min-width: 100px) and (max-width: 575px) {
-  #footer-nav {
-    display: block;
+// TODO: Hide when mobile
+@media (min-width: 576px) {
+  #top-nav {
+    display: flex;
   }
 }
 </style>

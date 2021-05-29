@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col my-2 items-center px-3">
+  <div :class="['flex flex-col my-2 items-center px-3', clickableStyle]">
     <p class="uppercase mb-1 h-8 leading-none flex items-center">
       {{ team.name }}
     </p>
@@ -18,6 +18,16 @@ export default {
     status: {
       type: String,
       required: false,
+    },
+    clickable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  computed: {
+    clickableStyle() {
+      return this.clickable ? 'cursor-pointer' : 'cursor-default opacity-80'
     },
   },
 }

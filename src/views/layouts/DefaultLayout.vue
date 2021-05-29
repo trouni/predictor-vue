@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <TopNav />
     <Header :title="$route.meta.title" :img="$route.meta.img">
       <component :is="$route.meta.subHeader" />
     </Header>
@@ -13,13 +14,14 @@
 </template>
 
 <script>
+import TopNav from '@/components/TopNav'
 import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 import MatchesSubHeader from '@/components/MatchesSubHeader'
 
 export default {
-  components: { Header, FooterNav, LeaderboardSubHeader, MatchesSubHeader },
+  components: { Header, FooterNav, TopNav, LeaderboardSubHeader, MatchesSubHeader },
   data() {
     return {
       leaderboards: [],

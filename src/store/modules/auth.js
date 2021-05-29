@@ -45,6 +45,11 @@ export const actions = {
     })
   },
 
+  // Updates auth headers.
+  updateHeaders({ commit }, headers) {
+    commit('SET_AUTH_HEADERS', headers)
+  },
+
   // Logs out the current user.
   logOut({ commit }) {
     commit('SET_CURRENT_USER', null)

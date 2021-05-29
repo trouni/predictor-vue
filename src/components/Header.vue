@@ -58,6 +58,9 @@ img {
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
+  .header-container {
+    padding: $spacer * 2;
+  }
   .header-img {
     width: 36px;
     height: 36px;
