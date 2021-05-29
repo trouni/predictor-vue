@@ -38,9 +38,13 @@ export const actions = {
     return LeaderboardsRepository.getLeaderboards(competitionId).then(
       response => {
         commit('SET_LEADERBOARDS', response.data)
+        // check if deleted board is set as selected or non existant
         if (
-          window.localStorage.currentLeaderboardId === undefined &&
-          response.data.length > 0
+          (window.localStorage.currentLeaderboardId === undefined &&
+            response.data.length > 0) ||
+          !JSON.parse(window.localStorage.leaderboards)
+            .map(l => l.id)
+            .includes(parseInt(window.localStorage.currentLeaderboardId))
         ) {
           commit('SET_CURRENT_LEADERBOARD_ID', response.data[0].id)
         }

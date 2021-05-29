@@ -4,11 +4,7 @@
       <BaseIcon
         name="angle-left"
         v-if="availableLeft()"
-        @click.native="
-          setSelectedLeaderboard(
-            leaderboards[leaderboards.indexOf(leaderboard) - 1].id
-          )
-        "
+        @click.native="setSelectedLeaderboard(previousLeaderboard())"
       />
     </div>
     <h3> {{ leaderboard.name }} </h3>
@@ -16,11 +12,7 @@
       <BaseIcon
         name="angle-right"
         v-if="availableRight()"
-        @click.native="
-          setSelectedLeaderboard(
-            leaderboards[leaderboards.indexOf(leaderboard) + 1].id
-          )
-        "
+        @click.native="setSelectedLeaderboard(nextLeaderboard())"
       />
     </div>
   </div>
@@ -55,6 +47,14 @@ export default {
         this.leaderboards.length !== 1 &&
         this.leaderboards[this.leaderboards.length - 1] !== this.leaderboard
       )
+    },
+    previousLeaderboard() {
+      return this.leaderboards[this.leaderboards.indexOf(this.leaderboard) - 1]
+        .id
+    },
+    nextLeaderboard() {
+      return this.leaderboards[this.leaderboards.indexOf(this.leaderboard) + 1]
+        .id
     },
   },
 }
