@@ -56,7 +56,12 @@ export default [
             path: 'leaderboards',
             name: 'leaderboards',
             component: () => import('@/views/Leaderboards'),
-            props: route => ({ competitionId: parseInt(route.params.id) }),
+            props: route => ({
+              competitionId: parseInt(route.params.id),
+              leaderboardId: parseInt(
+                store.getters['leaderboards/currentLeaderboard']
+              ),
+            }),
             meta: {
               authRequired: true,
               title: 'Leaderboards',
@@ -67,7 +72,9 @@ export default [
             path: 'leaderboards/new',
             name: 'new_leaderboard',
             component: () => import('@/views/LeaderboardNew'),
-            props: route => ({ competitionId: parseInt(route.params.id) }),
+            props: route => ({
+              competitionId: parseInt(route.params.id),
+            }),
             meta: {
               authRequired: true,
               title: 'New Leaderboard',

@@ -1,8 +1,8 @@
 <template>
   <div>
     <LeaderboardCard
-      :key="leaderboards[0].id"
-      :leaderboard="leaderboards[0]"
+      :key="leaderboard.id"
+      :leaderboard="leaderboard"
       v-if="leaderboards.length > 0"
     />
     <p v-else class="placeholder-text">
@@ -27,6 +27,9 @@ export default {
       type: Number,
       required: false,
     },
+    leaderboardId: {
+      type: Number,
+    },
   },
 
   async mounted() {
@@ -37,6 +40,7 @@ export default {
     return {
       loading: false,
       leaderboards: [],
+      leaderboard: null,
     }
   },
 
@@ -47,6 +51,7 @@ export default {
         'leaderboards/fetchLeaderboards',
         this.competitionId
       )
+      this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
       this.loading = false
     },
   },
