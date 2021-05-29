@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex ranking w-100 mt-1">
-    <div class="d-flex">
+    <div class="d-flex min-w-0">
       <div class="position w-50">
         <p>{{ ordinalize(position + 1) }}</p>
       </div>
@@ -16,7 +16,7 @@
           class="avatar"
         />
       </div>
-      <div class="name w-100"> {{ user.name }}</div>
+      <div class="name w-100 truncate"> {{ user.name }}</div>
     </div>
     <div class="points w-50"> {{ user.points }}</div>
   </div>
