@@ -80,6 +80,12 @@ h3 {
   color: $white;
   font-weight: lighter;
 }
+.fa-angle-left:hover {
+  cursor: pointer;
+}
+.fa-angle-right:hover {
+  cursor: pointer;
+}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
