@@ -3,7 +3,7 @@
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
-      v-if="leaderboards.length > 0"
+      v-if="leaderboard"
     />
     <p v-else class="placeholder-text">
       Join or create a leaderboard to get started!
@@ -13,6 +13,9 @@
 
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
+import { mapGetters, mapActions } from 'vuex'
+// mapGetters is used to import Getters from your store into your component
+// There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
   components: { LeaderboardCard },
@@ -30,31 +33,26 @@ export default {
   },
 
   async mounted() {
-    this.fetchLeaderboards()
+    this.fetchLeaderboards(this.competitionId)
   },
 
-  data() {
-    return {
-      loading: false,
-      leaderboards: [],
-      leaderboard: this.$store.getters['leaderboards/currentLeaderboard'],
-      leaderboardId: this.$store.getters['leaderboards/currentLeaderboardId'],
-    }
+  // The state is managed from the store, we don't want to be reassigning these variables
+  // directly in here (defeats the purpose of the store). Instead of declaring them in data (state)
+  // for the component, we use computed properties.
+
+  computed: {
+    ...mapGetters({
+      // This syncs the store getters to the component as computed properties. You never have to reassign
+      // them within this component, any changes to them should happen at the store level.
+      // We only need the current leaderboard in this component.
+      leaderboard: 'leaderboards/currentLeaderboard',
+    }),
   },
 
   methods: {
-    async fetchLeaderboards() {
-      this.loading = true
-      this.leaderboards = await this.$store.dispatch(
-        'leaderboards/fetchLeaderboards',
-        this.competitionId
-      )
-      this.leaderboardId = this.$store.getters[
-        'leaderboards/currentLeaderboardId'
-      ]
-      this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
-      this.loading = false
-    },
+    ...mapActions({
+      fetchLeaderboards: 'leaderboards/fetchLeaderboards',
+    }),
   },
 }
 </script>
