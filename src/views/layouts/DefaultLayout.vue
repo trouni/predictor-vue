@@ -1,7 +1,9 @@
 <template>
   <div class="content">
     <TopNav />
-    <Header :title="$route.meta.title" :img="$route.meta.img" />
+    <Header :title="$route.meta.title" :img="$route.meta.img">
+      <component :is="$route.meta.subHeader" />
+    </Header>
     <main id="wrapper-main">
       <div class="p-4">
         <RouterView :key="$route.fullPath"></RouterView>
@@ -12,12 +14,20 @@
 </template>
 
 <script>
+import TopNav from '@/components/TopNav'
 import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
-import TopNav from '@/components/TopNav'
+import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
+import MatchesSubHeader from '@/components/MatchesSubHeader'
 
 export default {
-  components: { Header, FooterNav, TopNav },
+  components: { Header, FooterNav, TopNav, LeaderboardSubHeader, MatchesSubHeader },
+  data() {
+    return {
+      leaderboards: [],
+      leaderboard: null,
+    }
+  },
 }
 </script>
 

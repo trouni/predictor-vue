@@ -8,15 +8,7 @@
       />
       <h1> {{ title }}</h1>
     </div>
-    <div class="d-flex justify-content">
-      <div class="mx-5">
-        <BaseIcon name="angle-left" />
-      </div>
-      <h3>Group Stage </h3>
-      <div class="mx-5">
-        <BaseIcon name="angle-right" />
-      </div>
-    </div>
+    <slot />
   </div>
 </template>
 
@@ -42,10 +34,6 @@ export default {
   color: $white;
 }
 
-.justify-content {
-  justify-content: space-between;
-}
-
 .justify-content-center {
   justify-content: center;
 }
@@ -53,10 +41,6 @@ export default {
 .d-flex {
   display: flex;
   align-items: center;
-}
-
-.mx-5 {
-  margin: 0 16px;
 }
 
 .header-img {
@@ -68,25 +52,15 @@ h1 {
   color: $white;
 }
 
-h3 {
-  margin: ($spacer / 2);
-  color: $white;
-  font-weight: lighter;
-}
-
 img {
   margin-right: $spacer;
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-  .justify-content {
-    justify-content: center;
-  }
   .header-container {
     padding: $spacer * 2;
   }
-
   .header-img {
     width: 36px;
     height: 36px;
