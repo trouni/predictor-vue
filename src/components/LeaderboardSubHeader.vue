@@ -3,39 +3,42 @@
     <div class="mx-5">
       <BaseIcon
         name="angle-left"
-        v-if="availableLeft()"
-        @click.native="setSelectedLeaderboard(previousLeaderboard())"
+        v-if="availableLeft"
+        @click.native="setSelectedLeaderboard(previousLeaderboard)"
       />
     </div>
     <h3> {{ leaderboard.name }} </h3>
     <div class="mx-5">
       <BaseIcon
         name="angle-right"
-        v-if="availableRight()"
-        @click.native="setSelectedLeaderboard(nextLeaderboard())"
+        v-if="availableRight"
+        @click.native="setSelectedLeaderboard(nextLeaderboard)"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       loading: false,
-      leaderboards: this.$store.getters['leaderboards/leaderboards'],
-      leaderboard: this.$store.getters['leaderboards/currentLeaderboard'],
-      leaderboardId: this.$store.getters['leaderboards/currentLeaderboardId'],
     }
   },
   methods: {
     async setSelectedLeaderboard(id) {
-      this.leaderboardId = this.$store.dispatch(
-        'leaderboards/selectLeaderboard',
-        id
-      )
-      this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
+      this.$store.dispatch('leaderboards/selectLeaderboard', id)
     },
+  },
+
+  computed: {
+    ...mapGetters({
+      leaderboards: 'leaderboards/leaderboards',
+      leaderboard: 'leaderboards/currentLeaderboard',
+      leaderboardId: 'leaderboards/currentLeaderboardId',
+    }),
     availableLeft() {
       return (
         this.leaderboards.length !== 1 &&

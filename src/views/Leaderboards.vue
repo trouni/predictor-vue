@@ -13,6 +13,9 @@
 
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
+import { mapGetters } from 'vuex'
+// mapGetters is used to import Getters from your store into your component
+// There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
   components: { LeaderboardCard },
@@ -36,23 +39,29 @@ export default {
   data() {
     return {
       loading: false,
-      leaderboards: [],
-      leaderboard: this.$store.getters['leaderboards/currentLeaderboard'],
-      leaderboardId: this.$store.getters['leaderboards/currentLeaderboardId'],
+      // The state is managed from the store, we don't want to be reassigning these variables
+      // directly in here (defeats the purpose of the store). Instead of declaring them in data (state)
+      // for the component, we use computed properties.
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      // This syncs the store getters to the component as computed properties. You never have to reassign
+      // them within this component, any changes to them should happen at the store level.
+      leaderboards: 'leaderboards/leaderboards',
+      leaderboardId: 'leaderboards/currentLeaderboardId',
+      leaderboard: 'leaderboards/currentLeaderboard',
+    }),
   },
 
   methods: {
     async fetchLeaderboards() {
       this.loading = true
-      this.leaderboards = await this.$store.dispatch(
+      await this.$store.dispatch(
         'leaderboards/fetchLeaderboards',
         this.competitionId
       )
-      this.leaderboardId = this.$store.getters[
-        'leaderboards/currentLeaderboardId'
-      ]
-      this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
       this.loading = false
     },
   },
