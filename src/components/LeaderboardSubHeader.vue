@@ -39,9 +39,8 @@ export default {
   methods: {
     async setSelectedLeaderboard(id) {
       this.$store.dispatch('leaderboards/selectLeaderboard', id)
-      this.leaderboard = this.leaderboards.find(
-        leaderboard => leaderboard.id === id
-      )
+      this.leaderboardId = id
+      this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
     },
     availableLeft() {
       return (
