@@ -37,7 +37,7 @@ export default {
     return {
       loading: false,
       leaderboards: [],
-      leaderboard: null,
+      leaderboard: this.$store.getters['leaderboards/currentLeaderboard'],
       leaderboardId: this.$store.getters['leaderboards/currentLeaderboardId'],
     }
   },
