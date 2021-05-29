@@ -50,7 +50,6 @@ export default {
       // This syncs the store getters to the component as computed properties. You never have to reassign
       // them within this component, any changes to them should happen at the store level.
       leaderboards: 'leaderboards/leaderboards',
-      leaderboardId: 'leaderboards/currentLeaderboardId',
       leaderboard: 'leaderboards/currentLeaderboard',
     }),
   },
