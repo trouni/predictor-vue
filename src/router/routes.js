@@ -50,9 +50,6 @@ export default [
         props: route => ({
           competitionId: 1,
           password: route.params.password,
-          leaderboardId: parseInt(
-            store.getters['leaderboards/currentLeaderboard']
-          ),
         }),
         meta: {
           title: 'Leaderboards',
