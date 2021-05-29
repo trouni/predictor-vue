@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex ranking w-100 mt-1">
-    <div class="d-flex">
+    <div class="d-flex min-0">
       <div class="position w-50">
         <p>{{ ordinalize(position + 1) }}</p>
       </div>
@@ -64,6 +64,10 @@ export default {
   border-radius: 16px;
 }
 
+.min-0 {
+  min-width: 0;
+}
+
 .w-50 {
   width: 50px;
   text-align: center;
@@ -105,6 +109,9 @@ export default {
 .name {
   font-weight: lighter;
   padding-left: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .points {
