@@ -74,6 +74,12 @@ export const actions = {
     commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
     return leaderboardId
   },
+  joinLeaderboard({ commit }, password) {
+    return LeaderboardsRepository.joinLeaderboard(password).then(response => {
+      commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
+      return response.data
+    })
+  },
 }
 
 // ===
