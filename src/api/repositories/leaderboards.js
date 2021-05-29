@@ -5,7 +5,6 @@ export default {
     return Repository.get(`/competitions/${competitionId}/leaderboards`)
   },
   postLeaderboard(competitionId, leaderboardName) {
-    console.log(leaderboardName)
     return Repository.post(`/competitions/${competitionId}/leaderboards`, {
       leaderboard: { name: leaderboardName },
     })
