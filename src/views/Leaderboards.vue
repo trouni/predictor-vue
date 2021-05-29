@@ -1,5 +1,6 @@
 <template>
   <div>
+    <BaseLink :to="{ name: 'new_leaderboard' }"> ➕ </BaseLink>
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
