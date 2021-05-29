@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between px-2 pb-2 actions">
+    <div class="flex justify-between px-2 pb-2">
       <BaseLink :to="{ name: 'new_leaderboard' }">
         <BaseIcon name="plus" />
       </BaseLink>
@@ -69,12 +69,5 @@ export default {
 .placeholder-text {
   color: $purple;
   text-align: center;
-}
-.actions {
-  // color: $white;
-  // position: absolute;
-  // top: 0;
-  // right: 0;
-  // width: 100%;
 }
 </style>
