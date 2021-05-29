@@ -24,7 +24,7 @@ export default {
 
   computed: {
     highlight() {
-      return `border-4 border-badge-${this.status}`
+      return `border-4 border-prediction-${this.status}`
     },
   },
 }

@@ -1,7 +1,12 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
+  purge: {
+    content: ['./public/**/*.html', './src/**/*.vue'],
+    options: {
+      safelist: ['border-prediction-selected', 'border-prediction-default'],
+    },
+  },
   presets: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -26,7 +31,7 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
-      badge: {
+      prediction: {
         default: colors.coolGray,
         selected: '#3B82F6',
         correct: '#84CC16',
