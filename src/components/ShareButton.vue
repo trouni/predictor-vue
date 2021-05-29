@@ -54,7 +54,7 @@ export default {
   margin-bottom: 5px;
   margin-left: -80px;
   padding: 7px;
-  width: 160px;
+  width: 88px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;

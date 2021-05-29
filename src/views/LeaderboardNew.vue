@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     competitionId: {
@@ -34,16 +36,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      postLeaderboard: 'leaderboards/postLeaderboard',
+    }),
     async submit() {
       this.processingForm = true
       const formData = {
         competitionId: this.competitionId,
         name: this.name,
       }
-      this.leaderboardId = await this.$store.dispatch(
-        'leaderboards/postLeaderboard',
-        formData
-      )
+      await this.postLeaderboard(formData)
       this.processingForm = false
       this.$router.push(
         this.$route.query.redirectFrom || { name: 'leaderboards' }
