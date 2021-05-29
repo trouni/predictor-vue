@@ -30,6 +30,7 @@ export default {
     return {
       name: '',
       processingForm: false,
+      leaderboardId: nul,
     }
   },
   methods: {
@@ -39,7 +40,10 @@ export default {
         competitionId: this.competitionId,
         name: this.name,
       }
-      await this.$store.dispatch('leaderboards/postLeaderboard', formData)
+      this.leaderboardId = await this.$store.dispatch(
+        'leaderboards/postLeaderboard',
+        formData
+      )
       this.processingForm = false
       this.$router.push(
         this.$route.query.redirectFrom || { name: 'leaderboards' }

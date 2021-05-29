@@ -62,8 +62,7 @@ export const actions = {
     return LeaderboardsRepository.postLeaderboard(competitionId, name).then(
       response => {
         commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
-        console.log(response.data)
-        return response.data
+        return response.data.id
       }
     )
   },
