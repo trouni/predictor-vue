@@ -9,16 +9,33 @@ export const state = {
 }
 
 export const getters = {
-  currentLeaderboardId(state) {
-    return state.currentLeaderboardId
-  },
+  // Getters are like attribute readers. You should favor them over
+  // accessing the state directly when possible.
   leaderboards(state) {
-    return state.leaderboards
+    return state.leaderboards || []
   },
-  currentLeaderboard(state) {
-    return state.leaderboards.find(
-      leaderboard => leaderboard.id === state.currentLeaderboardId
+  currentLeaderboard(_, getters) {
+    return getters.leaderboards.find(
+      leaderboard => leaderboard.id === getters.currentLeaderboardId
     )
+  },
+  leaderboardsCount(_, getters) {
+    return getters.leaderboards.length
+  },
+  currentLeaderboardId(state, getters) {
+    if (getters.leaderboardsCount === 0) return null
+
+    return state.currentLeaderboardId || getters.leaderboards[0].id
+  },
+  previousLeaderboard(_, getters) {
+    return getters.leaderboards[
+      getters.leaderboards.indexOf(getters.currentLeaderboard) - 1
+    ]
+  },
+  nextLeaderboard(_, getters) {
+    return getters.leaderboards[
+      getters.leaderboards.indexOf(getters.currentLeaderboard) + 1
+    ]
   },
 }
 
@@ -28,7 +45,7 @@ export const mutations = {
     saveState('currentLeaderboardId', newValue)
   },
   SET_LEADERBOARDS(state, newValue) {
-    state.headers = newValue
+    state.leaderboards = newValue
     saveState('leaderboards', newValue)
   },
 }
