@@ -23,15 +23,18 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    if (response.status < 200 || response.status >= 300) {
-      console.warn(response)
-    }
+    if (response.status < 200 || response.status >= 300) console.warn(response)
+
+    // Seems like cached requests don't generate new tokens.
+    // Need to check first if a new access token has been provided.
+    if (response.headers['access-token'])
+      store.dispatch('auth/updateHeaders', response.headers)
     return response
   },
   error => {
-    if (store.getters['auth/loggedIn'] && error.response.status === 401) {
+    if (store.getters['auth/loggedIn'] && error.response.status === 401)
       store.dispatch('auth/logOut')
-    }
+
     console.warn(error)
     return Promise.reject(error)
   }
