@@ -11,11 +11,6 @@ export const state = {
 export const getters = {
   // Getters are like attribute readers. You should favor them over
   // accessing the state directly when possible.
-  currentLeaderboardId(state, getters) {
-    if (getters.leaderboards.length === 0) return null
-
-    return state.currentLeaderboardId || getters.leaderboards[0].id
-  },
   leaderboards(state) {
     return state.leaderboards || []
   },
@@ -23,6 +18,24 @@ export const getters = {
     return getters.leaderboards.find(
       leaderboard => leaderboard.id === getters.currentLeaderboardId
     )
+  },
+  leaderboardsCount(_, getters) {
+    return getters.leaderboards.length
+  },
+  currentLeaderboardId(state, getters) {
+    if (getters.leaderboardsCount === 0) return null
+
+    return state.currentLeaderboardId || getters.leaderboards[0].id
+  },
+  previousLeaderboard(_, getters) {
+    return getters.leaderboards[
+      getters.leaderboards.indexOf(getters.currentLeaderboard) - 1
+    ]
+  },
+  nextLeaderboard(_, getters) {
+    return getters.leaderboards[
+      getters.leaderboards.indexOf(getters.currentLeaderboard) + 1
+    ]
   },
 }
 

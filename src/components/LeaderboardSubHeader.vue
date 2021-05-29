@@ -3,16 +3,16 @@
     <div class="mx-5">
       <BaseIcon
         name="angle-left"
-        v-if="availableLeft"
-        @click.native="setSelectedLeaderboard(previousLeaderboard)"
+        v-if="previousLeaderboard"
+        @click.native="setSelectedLeaderboard(previousLeaderboard.id)"
       />
     </div>
     <h3> {{ leaderboard.name }} </h3>
     <div class="mx-5">
       <BaseIcon
         name="angle-right"
-        v-if="availableRight"
-        @click.native="setSelectedLeaderboard(nextLeaderboard)"
+        v-if="nextLeaderboard"
+        @click.native="setSelectedLeaderboard(nextLeaderboard.id)"
       />
     </div>
   </div>
@@ -35,30 +35,10 @@ export default {
 
   computed: {
     ...mapGetters({
-      leaderboards: 'leaderboards/leaderboards',
       leaderboard: 'leaderboards/currentLeaderboard',
-      leaderboardId: 'leaderboards/currentLeaderboardId',
+      previousLeaderboard: 'leaderboards/previousLeaderboard',
+      nextLeaderboard: 'leaderboards/nextLeaderboard',
     }),
-    availableLeft() {
-      return (
-        this.leaderboards.length !== 1 &&
-        this.leaderboards[0] !== this.leaderboard
-      )
-    },
-    availableRight() {
-      return (
-        this.leaderboards.length !== 1 &&
-        this.leaderboards[this.leaderboards.length - 1] !== this.leaderboard
-      )
-    },
-    previousLeaderboard() {
-      return this.leaderboards[this.leaderboards.indexOf(this.leaderboard) - 1]
-        .id
-    },
-    nextLeaderboard() {
-      return this.leaderboards[this.leaderboards.indexOf(this.leaderboard) + 1]
-        .id
-    },
   },
 }
 </script>
