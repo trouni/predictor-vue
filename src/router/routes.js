@@ -44,6 +44,23 @@ export default [
         },
       },
       {
+        path: '/join/:password',
+        name: 'join',
+        component: () => import('@/views/Leaderboards'),
+        meta: {
+          beforeResolve(routeTo, routeFrom, next) {
+            // If the user is already logged in
+            if (store.getters['auth/loggedIn']) {
+              // Redirect to the home page instead
+              next({ name: 'leaderboards' })
+            } else {
+              // Continue to the login page
+              next({ name: 'login' })
+            }
+          },
+        },
+      },
+      {
         path: '/competitions/:id',
         name: 'competition',
         component: () => import('@/views/Competition'),
