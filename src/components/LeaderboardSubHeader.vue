@@ -38,8 +38,10 @@ export default {
   },
   methods: {
     async setSelectedLeaderboard(id) {
-      this.$store.dispatch('leaderboards/selectLeaderboard', id)
-      this.leaderboardId = id
+      this.leaderboardId = this.$store.dispatch(
+        'leaderboards/selectLeaderboard',
+        id
+      )
       this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
     },
     availableLeft() {
