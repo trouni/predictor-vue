@@ -13,7 +13,7 @@
 
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
@@ -33,17 +33,12 @@ export default {
   },
 
   async mounted() {
-    this.fetchLeaderboards()
+    this.fetchLeaderboards(this.competitionId)
   },
 
-  data() {
-    return {
-      loading: false,
-      // The state is managed from the store, we don't want to be reassigning these variables
-      // directly in here (defeats the purpose of the store). Instead of declaring them in data (state)
-      // for the component, we use computed properties.
-    }
-  },
+  // The state is managed from the store, we don't want to be reassigning these variables
+  // directly in here (defeats the purpose of the store). Instead of declaring them in data (state)
+  // for the component, we use computed properties.
 
   computed: {
     ...mapGetters({
@@ -55,14 +50,9 @@ export default {
   },
 
   methods: {
-    async fetchLeaderboards() {
-      this.loading = true
-      await this.$store.dispatch(
-        'leaderboards/fetchLeaderboards',
-        this.competitionId
-      )
-      this.loading = false
-    },
+    ...mapActions({
+      fetchLeaderboards: 'leaderboards/fetchLeaderboards',
+    }),
   },
 }
 </script>

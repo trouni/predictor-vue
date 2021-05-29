@@ -4,7 +4,7 @@
       <BaseIcon
         name="angle-left"
         v-if="previousLeaderboard"
-        @click.native="setSelectedLeaderboard(previousLeaderboard.id)"
+        @click.native="selectLeaderboard(previousLeaderboard.id)"
       />
     </div>
     <h3> {{ leaderboard.name }} </h3>
@@ -12,25 +12,20 @@
       <BaseIcon
         name="angle-right"
         v-if="nextLeaderboard"
-        @click.native="setSelectedLeaderboard(nextLeaderboard.id)"
+        @click.native="selectLeaderboard(nextLeaderboard.id)"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
-    return {
-      loading: false,
-    }
-  },
   methods: {
-    async setSelectedLeaderboard(id) {
-      this.$store.dispatch('leaderboards/selectLeaderboard', id)
-    },
+    ...mapActions({
+      selectLeaderboard: 'leaderboards/selectLeaderboard',
+    }),
   },
 
   computed: {
