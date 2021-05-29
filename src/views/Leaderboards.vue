@@ -1,7 +1,11 @@
 <template>
   <div>
-    <BaseLink :to="{ name: 'new_leaderboard' }"> ➕ </BaseLink>
-    <ShareButton :password="leaderboard.password" />
+    <div class="flex justify-between px-2 pb-2 actions">
+      <BaseLink :to="{ name: 'new_leaderboard' }">
+        <BaseIcon name="plus" />
+      </BaseLink>
+      <ShareButton :password="leaderboard.password" />
+    </div>
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
@@ -67,5 +71,12 @@ export default {
 .placeholder-text {
   color: $purple;
   text-align: center;
+}
+.actions {
+  // color: $white;
+  // position: absolute;
+  // top: 0;
+  // right: 0;
+  // width: 100%;
 }
 </style>
