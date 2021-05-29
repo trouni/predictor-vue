@@ -49,6 +49,9 @@ export default {
         'leaderboards/fetchLeaderboards',
         this.competitionId
       )
+      this.leaderboardId = this.$store.getters[
+        'leaderboards/currentLeaderboardId'
+      ]
       this.leaderboard = this.$store.getters['leaderboards/currentLeaderboard']
       this.loading = false
     },
