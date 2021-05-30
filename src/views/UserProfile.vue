@@ -4,7 +4,7 @@
       <p>Email</p>
       <!-- Not sure how to give a default value -->
       <BaseInputText
-        v-model="email"
+        v-model="user.email"
         label="Email"
         name="email"
         type="text"
@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       name: '',
+      email: '',
       loading: false,
       processingForm: false,
       user: null,
@@ -77,6 +78,7 @@ export default {
         name: this.name,
       }
       this.user = await this.patchUser(formData)
+      this.name = this.user.name
       this.processingForm = false
       // show success?
     },
