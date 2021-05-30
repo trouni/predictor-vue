@@ -9,9 +9,7 @@
       <BaseButton @click="register = true">Register</BaseButton>
     </p>
     <div>
-      <h3>
-        {{ register ? 'Sign up' : 'Sign in' }}
-      </h3>
+      <p>Email</p>
       <p v-if="authError" v-html="authError"></p>
       <BaseInputText
         v-model="email"
@@ -21,7 +19,7 @@
         autofocus
         @keypress.enter="submit"
       />
-
+      <p>Password</p>
       <BaseInputText
         id="password"
         v-model="password"
@@ -97,4 +95,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '@/styles';
+p {
+  color: $purple;
+}
+</style>
