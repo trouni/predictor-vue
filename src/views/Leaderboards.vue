@@ -1,11 +1,5 @@
 <template>
   <div>
-    <div class="flex justify-between px-2 pb-2">
-      <BaseLink :to="{ name: 'new_leaderboard' }">
-        <BaseIcon name="plus" />
-      </BaseLink>
-      <ShareButton :password="leaderboard.password" />
-    </div>
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
@@ -14,18 +8,19 @@
     <p v-else class="placeholder-text">
       Join or create a leaderboard to get started!
     </p>
+    <LeaderboardActions :leaderboard="leaderboard" />
   </div>
 </template>
 
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
-import ShareButton from '@/components/ShareButton'
+import LeaderboardActions from '@/components/LeaderboardActions'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
-  components: { LeaderboardCard, ShareButton },
+  components: { LeaderboardCard, LeaderboardActions },
 
   props: {
     competitionId: {

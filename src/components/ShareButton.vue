@@ -1,6 +1,10 @@
 <template>
-  <div class="visibility-hidden tooltip" data-tooltip="Copied!">
-    <BaseIcon name="share" @click.native="copy($event)" />
+  <div
+    class="visibility-hidden tooltip"
+    data-tooltip="Copied!"
+    @click="copy($event)"
+  >
+    <span class="mr-1">Share </span><BaseIcon name="share" />
   </div>
 </template>
 
@@ -15,9 +19,7 @@ export default {
   },
   methods: {
     copy(event) {
-      event.target.parentElement.parentElement.classList.remove(
-        'visibility-hidden'
-      )
+      event.target.parentElement.classList.remove('visibility-hidden')
       setTimeout(this.hidePopOver, 3000)
       const text = window.location.origin + '/join/' + this.password
       const elem = document.createElement('textarea')
@@ -52,9 +54,9 @@ export default {
   bottom: 150%;
   left: 50%;
   margin-bottom: 5px;
-  margin-left: -80px;
+  margin-left: -40px;
   padding: 7px;
-  width: 88px;
+  width: 80px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
