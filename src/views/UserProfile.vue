@@ -1,6 +1,18 @@
 <template>
   <div>
     <div>
+      <p>Email</p>
+      <!-- Not sure how to give a default value -->
+      <BaseInputText
+        v-model="name"
+        label="Name"
+        name="name"
+        type="text"
+        disabled="true"
+        :value="user.email"
+        autofocus
+        @keypress.enter="submit"
+      />
       <p>Display Name</p>
       <div class="flex">
         <BaseInputText
