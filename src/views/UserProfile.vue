@@ -1,38 +1,42 @@
 <template>
   <div>
-    <div>
-      <p>Email</p>
-      <!-- Not sure how to give a default value -->
-      <BaseInputText
-        v-model="user.email"
-        label="Email"
-        name="email"
-        type="text"
-        disabled="true"
-        :value="user.email"
-        autofocus
-        @keypress.enter="submit"
-      />
-      <p>Display Name</p>
-      <div class="flex">
+    <div class="flex flex-col justify-center items-center">
+      <div class="w-full md:w-6/12">
+        <p>Email</p>
+        <!-- Not sure how to give a default value -->
         <BaseInputText
-          v-model="name"
-          label="Name"
-          name="name"
+          v-model="user.email"
+          label="Email"
+          name="email"
           type="text"
+          disabled="true"
+          :value="user.email"
           autofocus
           @keypress.enter="submit"
         />
-        <div>
-          <BaseButton :disabled="processingForm" @click="submit">
-            Update
-          </BaseButton>
+        <p>Display Name</p>
+        <div class="flex">
+          <BaseInputText
+            v-model="name"
+            label="Name"
+            name="name"
+            type="text"
+            autofocus
+            @keypress.enter="submit"
+          />
+          <div>
+            <BaseButton :disabled="processingForm" @click="submit">
+              Update
+            </BaseButton>
+          </div>
+        </div>
+        <div class="flex items-start w-full">
+          <BaseLink :to="{ name: 'logout' }">
+            <p>Log out <BaseIcon name="sign-out-alt" /></p>
+          </BaseLink>
         </div>
       </div>
     </div>
-    <BaseLink :to="{ name: 'logout' }">
-      <p>Log out <BaseIcon name="sign-out-alt" /></p>
-    </BaseLink>
   </div>
 </template>
 
