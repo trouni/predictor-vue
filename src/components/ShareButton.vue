@@ -40,7 +40,6 @@ export default {
 @import '@/styles';
 .tooltip {
   position: relative;
-  z-index: 2;
   cursor: pointer;
 }
 .tooltip:before,

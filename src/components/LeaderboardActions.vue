@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between px-2 pb-2">
+  <div class="flex justify-between p-2">
     <LeaderboardAction
       v-for="(action, index) in actions"
       :key="index"
