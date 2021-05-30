@@ -1,19 +1,21 @@
 <template>
   <div>
     <div>
-      <p>Name</p>
-      <BaseInputText
-        v-model="name"
-        label="Name"
-        name="name"
-        type="text"
-        autofocus
-        @keypress.enter="submit"
-      />
-      <div>
-        <BaseButton :disabled="processingForm" @click="submit">
-          Create
-        </BaseButton>
+      <p>Display Name</p>
+      <div class="flex">
+        <BaseInputText
+          v-model="name"
+          label="Name"
+          name="name"
+          type="text"
+          autofocus
+          @keypress.enter="submit"
+        />
+        <div>
+          <BaseButton :disabled="processingForm" @click="submit">
+            Update
+          </BaseButton>
+        </div>
       </div>
     </div>
     <BaseLink :to="{ name: 'logout' }">
@@ -47,7 +49,7 @@ export default {
 
   methods: {
     ...mapActions({
-      postLeaderboard: 'users/patchUser',
+      patchUser: 'users/patchUser',
     }),
     async fetchUser() {
       this.loading = true
@@ -62,9 +64,9 @@ export default {
         userId: this.user.id,
         name: this.name,
       }
-      await this.patchUser(formData)
+      this.user = await this.patchUser(formData)
       this.processingForm = false
-      this.$router.push(this.$route.query.redirectFrom || { name: 'profile' })
+      // show success?
     },
   },
 }
