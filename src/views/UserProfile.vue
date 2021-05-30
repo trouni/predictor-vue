@@ -4,9 +4,9 @@
       <p>Email</p>
       <!-- Not sure how to give a default value -->
       <BaseInputText
-        v-model="name"
-        label="Name"
-        name="name"
+        v-model="email"
+        label="Email"
+        name="email"
         type="text"
         disabled="true"
         :value="user.email"
