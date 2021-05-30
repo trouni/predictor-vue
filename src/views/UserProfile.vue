@@ -38,6 +38,7 @@ export default {
 
   data() {
     return {
+      name: '',
       loading: false,
       processingForm: false,
       user: null,
@@ -46,7 +47,7 @@ export default {
 
   methods: {
     ...mapActions({
-      postLeaderboard: 'leaderboards/postLeaderboard',
+      postLeaderboard: 'users/patchUser',
     }),
     async fetchUser() {
       this.loading = true
@@ -58,14 +59,12 @@ export default {
     async submit() {
       this.processingForm = true
       const formData = {
-        competitionId: this.competitionId,
+        userId: this.user.id,
         name: this.name,
       }
-      await this.postLeaderboard(formData)
+      await this.patchUser(formData)
       this.processingForm = false
-      this.$router.push(
-        this.$route.query.redirectFrom || { name: 'leaderboards' }
-      )
+      this.$router.push(this.$route.query.redirectFrom || { name: 'profile' })
     },
   },
 }
