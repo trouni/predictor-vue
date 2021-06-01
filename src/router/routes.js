@@ -31,6 +31,8 @@ export default [
         name: 'login',
         component: () => import('@/views/Login'),
         meta: {
+          title: 'Registration',
+          img: 'player.png',
           beforeResolve(routeTo, routeFrom, next) {
             // If the user is already logged in
             if (store.getters['auth/loggedIn']) {
