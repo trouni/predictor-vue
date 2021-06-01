@@ -1,10 +1,10 @@
 <template>
   <div class="action-pill">
-    <BaseLink :to="{ name: path }" v-if="path">
+    <BaseLink v-if="path" :to="{ name: path }">
       <span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
     </BaseLink>
 
-    <ShareButton :password="leaderboard.password" v-else />
+    <ShareButton v-else :password="leaderboard.password" />
   </div>
 </template>
 
