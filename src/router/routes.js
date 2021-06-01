@@ -46,27 +46,14 @@ export default [
       {
         path: '/join/:password',
         name: 'join',
-        component: () => import('@/views/Leaderboards'),
-        props: route => ({
-          competitionId: 1,
-          password: route.params.password,
-        }),
         meta: {
-          title: 'Leaderboards',
-          img: 'trophy.png',
-          subHeader: 'LeaderboardSubHeader',
-          beforeResolve(routeTo, routeFrom, next) {
-            if (store.getters['auth/loggedIn']) {
-              console.log(routeTo.params)
-              // this doesn't work so moved it to "beforeRouteEnter"
-              this.$store.dispatch(
-                'leaderboards/joinLeaderboard',
-                routeTo.params
-              )
-              next({ name: 'leaderboards', params: { competitionId: 1 } })
-            } else {
-              next({ name: 'login' })
-            }
+          authRequired: true, // Router will check auth and redirect here after login
+          async beforeResolve(routeTo, _, next) {
+            await store.dispatch(
+              'leaderboards/joinLeaderboard',
+              routeTo.params.password
+            )
+            next({ name: 'leaderboards', params: { id: 1 } })
           },
         },
       },
