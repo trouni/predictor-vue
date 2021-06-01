@@ -7,7 +7,7 @@
         @click.native="selectLeaderboard(previousLeaderboard.id)"
       />
     </div>
-    <h3> {{ leaderboard.name }} </h3>
+    <h3 v-if="leaderboard"> {{ leaderboard.name }} </h3>
     <div class="mx-5">
       <BaseIcon
         name="angle-right"

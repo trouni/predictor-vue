@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <TopNav />
-    <Header :title="$route.meta.title" :img="$route.meta.img">
-      <component :is="$route.meta.subHeader" />
+    <Header :title="title" :img="img">
+      <component v-if="subHeader" :is="subHeader" />
     </Header>
     <main id="wrapper-main">
       <div class="p-4">
@@ -21,11 +21,20 @@ import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 import MatchesSubHeader from '@/components/MatchesSubHeader'
 
 export default {
-  components: { Header, FooterNav, TopNav, LeaderboardSubHeader, MatchesSubHeader },
+  components: {
+    Header,
+    FooterNav,
+    TopNav,
+    LeaderboardSubHeader,
+    MatchesSubHeader,
+  },
   data() {
     return {
       leaderboards: [],
       leaderboard: null,
+      title: this.$route.meta.title,
+      img: this.$route.meta.img,
+      subHeader: this.$route.meta.subHeader,
     }
   },
 }
