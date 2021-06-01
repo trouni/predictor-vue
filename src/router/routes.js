@@ -103,8 +103,8 @@ export default [
         name: 'matches',
         component: () => import('@/views/Matches'),
         props: route => ({
-          competitionId: parseInt(route.query.competitionId),
-          userId: parseInt(route.query.userId),
+          competitionId: parseInt(route.query.competitionId) || undefined,
+          userId: parseInt(route.query.userId) || undefined,
         }),
         meta: {
           authRequired: true,
