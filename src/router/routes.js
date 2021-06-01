@@ -44,6 +44,20 @@ export default [
         },
       },
       {
+        path: '/join/:password',
+        name: 'join',
+        meta: {
+          authRequired: true, // Router will check auth and redirect here after login
+          async beforeResolve(routeTo, _, next) {
+            await store.dispatch(
+              'leaderboards/joinLeaderboard',
+              routeTo.params.password
+            )
+            next({ name: 'leaderboards', params: { id: 1 } })
+          },
+        },
+      },
+      {
         path: '/competitions/:id',
         name: 'competition',
         component: () => import('@/views/Competition'),

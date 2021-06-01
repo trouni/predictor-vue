@@ -2,11 +2,12 @@
   <div class="header-container">
     <div class="d-flex justify-content-center">
       <img
+        v-if="img"
         alt="football graphic"
         :src="require('../assets/' + img)"
         class="header-img"
       />
-      <h1> {{ title }}</h1>
+      <h1 v-if="title"> {{ title }}</h1>
     </div>
     <slot />
   </div>
@@ -17,11 +18,11 @@ export default {
   props: {
     title: {
       type: String,
-      required: true,
+      required: false,
     },
     img: {
       type: String,
-      required: true,
+      required: false,
     },
   },
 }

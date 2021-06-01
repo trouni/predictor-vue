@@ -54,6 +54,7 @@ export default {
   methods: {
     ...mapActions({
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
+      joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
   },
 }

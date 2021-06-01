@@ -12,4 +12,7 @@ export default {
   deleteLeaderboard(leaderboardId) {
     return Repository.delete(`/leaderboards/${leaderboardId}`)
   },
+  joinLeaderboard(password) {
+    return Repository.get(`/join/${password}`)
+  },
 }

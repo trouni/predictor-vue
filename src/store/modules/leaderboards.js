@@ -51,18 +51,12 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchLeaderboards({ commit }, competitionId) {
+  fetchLeaderboards({ commit, getters }, competitionId) {
     return LeaderboardsRepository.getLeaderboards(competitionId).then(
       response => {
         commit('SET_LEADERBOARDS', response.data)
-        // check if deleted board is set as selected or non existant
-        if (
-          (window.localStorage.currentLeaderboardId === undefined &&
-            response.data.length > 0) ||
-          !JSON.parse(window.localStorage.leaderboards)
-            .map(l => l.id)
-            .includes(parseInt(window.localStorage.currentLeaderboardId))
-        ) {
+        // check if current board exists
+        if (!getters.currentLeaderboard && response.data.length > 0) {
           commit('SET_CURRENT_LEADERBOARD_ID', response.data[0].id)
         }
         return response.data
@@ -74,7 +68,12 @@ export const actions = {
     commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
     return leaderboardId
   },
-
+  joinLeaderboard({ commit }, password) {
+    return LeaderboardsRepository.joinLeaderboard(password).then(response => {
+      commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
+      return response.data
+    })
+  },
   postLeaderboard({ commit }, { competitionId, name } = {}) {
     return LeaderboardsRepository.postLeaderboard(competitionId, name).then(
       response => {
