@@ -64,8 +64,9 @@ export const actions = {
     )
   },
 
-  selectLeaderboard({ commit }, leaderboardId) {
-    commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
+  selectLeaderboard({ commit, getters }, leaderboardId) {
+    if (getters.leaderboards.find(l => l.id === leaderboardId))
+      commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
     return leaderboardId
   },
   joinLeaderboard({ commit }, password) {

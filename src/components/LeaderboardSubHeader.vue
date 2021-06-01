@@ -22,6 +22,15 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  mounted() {
+    window.addEventListener('keyup', e => {
+      if (e.key === 'ArrowLeft')
+        this.selectLeaderboard(this.previousLeaderboard?.id)
+      else if (e.key === 'ArrowRight')
+        this.selectLeaderboard(this.nextLeaderboard?.id)
+    })
+  },
+
   methods: {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
