@@ -25,7 +25,7 @@ export default {
   props: {
     competitionId: {
       type: Number,
-      default: null,
+      default: 1,
       required: false,
     },
     userId: {
