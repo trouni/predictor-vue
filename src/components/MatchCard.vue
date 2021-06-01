@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition duration-300',
+      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300',
       borderStyle,
     ]"
   >
@@ -117,14 +117,14 @@ export default {
       if (this.match.status === 'finished') {
         // Game finished - Prediction is either right or wrong/missing
         return this.correctPrediction
-          ? 'border-6 border-prediction-correct border-opacity-20'
-          : 'border-6 border-prediction-wrong border-opacity-20'
+          ? 'border-prediction-correct border-opacity-20'
+          : 'border-prediction-wrong border-opacity-20'
       } else if (this.match.status === 'upcoming' && !this.madePrediction) {
         // Game upcoming and no prediction made
-        return 'border-6 border-prediction-default'
+        return 'border-prediction-default'
       } else {
         // Game upcoming and prediction already made
-        return null
+        return 'border-white'
       }
     },
   },
