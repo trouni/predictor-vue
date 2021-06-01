@@ -5,7 +5,7 @@
       <component :is="$route.meta.subHeader" />
     </Header>
     <main id="wrapper-main">
-      <div class="p-4">
+      <div class="p-4 pb-12">
         <RouterView :key="$route.fullPath"></RouterView>
       </div>
     </main>
@@ -21,7 +21,13 @@ import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 import MatchesSubHeader from '@/components/MatchesSubHeader'
 
 export default {
-  components: { Header, FooterNav, TopNav, LeaderboardSubHeader, MatchesSubHeader },
+  components: {
+    Header,
+    FooterNav,
+    TopNav,
+    LeaderboardSubHeader,
+    MatchesSubHeader,
+  },
   data() {
     return {
       leaderboards: [],
