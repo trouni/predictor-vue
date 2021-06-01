@@ -8,17 +8,19 @@
     <p v-else class="placeholder-text">
       Join or create a leaderboard to get started!
     </p>
+    <LeaderboardActions :leaderboard="leaderboard" />
   </div>
 </template>
 
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
+import LeaderboardActions from '@/components/LeaderboardActions'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
-  components: { LeaderboardCard },
+  components: { LeaderboardCard, LeaderboardActions },
 
   props: {
     competitionId: {

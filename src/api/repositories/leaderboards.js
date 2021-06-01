@@ -4,11 +4,10 @@ export default {
   getLeaderboards(competitionId) {
     return Repository.get(`/competitions/${competitionId}/leaderboards`)
   },
-  postLeaderboard(competitionId, leaderboard) {
-    return Repository.post(
-      `/competitions/${competitionId}/leaderboards`,
-      leaderboard
-    )
+  postLeaderboard(competitionId, leaderboardName) {
+    return Repository.post(`/competitions/${competitionId}/leaderboards`, {
+      leaderboard: { name: leaderboardName },
+    })
   },
   deleteLeaderboard(leaderboardId) {
     return Repository.delete(`/leaderboards/${leaderboardId}`)

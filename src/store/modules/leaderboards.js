@@ -74,6 +74,14 @@ export const actions = {
       return response.data
     })
   },
+  postLeaderboard({ commit }, { competitionId, name } = {}) {
+    return LeaderboardsRepository.postLeaderboard(competitionId, name).then(
+      response => {
+        commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
+        return response.data.id
+      }
+    )
+  },
 }
 
 // ===
