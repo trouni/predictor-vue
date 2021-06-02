@@ -63,7 +63,8 @@ export default {
       this.setPrediction(choice)
       setTimeout(() => {
         this.choice = ''
-        this.statusMatch = this.currentMatch
+        if (this.currentMatch) this.statusMatch = this.currentMatch
+        else this.$router.push({ name: 'matches' })
       }, 1000)
     },
     async setPrediction(choice) {

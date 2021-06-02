@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="flex justify-center">
-      <BaseButton class="uppercase text-center m-5">
+      <BaseButton
+        v-if="missingPredictions.length"
+        class="uppercase text-center m-5"
+      >
         <BaseLink :to="{ name: 'predictions' }" :params="{ id: 1 }">
           Make your predictions
         </BaseLink>
