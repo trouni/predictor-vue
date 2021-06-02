@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PredictionSwiper :cards="matches" />
+    <PredictionSwiper :matches="matches" />
   </div>
 </template>
 

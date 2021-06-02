@@ -1,16 +1,20 @@
 <template>
   <div
-    class="bg-white rounded-2xl absolute duration-500 overflow-hidden cursor-grab flex flex-col m-5 border-6 border-white shadow-2xl"
+    class="bg-white md:w-3/5 m-3 absolute rounded-2xl duration-500 overflow-hidden flex border-6 border-white shadow-2xl"
     :style="style"
   >
     <img
-      src="https://raw.githubusercontent.com/joielechong/iso-country-flags-svg-collection/master/svg/country-4x3/us.svg"
-      class="pointer-events-none w-full h-1/2 object-cover team-home"
+      :src="match.teamHome.flagUrl"
+      class="pointer-events-none w-40 h-40 object-cover mr-2"
     />
     <img
-      src="https://raw.githubusercontent.com/joielechong/iso-country-flags-svg-collection/master/svg/country-4x3/cn.svg"
-      class="pointer-events-none w-full h-1/2 object-cover team-away"
+      :src="match.teamAway.flagUrl"
+      class="pointer-events-none w-40 h-40 object-cover"
     />
+    <p
+      class="absolute top-1/2 left-1/2 text-sm shadow-lg border bg-white rounded transform -translate-x-1/2 -translate-y-1/2 rounded-full h-10 w-10 flex items-center justify-center font-light"
+      >VS</p
+    >
   </div>
 </template>
 
@@ -19,8 +23,12 @@ import Hammer from 'hammerjs'
 
 export default {
   props: {
-    card: Object,
+    match: Object,
     index: Number,
+    active: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   mounted() {
@@ -33,6 +41,11 @@ export default {
     rotation() {
       return this.deltaX * 0.01 * (this.deltaY * 0.02)
     },
+    cursor() {
+      if (this.moving) return 'grabbing'
+      else if (!this.active) return 'grab'
+      else return 'default'
+    },
     style() {
       return {
         zIndex: 100 - this.index,
@@ -42,6 +55,7 @@ export default {
                     translateY(-${15 * this.index}px)`,
         opacity: (10 - this.index) / 10,
         'transition-property': this.moving ? 'none' : 'all',
+        cursor: this.cursor,
         'will-change': 'transform',
       }
     },
@@ -52,9 +66,11 @@ export default {
         Math.abs(this.deltaY) < this.submitThreshold * 0.7
       )
         choice = ''
-      else if (this.deltaY > Math.abs(this.deltaX)) choice = 'draw'
+      else if (Math.abs(this.deltaY) > Math.abs(this.deltaX) * 1.5)
+        choice = 'draw'
       else if (this.deltaX > this.submitThreshold * 0.7) choice = 'away'
       else if (this.deltaX < -this.submitThreshold * 0.7) choice = 'home'
+      this.$emit('input', choice)
       return choice
     },
   },
@@ -70,13 +86,17 @@ export default {
 
   methods: {
     dragCard(e) {
+      if (!this.active) return
+
       this.moving = true
       this.deltaX = e.deltaX
       this.deltaY = e.deltaY
 
-      this.$emit('choice', this.choice)
+      this.$emit('input', this.choice)
     },
     dropCard(e) {
+      if (!this.active) return
+
       this.moving = false
       if (
         Math.abs(e.deltaY) < this.submitThreshold &&
@@ -84,7 +104,7 @@ export default {
       ) {
         this.deltaX = 0
         this.deltaY = 0
-        this.$emit('choice', '')
+        this.$emit('input', '')
       } else {
         this.deltaX = Math.abs(e.velocityX + 0.5) * this.deltaX * 10
         this.deltaY = Math.abs(e.velocityY + 0.5) * this.deltaY * 10
@@ -94,18 +114,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-img.team-home {
-  // clip-path: polygon(0 0, 0 100%, 100% calc(100% - 1rem), 100% 0);
-}
-
-img.team-away {
-  // clip-path: polygon(0 1rem, 0 100%, 100% 100%, 100% 0);
-}
-
-.moving {
-  cursor: grabbing;
-  transition: none;
-}
-</style>
