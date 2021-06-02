@@ -1,19 +1,14 @@
 <template>
   <div>
-    <MatchCard
-      v-for="match in matches"
-      :key="match.id"
-      :match="match"
-      :selectable="match.status == 'upcoming'"
-    />
+    <PredictionSwiper :cards="matches" />
   </div>
 </template>
 
 <script>
-import MatchCard from '@/components/MatchCard'
+import PredictionSwiper from '@/components/PredictionSwiper'
 
 export default {
-  components: { MatchCard },
+  components: { PredictionSwiper },
 
   props: {
     competitionId: {

@@ -27,6 +27,7 @@ export default {
 }
 body {
   background: $color-body-bg;
+  overscroll-behavior: none;
 }
 #app {
   @extend %typography-small;

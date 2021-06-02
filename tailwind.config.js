@@ -205,6 +205,7 @@ module.exports = {
       text: 'text',
       move: 'move',
       help: 'help',
+      grab: 'grab',
       'not-allowed': 'not-allowed',
     },
     divideColor: theme => theme('borderColor'),
@@ -455,6 +456,8 @@ module.exports = {
       '4/6': '66.666667%',
       '5/6': '83.333333%',
       full: '100%',
+      'screen-1/2': '50vh',
+      'screen-1/3': '33.333333vh',
       screen: '100vh',
     }),
     inset: (theme, { negative }) => ({
