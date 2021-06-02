@@ -1,10 +1,10 @@
 <template>
-  <div class="content">
+  <div class="content h-screen">
     <TopNav />
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" />
     </Header>
-    <main id="wrapper-main">
+    <main id="wrapper-main" class="overflow-y-auto">
       <div class="p-4 pb-12">
         <RouterView :key="$route.fullPath"></RouterView>
       </div>
