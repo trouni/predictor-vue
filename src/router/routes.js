@@ -86,6 +86,19 @@ export default [
             },
           },
           {
+            path: 'predictions',
+            name: 'predictions',
+            component: () => import('@/views/PredictionsNew'),
+            props: route => ({
+              competitionId: parseInt(route.params.id),
+            }),
+            meta: {
+              authRequired: true,
+              title: 'Predictions',
+              img: 'trophy.png',
+            },
+          },
+          {
             path: 'leaderboards/new',
             name: 'new_leaderboard',
             component: () => import('@/views/LeaderboardNew'),
