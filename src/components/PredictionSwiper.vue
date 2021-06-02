@@ -60,10 +60,19 @@ export default {
       this.$set(this.matches[matchIndex], 'choice', choice)
       this.choice = choice
       this.$set(this.matches[matchIndex], 'removed', true)
+      this.setPrediction(choice)
       setTimeout(() => {
         this.choice = ''
         this.statusMatch = this.currentMatch
       }, 1000)
+    },
+    async setPrediction(choice) {
+      this.loading = true
+      await this.$store.dispatch(`matches/setPrediction`, {
+        match: this.currentMatch,
+        choice,
+      })
+      this.loading = false
     },
   },
 }

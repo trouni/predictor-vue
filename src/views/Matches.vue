@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="flex justify-center">
+      <BaseButton class="uppercase text-center m-5">
+        <BaseLink :to="{ name: 'predictions' }" :params="{ id: 1 }">
+          Make your predictions
+        </BaseLink>
+      </BaseButton>
+    </div>
     <MatchesGrouping
       v-for="group in groupedMatches"
       :key="group.title"
@@ -39,14 +46,13 @@ export default {
   },
 
   computed: {
+    missingPredictions() {
+      return this.matches.filter(
+        m => !('prediction' in m) && m.status === 'upcoming'
+      )
+    },
     groupedMatches() {
       return [
-        {
-          title: 'Missing Prediction',
-          matches: this.matches.filter(
-            m => !('prediction' in m) && m.status === 'upcoming'
-          ),
-        },
         {
           title: 'Ongoing Matches',
           matches: this.matches.filter(m => m.status === 'ongoing'),
