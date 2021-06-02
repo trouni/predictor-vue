@@ -1,19 +1,19 @@
 <template>
   <div>
-    <MatchCard
-      v-for="match in matches"
-      :key="match.id"
-      :match="match"
-      :selectable="match.status == 'upcoming'"
+    <MatchesGrouping
+      v-for="group in groupedMatches"
+      :key="group.title"
+      :title="group.title"
+      :matches="group.matches"
     />
   </div>
 </template>
 
 <script>
-import MatchCard from '@/components/MatchCard'
+import MatchesGrouping from '@/components/MatchesGrouping'
 
 export default {
-  components: { MatchCard },
+  components: { MatchesGrouping },
 
   props: {
     competitionId: {
@@ -36,6 +36,31 @@ export default {
       loading: false,
       matches: [],
     }
+  },
+
+  computed: {
+    groupedMatches() {
+      return [
+        {
+          title: 'Missing Prediction',
+          matches: this.matches.filter(
+            m => !('prediction' in m) && m.status === 'upcoming'
+          ),
+        },
+        {
+          title: 'Ongoing Matches',
+          matches: this.matches.filter(m => m.status === 'ongoing'),
+        },
+        {
+          title: 'Upcoming Matches',
+          matches: this.matches.filter(m => m.status === 'upcoming'),
+        },
+        {
+          title: 'Past Matches',
+          matches: this.matches.filter(m => m.status === 'finished'),
+        },
+      ]
+    },
   },
 
   methods: {
