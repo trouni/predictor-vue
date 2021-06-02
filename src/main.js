@@ -7,6 +7,8 @@ import App from '@/App.vue'
 // Globally register all `_base`-prefixed components
 import '@/components/_globals'
 
+import './registerServiceWorker'
+
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
