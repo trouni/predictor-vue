@@ -29,7 +29,7 @@ module.exports = {
       green: colors.emerald,
       blue: colors.blue,
       indigo: colors.indigo,
-      purple: colors.violet,
+      purple: '#3e3b7d',
       pink: colors.pink,
       prediction: {
         default: colors.coolGray,
@@ -222,6 +222,7 @@ module.exports = {
       xl: ['0 20px 13px rgba(0, 0, 0, 0.03)', '0 8px 5px rgba(0, 0, 0, 0.08)'],
       '2xl': '0 25px 25px rgba(0, 0, 0, 0.15)',
       none: '0 0 #0000',
+      lightning: ['0px 0px 8px yellow', '0px 0px 13px red'],
     },
     fill: { current: 'currentColor' },
     grayscale: {

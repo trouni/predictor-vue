@@ -1,20 +1,27 @@
 <template>
   <div
-    class="bg-white md:w-3/5 m-3 absolute rounded-2xl duration-500 overflow-hidden flex border-6 border-white shadow-2xl"
+    class="bg-white w-11/12 md:w-4/5 lg:w-3/4 max-w-5xl absolute rounded-2xl duration-500 overflow-hidden flex border-6 border-white shadow-2xl"
     :style="style"
   >
-    <img
-      :src="match.teamHome.flagUrl"
-      class="pointer-events-none w-40 h-40 object-cover mr-2"
-    />
-    <img
-      :src="match.teamAway.flagUrl"
-      class="pointer-events-none w-40 h-40 object-cover"
-    />
-    <p
-      class="absolute top-1/2 left-1/2 text-sm shadow-lg border bg-white rounded transform -translate-x-1/2 -translate-y-1/2 rounded-full h-10 w-10 flex items-center justify-center font-light"
-      >VS</p
-    >
+    <div class="relative max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80 w-full">
+      <img
+        :src="match.teamHome.flagUrl"
+        class="left-team-clip transform scale-110 absolute left-0 pointer-events-none w-1/2 h-full object-cover pr-1"
+      />
+      <img
+        :src="match.teamAway.flagUrl"
+        class="right-team-clip transform scale-110 absolute right-0 pointer-events-none w-1/2 h-full object-cover pl-1"
+      />
+      <img
+        src="@/assets/lightning.png"
+        class="absolute h-full left-1/2 w-20 transform -translate-x-1/2 drop-shadow-lightning filter"
+      />
+      <!-- <p
+        class="text-glow text-purple absolute top-1/2 left-1/2 transform -translate-x-1/2 text-2xl md:text-3xl lg:text-4xl xl:text-5xl filter drop-shadow-lg -translate-y-1/2 h-10 w-10 flex items-center justify-center font-bold"
+      >
+        V.
+      </p> -->
+    </div>
   </div>
 </template>
 
@@ -114,3 +121,31 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.left-team-clip {
+  clip-path: polygon(
+    0 0,
+    0 100%,
+    calc(100% - 2.5rem) 100%,
+    calc(100% - 0.5rem) 65%,
+    calc(100% - 2.5rem) 71%,
+    calc(100% + 1rem) 29%,
+    calc(100% - 1rem) 34%,
+    calc(100% + 1rem) 0
+  );
+}
+
+.right-team-clip {
+  clip-path: polygon(
+    3rem 0,
+    100% 0,
+    100% 100%,
+    -0.5rem 100%,
+    1rem 66%,
+    -0.5rem 70%,
+    2rem 27%,
+    1rem 33%
+  );
+}
+</style>
