@@ -51,11 +51,14 @@ export default [
         meta: {
           authRequired: true, // Router will check auth and redirect here after login
           async beforeResolve(routeTo, _, next) {
-            await store.dispatch(
+            const membership = await store.dispatch(
               'leaderboards/joinLeaderboard',
               routeTo.params.password
             )
-            next({ name: 'leaderboards', params: { id: 1 } })
+            next({
+              name: 'leaderboards',
+              params: { id: membership.competitionId },
+            })
           },
         },
       },
