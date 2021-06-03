@@ -223,9 +223,9 @@ module.exports = {
       '2xl': '0 25px 25px rgba(0, 0, 0, 0.15)',
       none: '0 0 #0000',
       lightning: [
-        '0px 0px 3px white',
+        '0px 0px 12px white',
         '0px 0px 8px yellow',
-        '0px 0px 13px red',
+        '0px 0px 4px red',
       ],
     },
     fill: { current: 'currentColor' },
