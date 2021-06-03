@@ -14,13 +14,10 @@
       />
     </div>
     <div
-      v-if="currentMatch"
+      v-if="statusMatch"
       class="absolute left-0 bottom-0 z-10 mb-16 w-full flex justify-center text-center pointer-events-none"
     >
-      <PredictionSwiperStatus
-        :match="statusMatch || currentMatch"
-        :choice="choice"
-      />
+      <PredictionSwiperStatus :match="statusMatch" :choice="choice" />
     </div>
   </div>
 </template>
@@ -39,8 +36,14 @@ export default {
   data() {
     return {
       choice: '',
-      statusMatch: this.currentMatch,
+      statusMatch: null,
     }
+  },
+
+  watch: {
+    currentMatch(newMatch) {
+      if (!this.statusMatch) this.statusMatch = newMatch
+    },
   },
 
   computed: {
