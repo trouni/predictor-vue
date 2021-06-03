@@ -1,17 +1,15 @@
 <template>
   <div>
     <div v-if="$route.name === 'competition'">
-      <BaseLink :to="{ name: 'leaderboards', params: { competitionId: id } }">
+      <BaseLink :to="{ name: 'leaderboards' }">
         <BaseButton>View Leaderboards</BaseButton>
       </BaseLink>
 
-      <BaseLink :to="{ name: 'matches', query: { competitionId: id } }">
+      <BaseLink :to="{ name: 'matches' }">
         <BaseButton>View Matches</BaseButton>
       </BaseLink>
 
-      <BaseLink
-        :to="{ name: 'new_leaderboard', params: { competitionId: id } }"
-      >
+      <BaseLink :to="{ name: 'new_leaderboard' }">
         <BaseButton>New Leaderboard</BaseButton>
       </BaseLink>
     </div>
@@ -21,15 +19,7 @@
 </template>
 
 <script>
-export default {
-  props: {
-    id: {
-      type: Number,
-      default: null,
-      required: true,
-    },
-  },
-}
+export default {}
 </script>
 
 <style scoped>

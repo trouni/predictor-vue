@@ -10,7 +10,12 @@ export const getters = {}
 export const mutations = {}
 
 export const actions = {
-  fetchMatches(_, filters) {
+  fetchMatches({ rootGetters }, { competitionId, userId } = {}) {
+    const filters = {
+      competitionId:
+        competitionId || rootGetters['competitions/currentCompetition'].id,
+    }
+    if (userId) filters['userId'] = userId
     return MatchesRepository.get(filters).then(response => response.data)
   },
   setPrediction(_, { match, choice }) {

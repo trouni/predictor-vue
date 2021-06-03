@@ -9,7 +9,7 @@
           <div class="mt-3">
             <BaseButton>
               <BaseLink
-                :to="{ name: 'matches' }"
+                :to="{ path: '/matches' }"
                 v-if="$store.getters['auth/loggedIn']"
               >
                 Matches

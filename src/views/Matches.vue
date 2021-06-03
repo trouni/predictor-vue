@@ -5,7 +5,7 @@
         v-if="missingPredictions.length"
         class="uppercase text-center m-5"
       >
-        <BaseLink :to="{ name: 'predictions' }" :params="{ id: 1 }">
+        <BaseLink :to="{ name: 'predictions' }">
           Make your predictions
         </BaseLink>
       </BaseButton>
@@ -26,11 +26,6 @@ export default {
   components: { MatchesGrouping },
 
   props: {
-    competitionId: {
-      type: Number,
-      default: 1,
-      required: false,
-    },
     userId: {
       type: Number,
       required: false,
@@ -75,10 +70,9 @@ export default {
   methods: {
     async fetchMatches() {
       this.loading = true
-      const filters = {}
-      if (this.userId) filters['userId'] = this.userId
-      if (this.competitionId) filters['competitionId'] = this.competitionId
-      this.matches = await this.$store.dispatch('matches/fetchMatches', filters)
+      this.matches = await this.$store.dispatch('matches/fetchMatches', {
+        userId: this.userId,
+      })
       this.loading = false
     },
   },

@@ -1,4 +1,6 @@
 import { RepositoryFactory } from '@/api/repository-factory'
+import { saveState, getSavedState } from '@/utils/helpers'
+
 const LeaderboardsRepository = RepositoryFactory.get('leaderboards')
 
 // Not really sure about this
@@ -51,13 +53,16 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchLeaderboards({ commit, getters }, competitionId) {
+  fetchLeaderboards(
+    { commit, state, dispatch, rootGetters },
+    competitionId = rootGetters['competitions/currentCompetition'].id
+  ) {
     return LeaderboardsRepository.getLeaderboards(competitionId).then(
       response => {
         commit('SET_LEADERBOARDS', response.data)
         // check if current board exists
-        if (!getters.currentLeaderboard && response.data.length > 0) {
-          commit('SET_CURRENT_LEADERBOARD_ID', response.data[0].id)
+        if (!state.currentLeaderboardId && response.data.length > 0) {
+          dispatch('selectLeaderboard', response.data[0].id)
         }
         return response.data
       }
@@ -68,31 +73,22 @@ export const actions = {
     commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
     return leaderboardId
   },
-  joinLeaderboard({ commit }, password) {
+
+  joinLeaderboard({ dispatch }, password) {
     return LeaderboardsRepository.joinLeaderboard(password).then(response => {
-      commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
+      dispatch('selectLeaderboard', response.data.id)
       return response.data
     })
   },
-  postLeaderboard({ commit }, { competitionId, name } = {}) {
+
+  postLeaderboard({ dispatch, rootGetters }, { competitionId, name } = {}) {
+    competitionId =
+      competitionId || rootGetters['competitions/currentCompetition'].id
     return LeaderboardsRepository.postLeaderboard(competitionId, name).then(
       response => {
-        commit('SET_CURRENT_LEADERBOARD_ID', response.data.id)
+        dispatch('selectLeaderboard', response.data.id)
         return response.data.id
       }
     )
   },
-}
-
-// ===
-// Private helpers
-// ===
-
-function getSavedState(key) {
-  return JSON.parse(window.localStorage.getItem(key))
-}
-
-function saveState(key, state) {
-  if (state) window.localStorage.setItem(key, JSON.stringify(state))
-  else window.localStorage.removeItem(key)
 }

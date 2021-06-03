@@ -63,73 +63,72 @@ export default [
         },
       },
       {
-        path: '/competitions/:id',
+        path: '/competitions/:id?',
         name: 'competition',
         component: () => import('@/views/Competition'),
-        props: route => ({ id: parseInt(route.params.id) }),
         meta: {
           title: 'Competitions',
+          beforeResolve(routeTo, _routeFrom, next) {
+            if (routeTo.params.id) {
+              store.dispatch(
+                'competitions/selectCompetition',
+                parseInt(routeTo.params.id)
+              )
+              next({ path: routeTo.path.replace(/\/competitions\/\d+/, '') })
+            }
+          },
         },
         children: [
           {
             path: 'leaderboards',
             name: 'leaderboards',
             component: () => import('@/views/Leaderboards'),
-            props: route => ({
-              competitionId: parseInt(route.params.id),
-              leaderboardId: parseInt(
-                store.getters['leaderboards/currentLeaderboard']
-              ),
-            }),
             meta: {
               authRequired: true,
               title: 'Leaderboards',
               img: 'trophy.png',
               subHeader: 'LeaderboardSubHeader',
             },
+            alias: '/leaderboards',
           },
           {
             path: 'predictions',
             name: 'predictions',
             component: () => import('@/views/PredictionsNew'),
-            props: route => ({
-              competitionId: parseInt(route.params.id),
-            }),
             meta: {
               authRequired: true,
               title: 'Predictions',
               img: 'trophy.png',
             },
+            alias: '/predictions',
           },
           {
             path: 'leaderboards/new',
             name: 'new_leaderboard',
             component: () => import('@/views/LeaderboardNew'),
-            props: route => ({
-              competitionId: parseInt(route.params.id),
-            }),
             meta: {
               authRequired: true,
               title: 'New Leaderboard',
               img: 'trophy.png',
             },
+            alias: '/leaderboards/new',
+          },
+          {
+            path: 'matches',
+            name: 'matches',
+            component: () => import('@/views/Matches'),
+            props: route => ({
+              userId: parseInt(route.query.userId) || undefined,
+            }),
+            meta: {
+              authRequired: true,
+              title: store.getters['competitions/currentCompetition'].name,
+              img: 'football.png',
+              subHeader: 'MatchesSubHeader',
+            },
+            alias: '/matches',
           },
         ],
-      },
-      {
-        path: '/matches',
-        name: 'matches',
-        component: () => import('@/views/Matches'),
-        props: route => ({
-          competitionId: parseInt(route.query.competitionId) || undefined,
-          userId: parseInt(route.query.userId) || undefined,
-        }),
-        meta: {
-          authRequired: true,
-          title: 'Euro Championship',
-          img: 'football.png',
-          subHeader: 'MatchesSubHeader',
-        },
       },
       {
         path: '/leaderboards/:id',
