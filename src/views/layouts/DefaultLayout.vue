@@ -1,10 +1,10 @@
 <template>
-  <div class="content h-screen">
+  <div class="bg-body flex flex-col items-stretch h-screen overscroll-none">
     <TopNav />
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" />
     </Header>
-    <main id="wrapper-main" class="overflow-y-auto">
+    <main class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow">
       <div class="p-4 pb-12">
         <RouterView :key="$route.fullPath"></RouterView>
       </div>
@@ -40,23 +40,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/styles';
-.content {
+.bg-body {
   background: linear-gradient(167.4deg, $purple 0%, $teal 88.73%);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  min-height: 100vh;
 }
 
-#wrapper-main {
+.bg-wrapper {
   background: linear-gradient(
     155.48deg,
     rgba(255, 255, 255, 0.87) 0%,
     $white 68.96%
   );
-  border-radius: 30px 30px 0px 0px;
-  flex-grow: 1;
 }
 </style>
