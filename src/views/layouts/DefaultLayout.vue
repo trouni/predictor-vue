@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-body flex flex-col items-stretch h-screen">
+  <div class="bg-body flex flex-col items-stretch h-screen overscroll-none">
     <TopNav />
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" />
