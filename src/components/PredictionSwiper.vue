@@ -53,7 +53,6 @@ export default {
 
   watch: {
     currentMatch(newMatch) {
-      if (!newMatch) this.$router.push({ path: '/matches' })
       if (!this.statusMatch) this.statusMatch = newMatch
     },
   },

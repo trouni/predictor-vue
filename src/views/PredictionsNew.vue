@@ -19,6 +19,12 @@ export default {
     }
   },
 
+  watch: {
+    missingPredictions(newValue) {
+      if (!newValue.length) this.$router.push({ path: '/matches' })
+    },
+  },
+
   computed: {
     missingPredictions() {
       return this.matches
