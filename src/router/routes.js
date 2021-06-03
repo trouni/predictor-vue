@@ -122,7 +122,7 @@ export default [
             }),
             meta: {
               authRequired: true,
-              title: store.getters['competitions/currentCompetition'].name,
+              title: store.getters['competitions/currentCompetition']?.name,
               img: 'football.png',
               subHeader: 'MatchesSubHeader',
             },
