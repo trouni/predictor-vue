@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import capitalize from '@/utils/helpers'
+import { capitalize } from '@/utils/helpers'
 import TeamBadge from '@/components/TeamBadge'
 
 export default {

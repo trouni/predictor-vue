@@ -1,4 +1,5 @@
 import { logIn, logOut, signUp } from '@/api/auth'
+import { saveState, getSavedState } from '@/utils/helpers'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -68,17 +69,4 @@ export const actions = {
         throw error.response.data.errors
       })
   },
-}
-
-// ===
-// Private helpers
-// ===
-
-function getSavedState(key) {
-  return JSON.parse(window.localStorage.getItem(key))
-}
-
-function saveState(key, state) {
-  if (state) window.localStorage.setItem(key, JSON.stringify(state))
-  else window.localStorage.removeItem(key)
 }

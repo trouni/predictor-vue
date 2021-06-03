@@ -23,11 +23,6 @@ export default {
   components: { LeaderboardCard, LeaderboardActions },
 
   props: {
-    competitionId: {
-      type: Number,
-      default: 1,
-      required: false,
-    },
     userId: {
       type: Number,
       required: false,
@@ -35,7 +30,7 @@ export default {
   },
 
   async mounted() {
-    this.fetchLeaderboards(this.competitionId)
+    this.fetchLeaderboards()
   },
 
   // The state is managed from the store, we don't want to be reassigning these variables
