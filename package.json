@@ -1,5 +1,5 @@
 {
-  "name": "predictor-app",
+  "name": "Octacle",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -26,6 +26,7 @@
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "postcss": "^7",
+    "register-service-worker": "^1.7.1",
     "sass-loader": "10.1.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^2.6.11",
@@ -33,6 +34,7 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
