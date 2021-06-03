@@ -32,14 +32,15 @@ export default {
   },
 
   mounted() {
-    const hammer = new Hammer(this.$el)
+    const hammer = new Hammer(document.body)
+    hammer.get('panmove').set({ direction: Hammer.DIRECTION_ALL })
     hammer.on('panend', this.dropCard)
     hammer.on('panmove', this.dragCard)
   },
 
   computed: {
     rotation() {
-      return this.deltaX * 0.01 * (this.deltaY * 0.02)
+      return Math.abs(this.deltaX) * 0.02 * (this.deltaY * 0.02)
     },
     cursor() {
       if (this.moving) return 'grabbing'

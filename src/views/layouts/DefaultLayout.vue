@@ -47,7 +47,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 #wrapper-main {
