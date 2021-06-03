@@ -1,26 +1,26 @@
 <template>
   <div
-    class="bg-white w-11/12 md:w-4/5 lg:w-3/4 max-w-5xl absolute rounded-2xl duration-500 overflow-hidden flex border-6 border-white shadow-2xl"
+    :class="[
+      'swiper-card w-11/12 md:w-4/5 lg:w-3/4 max-w-5xl absolute transition duration-500 flex overflow-visible filter blur-sm first:blur-0',
+      { 'first:drop-shadow-lightning': confidenceRate > 1 },
+    ]"
     :style="style"
   >
-    <div class="relative max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80 w-full">
+    <div
+      class="relative max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80 w-full transform scale-75 transition"
+    >
       <img
         :src="match.teamHome.flagUrl"
-        class="left-team-clip transform scale-110 absolute left-0 pointer-events-none w-1/2 h-full object-cover pr-1"
+        class="z-20 transform scale-110 absolute left-0 pointer-events-none w-1/2 h-full object-cover rounded-l-xl -mt-2 left-team-clip"
       />
       <img
         :src="match.teamAway.flagUrl"
-        class="right-team-clip transform scale-110 absolute right-0 pointer-events-none w-1/2 h-full object-cover pl-1"
+        class="z-10 transform scale-110 absolute right-0 pointer-events-none w-1/2 h-full object-cover rounded-r-xl mt-2"
       />
       <img
         src="@/assets/lightning.png"
-        class="absolute h-full left-1/2 w-20 transform -translate-x-1/2 drop-shadow-lightning filter"
+        class="z-20 absolute h-full left-1/2 w-1/12 transform scale-115 -translate-x-1/2 drop-shadow-lightning filter"
       />
-      <!-- <p
-        class="text-glow text-purple absolute top-1/2 left-1/2 transform -translate-x-1/2 text-2xl md:text-3xl lg:text-4xl xl:text-5xl filter drop-shadow-lg -translate-y-1/2 h-10 w-10 flex items-center justify-center font-bold"
-      >
-        V.
-      </p> -->
     </div>
   </div>
 </template>
@@ -69,16 +69,22 @@ export default {
     choice() {
       let choice = ''
       if (
-        Math.abs(this.deltaX) < this.submitThreshold * 0.7 &&
-        Math.abs(this.deltaY) < this.submitThreshold * 0.7
+        Math.abs(this.deltaX) < this.submitThreshold * 0.5 &&
+        Math.abs(this.deltaY) < this.submitThreshold * 0.5
       )
         choice = ''
       else if (Math.abs(this.deltaY) > Math.abs(this.deltaX) * 1.5)
         choice = 'draw'
-      else if (this.deltaX > this.submitThreshold * 0.7) choice = 'away'
-      else if (this.deltaX < -this.submitThreshold * 0.7) choice = 'home'
+      else if (this.deltaX > this.submitThreshold * 0.5) choice = 'away'
+      else if (this.deltaX < -this.submitThreshold * 0.5) choice = 'home'
       this.$emit('input', choice)
       return choice
+    },
+    confidenceRate() {
+      return Math.max(
+        Math.abs(this.deltaY) / this.submitThreshold,
+        Math.abs(this.deltaX) / this.submitThreshold
+      )
     },
   },
 
@@ -87,7 +93,7 @@ export default {
       deltaX: 0,
       deltaY: 0,
       moving: false,
-      submitThreshold: 130,
+      submitThreshold: 100,
     }
   },
 
@@ -105,17 +111,15 @@ export default {
       if (!this.active) return
 
       this.moving = false
-      if (
-        Math.abs(e.deltaY) < this.submitThreshold &&
-        Math.abs(e.deltaX) < this.submitThreshold
-      ) {
-        this.deltaX = 0
-        this.deltaY = 0
-        this.$emit('input', '')
-      } else {
+      if (this.confidenceRate > 1) {
+        this.$el.style.opacity = 0
         this.deltaX = Math.abs(e.velocityX + 0.5) * this.deltaX * 10
         this.deltaY = Math.abs(e.velocityY + 0.5) * this.deltaY * 10
         this.$emit('remove', this.choice)
+      } else {
+        this.deltaX = 0
+        this.deltaY = 0
+        this.$emit('input', '')
       }
     },
   },
@@ -127,25 +131,16 @@ export default {
   clip-path: polygon(
     0 0,
     0 100%,
-    calc(100% - 2.5rem) 100%,
-    calc(100% - 0.5rem) 65%,
-    calc(100% - 2.5rem) 71%,
-    calc(100% + 1rem) 29%,
-    calc(100% - 1rem) 34%,
-    calc(100% + 1rem) 0
+    90% 100%,
+    95% 66%,
+    90% 71%,
+    100% 29%,
+    95% 34%,
+    101% 0
   );
 }
 
-.right-team-clip {
-  clip-path: polygon(
-    3rem 0,
-    100% 0,
-    100% 100%,
-    -0.5rem 100%,
-    1rem 66%,
-    -0.5rem 70%,
-    2rem 27%,
-    1rem 33%
-  );
+.swiper-card:first-child > div {
+  @apply scale-90;
 }
 </style>

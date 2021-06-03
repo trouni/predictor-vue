@@ -23,7 +23,19 @@ export default {
 *,
 *::before,
 *::after {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  -ms-user-drag: none;
+  user-drag: none;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 body {
   background: $color-body-bg;

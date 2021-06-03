@@ -1,10 +1,20 @@
 <template>
   <div class="swiper overflow-hidden flex">
+    <div class="flex flex-col justify-center items-center w-full my-5">
+      <p class="text-gray-500 font-light text-xs">{{
+        formatDateTime(currentMatch.kickoffTime)
+      }}</p>
+      <h2 class="mt-3 text-2xl text-center">
+        {{ currentMatch.teamHome.name }}
+        <span class="font-light text-gray-500">v.</span>
+        {{ currentMatch.teamAway.name }}
+      </h2>
+    </div>
     <div
       class="flex-grow text-center flex justify-center fixed top-1/3 w-full left-0"
     >
       <PredictionSwiperCard
-        v-for="(match, index) in remainingMatches"
+        v-for="(match, index) in matches"
         :active="index === 0"
         :key="match.id"
         :match="match"
@@ -25,6 +35,7 @@
 <script>
 import PredictionSwiperCard from '@/components/PredictionSwiperCard'
 import PredictionSwiperStatus from '@/components/PredictionSwiperStatus'
+import { formatDateTime } from '@/utils/helpers'
 
 export default {
   components: { PredictionSwiperCard, PredictionSwiperStatus },
@@ -42,42 +53,31 @@ export default {
 
   watch: {
     currentMatch(newMatch) {
+      if (!newMatch) this.$router.push({ path: '/matches' })
       if (!this.statusMatch) this.statusMatch = newMatch
     },
   },
 
   computed: {
-    remainingMatches() {
-      return this.matches.filter(c => !c.removed)
-    },
     currentMatch() {
       if (!this.matches.length) return
 
-      return this.remainingMatches[0]
+      return this.matches[0]
     },
   },
 
   methods: {
-    removeMatch(id, choice) {
-      const matchIndex = this.matches.findIndex(match => match.id === id)
-      this.$set(this.matches[matchIndex], 'choice', choice)
+    removeMatch(matchId, choice) {
       this.choice = choice
-      this.$set(this.matches[matchIndex], 'removed', true)
-      this.setPrediction(choice)
+      setTimeout(() => {
+        this.$emit('predict', { matchId, choice })
+      }, 300)
       setTimeout(() => {
         this.choice = ''
-        if (this.currentMatch) this.statusMatch = this.currentMatch
-        else this.$router.push({ path: '/matches' })
+        this.statusMatch = this.currentMatch
       }, 1000)
     },
-    async setPrediction(choice) {
-      this.loading = true
-      await this.$store.dispatch(`matches/setPrediction`, {
-        match: this.currentMatch,
-        choice,
-      })
-      this.loading = false
-    },
+    formatDateTime,
   },
 }
 </script>

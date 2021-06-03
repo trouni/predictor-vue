@@ -1,5 +1,5 @@
 <template>
-  <PredictionSwiper :matches="missingPredictions" />
+  <PredictionSwiper :matches="missingPredictions" @predict="setPrediction" />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
 
   computed: {
     missingPredictions() {
-      return this.matches.filter(
-        m => !('prediction' in m) && m.status === 'upcoming'
-      )
+      return this.matches
+        .filter(m => !('prediction' in m) && m.status === 'upcoming')
+        .sort(match => new Date(match.kickoffTime))
     },
   },
 
@@ -31,6 +31,16 @@ export default {
     async fetchMatches() {
       this.loading = true
       this.matches = await this.$store.dispatch('matches/fetchMatches')
+      this.loading = false
+    },
+    async setPrediction({ matchId, choice }) {
+      this.loading = true
+      const matchIndex = this.matches.findIndex(match => match.id === matchId)
+      const prediction = await this.$store.dispatch(`matches/setPrediction`, {
+        match: this.matches[matchIndex],
+        choice,
+      })
+      this.$set(this.matches[matchIndex], 'prediction', prediction)
       this.loading = false
     },
   },

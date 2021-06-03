@@ -10,3 +10,14 @@ export function saveState(key, state) {
 export function getSavedState(key) {
   return JSON.parse(window.localStorage.getItem(key))
 }
+
+export function formatDateTime(date) {
+  return new Date(date).toLocaleTimeString('en-GB', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
