@@ -32,7 +32,11 @@ service.interceptors.response.use(
     return response
   },
   error => {
-    if (store.getters['auth/loggedIn'] && error.response.status === 401)
+    if (
+      store.getters['auth/loggedIn'] &&
+      error.response &&
+      error.response.status === 401
+    )
       store.dispatch('auth/logOut')
 
     console.warn(error)
