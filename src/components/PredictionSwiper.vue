@@ -27,7 +27,10 @@
     </div>
     <div
       v-if="statusMatch"
-      class="absolute left-0 top-16 z-10 w-full flex justify-center text-center pointer-events-none"
+      :class="[
+        'absolute left-0 top-16 z-10 w-full flex justify-center text-center pointer-events-none transform transition',
+        choiceConfirmed ? 'opacity-100 scale-100' : 'opacity-70 scale-90',
+      ]"
     >
       <PredictionSwiperStatus :match="statusMatch" :choice="choice" />
     </div>
@@ -49,6 +52,7 @@ export default {
   data() {
     return {
       choice: '',
+      choiceConfirmed: false,
       statusMatch: null,
     }
   },
@@ -69,6 +73,7 @@ export default {
 
   methods: {
     removeMatch(matchId, choice) {
+      this.choiceConfirmed = true
       this.choice = choice
       setTimeout(() => {
         this.$emit('predict', { matchId, choice })
@@ -76,6 +81,7 @@ export default {
       setTimeout(() => {
         this.choice = ''
         this.statusMatch = this.currentMatch
+        this.choiceConfirmed = false
       }, 1000)
     },
     formatDateTime,
