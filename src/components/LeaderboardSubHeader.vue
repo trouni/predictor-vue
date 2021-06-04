@@ -26,6 +26,12 @@ export default {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
     }),
+    onSwipeLeft() {
+      this.selectLeaderboard(this.nextLeaderboard?.id)
+    },
+    onSwipeRight() {
+      this.selectLeaderboard(this.previousLeaderboard?.id)
+    },
   },
 
   computed: {
