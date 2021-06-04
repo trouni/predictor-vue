@@ -39,10 +39,14 @@ export default {
 }
 html {
   // Fix the page to avoid overscroll on mobile app
+  width: 100vw;
+  height: 100vh;
   position: fixed;
 }
 body {
   position: fixed;
+  width: 100vw;
+  height: 100vh;
   background: $color-body-bg;
   overscroll-behavior: none;
 }
