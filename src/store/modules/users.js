@@ -35,15 +35,8 @@ export const actions = {
       return user
     })
   },
-  patchUser({ commit }, { userId, name } = {}) {
-    return UsersRepository.patchUser(userId, name).then(response => {
-      const user = response.data
-      commit('CACHE_USER', user)
-      return user
-    })
-  },
-  patchPhoto({ commit }, { userId, photoUrl } = {}) {
-    return UsersRepository.patchPhoto(userId, photoUrl).then(response => {
+  patchUser({ commit }, { userId, name, photoUrl } = {}) {
+    return UsersRepository.patchUser(userId, name, photoUrl).then(response => {
       const user = response.data
       commit('CACHE_USER', user)
       return user

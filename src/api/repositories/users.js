@@ -9,9 +9,4 @@ export default {
       user: { name: name },
     })
   },
-  patchPhoto(userId, photoUrl) {
-    return Repository.patch(`/users/${userId}`, {
-      user: { photoUrl: photoUrl },
-    })
-  },
 }

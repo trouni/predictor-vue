@@ -106,7 +106,6 @@ export default {
   methods: {
     ...mapActions({
       patchUser: 'users/patchUser',
-      patchPhoto: 'users/patchPhoto',
     }),
     async fetchUser() {
       this.loading = true
@@ -120,20 +119,12 @@ export default {
       const formData = {
         userId: this.user.id,
         name: this.user.name,
+        photoUrl: this.user.photoUrl,
       }
       this.user = await this.patchUser(formData)
       this.name = this.user.name
       this.processingForm = false
       // show success?
-    },
-    async submitPhoto() {
-      this.processingForm = true
-      const formData = {
-        userId: this.user.id,
-        photoUrl: this.user.photoUrl,
-      }
-      this.user = await this.patchPhoto(formData)
-      this.processingForm = false
     },
     openUploadModal() {
       window.cloudinary
