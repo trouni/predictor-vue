@@ -26,7 +26,7 @@ export default {
     window.addEventListener('keyup', this.keyboardNav)
   },
 
-  unmounted() {
+  destroyed() {
     window.removeEventListener('keyup', this.keyboardNav)
   },
 
