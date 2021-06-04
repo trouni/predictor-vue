@@ -23,11 +23,8 @@ export default {
 *,
 *::before,
 *::after {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+  // Deactivate text selection on mobile
+  @apply select-none md:select-auto;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -36,6 +33,14 @@ export default {
   user-drag: none;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+}
+input,
+textarea {
+  @apply select-text;
+}
+html {
+  // Fix the page to avoid overscroll on mobile app
+  @apply fixed md:static w-screen md:w-auto h-screen md:h-auto;
 }
 body {
   background: $color-body-bg;
