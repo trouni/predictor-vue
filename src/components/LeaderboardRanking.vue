@@ -13,7 +13,7 @@
         <div class="relative rounded-full">
           <cld-context v-if="user.photoKey" cloudName="dmbf29">
             <div class="w-36">
-              <cld-image :publicId="getPublicId(user.photoKey)">
+              <cld-image :publicId="user.photoKey">
                 <cld-transformation
                   width="100"
                   height="100"
