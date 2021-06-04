@@ -30,7 +30,8 @@ export default {
   },
 
   async mounted() {
-    this.fetchLeaderboards()
+    await this.fetchLeaderboards()
+    this.$emit('init')
   },
 
   // The state is managed from the store, we don't want to be reassigning these variables

@@ -33,7 +33,8 @@ export default {
   },
 
   async mounted() {
-    this.fetchMatches()
+    await this.fetchMatches()
+    this.$emit('init')
   },
 
   data() {

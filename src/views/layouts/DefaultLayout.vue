@@ -4,9 +4,19 @@
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
-    <main class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow" ref="main">
-      <div class="p-4 pb-12">
-        <RouterView :key="$route.fullPath"></RouterView>
+    <main class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12" ref="main">
+      <transition>
+        <RouterView
+          v-show="componentInitialized"
+          :key="$route.fullPath"
+          @init="componentInitialized = true"
+        ></RouterView>
+      </transition>
+      <div
+        v-if="!componentInitialized"
+        class="flex justify-center items-center h-full w-full"
+      >
+        <BaseSpinner class="text-gray-600" />
       </div>
     </main>
     <FooterNav />
@@ -40,8 +50,7 @@ export default {
 
   data() {
     return {
-      leaderboards: [],
-      leaderboard: null,
+      componentInitialized: false,
       title: this.$route.meta.title,
       img: this.$route.meta.img,
       subHeader: this.$route.meta.subHeader,
@@ -62,5 +71,15 @@ export default {
     rgba(255, 255, 255, 0.87) 0%,
     $white 68.96%
   );
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.6s ease-out;
+}
+
+.v-enter,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

@@ -14,13 +14,9 @@
       </BaseLink>
     </div>
 
-    <RouterView v-else></RouterView>
+    <RouterView v-else v-on="$listeners"></RouterView>
   </div>
 </template>
-
-<script>
-export default {}
-</script>
 
 <style scoped>
 a:not(:first-child) {

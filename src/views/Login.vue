@@ -53,6 +53,10 @@ export default {
     }
   },
 
+  mounted() {
+    this.$emit('init')
+  },
+
   methods: {
     ...authMethods,
     submit() {
