@@ -4,7 +4,10 @@
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
-    <main class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12" ref="main">
+    <main
+      class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12"
+      ref="main"
+    >
       <transition>
         <RouterView
           v-show="componentInitialized"

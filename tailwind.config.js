@@ -222,11 +222,6 @@ module.exports = {
       xl: ['0 20px 13px rgba(0, 0, 0, 0.03)', '0 8px 5px rgba(0, 0, 0, 0.08)'],
       '2xl': '0 25px 25px rgba(0, 0, 0, 0.15)',
       none: '0 0 #0000',
-      lightning: [
-        '0px 0px 12px white',
-        '0px 0px 8px yellow',
-        '0px 0px 4px red',
-      ],
     },
     fill: { current: 'currentColor' },
     grayscale: {

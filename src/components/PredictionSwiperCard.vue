@@ -2,7 +2,6 @@
   <div
     :class="[
       'swiper-card w-11/12 md:w-4/5 lg:w-3/4 max-w-5xl absolute transition duration-500 flex overflow-visible filter blur-sm first:blur-0',
-      { 'first:drop-shadow-lightning': confidenceRate > confidenceThreshold },
     ]"
     :style="cardStyle"
   >
