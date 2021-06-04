@@ -14,6 +14,14 @@
           autofocus
           @keypress.enter="submit"
         />
+        <cld-context cloudName="dmbf29">
+          <div style="display: flex; justify-content: center">
+            <cld-image :publicId="publicId" width="250" crop="scale" />
+          </div>
+        </cld-context>
+        <div>
+          <button @click="openUploadModal">Upload files</button>
+        </div>
         <p>Display Name</p>
         <div class="flex">
           <BaseInputText
@@ -42,6 +50,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { CldContext, CldImage } from 'cloudinary-vue'
+
 export default {
   props: {
     id: {
@@ -49,7 +59,10 @@ export default {
       required: true,
     },
   },
-
+  components: {
+    CldContext,
+    CldImage,
+  },
   async mounted() {
     await this.fetchUser()
     this.$emit('init')
@@ -62,6 +75,8 @@ export default {
       loading: false,
       processingForm: false,
       user: null,
+      url: '',
+      publicId: '',
     }
   },
 
@@ -86,6 +101,21 @@ export default {
       this.name = this.user.name
       this.processingForm = false
       // show success?
+    },
+    openUploadModal() {
+      console.log('openUploadModal')
+      // window.cloudinary
+      //   .openUploadWidget(
+      //     { cloud_name: 'dmbf29', upload_preset: 'cb59wrvm' },
+      //     (error, result) => {
+      //       if (!error && result && result.event === 'success') {
+      //         console.log('Done uploading..: ', result.info)
+      //         this.url = result.info.url
+      //         this.publicId = result.info.public_id
+      //       }
+      //     }
+      //   )
+      //   .open()
     },
   },
 }
