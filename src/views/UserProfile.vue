@@ -2,6 +2,31 @@
   <div>
     <div class="flex flex-col justify-center items-center">
       <div class="w-full md:w-6/12">
+        <div class="flex justify-center">
+          <div class="relative rounded-full h-24 w-24">
+            <cld-context v-if="user.photoKey" cloudName="dmbf29">
+              <div>
+                <cld-image :publicId="user.photoKey">
+                  <cld-transformation
+                    width="150"
+                    height="150"
+                    gravity="face"
+                    radius="max"
+                    crop="fill"
+                  />
+                </cld-image>
+              </div>
+            </cld-context>
+            <img
+              v-else
+              alt="football graphic"
+              :src="require('../assets/player.png')"
+            />
+            <button @click="openUploadModal" class="avatar-btn"
+              ><BaseIcon name="camera"
+            /></button>
+          </div>
+        </div>
         <p>Email</p>
         <!-- Not sure how to give a default value -->
         <BaseInputText
@@ -14,18 +39,11 @@
           autofocus
           @keypress.enter="submit"
         />
-        <cld-context cloudName="dmbf29">
-          <div style="display: flex; justify-content: center">
-            <cld-image :publicId="publicId" width="250" crop="scale" />
-          </div>
-        </cld-context>
-        <div>
-          <button @click="openUploadModal">Upload files</button>
-        </div>
+
         <p>Display Name</p>
         <div class="flex">
           <BaseInputText
-            v-model="name"
+            v-model="user.name"
             label="Name"
             name="name"
             type="text"
@@ -50,7 +68,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { CldContext, CldImage } from 'cloudinary-vue'
+import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 
 export default {
   props: {
@@ -62,6 +80,7 @@ export default {
   components: {
     CldContext,
     CldImage,
+    CldTransformation,
   },
   async mounted() {
     await this.fetchUser()
@@ -75,14 +94,13 @@ export default {
       loading: false,
       processingForm: false,
       user: null,
-      url: '',
-      publicId: '',
     }
   },
 
   methods: {
     ...mapActions({
       patchUser: 'users/patchUser',
+      patchPhoto: 'users/patchPhoto',
     }),
     async fetchUser() {
       this.loading = true
@@ -95,15 +113,23 @@ export default {
       this.processingForm = true
       const formData = {
         userId: this.user.id,
-        name: this.name,
+        name: this.user.name,
       }
       this.user = await this.patchUser(formData)
       this.name = this.user.name
       this.processingForm = false
       // show success?
     },
+    async submitPhoto() {
+      this.processingForm = true
+      const formData = {
+        userId: this.user.id,
+        photoUrl: this.user.photoUrl,
+      }
+      this.user = await this.patchPhoto(formData)
+      this.processingForm = false
+    },
     openUploadModal() {
-      console.log('openUploadModal')
       window.cloudinary
         .openUploadWidget(
           { cloud_name: 'dmbf29', upload_preset: 'cb59wrvm' },
@@ -111,7 +137,9 @@ export default {
             if (!error && result && result.event === 'success') {
               console.log('Done uploading..: ', result.info)
               this.url = result.info.url
-              this.publicId = result.info.public_id
+              this.user.photoUrl = result.info.url
+              this.user.photoKey = result.info.public_id
+              this.submitPhoto()
             }
           }
         )
@@ -125,5 +153,14 @@ export default {
 @import '@/styles';
 p {
   color: $purple;
+}
+.avatar-btn {
+  position: absolute;
+  color: $red;
+  top: 0;
+  left: 0;
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
