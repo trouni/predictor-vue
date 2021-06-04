@@ -1,8 +1,9 @@
-$system-default-font-family: -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500&family=Quicksand:wght@300;400;600&display=swap');
+$system-default-font-family: 'Quicksand', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
   'Helvetica', 'Arial', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
   'Segoe UI Symbol';
 
-$heading-font-family: $system-default-font-family;
+$heading-font-family: 'Montserrat';
 $heading-font-weight: 600;
 
 $content-font-family: $system-default-font-family;
