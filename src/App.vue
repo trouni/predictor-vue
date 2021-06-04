@@ -40,14 +40,9 @@ textarea {
 }
 html {
   // Fix the page to avoid overscroll on mobile app
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
+  @apply fixed md:static w-screen md:w-auto h-screen md:h-auto;
 }
 body {
-  // position: fixed;
-  // width: 100vw;
-  // height: 100vh;
   background: $color-body-bg;
   overscroll-behavior: none;
 }
