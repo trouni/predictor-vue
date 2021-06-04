@@ -68,7 +68,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { getPublicId } from '@/utils/helpers'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 
 export default {
@@ -136,7 +135,6 @@ export default {
         )
         .open()
     },
-    getPublicId,
   },
 }
 </script>

@@ -11,9 +11,9 @@
       </div> -->
       <div class="w-50 d-flex">
         <div class="relative rounded-full">
-          <cld-context v-if="user.photoUrl" cloudName="dmbf29">
+          <cld-context v-if="user.photoKey" cloudName="dmbf29">
             <div class="w-36">
-              <cld-image :publicId="getPublicId(user.photoUrl)">
+              <cld-image :publicId="getPublicId(user.photoKey)">
                 <cld-transformation
                   width="100"
                   height="100"
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import { getPublicId } from '@/utils/helpers'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 export default {
   props: {
@@ -69,7 +68,6 @@ export default {
           return num.toString() + 'th'
       }
     },
-    getPublicId,
   },
 }
 </script>

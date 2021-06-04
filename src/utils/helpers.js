@@ -21,7 +21,3 @@ export function formatDateTime(date) {
     minute: '2-digit',
   })
 }
-
-export function getPublicId(url) {
-  return url.replace(/.+\/upload\/.+\//, '').replace(/\..+/, '')
-}
