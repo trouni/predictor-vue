@@ -27,11 +27,9 @@ export default {
       selectLeaderboard: 'leaderboards/selectLeaderboard',
     }),
     onSwipeLeft() {
-      console.log('left')
       this.selectLeaderboard(this.nextLeaderboard?.id)
     },
     onSwipeRight() {
-      console.log('right')
       this.selectLeaderboard(this.previousLeaderboard?.id)
     },
   },
