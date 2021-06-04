@@ -58,7 +58,9 @@ export default {
         },
         {
           title: 'Upcoming Matches',
-          matches: this.matches.filter(m => m.status === 'upcoming'),
+          matches: this.matches.filter(
+            m => m.status === 'upcoming' && 'prediction' in m
+          ),
         },
         {
           title: 'Past Matches',

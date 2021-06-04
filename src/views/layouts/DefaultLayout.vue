@@ -2,9 +2,9 @@
   <div class="bg-body flex flex-col items-stretch h-screen overscroll-none">
     <TopNav />
     <Header :title="title" :img="img">
-      <component v-if="subHeader" :is="subHeader" />
+      <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
-    <main class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12">
+    <main class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12" ref="main">
       <transition>
         <RouterView
           v-show="componentInitialized"
@@ -29,6 +29,7 @@ import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 import MatchesSubHeader from '@/components/MatchesSubHeader'
+import Hammer from 'hammerjs'
 
 export default {
   components: {
@@ -38,6 +39,15 @@ export default {
     LeaderboardSubHeader,
     MatchesSubHeader,
   },
+
+  mounted() {
+    if (this.$refs.subHeader) {
+      const hammer = new Hammer(this.$refs.main)
+      hammer.on('swipeleft', () => this.$refs.subHeader.onSwipeLeft())
+      hammer.on('swiperight', () => this.$refs.subHeader.onSwipeRight())
+    }
+  },
+
   data() {
     return {
       componentInitialized: false,

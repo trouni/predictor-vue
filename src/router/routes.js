@@ -97,7 +97,7 @@ export default [
             component: () => import('@/views/PredictionsNew'),
             meta: {
               authRequired: true,
-              title: 'Predictions',
+              title: 'Who will win?',
               img: 'trophy.png',
             },
             alias: '/predictions',

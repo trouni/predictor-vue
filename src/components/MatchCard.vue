@@ -40,6 +40,7 @@
 <script>
 import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
+import { formatDateTime } from '@/utils/helpers'
 
 export default {
   components: { PredictionChoiceTeam, PredictionChoiceDraw },
@@ -78,6 +79,7 @@ export default {
         return 'default'
       }
     },
+    formatDateTime,
   },
 
   computed: {
@@ -90,12 +92,7 @@ export default {
       } else if (this.match.status === 'started') {
         return 'In Progress'
       } else {
-        return new Date(this.match.kickoffTime).toLocaleDateString('en-GB', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
+        return this.formatDateTime(this.match.kickoffTime)
       }
     },
     madePrediction() {
@@ -130,5 +127,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss"></style>

@@ -4,7 +4,7 @@
       v-if="choice"
       class="bg-white rounded-lg my-5 mx-10 py-3 px-5 shadow-lg transition duration-500 min-w-4/5 md:min-w-md md:max-w-xs"
     >
-      <h3 class="uppercase font-light text-sm mb-2">Your prediction</h3>
+      <!-- <h3 class="uppercase font-light text-sm mb-2">Your prediction</h3> -->
       <div class="flex justify-between">
         <div>
           <!-- pre-loading both flags -->
