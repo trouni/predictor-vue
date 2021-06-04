@@ -3,20 +3,20 @@ import '@/plugins/fontawesome'
 import router from '@/router'
 import store from '@/store'
 import App from '@/App.vue'
-// import * as Sentry from '@sentry/vue'
-// import { Integrations } from '@sentry/tracing'
+import * as Sentry from '@sentry/vue'
+import { Integrations } from '@sentry/tracing'
 
-// Sentry.init({
-//   Vue,
-//   dsn:
-//     'https://52df1bed6ee547c8b22b3e60dff36f52@o480835.ingest.sentry.io/5798116',
-//   integrations: [new Integrations.BrowserTracing()],
+Sentry.init({
+  Vue,
+  dsn:
+    'https://52df1bed6ee547c8b22b3e60dff36f52@o480835.ingest.sentry.io/5798116',
+  integrations: [new Integrations.BrowserTracing()],
 
-//   // Set tracesSampleRate to 1.0 to capture 100%
-//   // of transactions for performance monitoring.
-//   // We recommend adjusting this value in production
-//   tracesSampleRate: 1.0,
-// })
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+})
 
 // Globally register all `_base`-prefixed components
 import '@/components/_globals'
