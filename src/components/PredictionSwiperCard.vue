@@ -11,7 +11,7 @@
     >
       <img
         :src="match.teamHome.flagUrl"
-        class="z-20 transform scale-110 absolute left-0 pointer-events-none w-1/2 h-full object-cover rounded-l-xl -mt-2 left-team-clip"
+        class="z-20 transform scale-110 absolute left-0 pointer-events-none w-1/2 h-full object-cover rounded-l-xl -mt-2 left-flag-clip"
       />
       <img
         :src="match.teamAway.flagUrl"
@@ -60,7 +60,7 @@ export default {
                     rotate(${this.rotation}deg)
                     scale(${(20 - this.index) / 20})
                     translateY(-${15 * this.index}px)`,
-        opacity: (10 - this.index) / 10,
+        // opacity: (10 - this.index) / 10,
         'transition-property': this.moving ? 'none' : 'all',
         cursor: this.cursor,
         'will-change': 'transform',
@@ -127,7 +127,7 @@ export default {
 </script>
 
 <style lang="scss">
-.left-team-clip {
+.left-flag-clip {
   clip-path: polygon(
     0 0,
     0 100%,

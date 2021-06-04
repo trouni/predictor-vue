@@ -29,7 +29,10 @@ export default {
     missingPredictions() {
       return this.matches
         .filter(m => !('prediction' in m) && m.status === 'upcoming')
-        .sort(match => new Date(match.kickoffTime))
+        .sort(
+          (match1, match2) =>
+            new Date(match1.kickoffTime) - new Date(match2.kickoffTime)
+        )
     },
   },
 
