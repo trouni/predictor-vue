@@ -11,7 +11,7 @@
       </div> -->
       <div class="w-50 d-flex">
         <div class="relative rounded-full">
-          <cld-context v-if="user.photoKey" cloudName="dmbf29">
+          <cld-context v-if="user.photoKey" :cloudName="cloudName">
             <div class="w-36">
               <cld-image :publicId="user.photoKey">
                 <cld-transformation
@@ -40,6 +40,8 @@
 
 <script>
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
+import { config } from '@/constants'
+
 export default {
   props: {
     user: {
@@ -53,6 +55,11 @@ export default {
     CldContext,
     CldImage,
     CldTransformation,
+  },
+  data() {
+    return {
+      cloudName: config.cloudName,
+    }
   },
   methods: {
     ordinalize(num) {

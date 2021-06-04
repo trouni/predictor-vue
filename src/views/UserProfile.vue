@@ -4,7 +4,7 @@
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
           <div class="relative rounded-full h-24 w-24">
-            <cld-context v-if="user.photoKey" cloudName="dmbf29">
+            <cld-context v-if="user.photoKey" :cloudName="clo">
               <div>
                 <cld-image :publicId="user.photoKey">
                   <cld-transformation
@@ -69,6 +69,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
+import { config } from '@/constants'
 
 export default {
   props: {
@@ -94,6 +95,7 @@ export default {
       loading: false,
       processingForm: false,
       user: null,
+      cloudName: config.cloudName,
     }
   },
 
