@@ -1,14 +1,16 @@
 <template>
   <div class="swiper overflow-hidden flex">
     <div class="flex flex-col justify-center items-center w-full my-5">
-      <p class="text-gray-500 font-light text-xs">{{
-        formatDateTime(currentMatch.kickoffTime)
-      }}</p>
-      <h2 class="mt-3 text-2xl text-center">
-        {{ currentMatch.teamHome.name }}
-        <span class="font-light text-gray-500">v.</span>
-        {{ currentMatch.teamAway.name }}
-      </h2>
+      <div class="absolute bottom-28 text-center">
+        <p class="text-gray-500 font-light text-xs">{{
+          formatDateTime(currentMatch.kickoffTime)
+        }}</p>
+        <h2 class="mt-3 text-2xl">
+          {{ currentMatch.teamHome.name }}
+          <span class="font-light text-gray-500">v.</span>
+          {{ currentMatch.teamAway.name }}
+        </h2>
+      </div>
     </div>
     <div
       class="flex-grow text-center flex justify-center fixed top-1/3 w-full left-0"
@@ -25,7 +27,7 @@
     </div>
     <div
       v-if="statusMatch"
-      class="absolute left-0 bottom-0 z-10 mb-16 w-full flex justify-center text-center pointer-events-none"
+      class="absolute left-0 top-16 z-10 w-full flex justify-center text-center pointer-events-none"
     >
       <PredictionSwiperStatus :match="statusMatch" :choice="choice" />
     </div>
