@@ -1,5 +1,6 @@
 import { logIn, logOut, signUp } from '@/api/auth'
-import { saveState, getSavedState } from '@/utils/helpers'
+import { saveState, getSavedState, clearLocalStorage } from '@/utils/helpers'
+import router from '@/router'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -52,10 +53,15 @@ export const actions = {
   },
 
   // Logs out the current user.
-  logOut({ commit }) {
-    commit('SET_CURRENT_USER', null)
-    commit('SET_AUTH_HEADERS', null)
-    return logOut()
+  async logOut({ commit }, { redirectTo = { name: 'home' } } = {}) {
+    try {
+      await logOut()
+    } finally {
+      commit('SET_CURRENT_USER', null)
+      commit('SET_AUTH_HEADERS', null)
+      clearLocalStorage()
+      router.go() // Refreshes the page with resets the in-memory store
+    }
   },
 
   signUp(_, credentials) {
