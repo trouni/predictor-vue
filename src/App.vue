@@ -23,11 +23,8 @@ export default {
 *,
 *::before,
 *::after {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+  // Deactivate text selection on mobile
+  @apply select-none md:select-auto;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -39,11 +36,7 @@ export default {
 }
 input,
 textarea {
-  -webkit-user-select: text;
-  -khtml-user-select: text;
-  -moz-user-select: text;
-  -o-user-select: text;
-  user-select: text;
+  @apply select-text;
 }
 html {
   // Fix the page to avoid overscroll on mobile app
@@ -52,9 +45,9 @@ html {
   position: fixed;
 }
 body {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
+  // position: fixed;
+  // width: 100vw;
+  // height: 100vh;
   background: $color-body-bg;
   overscroll-behavior: none;
 }
