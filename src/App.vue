@@ -37,7 +37,12 @@ export default {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
+html {
+  // Fix the page to avoid overscroll on mobile app
+  position: fixed;
+}
 body {
+  position: fixed;
   background: $color-body-bg;
   overscroll-behavior: none;
 }
