@@ -18,14 +18,12 @@ export const actions = {
     // 1. Check if we already have the user as a current user.
     const { currentUser } = rootState.auth
     if (currentUser && currentUser.id === userId) {
-      console.log(`already have: ${userId}`)
       return Promise.resolve(currentUser)
     }
 
     // 2. Check if we've already fetched and cached the user.
     const matchedUser = state.cached.find(user => user.id === userId)
     if (matchedUser) {
-      console.log(`cached: ${userId}`)
       return Promise.resolve(matchedUser)
     }
 
@@ -45,7 +43,6 @@ export const actions = {
     })
   },
   patchPhoto({ commit }, { userId, photoUrl } = {}) {
-    console.log(`photoUrl: ${photoUrl}`)
     return UsersRepository.patchPhoto(userId, photoUrl).then(response => {
       const user = response.data
       commit('CACHE_USER', user)

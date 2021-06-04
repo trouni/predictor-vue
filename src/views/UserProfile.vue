@@ -135,7 +135,6 @@ export default {
           { cloud_name: 'dmbf29', upload_preset: 'cb59wrvm' },
           (error, result) => {
             if (!error && result && result.event === 'success') {
-              console.log('Done uploading..: ', result.info)
               this.url = result.info.url
               this.user.photoUrl = result.info.url
               this.user.photoKey = result.info.public_id
