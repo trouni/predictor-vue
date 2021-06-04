@@ -23,18 +23,23 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   mounted() {
-    window.addEventListener('keyup', e => {
-      if (e.key === 'ArrowLeft')
-        this.selectLeaderboard(this.previousLeaderboard?.id)
-      else if (e.key === 'ArrowRight')
-        this.selectLeaderboard(this.nextLeaderboard?.id)
-    })
+    window.addEventListener('keyup', this.keyboardNav)
+  },
+
+  unmounted() {
+    window.removeEventListener('keyup', this.keyboardNav)
   },
 
   methods: {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
     }),
+    keyboardNav(event) {
+      if (event.key === 'ArrowLeft')
+        this.selectLeaderboard(this.previousLeaderboard?.id)
+      else if (event.key === 'ArrowRight')
+        this.selectLeaderboard(this.nextLeaderboard?.id)
+    },
   },
 
   computed: {
