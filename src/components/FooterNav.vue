@@ -30,13 +30,12 @@ export default {
       ],
       loggedInNavRoutes: [
         {
-          name: 'matches',
+          path: '/matches',
           title: 'Matches',
           fontAwesomeClass: 'futbol',
         },
         {
-          name: 'leaderboards',
-          params: { id: 1 },
+          path: '/leaderboards',
           title: 'Leaderboards',
           fontAwesomeClass: 'trophy',
         },

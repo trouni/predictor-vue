@@ -21,13 +21,6 @@
 import { mapActions } from 'vuex'
 
 export default {
-  props: {
-    competitionId: {
-      type: Number,
-      default: null,
-      required: true,
-    },
-  },
   data() {
     return {
       name: '',
@@ -42,7 +35,6 @@ export default {
     async submit() {
       this.processingForm = true
       const formData = {
-        competitionId: this.competitionId,
         name: this.name,
       }
       await this.postLeaderboard(formData)

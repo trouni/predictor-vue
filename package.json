@@ -1,5 +1,5 @@
 {
-  "name": "predictor-app",
+  "name": "Octacle",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.31",
     "@fortawesome/free-solid-svg-icons": "^5.15.0",
     "@fortawesome/vue-fontawesome": "^2.0.0",
+    "@sentry/tracing": "^6.5.1",
+    "@sentry/vue": "^6.5.1",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
@@ -19,10 +21,12 @@
     "autoprefixer": "^9",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "hammerjs": "^2.0.8",
     "node-sass": "^5.0.0",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "postcss": "^7",
+    "register-service-worker": "^1.7.1",
     "sass-loader": "10.1.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^2.6.11",
@@ -30,6 +34,7 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

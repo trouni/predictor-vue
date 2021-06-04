@@ -1,26 +1,31 @@
 <template>
   <div>
-    <MatchCard
-      v-for="match in matches"
-      :key="match.id"
-      :match="match"
-      :selectable="match.status == 'upcoming'"
+    <div class="flex justify-center">
+      <BaseButton
+        v-if="missingPredictions.length"
+        class="uppercase text-center m-5"
+      >
+        <BaseLink :to="{ path: '/predictions' }">
+          Make your predictions
+        </BaseLink>
+      </BaseButton>
+    </div>
+    <MatchesGrouping
+      v-for="group in groupedMatches"
+      :key="group.title"
+      :title="group.title"
+      :matches="group.matches"
     />
   </div>
 </template>
 
 <script>
-import MatchCard from '@/components/MatchCard'
+import MatchesGrouping from '@/components/MatchesGrouping'
 
 export default {
-  components: { MatchCard },
+  components: { MatchesGrouping },
 
   props: {
-    competitionId: {
-      type: Number,
-      default: null,
-      required: false,
-    },
     userId: {
       type: Number,
       required: false,
@@ -38,13 +43,36 @@ export default {
     }
   },
 
+  computed: {
+    missingPredictions() {
+      return this.matches.filter(
+        m => !('prediction' in m) && m.status === 'upcoming'
+      )
+    },
+    groupedMatches() {
+      return [
+        {
+          title: 'Ongoing Matches',
+          matches: this.matches.filter(m => m.status === 'ongoing'),
+        },
+        {
+          title: 'Upcoming Matches',
+          matches: this.matches.filter(m => m.status === 'upcoming'),
+        },
+        {
+          title: 'Past Matches',
+          matches: this.matches.filter(m => m.status === 'finished'),
+        },
+      ]
+    },
+  },
+
   methods: {
     async fetchMatches() {
       this.loading = true
-      const filters = {}
-      if (this.userId) filters['userId'] = this.userId
-      if (this.competitionId) filters['competitionId'] = this.competitionId
-      this.matches = await this.$store.dispatch('matches/fetchMatches', filters)
+      this.matches = await this.$store.dispatch('matches/fetchMatches', {
+        userId: this.userId,
+      })
       this.loading = false
     },
   },

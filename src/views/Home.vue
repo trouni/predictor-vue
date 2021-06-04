@@ -4,12 +4,12 @@
     <main>
       <div class="banner">
         <div class="banner-container">
-          <h1>Predictor App</h1>
+          <h1>Octacle</h1>
           <p>Join. Predict. Win.</p>
           <div class="mt-3">
             <BaseButton>
               <BaseLink
-                :to="{ name: 'matches' }"
+                :to="{ path: '/matches' }"
                 v-if="$store.getters['auth/loggedIn']"
               >
                 Matches

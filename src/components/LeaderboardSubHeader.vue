@@ -34,11 +34,11 @@ export default {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
     }),
-    keyboardNav(event) {
-      if (event.key === 'ArrowLeft')
-        this.selectLeaderboard(this.previousLeaderboard?.id)
-      else if (event.key === 'ArrowRight')
-        this.selectLeaderboard(this.nextLeaderboard?.id)
+    onSwipeLeft() {
+      this.selectLeaderboard(this.nextLeaderboard?.id)
+    },
+    onSwipeRight() {
+      this.selectLeaderboard(this.previousLeaderboard?.id)
     },
   },
 

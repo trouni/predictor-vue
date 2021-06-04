@@ -13,12 +13,16 @@ const router = new VueRouter({
 })
 
 // Before each route evaluates...
-router.beforeEach((routeTo, routeFrom, next) => {
+router.beforeEach(async (routeTo, routeFrom, next) => {
   // If this isn't an initial page load...
   if (routeFrom.name !== null) {
     // Start the route progress bar.
     NProgress.start()
   }
+
+  // Fetch competitions if missing
+  if (!store.getters['competitions/currentCompetition'])
+    await store.dispatch('competitions/fetchCompetitions')
 
   // Check if auth is required on this route
   // (including nested routes).
