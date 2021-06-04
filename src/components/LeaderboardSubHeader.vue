@@ -20,8 +20,19 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Hammer from 'hammerjs'
 
 export default {
+  mounted() {
+    const hammer = new Hammer(document.body)
+    hammer.on('swipeleft', () =>
+      this.selectLeaderboard(this.nextLeaderboard?.id)
+    )
+    hammer.on('swiperight', () =>
+      this.selectLeaderboard(this.previousLeaderboard?.id)
+    )
+  },
+
   methods: {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
