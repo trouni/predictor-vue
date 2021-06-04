@@ -104,18 +104,18 @@ export default {
     },
     openUploadModal() {
       console.log('openUploadModal')
-      // window.cloudinary
-      //   .openUploadWidget(
-      //     { cloud_name: 'dmbf29', upload_preset: 'cb59wrvm' },
-      //     (error, result) => {
-      //       if (!error && result && result.event === 'success') {
-      //         console.log('Done uploading..: ', result.info)
-      //         this.url = result.info.url
-      //         this.publicId = result.info.public_id
-      //       }
-      //     }
-      //   )
-      //   .open()
+      window.cloudinary
+        .openUploadWidget(
+          { cloud_name: 'dmbf29', upload_preset: 'cb59wrvm' },
+          (error, result) => {
+            if (!error && result && result.event === 'success') {
+              console.log('Done uploading..: ', result.info)
+              this.url = result.info.url
+              this.publicId = result.info.public_id
+            }
+          }
+        )
+        .open()
     },
   },
 }
