@@ -53,7 +53,7 @@ export const actions = {
   },
 
   // Logs out the current user.
-  async logOut({ commit }, { redirectTo = { name: 'home' } } = {}) {
+  async logOut({ commit }) {
     try {
       await logOut()
     } finally {
