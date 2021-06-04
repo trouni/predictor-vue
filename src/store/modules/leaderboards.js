@@ -69,9 +69,11 @@ export const actions = {
     )
   },
 
-  selectLeaderboard({ commit }, leaderboardId) {
-    commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
-    return leaderboardId
+  selectLeaderboard({ commit, getters }, leaderboardId) {
+    // Check if leaderboard exists before assigning
+    const leaderboard = getters.leaderboards.find(l => l.id === leaderboardId)
+    if (leaderboard) commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
+    return leaderboard
   },
 
   joinLeaderboard({ dispatch }, password) {

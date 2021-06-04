@@ -38,6 +38,7 @@ export default {
 
   mounted() {
     const hammer = new Hammer(this.$el)
+    hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL })
     hammer.on('panend', this.dropCard)
     hammer.on('panmove', this.dragCard)
   },
@@ -146,6 +147,14 @@ export default {
     }
   },
 
+  watch: {
+    choice(newChoice) {
+      if (this.confidenceRate > this.confidenceThreshold)
+        this.$emit('input', newChoice)
+      else this.$emit('input', '')
+    },
+  },
+
   methods: {
     dragCard(e) {
       if (!this.active) return
@@ -153,10 +162,6 @@ export default {
       this.moving = true
       this.deltaX = e.deltaX
       this.deltaY = e.deltaY
-
-      if (this.confidenceRate > this.confidenceThreshold)
-        this.$emit('input', this.choice)
-      else this.$emit('input', '')
     },
     dropCard(e) {
       if (!this.active) return

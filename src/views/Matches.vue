@@ -5,7 +5,7 @@
         v-if="missingPredictions.length"
         class="uppercase text-center m-5"
       >
-        <BaseLink :to="{ name: 'predictions' }">
+        <BaseLink :to="{ path: '/predictions' }">
           Make your predictions
         </BaseLink>
       </BaseButton>

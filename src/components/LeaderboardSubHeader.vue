@@ -22,10 +22,24 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  mounted() {
+    window.addEventListener('keyup', this.keyboardNav)
+  },
+
+  destroyed() {
+    window.removeEventListener('keyup', this.keyboardNav)
+  },
+
   methods: {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
     }),
+    onSwipeLeft() {
+      this.selectLeaderboard(this.nextLeaderboard?.id)
+    },
+    onSwipeRight() {
+      this.selectLeaderboard(this.previousLeaderboard?.id)
+    },
   },
 
   computed: {

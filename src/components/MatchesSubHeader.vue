@@ -17,6 +17,11 @@ export default {
       loading: false,
     }
   },
+
+  methods: {
+    onSwipeLeft() {},
+    onSwipeRight() {},
+  },
 }
 </script>
 
