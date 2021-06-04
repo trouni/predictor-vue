@@ -4,9 +4,9 @@
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
           <div class="relative rounded-full h-24 w-24">
-            <cld-context v-if="user.photoUrl" cloudName="dmbf29">
+            <cld-context v-if="user.photoKey" cloudName="dmbf29">
               <div>
-                <cld-image :publicId="getPublicId(user.photoUrl)">
+                <cld-image :publicId="user.photoKey">
                   <cld-transformation
                     width="150"
                     height="150"
@@ -17,11 +17,6 @@
                 </cld-image>
               </div>
             </cld-context>
-            <!-- <img
-              v-if="user.photoUrl"
-              alt="football graphic"
-              :src="user.photoUrl"
-            /> -->
             <img
               v-else
               alt="football graphic"
@@ -112,6 +107,7 @@ export default {
       this.user = await this.$store.dispatch('users/fetchUser', {
         userId: this.id,
       })
+      console.log('updated')
       this.loading = false
     },
     async submit() {
@@ -119,7 +115,7 @@ export default {
       const formData = {
         userId: this.user.id,
         name: this.user.name,
-        photoUrl: this.user.photoUrl,
+        photoKey: this.user.photoKey,
       }
       this.user = await this.patchUser(formData)
       this.name = this.user.name
@@ -133,10 +129,8 @@ export default {
           (error, result) => {
             if (!error && result && result.event === 'success') {
               console.log(result.info)
-              this.url = result.info.url
-              this.user.photoUrl = result.info.url
               this.user.photoKey = result.info.public_id
-              this.submitPhoto()
+              this.submit()
             }
           }
         )
