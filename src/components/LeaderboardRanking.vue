@@ -10,11 +10,27 @@
         <p>-</p>
       </div> -->
       <div class="w-50 d-flex">
-        <img
-          src="https://kitt.lewagon.com/placeholder/users/yannklein"
-          alt="use photo"
-          class="avatar"
-        />
+        <div class="relative rounded-full">
+          <cld-context v-if="user.photoKey" cloudName="dmbf29">
+            <div>
+              <cld-image :publicId="user.photoKey">
+                <cld-transformation
+                  width="36"
+                  height="36"
+                  gravity="face"
+                  radius="max"
+                  crop="fill"
+                />
+              </cld-image>
+            </div>
+          </cld-context>
+          <img
+            v-else
+            alt="football graphic"
+            width="36px"
+            :src="require('../assets/player.png')"
+          />
+        </div>
       </div>
       <div class="name w-100 truncate"> {{ user.name }}</div>
     </div>
