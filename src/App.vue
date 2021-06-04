@@ -37,6 +37,14 @@ export default {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
+input,
+textarea {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -o-user-select: text;
+  user-select: text;
+}
 html {
   // Fix the page to avoid overscroll on mobile app
   width: 100vw;
