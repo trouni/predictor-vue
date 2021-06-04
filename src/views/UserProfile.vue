@@ -51,7 +51,8 @@ export default {
   },
 
   async mounted() {
-    this.fetchUser()
+    await this.fetchUser()
+    this.$emit('init')
   },
 
   data() {

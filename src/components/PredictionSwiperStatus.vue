@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition>
     <div
       v-if="choice"
       class="bg-white rounded-lg my-5 mx-10 py-3 px-5 shadow-lg transition duration-500 min-w-4/5 md:min-w-md md:max-w-xs"
@@ -52,15 +52,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease-out;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

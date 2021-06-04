@@ -9,7 +9,8 @@ export default {
   components: { PredictionSwiper },
 
   async mounted() {
-    this.fetchMatches()
+    await this.fetchMatches()
+    this.$emit('init')
   },
 
   data() {
