@@ -36,12 +36,29 @@
           </BaseLink>
         </div>
       </div>
+      <div v-if="user.admin" class="w-full md:w-6/12 mt-10">
+        <h4>Competitions</h4>
+        <ul class="flex list-none">
+          <li
+            v-for="competition in competitions"
+            :key="competition.id"
+            class="mr-3 last:mr-0"
+          >
+            <BaseLink :to="{ name: 'matches', params: { id: competition.id } }">
+              <BaseButton>
+                {{ competition.name }}
+              </BaseButton>
+            </BaseLink>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   props: {
     id: {
@@ -51,8 +68,15 @@ export default {
   },
 
   async mounted() {
+    this.fetchCompetitions()
     await this.fetchUser()
     this.$emit('init')
+  },
+
+  computed: {
+    ...mapGetters({
+      competitions: 'competitions/competitions',
+    }),
   },
 
   data() {
@@ -68,6 +92,7 @@ export default {
   methods: {
     ...mapActions({
       patchUser: 'users/patchUser',
+      fetchCompetitions: 'competitions/fetchCompetitions',
     }),
     async fetchUser() {
       this.loading = true
