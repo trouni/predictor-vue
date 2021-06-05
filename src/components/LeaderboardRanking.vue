@@ -10,11 +10,27 @@
         <p>-</p>
       </div> -->
       <div class="w-50 d-flex">
-        <img
-          src="https://kitt.lewagon.com/placeholder/users/yannklein"
-          alt="use photo"
-          class="avatar"
-        />
+        <div class="relative rounded-full">
+          <cld-context v-if="user.photoKey" :cloudName="cloudName">
+            <div class="w-36">
+              <cld-image :publicId="user.photoKey">
+                <cld-transformation
+                  width="100"
+                  height="100"
+                  gravity="face"
+                  radius="max"
+                  crop="fill"
+                />
+              </cld-image>
+            </div>
+          </cld-context>
+          <img
+            v-else
+            alt="football graphic"
+            width="36px"
+            :src="require('../assets/player.png')"
+          />
+        </div>
       </div>
       <div class="name w-100 truncate"> {{ user.name }}</div>
     </div>
@@ -23,6 +39,9 @@
 </template>
 
 <script>
+import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
+import { config } from '@/constants'
+
 export default {
   props: {
     user: {
@@ -31,6 +50,16 @@ export default {
     position: {
       type: Number,
     },
+  },
+  components: {
+    CldContext,
+    CldImage,
+    CldTransformation,
+  },
+  data() {
+    return {
+      cloudName: config.cloudName,
+    }
   },
   methods: {
     ordinalize(num) {
@@ -68,6 +97,9 @@ export default {
   width: 50px;
   text-align: center;
   flex-shrink: 0;
+}
+.w-36 {
+  width: 36px;
 }
 
 .w-30 {
