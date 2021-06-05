@@ -72,8 +72,10 @@ export default {
       return this.logIn(credentials)
         .then(() => {
           this.processingForm = false
-          // Redirect to the originally requested page, or to the home page
-          this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
+          // Redirect to the originally requested page, or to the matches page
+          this.$router.push(
+            this.$route.query.redirectFrom || { path: '/matches' }
+          )
         })
         .catch(error => {
           this.processingForm = false
