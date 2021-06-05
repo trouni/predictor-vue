@@ -21,7 +21,7 @@
         :key="match.id"
         :match="match"
         :index="index"
-        @remove="choice => removeMatch(match.id, choice)"
+        @remove="choice => removeMatch(match, choice)"
         v-model="choice"
       />
     </div>
@@ -72,11 +72,11 @@ export default {
   },
 
   methods: {
-    removeMatch(matchId, choice) {
+    removeMatch(match, choice) {
       this.choiceConfirmed = true
       this.choice = choice
       setTimeout(() => {
-        this.$emit('predict', { matchId, choice })
+        this.$emit('predict', { match, choice })
       }, 300)
       setTimeout(() => {
         this.choice = ''

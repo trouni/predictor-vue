@@ -30,6 +30,8 @@ export default {
   },
 
   async mounted() {
+    if (this.leaderboard) this.$emit('init')
+
     await this.fetchLeaderboards()
     this.$emit('init')
   },

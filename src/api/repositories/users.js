@@ -4,9 +4,9 @@ export default {
   getUser(userId) {
     return Repository.get(`/users/${userId}`)
   },
-  patchUser(userId, name) {
+  patchUser(userId, name, photoKey) {
     return Repository.patch(`/users/${userId}`, {
-      user: { name: name },
+      user: { name: name, photoKey: photoKey },
     })
   },
 }

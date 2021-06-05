@@ -21,6 +21,7 @@
 
 <script>
 import MatchesGrouping from '@/components/MatchesGrouping'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: { MatchesGrouping },
@@ -33,18 +34,20 @@ export default {
   },
 
   async mounted() {
-    await this.fetchMatches()
+    if (this.matches.length) this.$emit('init')
+
+    await this.fetchMatches({ userId: this.userId })
     this.$emit('init')
   },
 
   data() {
     return {
       loading: false,
-      matches: [],
     }
   },
 
   computed: {
+    ...mapGetters({ matches: 'matches/matches' }),
     missingPredictions() {
       return this.matches.filter(
         m => !('prediction' in m) && m.status === 'upcoming'
@@ -71,13 +74,9 @@ export default {
   },
 
   methods: {
-    async fetchMatches() {
-      this.loading = true
-      this.matches = await this.$store.dispatch('matches/fetchMatches', {
-        userId: this.userId,
-      })
-      this.loading = false
-    },
+    ...mapActions({
+      fetchMatches: 'matches/fetchMatches',
+    }),
   },
 }
 </script>

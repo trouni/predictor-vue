@@ -11,6 +11,10 @@ export function getSavedState(key) {
   return JSON.parse(window.localStorage.getItem(key))
 }
 
+export function clearLocalStorage() {
+  window.localStorage.clear()
+}
+
 export function formatDateTime(date) {
   return new Date(date).toLocaleTimeString('en-GB', {
     weekday: 'long',

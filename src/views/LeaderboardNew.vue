@@ -28,6 +28,9 @@ export default {
       leaderboardId: null,
     }
   },
+  async mounted() {
+    this.$emit('init')
+  },
   methods: {
     ...mapActions({
       postLeaderboard: 'leaderboards/postLeaderboard',

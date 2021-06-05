@@ -22,6 +22,7 @@ Sentry.init({
 import '@/components/_globals'
 
 import './registerServiceWorker'
+import './cloudinary.js'
 
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
