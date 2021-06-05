@@ -4,7 +4,7 @@
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
           <div class="relative rounded-full h-24 w-24">
-            <cld-context v-if="user.photoKey" :cloudName="clo">
+            <cld-context v-if="user.photoKey" :cloudName="cloudName">
               <div>
                 <cld-image :publicId="user.photoKey">
                   <cld-transformation
@@ -108,7 +108,6 @@ export default {
       this.user = await this.$store.dispatch('users/fetchUser', {
         userId: this.id,
       })
-      console.log('updated')
       this.loading = false
     },
     async submit() {
@@ -126,11 +125,10 @@ export default {
     openUploadModal() {
       window.cloudinary
         .openUploadWidget(
-          { cloud_name: 'dmbf29', upload_preset: 'cb59wrvm' },
+          { cloud_name: this.cloudName, upload_preset: 'cb59wrvm' },
           (error, result) => {
             if (!error && result && result.event === 'success') {
-              console.log(result.info)
-              this.user.photoKey = result.info.public_id
+              this.$set(this.user, 'photoKey', result.info.public_id)
               this.submit()
             }
           }
