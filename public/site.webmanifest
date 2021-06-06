@@ -17,5 +17,11 @@
     "background_color": "#29275c",
     "start_url": "https://www.octacle.com/matches",
     "display": "standalone",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "scope_url": "https://www.octacle.app/",
+    "intent_filters": {
+        "scope_url_scheme": "https",
+        "scope_url_host": "www.octacle.app",
+        "scope_url_path": "/"
+    }
 }

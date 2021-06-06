@@ -1,19 +1,22 @@
-module.exports = {
-  pwa: {
-    name: 'Octacle',
-    themeColor: '#3e3b7d',
+// module.exports = {
+//   pwa: {
+//     name: 'Octacle',
+//     themeColor: '#3e3b7d',
 
-    appleMobileWebAppCapable: 'yes',
+//     appleMobileWebAppCapable: 'yes',
 
-    manifestOptions: {
-      scope_url: 'https://www.octacle.app/',
-      intent_filters: {
-        scope_url_scheme: 'https',
-        scope_url_host: 'www.octacle.app',
-        scope_url_path: '/',
-      },
-      start_url: 'https://www.octacle.app/',
-      display: 'standalone',
-    },
-  },
-}
+//     manifestOptions: {
+//       scope_url: 'https://www.octacle.app/',
+//       intent_filters: {
+//         scope_url_scheme: 'https',
+//         scope_url_host: 'www.octacle.app',
+//         scope_url_path: '/',
+//       },
+//       start_url: 'https://www.octacle.app/matches',
+//       display: 'standalone',
+//       theme_color: '#29275c',
+//       background_color: '#29275c',
+//       orientation: 'portrait',
+//     },
+//   },
+// }
