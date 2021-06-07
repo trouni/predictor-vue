@@ -28,7 +28,7 @@ export default {
         if (a.points > b.points) return -1
         return 0
       }
-      return this.leaderboard.users.sort(compare)
+      return this.leaderboard.users.slice().sort(compare)
     },
   },
 }
