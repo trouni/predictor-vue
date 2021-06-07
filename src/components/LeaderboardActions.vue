@@ -28,7 +28,7 @@ export default {
     return {
       actions: [
         {
-          text: 'Share',
+          text: 'Invite',
           icon: 'Matches',
         },
         {
@@ -37,7 +37,7 @@ export default {
           path: 'new_leaderboard',
         },
         {
-          text: 'Add',
+          text: 'New',
           icon: 'plus',
           path: 'new_leaderboard',
         },

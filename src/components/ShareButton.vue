@@ -1,10 +1,10 @@
 <template>
   <div
     class="visibility-hidden tooltip"
-    data-tooltip="Copied!"
+    data-tooltip="URL Copied!"
     @click="copy($event)"
   >
-    <span class="mr-1">Share </span><BaseIcon name="share" />
+    <span class="mr-1">Invite </span><BaseIcon name="share" />
   </div>
 </template>
 
