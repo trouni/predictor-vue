@@ -38,4 +38,16 @@ export default {
 .home-img {
   width: 40px;
 }
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .step {
+    h5 {
+      font-size: 1.3em;
+      margin: ($spacer * 2) 0 $spacer 0;
+    }
+  }
+  .home-img {
+    width: $spacer * 8;
+  }
+}
 </style>

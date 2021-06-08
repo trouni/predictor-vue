@@ -6,7 +6,7 @@
         <div class="banner-container">
           <h1>Octacle</h1>
           <p>Join. Predict. Win.</p>
-          <div class="mt-3">
+          <div class="xs:mt-3 sm:mt-7">
             <BaseButton>
               <BaseLink
                 :to="{ path: '/matches' }"
@@ -47,7 +47,7 @@ export default {
         img: `${require('../assets/football.png')}`,
       },
       {
-        title: 'Create/Join a League',
+        title: 'Join a League',
         description: 'Join friends and compete for the highest score.',
         img: `${require('../assets/player.png')}`,
       },
@@ -107,7 +107,21 @@ export default {
   .steps {
     flex-direction: row;
     justify-content: space-around;
-    padding: ($spacer * 4) 0 ($spacer * 4) 0;
+    padding: ($spacer * 8) 0 ($spacer * 8) 0;
+  }
+  .banner {
+    padding: 150px 0;
+    h1 {
+      font-size: 5em;
+    }
+    p {
+      font-size: 2em;
+    }
+  }
+  .banner-container {
+    padding-right: $spacer * 10;
+    padding-left: $spacer * 10;
+    width: 100%;
   }
 }
 </style>
