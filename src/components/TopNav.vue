@@ -1,6 +1,11 @@
 <template>
   <div id="top-nav">
-    <BaseLink :to="{ name: 'home' }"> LOGO </BaseLink>
+    <BaseLink :to="{ name: 'home' }" class="opacity-100"
+      ><img
+        alt="football graphic"
+        :src="require('../assets/logo.png')"
+        class="logo-img"
+    /></BaseLink>
     <ul class="top-nav-container">
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
@@ -60,17 +65,6 @@ export default {
   padding: $spacer;
   color: white;
   height: 64px;
-  a {
-    opacity: 0.7;
-    margin: $spacer * 2;
-    color: white;
-  }
-  .active {
-    opacity: 1;
-  }
-  a:hover {
-    opacity: 1;
-  }
 }
 
 .top-nav-container {
@@ -82,8 +76,23 @@ export default {
   align-items: center;
   font-size: 1.5em;
   a {
+    opacity: 0.7;
+    margin: $spacer * 2;
+    color: white;
     display: inline-block;
   }
+  .active {
+    opacity: 1;
+  }
+  a:hover {
+    opacity: 1;
+  }
+}
+
+.logo-img {
+  width: 50px;
+  opacity: 1;
+  margin: $spacer * 2;
 }
 
 // TODO: Hide when mobile
