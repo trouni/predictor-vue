@@ -59,10 +59,9 @@ export default {
         zIndex: 100 - this.index,
         transform: `translate(${this.deltaX}px, ${this.deltaY}px)
                     rotate(${this.rotation}deg)
-                    scale(${(20 - this.index) / 20})
-                    translateY(-${15 * this.index}px)`,
-        // opacity: (10 - this.index) / 10,
+                    scale(${(20 - this.index) / 20})`,
         'transition-property': this.moving ? 'none' : 'all',
+        display: this.index > 3 ? 'none' : 'unset',
         cursor: this.cursor,
         'will-change': 'transform',
       }
@@ -155,6 +154,12 @@ export default {
   },
 
   methods: {
+    resetCard() {
+      this.deltaX = 0
+      this.deltaY = 0
+      this.$el.style.opacity = 1
+      this.$emit('input', '')
+    },
     dragCard(e) {
       if (!this.active) return
 
@@ -170,11 +175,9 @@ export default {
         this.$el.style.opacity = 0
         this.deltaX = Math.abs(e.velocityX + 0.5) * this.deltaX * 10
         this.deltaY = Math.abs(e.velocityY + 0.5) * this.deltaY * 10
-        this.$emit('remove', this.choice)
+        this.$emit('submit', this.choice)
       } else {
-        this.deltaX = 0
-        this.deltaY = 0
-        this.$emit('input', '')
+        this.resetCard()
       }
     },
   },

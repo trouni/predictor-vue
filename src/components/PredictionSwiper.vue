@@ -17,11 +17,12 @@
     >
       <PredictionSwiperCard
         v-for="(match, index) in matches"
-        :active="index === 0"
+        ref="card"
         :key="match.id"
+        :active="index === 0"
         :match="match"
         :index="index"
-        @remove="choice => removeMatch(match, choice)"
+        @submit="choice => submitPrediction(match, choice)"
         v-model="choice"
       />
     </div>
@@ -41,6 +42,7 @@
 import PredictionSwiperCard from '@/components/PredictionSwiperCard'
 import PredictionSwiperStatus from '@/components/PredictionSwiperStatus'
 import { formatDateTime } from '@/utils/helpers'
+import { mapActions } from 'vuex'
 
 export default {
   components: { PredictionSwiperCard, PredictionSwiperStatus },
@@ -72,17 +74,25 @@ export default {
   },
 
   methods: {
-    removeMatch(match, choice) {
+    ...mapActions({
+      setPrediction: 'matches/setPrediction',
+    }),
+    submitPrediction(match, choice) {
       this.choiceConfirmed = true
       this.choice = choice
-      setTimeout(() => {
-        this.$emit('predict', { match, choice })
+      setTimeout(async () => {
+        try {
+          await this.setPrediction({ match, choice })
+          setTimeout(() => {
+            this.choice = ''
+            this.statusMatch = this.currentMatch
+            this.choiceConfirmed = false
+          }, 500)
+        } catch {
+          this.$refs.card[0].resetCard()
+          this.choiceConfirmed = false
+        }
       }, 300)
-      setTimeout(() => {
-        this.choice = ''
-        this.statusMatch = this.currentMatch
-        this.choiceConfirmed = false
-      }, 1000)
     },
     formatDateTime,
   },

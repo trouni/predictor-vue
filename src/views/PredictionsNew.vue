@@ -1,5 +1,5 @@
 <template>
-  <PredictionSwiper :matches="missingPredictions" @predict="setPrediction" />
+  <PredictionSwiper :matches="missingPredictions" />
 </template>
 
 <script>
@@ -43,7 +43,6 @@ export default {
   methods: {
     ...mapActions({
       fetchMatches: 'matches/fetchMatches',
-      setPrediction: 'matches/setPrediction',
     }),
   },
 }
