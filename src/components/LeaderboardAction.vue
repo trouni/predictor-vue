@@ -3,8 +3,13 @@
     <BaseLink v-if="path" :to="{ name: path }">
       <span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
     </BaseLink>
-
-    <ShareButton v-else :password="leaderboard.password" />
+    <ShareButton
+      v-else-if="action === 'invite'"
+      :password="leaderboard.password"
+    />
+    <div v-else-if="action === 'leave'"
+      ><span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
+    </div>
   </div>
 </template>
 
@@ -30,6 +35,11 @@ export default {
       required: false,
     },
     path: {
+      type: String,
+      default: null,
+      required: false,
+    },
+    action: {
       type: String,
       default: null,
       required: false,
