@@ -1,7 +1,7 @@
 <template>
   <div class="swiper overflow-hidden flex">
     <div class="flex flex-col justify-center items-center w-full my-5">
-      <div class="absolute bottom-28 text-center">
+      <div class="absolute top-16 text-center">
         <p class="text-gray-500 font-light text-xs">{{
           formatDateTime(currentMatch.kickoffTime)
         }}</p>
@@ -19,33 +19,53 @@
         v-for="(match, index) in matches"
         ref="card"
         :key="match.id"
-        :active="index === 0"
+        :active="match.id === currentMatch.id"
         :match="match"
         :index="index"
-        @submit="choice => submitPrediction(match, choice)"
+        @submit="confirmChoice"
         v-model="choice"
       />
     </div>
     <div
-      v-if="statusMatch"
-      :class="[
-        'absolute left-0 top-16 z-10 w-full flex justify-center text-center pointer-events-none transform transition',
-        choiceConfirmed ? 'opacity-100 scale-100' : 'opacity-70 scale-90',
-      ]"
+      v-if="currentMatch"
+      class="flex flex-col items-center justify-center absolute top-1/3 left-1/2 transform -translate-x-1/2 w-full"
     >
-      <PredictionSwiperStatus :match="statusMatch" :choice="choice" />
+      <PredictionSwiperStatus
+        :match="currentMatch"
+        :choice="choice"
+        :class="[
+          'pointer-events-none transform transition',
+          needsConfirmation ? 'opacity-100 scale-100' : 'opacity-70 scale-90',
+        ]"
+      />
+      <transition>
+        <div v-if="needsConfirmation" class="mt-16 w-full text-center">
+          <h4 class="text-xl mb-3">Confirm your prediction?</h4>
+          <div class="flex justify-evenly w-full items-center z-50">
+            <UndoButton @click="undoChoice" class="z-50" />
+            <ConfirmButton @click="submitPrediction" />
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
+import UndoButton from '@/components/UndoButton'
+import ConfirmButton from '@/components/ConfirmButton'
 import PredictionSwiperCard from '@/components/PredictionSwiperCard'
 import PredictionSwiperStatus from '@/components/PredictionSwiperStatus'
 import { formatDateTime } from '@/utils/helpers'
 import { mapActions } from 'vuex'
 
 export default {
-  components: { PredictionSwiperCard, PredictionSwiperStatus },
+  components: {
+    PredictionSwiperCard,
+    PredictionSwiperStatus,
+    UndoButton,
+    ConfirmButton,
+  },
 
   props: {
     matches: Array,
@@ -54,15 +74,8 @@ export default {
   data() {
     return {
       choice: '',
-      choiceConfirmed: false,
-      statusMatch: null,
+      needsConfirmation: false,
     }
-  },
-
-  watch: {
-    currentMatch(newMatch) {
-      if (!this.statusMatch) this.statusMatch = newMatch
-    },
   },
 
   computed: {
@@ -75,24 +88,33 @@ export default {
 
   methods: {
     ...mapActions({
+      fetchMatches: 'matches/fetchMatches',
       setPrediction: 'matches/setPrediction',
     }),
-    submitPrediction(match, choice) {
-      this.choiceConfirmed = true
+    resetSwiper() {
+      this.needsConfirmation = false
+      this.choice = ''
+      this.$refs.card[0].resetCard()
+    },
+    confirmChoice(choice) {
+      this.needsConfirmation = true
       this.choice = choice
-      setTimeout(async () => {
-        try {
-          await this.setPrediction({ match, choice })
-          setTimeout(() => {
-            this.choice = ''
-            this.statusMatch = this.currentMatch
-            this.choiceConfirmed = false
-          }, 500)
-        } catch {
-          this.$refs.card[0].resetCard()
-          this.choiceConfirmed = false
-        }
-      }, 300)
+    },
+    undoChoice() {
+      console.log('undo')
+      this.resetSwiper()
+    },
+    async submitPrediction() {
+      try {
+        await this.setPrediction({
+          match: this.currentMatch,
+          choice: this.choice,
+        })
+      } catch {
+        this.fetchMatches()
+      } finally {
+        this.resetSwiper()
+      }
     },
     formatDateTime,
   },

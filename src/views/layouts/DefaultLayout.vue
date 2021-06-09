@@ -5,7 +5,7 @@
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
     <main
-      class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12"
+      class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12 relative"
       ref="main"
     >
       <transition>
