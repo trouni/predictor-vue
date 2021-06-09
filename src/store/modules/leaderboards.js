@@ -75,14 +75,12 @@ export const actions = {
     if (leaderboard) commit('SET_CURRENT_LEADERBOARD_ID', leaderboardId)
     return leaderboard
   },
-
   joinLeaderboard({ dispatch }, password) {
     return LeaderboardsRepository.joinLeaderboard(password).then(response => {
       dispatch('selectLeaderboard', response.data.id)
       return response.data
     })
   },
-
   postLeaderboard({ dispatch, rootGetters }, { competitionId, name } = {}) {
     competitionId =
       competitionId || rootGetters['competitions/currentCompetition'].id
@@ -92,5 +90,11 @@ export const actions = {
         return response.data.id
       }
     )
+  },
+  leaveLeaderboard({ dispatch }, password) {
+    return LeaderboardsRepository.joinLeaderboard(password).then(response => {
+      dispatch('selectLeaderboard', response.data.id)
+      return response.data
+    })
   },
 }

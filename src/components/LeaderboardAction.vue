@@ -7,13 +7,14 @@
       v-else-if="action === 'invite'"
       :password="leaderboard.password"
     />
-    <div v-else-if="action === 'leave'"
+    <div v-else-if="action === 'leave'" @click="leave"
       ><span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import ShareButton from '@/components/ShareButton'
 export default {
   components: { ShareButton },
@@ -43,6 +44,16 @@ export default {
       type: String,
       default: null,
       required: false,
+    },
+  },
+  methods: {
+    ...mapActions({
+      leaveLeaderboard: 'leaderboards/leaveLeaderboard',
+    }),
+    async leave() {
+      console.log(this.leaderboard.id)
+      // await this.leaveLeaderboard(this.leaderboard.id)
+      // do what next?
     },
   },
 }
