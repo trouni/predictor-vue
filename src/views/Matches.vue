@@ -9,6 +9,11 @@
           Make your predictions
         </BaseLink>
       </BaseButton>
+      <BaseButton v-else class="uppercase text-center m-5">
+        <BaseLink :to="{ path: '/predictions/edit' }">
+          Update your predictions
+        </BaseLink>
+      </BaseButton>
     </div>
     <MatchesGrouping
       v-for="group in groupedMatches"

@@ -40,11 +40,16 @@ export const actions = {
       return response.data
     })
   },
-  setPrediction({ commit }, { match, choice }) {
-    const action = match.prediction ? 'patchPrediction' : 'postPrediction'
-    return MatchesRepository[action](match.id, choice).then(response => {
-      commit('SET_PREDICTION', response.data)
-      return response.data
-    })
+  async setPrediction({ commit }, { match, choice, delay = 0 } = {}) {
+    let response
+    try {
+      const action = match.prediction ? 'patchPrediction' : 'postPrediction'
+      response = await MatchesRepository[action](match.id, choice)
+    } catch {
+      response = await MatchesRepository.patchPrediction(match.id, choice)
+    } finally {
+      setTimeout(() => commit('SET_PREDICTION', response.data), delay)
+    }
+    return response.data
   },
 }

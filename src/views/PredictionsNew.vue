@@ -1,5 +1,9 @@
 <template>
-  <PredictionSwiper :matches="missingPredictions" />
+  <PredictionSwiper
+    :loading="loading"
+    :matches="missingPredictions"
+    @remove="removeMatch"
+  />
 </template>
 
 <script>
@@ -14,17 +18,23 @@ export default {
 
     await this.fetchMatches()
     this.$emit('init')
+    this.loading = false
+  },
+
+  props: {
+    allMatches: { type: Boolean, default: false },
   },
 
   data() {
     return {
-      loading: false,
+      loading: true,
     }
   },
 
   watch: {
-    missingPredictions(newValue) {
-      if (!newValue.length) this.$router.push({ path: '/matches' })
+    missingPredictions(newValue, oldValue) {
+      if (!newValue.length && oldValue.length)
+        this.$router.push({ path: '/matches' })
     },
   },
 
@@ -32,7 +42,11 @@ export default {
     ...mapGetters({ matches: 'matches/matches' }),
     missingPredictions() {
       return this.matches
-        .filter(m => !('prediction' in m) && m.status === 'upcoming')
+        .filter(
+          m =>
+            m.status === 'upcoming' &&
+            ((this.allMatches && !m.removed) || !('prediction' in m))
+        )
         .sort(
           (match1, match2) =>
             new Date(match1.kickoffTime) - new Date(match2.kickoffTime)
@@ -44,6 +58,10 @@ export default {
     ...mapActions({
       fetchMatches: 'matches/fetchMatches',
     }),
+    removeMatch(match) {
+      const index = this.matches.findIndex(m => m.id === match.id)
+      this.$set(this.matches[index], 'removed', true)
+    },
   },
 }
 </script>
