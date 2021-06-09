@@ -1,12 +1,13 @@
 <template>
   <div class="flex justify-between p-2">
     <LeaderboardAction
-      v-for="(action, index) in actions"
+      v-for="(button, index) in buttons"
       :key="index"
       :leaderboard="leaderboard"
-      :text="action.text"
-      :icon="action.icon"
-      :path="action.path"
+      :text="button.text"
+      :icon="button.icon"
+      :path="button.path"
+      :action="button.action"
     />
   </div>
 </template>
@@ -26,20 +27,22 @@ export default {
   },
   data() {
     return {
-      actions: [
+      buttons: [
         {
           text: 'Invite',
           icon: 'Matches',
+          action: 'invite',
         },
         {
           text: 'Leave',
           icon: 'sign-out-alt',
-          path: 'new_leaderboard',
+          action: 'leave',
         },
         {
           text: 'New',
           icon: 'plus',
           path: 'new_leaderboard',
+          action: 'new_leaderboard',
         },
       ],
     }
