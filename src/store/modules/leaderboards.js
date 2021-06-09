@@ -50,6 +50,10 @@ export const mutations = {
     state.leaderboards = newValue
     saveState('leaderboards', newValue)
   },
+  ADD_LEADERBOARD(state, newValue) {
+    state.leaderboards.push(newValue)
+    saveState('leaderboards', state.leaderboards)
+  },
 }
 
 export const actions = {
@@ -81,21 +85,31 @@ export const actions = {
       return response.data
     })
   },
-  postLeaderboard({ dispatch, rootGetters }, { competitionId, name } = {}) {
+  postLeaderboard(
+    { commit, dispatch, rootGetters },
+    { competitionId, name } = {}
+  ) {
     competitionId =
       competitionId || rootGetters['competitions/currentCompetition'].id
     return LeaderboardsRepository.postLeaderboard(competitionId, name).then(
       response => {
+        commit('ADD_LEADERBOARD', response.data)
         dispatch('selectLeaderboard', response.data.id)
         return response.data.id
       }
     )
   },
-  leaveLeaderboard({ dispatch }, leaderboardId) {
+  leaveLeaderboard({ commit, getters, dispatch }, leaderboardId) {
     return LeaderboardsRepository.leaveLeaderboard(leaderboardId).then(
       response => {
-        dispatch('selectLeaderboard', response.data.id)
-        return response
+        const index = getters.leaderboards.findIndex(
+          l => l.id === leaderboardId
+        )
+        const leaderboards = getters.leaderboards
+        leaderboards.splice(index, 1)
+        commit('SET_LEADERBOARDS', leaderboards)
+        dispatch('selectLeaderboard', getters.leaderboards[0].id)
+        return response.data
       }
     )
   },

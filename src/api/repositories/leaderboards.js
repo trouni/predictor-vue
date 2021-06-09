@@ -9,7 +9,7 @@ export default {
       leaderboard: { name: leaderboardName },
     })
   },
-  deleteLeaderboard(leaderboardId) {
+  leaveLeaderboard(leaderboardId) {
     return Repository.delete(`/leaderboards/${leaderboardId}`)
   },
   joinLeaderboard(password) {

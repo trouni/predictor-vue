@@ -13,7 +13,7 @@
         v-show="showModal"
         modalHeadline="Leave this leaderboard?"
         deleteMessage="You will need an invite link to rejoin."
-        @deleteRecordEvent="leaveLeaderboard"
+        @deleteRecordEvent="leave"
         @closeModal="closeModal"
       ></ConfirmDelete>
     </div>
@@ -68,10 +68,8 @@ export default {
       // TODO: Make this close the modal
       this.showModal = false
     },
-    async leaveLeaderboard() {
-      console.log(this.leaderboard.id)
-      // await this.leaveLeaderboard(this.leaderboard.id)
-      // do what next?
+    async leave() {
+      await this.leaveLeaderboard(this.leaderboard.id)
     },
   },
 }
