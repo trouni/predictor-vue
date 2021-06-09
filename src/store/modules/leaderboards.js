@@ -91,10 +91,12 @@ export const actions = {
       }
     )
   },
-  leaveLeaderboard({ dispatch }, password) {
-    return LeaderboardsRepository.joinLeaderboard(password).then(response => {
-      dispatch('selectLeaderboard', response.data.id)
-      return response.data
-    })
+  leaveLeaderboard({ dispatch }, leaderboardId) {
+    return LeaderboardsRepository.leaveLeaderboard(leaderboardId).then(
+      response => {
+        dispatch('selectLeaderboard', response.data.id)
+        return response
+      }
+    )
   },
 }

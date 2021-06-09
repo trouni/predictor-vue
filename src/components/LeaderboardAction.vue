@@ -7,8 +7,15 @@
       v-else-if="action === 'invite'"
       :password="leaderboard.password"
     />
-    <div v-else-if="action === 'leave'" @click="leave"
+    <div v-else-if="action === 'leave'" @click="showModal = !showModal"
       ><span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
+      <ConfirmDelete
+        v-show="showModal"
+        modalHeadline="Leave this leaderboard?"
+        deleteMessage="You will need an invite link to rejoin."
+        @deleteRecordEvent="leaveLeaderboard"
+        @closeModal="closeModal"
+      ></ConfirmDelete>
     </div>
   </div>
 </template>
@@ -16,8 +23,10 @@
 <script>
 import { mapActions } from 'vuex'
 import ShareButton from '@/components/ShareButton'
+import ConfirmDelete from '@/components/ConfirmDelete'
+
 export default {
-  components: { ShareButton },
+  components: { ShareButton, ConfirmDelete },
 
   props: {
     leaderboard: {
@@ -46,11 +55,20 @@ export default {
       required: false,
     },
   },
+  data() {
+    return {
+      showModal: false,
+    }
+  },
   methods: {
     ...mapActions({
       leaveLeaderboard: 'leaderboards/leaveLeaderboard',
     }),
-    async leave() {
+    closeModal() {
+      // TODO: Make this close the modal
+      this.showModal = false
+    },
+    async leaveLeaderboard() {
       console.log(this.leaderboard.id)
       // await this.leaveLeaderboard(this.leaderboard.id)
       // do what next?
