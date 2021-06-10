@@ -1,8 +1,9 @@
 <template>
   <div class="pb-20">
-    <MatchesGrouping v-if="!viewingOwnMatches" title="Predictions made by">
-      <LeaderboardRanking :user="user" />
-    </MatchesGrouping>
+    <div v-if="!viewingOwnMatches" class="mb-12">
+      <p class="text-center text-xl font-normal m-3">Predictions made by</p>
+      <LeaderboardRanking :user="user" class="m-auto max-w-xs" />
+    </div>
     <div v-else class="flex justify-center items-center my-8">
       <BaseButton
         v-if="missingPredictions.length"
@@ -48,9 +49,7 @@ export default {
   },
 
   async mounted() {
-    if (this.viewingOwnMatches) {
-      if (this.matches.length) this.$emit('init')
-    } else {
+    if (!this.viewingOwnMatches) {
       this.user = await this.fetchUser({ userId: this.userId })
     }
     await this.fetchMatches({ userId: this.userId })
@@ -66,6 +65,12 @@ export default {
         points: null,
       },
     }
+  },
+
+  watch: {
+    matches(newValue) {
+      if (newValue.length) this.$emit('init')
+    },
   },
 
   computed: {

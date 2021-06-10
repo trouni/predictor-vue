@@ -1,7 +1,6 @@
 <template>
-  <div v-if="Object.keys(matches).length || $slots.default" class="mb-10">
+  <div v-if="Object.keys(matches).length" class="mb-10">
     <h3 class="text-center uppercase font-normal">{{ title }}</h3>
-    <slot />
     <div v-for="(dayMatches, date) in matches" :key="date">
       <div v-if="dayMatches.length">
         <h4
