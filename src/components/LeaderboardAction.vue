@@ -70,6 +70,7 @@ export default {
     },
     async leave() {
       await this.leaveLeaderboard(this.leaderboard.id)
+      this.closeModal()
     },
   },
 }
