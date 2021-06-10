@@ -1,66 +1,64 @@
 <template>
-  <div class="swiper overflow-hidden flex">
-    <div class="flex flex-col justify-center items-center w-full my-5">
-      <div v-if="currentMatch" class="absolute top-16 text-center">
-        <p class="text-gray-500 font-light text-xs">{{
-          formatDateTime(currentMatch.kickoffTime)
-        }}</p>
-        <h2 class="mt-3 text-2xl">
-          {{ currentMatch.teamHome.name }}
-          <span class="font-light text-gray-500">v.</span>
-          {{ currentMatch.teamAway.name }}
-        </h2>
+  <div class="w-full h-full flex flex-col">
+    <div
+      class="overflow-hidden flex flex-col justify-around items-center flex-grow h-full"
+    >
+      <div class="flex flex-col justify-center items-center w-full h-1/5">
+        <div v-if="currentMatch" class="text-center">
+          <p class="text-gray-500 font-light text-xs md:text-lg">{{
+            formatDateTime(currentMatch.kickoffTime)
+          }}</p>
+          <h2 class="text-2xl md:text-3xl">
+            {{ currentMatch.teamHome.name }}
+            <span class="font-light text-gray-500">v.</span>
+            {{ currentMatch.teamAway.name }}
+          </h2>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-end z-50 h-2/5">
+        <transition>
+          <PredictionSwiperStatus
+            v-if="currentMatch && choice"
+            :match="currentMatch"
+            :choice="choice"
+            :class="[
+              'pointer-events-none transform transition',
+              awaitingConfirmation
+                ? 'opacity-100 scale-100'
+                : 'opacity-70 scale-90',
+            ]"
+          />
+        </transition>
+      </div>
+      <div
+        class="w-full text-center flex flex-col justify-center items-center h-2/5"
+      >
+        <div v-if="showConfirm" class="contents">
+          <h4 class="text-xl mb-3 text-glow z-50"
+            >{{ currentMatchHasPrediction ? 'Keep' : 'Confirm' }} your
+            prediction?</h4
+          >
+          <div class="flex justify-evenly w-full items-center z-50">
+            <UndoButton @click="undoChoice" />
+            <ConfirmButton @click="submitPrediction" />
+          </div>
+        </div>
       </div>
     </div>
     <div
-      class="flex-grow text-center flex justify-center fixed top-1/3 w-full left-0"
+      class="h-full overflow-hidden flex flex-col justify-center items-center absolute transform top-1/2 -translate-y-1/2 w-full left-0 max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80"
     >
-      <div v-if="loading"></div>
       <PredictionSwiperCard
         v-for="(match, index) in matches"
         ref="card"
         :key="match.id"
-        :active="
-          match.id === currentMatch.id && !awaitingConfirmation && !loading
-        "
+        :active="match.id === currentMatch.id && !awaitingConfirmation"
         :match="match"
         :index="index"
         @submit="confirmChoice"
         v-model="choice"
       />
     </div>
-    <div
-      v-if="currentMatch"
-      class="flex flex-col items-center justify-center absolute top-1/3 left-1/2 transform -translate-x-1/2 w-full"
-    >
-      <PredictionSwiperStatus
-        :match="currentMatch"
-        :choice="choice"
-        :class="[
-          'pointer-events-none transform transition',
-          awaitingConfirmation
-            ? 'opacity-100 scale-100'
-            : 'opacity-70 scale-90',
-        ]"
-      />
-    </div>
-    <transition>
-      <div
-        v-if="choice && awaitingConfirmation"
-        class="absolute bottom-28 left-0 w-full text-center"
-      >
-        <h4 class="text-xl mb-3"
-          >{{ currentMatchHasPrediction ? 'Keep' : 'Confirm' }} your
-          prediction?</h4
-        >
-        <div class="flex justify-evenly w-full items-center z-50">
-          <UndoButton @click="undoChoice" class="z-50">Redo</UndoButton>
-          <ConfirmButton @click="submitPrediction">{{
-            currentMatchHasPrediction ? 'Keep' : 'Confirm'
-          }}</ConfirmButton>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -82,7 +80,6 @@ export default {
 
   props: {
     matches: Array,
-    loading: Boolean,
   },
 
   data() {
@@ -94,7 +91,6 @@ export default {
 
   watch: {
     currentMatch(newMatch) {
-      this.awaitingConfirmation = false
       if ('prediction' in newMatch) {
         this.choice = newMatch.prediction.choice
         this.awaitingConfirmation = true
@@ -109,7 +105,7 @@ export default {
       return this.matches[0]
     },
     showConfirm() {
-      return this.awaitingConfirmation
+      return this.awaitingConfirmation && !!this.choice && !!this.currentMatch
     },
     currentMatchHasPrediction() {
       return (
@@ -126,7 +122,6 @@ export default {
     }),
     resetSwiper() {
       this.awaitingConfirmation = false
-      this.choice = ''
       this.$refs.card[0].resetCard()
     },
     confirmChoice(choice) {
@@ -134,19 +129,22 @@ export default {
       this.choice = choice
     },
     undoChoice() {
+      this.choice = ''
       this.resetSwiper()
     },
     async submitPrediction() {
       try {
-        await this.setPrediction({
-          match: this.currentMatch,
-          choice: this.choice,
-          delayFetch: 500,
-        })
-        this.$emit('remove', this.currentMatch)
+        if (this.choice) {
+          await this.setPrediction({
+            match: this.currentMatch,
+            choice: this.choice,
+          })
+          this.$emit('remove', this.currentMatch)
+        }
       } catch {
         this.fetchMatches()
       } finally {
+        this.choice = ''
         this.resetSwiper()
       }
     },

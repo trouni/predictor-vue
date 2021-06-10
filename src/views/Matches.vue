@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-20">
     <div class="flex justify-center">
       <BaseButton
         v-if="missingPredictions.length"
