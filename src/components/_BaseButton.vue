@@ -1,5 +1,8 @@
 <template>
-  <button v-on="$listeners">
+  <button
+    v-on="$listeners"
+    class="rounded-lg shadow bg-red-500 hover:bg-red-400 active:bg-red-600"
+  >
     <slot />
   </button>
 </template>
@@ -12,7 +15,6 @@ button {
   padding: $size-button-padding;
   color: $color-button-text;
   cursor: pointer;
-  background: $red;
   border: none;
   &:disabled {
     cursor: not-allowed;
