@@ -55,6 +55,7 @@ export default {
 
   mounted() {
     this.$emit('init')
+    if (this.isJoinLink()) this.register = true
   },
 
   methods: {
@@ -98,6 +99,11 @@ export default {
           this.processingForm = false
           this.authError = error.full_messages.join('<br/>')
         })
+    },
+    isJoinLink() {
+      return location.search.split('redirectFrom=')[1].match(/join/)
+        ? true
+        : false
     },
   },
 }
