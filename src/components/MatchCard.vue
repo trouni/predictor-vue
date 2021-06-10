@@ -40,7 +40,7 @@
 <script>
 import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
-import { formatDateTime } from '@/utils/helpers'
+import { formatTime } from '@/utils/helpers'
 
 export default {
   components: { PredictionChoiceTeam, PredictionChoiceDraw },
@@ -79,7 +79,7 @@ export default {
         return 'default'
       }
     },
-    formatDateTime,
+    formatTime,
   },
 
   computed: {
@@ -92,7 +92,7 @@ export default {
       } else if (this.match.status === 'started') {
         return 'In Progress'
       } else {
-        return this.formatDateTime(this.match.kickoffTime)
+        return 'Kick-off at ' + this.formatTime(this.match.kickoffTime)
       }
     },
     madePrediction() {

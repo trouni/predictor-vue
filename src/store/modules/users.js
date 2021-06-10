@@ -14,9 +14,11 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchUser({ commit, state, rootState }, { userId }) {
+  fetchUser({ commit, state, rootState }, { userId, competitionId }) {
     // 1. Check if we already have the user as a current user.
     const { currentUser } = rootState.auth
+    const { currentCompetitionId } = rootState.competitions
+    competitionId = competitionId || currentCompetitionId
     if (currentUser && currentUser.id === userId) {
       return Promise.resolve(currentUser)
     }
@@ -29,7 +31,7 @@ export const actions = {
 
     // 3. Fetch the user from the API and cache it in case
     //    we need it again in the future.
-    return UsersRepository.getUser(userId).then(response => {
+    return UsersRepository.getUser(userId, { competitionId }).then(response => {
       const user = response.data
       commit('CACHE_USER', user)
       return user

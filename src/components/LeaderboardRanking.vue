@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex ranking w-100 mt-1">
     <div class="d-flex min-w-0">
-      <div class="position w-50">
+      <div v-if="position !== null" class="position w-50">
         <p>{{ ordinalize(position + 1) }}</p>
       </div>
       <!-- <div class="direction w-50">
@@ -32,7 +32,13 @@
           />
         </div>
       </div>
-      <div class="name w-100 truncate"> {{ user.name }}</div>
+      <BaseLink
+        :to="{ path: '/matches', query: { userId: user.userId } }"
+        :disabled="!linkPredictions"
+        class="name w-100 truncate"
+      >
+        {{ user.name }}
+      </BaseLink>
     </div>
     <div class="points w-50"> {{ user.points }}</div>
   </div>
@@ -49,6 +55,11 @@ export default {
     },
     position: {
       type: Number,
+      default: null,
+    },
+    linkPredictions: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

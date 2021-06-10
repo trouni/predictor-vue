@@ -1,8 +1,8 @@
 <template>
-  <a v-if="href" :href="href" target="_blank" v-bind="$attrs">
+  <a v-if="href" :href="href" target="_blank" v-bind="$attrs" :style="style">
     <slot />
   </a>
-  <RouterLink v-else :to="routerLinkTo" v-bind="$attrs">
+  <RouterLink v-else :to="routerLinkTo" v-bind="$attrs" :style="style">
     <slot />
   </RouterLink>
 </template>
@@ -31,6 +31,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     routerLinkTo({ name, params }) {
@@ -38,6 +42,12 @@ export default {
         name,
         params,
         ...(this.to || {}),
+      }
+    },
+    style() {
+      return {
+        cursor: this.disabled ? 'default' : 'pointer',
+        'pointer-events': this.disabled ? 'none' : 'auto',
       }
     },
   },

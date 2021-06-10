@@ -5,6 +5,7 @@
       :key="user.id"
       :user="user"
       :position="index"
+      :link-predictions="true"
     />
   </div>
 </template>
