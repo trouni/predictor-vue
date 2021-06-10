@@ -40,7 +40,9 @@
           @keypress.enter="submit"
         />
 
-        <p>Display Name</p>
+        <p id="name-label"
+          >Display Name <BaseIcon v-if="userNameUpdated" name="check"
+        /></p>
         <div class="flex">
           <BaseInputText
             v-model="user.name"
@@ -118,6 +120,7 @@ export default {
       loading: false,
       processingForm: false,
       user: null,
+      userNameUpdated: false,
       cloudName: config.cloudName,
     }
   },
@@ -143,8 +146,8 @@ export default {
       }
       this.user = await this.patchUser(formData)
       this.name = this.user.name
+      this.userNameUpdated = true
       this.processingForm = false
-      // show success?
     },
     openUploadModal() {
       window.cloudinary
