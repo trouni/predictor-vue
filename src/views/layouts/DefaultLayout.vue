@@ -10,13 +10,13 @@
     >
       <transition>
         <RouterView
-          v-show="componentInitialized"
+          v-show="$store.getters.DOMLoaded && componentInitialized"
           :key="$route.fullPath"
           @init="componentInitialized = true"
         ></RouterView>
       </transition>
       <div
-        v-if="!componentInitialized"
+        v-if="!$store.getters.DOMLoaded || !componentInitialized"
         class="flex justify-center items-center h-full w-full"
       >
         <BaseSpinner class="text-gray-600" />

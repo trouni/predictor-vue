@@ -1,9 +1,5 @@
 <template>
-  <PredictionSwiper
-    :loading="loading"
-    :matches="missingPredictions"
-    @remove="removeMatch"
-  />
+  <PredictionSwiper :matches="missingPredictions" @remove="removeMatch" />
 </template>
 
 <script>
@@ -14,21 +10,12 @@ export default {
   components: { PredictionSwiper },
 
   async mounted() {
-    if (this.matches.length) this.$emit('init')
-
     await this.fetchMatches()
     this.$emit('init')
-    this.loading = false
   },
 
   props: {
     allMatches: { type: Boolean, default: false },
-  },
-
-  data() {
-    return {
-      loading: true,
-    }
   },
 
   watch: {

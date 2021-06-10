@@ -7,6 +7,12 @@
 <script>
 export default {
   name: 'App',
+
+  mounted() {
+    window.addEventListener('load', () => {
+      this.$store.dispatch('SetDOMLoaded')
+    })
+  },
 }
 </script>
 
