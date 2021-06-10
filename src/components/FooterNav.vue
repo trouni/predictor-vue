@@ -1,6 +1,6 @@
 <template>
-  <div id="footer-nav" class="pt-5">
-    <ul class="footer-container">
+  <div id="footer-nav" class="h-16 shadow-2xl">
+    <ul class="footer-container flex h-full items-center">
       <NavBarRoutes :routes="persistentNavRoutes" />
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
@@ -72,8 +72,6 @@ export default {
 }
 
 .footer-container {
-  padding: 0 $size-grid-padding;
-  margin: 0 0 $size-grid-padding;
   text-align: center;
   list-style-type: none;
   display: flex;

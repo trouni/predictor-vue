@@ -31,9 +31,10 @@ export default {
       <BaseLink
         key={route.name}
         to={processRoute(route)}
-        exact-active-class='active'
+        exact-active-class='text-black shadow-inner bg-gray-100 cursor-default leading-none'
+        class='text-gray-600 flex-grow h-full no-underline'
       >
-        <li>
+        <li class='flex h-full w-full items-center justify-center'>
           <BaseIcon name={route.fontAwesomeClass} />
         </li>
       </BaseLink>
@@ -41,17 +42,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles';
-
-a.active {
-  color: $dark-gray;
-  text-decoration: none;
-  cursor: default;
-}
-
-a {
-  color: $gray;
-}
-</style>
