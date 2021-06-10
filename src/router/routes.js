@@ -95,12 +95,25 @@ export default [
             path: 'predictions',
             name: 'predictions',
             component: () => import('@/views/PredictionsNew'),
+            props: true,
             meta: {
               authRequired: true,
-              title: 'Who will win?',
+              title: 'Pick a result',
               img: 'trophy.png',
             },
             alias: '/predictions',
+          },
+          {
+            path: 'predictions/edit',
+            name: 'edit_predictions',
+            component: () => import('@/views/PredictionsNew'),
+            props: { allMatches: true },
+            meta: {
+              authRequired: true,
+              title: 'Pick a result',
+              img: 'trophy.png',
+            },
+            alias: '/predictions/edit',
           },
           {
             path: 'leaderboards/new',

@@ -5,18 +5,19 @@
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
     <main
-      class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12"
+      class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12 relative"
       ref="main"
     >
       <transition>
         <RouterView
-          v-show="componentInitialized"
+          v-show="$store.getters.DOMLoaded && componentInitialized"
+          class="h-full"
           :key="$route.fullPath"
           @init="componentInitialized = true"
         ></RouterView>
       </transition>
       <div
-        v-if="!componentInitialized"
+        v-if="!$store.getters.DOMLoaded || !componentInitialized"
         class="flex justify-center items-center h-full w-full"
       >
         <BaseSpinner class="text-gray-600" />

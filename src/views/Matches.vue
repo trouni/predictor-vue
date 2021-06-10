@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-20">
     <div class="flex justify-center">
       <BaseButton
         v-if="missingPredictions.length"
@@ -7,6 +7,11 @@
       >
         <BaseLink :to="{ path: '/predictions' }">
           Make your predictions
+        </BaseLink>
+      </BaseButton>
+      <BaseButton v-else class="uppercase text-center m-5">
+        <BaseLink :to="{ path: '/predictions/edit' }">
+          Update your predictions
         </BaseLink>
       </BaseButton>
     </div>

@@ -7,6 +7,24 @@ import modules from './modules'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  state: {
+    DOMLoaded: false,
+  },
+  getters: {
+    DOMLoaded(state) {
+      return state.DOMLoaded
+    },
+  },
+  mutations: {
+    SET_DOM_LOADED(state) {
+      state.DOMLoaded = true
+    },
+  },
+  actions: {
+    SetDOMLoaded({ commit }) {
+      commit('SET_DOM_LOADED')
+    },
+  },
   modules,
   // Enable strict mode in development to get a warning
   // when mutating state outside of a mutation.
