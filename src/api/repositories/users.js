@@ -1,8 +1,8 @@
 import Repository from './repository'
 
 export default {
-  getUser(userId) {
-    return Repository.get(`/users/${userId}`)
+  getUser(userId, { competitionId } = {}) {
+    return Repository.get(`/users/${userId}`, { params: { competitionId } })
   },
   patchUser(userId, name, photoKey) {
     return Repository.patch(`/users/${userId}`, {

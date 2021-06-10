@@ -15,12 +15,28 @@ export function clearLocalStorage() {
   window.localStorage.clear()
 }
 
-export function formatDateTime(date) {
-  return new Date(date).toLocaleTimeString('en-GB', {
+export function formatDate(date) {
+  return new Date(date).toLocaleDateString(navigator.language || 'en-GB', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+  })
+}
+
+export function formatDateTime(date) {
+  return new Date(date).toLocaleTimeString(navigator.language || 'en-GB', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+export function formatTime(date) {
+  return new Date(date).toLocaleTimeString(navigator.language || 'en-GB', {
     hour: '2-digit',
     minute: '2-digit',
   })
