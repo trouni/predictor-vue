@@ -18,9 +18,9 @@
       <div class="flex flex-col items-center justify-end z-50 h-2/5">
         <transition>
           <PredictionSwiperStatus
-            v-if="currentMatch && choice"
-            :match="currentMatch"
-            :choice="choice"
+            v-if="prediction.choice"
+            :match="prediction.match"
+            :choice="prediction.choice"
             :class="[
               'pointer-events-none transform transition',
               awaitingConfirmation
@@ -46,7 +46,7 @@
       </div>
     </div>
     <div
-      class="h-full overflow-hidden flex flex-col justify-center items-center absolute transform top-1/2 -translate-y-1/2 w-full left-0 max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80"
+      class="h-full overflow-hidden flex flex-col justify-center items-center absolute transform top-1/2 -translate-y-1/2 w-full left-0"
     >
       <PredictionSwiperCard
         v-for="(match, index) in matches"
@@ -56,7 +56,7 @@
         :match="match"
         :index="index"
         @submit="confirmChoice"
-        v-model="choice"
+        v-model="prediction"
       />
     </div>
   </div>
@@ -84,7 +84,10 @@ export default {
 
   data() {
     return {
-      choice: '',
+      prediction: {
+        choice: '',
+        match: {},
+      },
       awaitingConfirmation: false,
     }
   },
@@ -92,7 +95,7 @@ export default {
   watch: {
     currentMatch(newMatch) {
       if ('prediction' in newMatch) {
-        this.choice = newMatch.prediction.choice
+        this.prediction.choice = newMatch.prediction.choice
         this.awaitingConfirmation = true
       }
     },
@@ -105,12 +108,16 @@ export default {
       return this.matches[0]
     },
     showConfirm() {
-      return this.awaitingConfirmation && !!this.choice && !!this.currentMatch
+      return (
+        this.awaitingConfirmation &&
+        !!this.prediction.choice &&
+        !!this.currentMatch
+      )
     },
     currentMatchHasPrediction() {
       return (
         'prediction' in this.currentMatch &&
-        this.currentMatch.prediction.choice == this.choice
+        this.currentMatch.prediction.choice == this.prediction.choice
       )
     },
   },
@@ -126,26 +133,27 @@ export default {
     },
     confirmChoice(choice) {
       this.awaitingConfirmation = true
-      this.choice = choice
+      this.prediction.choice = choice
     },
     undoChoice() {
-      this.choice = ''
+      this.prediction.choice = ''
       this.resetSwiper()
     },
     async submitPrediction() {
       try {
-        if (this.choice) {
+        if (this.prediction.choice) {
           await this.setPrediction({
             match: this.currentMatch,
-            choice: this.choice,
+            choice: this.prediction.choice,
           })
           this.$emit('remove', this.currentMatch)
         }
       } catch {
         this.fetchMatches()
-      } finally {
-        this.choice = ''
         this.resetSwiper()
+      } finally {
+        this.prediction.choice = ''
+        this.awaitingConfirmation = false
       }
     },
     formatDateTime,

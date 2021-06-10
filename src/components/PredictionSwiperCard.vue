@@ -163,8 +163,8 @@ export default {
   },
 
   watch: {
-    choice(newChoice) {
-      this.$emit('input', newChoice)
+    choice(choice) {
+      this.$emit('input', { choice, match: this.match })
     },
   },
 
