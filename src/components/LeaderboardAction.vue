@@ -7,16 +7,16 @@
       v-else-if="action === 'invite'"
       :password="leaderboard.password"
     />
-    <div v-else-if="action === 'leave'" @click="showModal = !showModal"
+    <div v-else-if="action === 'leave'" @click="showModal = true"
       ><span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
-      <ConfirmDelete
-        v-show="showModal"
-        modalHeadline="Leave this leaderboard?"
-        deleteMessage="You will need an invite link to rejoin."
-        @deleteRecordEvent="leave"
-        @closeModal="closeModal"
-      ></ConfirmDelete>
     </div>
+    <ConfirmDelete
+      v-if="showModal"
+      modalHeadline="Leave this leaderboard?"
+      deleteMessage="You will need an invite link to rejoin."
+      @deleteRecordEvent="leave"
+      @closeModal="closeModal"
+    ></ConfirmDelete>
   </div>
 </template>
 
