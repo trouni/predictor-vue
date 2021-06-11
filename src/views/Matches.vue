@@ -4,20 +4,33 @@
       <p class="text-center text-xl font-normal m-3">Predictions made by</p>
       <LeaderboardRanking :user="user" class="m-auto max-w-xs" />
     </div>
-    <div v-else class="flex justify-center items-center my-8">
-      <BaseButton
+    <div v-else class="flex items-center justify-center my-8">
+      <div
         v-if="missingPredictions.length"
-        class="uppercase text-center m-5"
+        class="rounded-2xl text-center py-8 px-8 shadow bg-white"
       >
-        <BaseLink :to="{ path: '/predictions' }">
-          Make your predictions
-        </BaseLink>
-      </BaseButton>
-      <BaseButton v-else class="uppercase text-center m-5">
-        <BaseLink :to="{ path: '/predictions/edit' }">
-          Update your predictions
-        </BaseLink>
-      </BaseButton>
+        <p class="flex items-center justify-center text-center text-lg mb-5">
+          {{ pluralize(missingPredictions.length, 'match', 'matches') }} left to
+          predict!
+        </p>
+        <BaseButton class="uppercase text-center">
+          <BaseLink :to="{ path: '/predictions' }" class="text-xl p-3">
+            <BaseIcon name="arrow-circle-right" class="mr-3" />Make your
+            predictions
+          </BaseLink>
+        </BaseButton>
+      </div>
+      <div v-else class="rounded-2xl text-center py-8 px-8 shadow bg-white">
+        <p class="flex items-center justify-center text-center text-lg mb-5">
+          <span class="text-5xl">🥳</span> You've made predictions for all
+          upcoming matches!
+        </p>
+        <BaseButton class="uppercase text-center">
+          <BaseLink :to="{ path: '/predictions/edit' }" class="text-lg p-3">
+            <BaseIcon name="redo-alt" class="mr-3" />Update your predictions
+          </BaseLink>
+        </BaseButton>
+      </div>
     </div>
     <MatchesGrouping
       v-for="group in groupedMatches"
@@ -33,7 +46,7 @@ import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
-import { formatDate } from '@/utils/helpers'
+import { pluralize, formatDate } from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
 export default {
@@ -122,6 +135,7 @@ export default {
       fetchMatches: 'matches/fetchMatches',
       fetchUser: 'users/fetchUser',
     }),
+    pluralize,
   },
 }
 </script>

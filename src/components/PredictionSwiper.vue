@@ -96,6 +96,7 @@ export default {
     currentMatch(newMatch) {
       if ('prediction' in newMatch) {
         this.prediction.choice = newMatch.prediction.choice
+        this.prediction.match = newMatch
         this.awaitingConfirmation = true
       }
     },

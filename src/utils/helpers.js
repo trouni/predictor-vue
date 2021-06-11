@@ -2,6 +2,10 @@ export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+export function pluralize(qty, singularWord, pluralWord = singularWord + 's') {
+  return `${qty} ${qty === 1 ? singularWord : pluralWord}`
+}
+
 export function saveState(key, state) {
   if (state) window.localStorage.setItem(key, JSON.stringify(state))
   else window.localStorage.removeItem(key)

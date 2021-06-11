@@ -1005,7 +1005,7 @@ module.exports = {
     ringWidth: ['responsive', 'focus-within', 'focus'],
     rotate: ['responsive', 'hover', 'focus'],
     saturate: ['responsive'],
-    scale: ['responsive', 'hover', 'focus', 'first'],
+    scale: ['responsive', 'hover', 'focus', 'first', 'active'],
     sepia: ['responsive'],
     skew: ['responsive', 'hover', 'focus'],
     space: ['responsive'],
