@@ -5,6 +5,12 @@ import store from '@/store'
 import App from '@/App.vue'
 import * as Sentry from '@sentry/vue'
 import { Integrations } from '@sentry/tracing'
+import VueAnalytics from 'vue-analytics'
+import { config } from '@/constants'
+
+Vue.use(VueAnalytics, {
+  id: config.analyticsID,
+})
 
 Sentry.init({
   Vue,
