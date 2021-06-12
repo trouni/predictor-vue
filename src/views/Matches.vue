@@ -102,7 +102,7 @@ export default {
         {
           title: 'Ongoing Matches',
           matches: groupBy(
-            this.matches.filter(m => m.status === 'ongoing'),
+            this.matches.filter(m => m.status === 'started'),
             m => formatDate(new Date(m.kickoffTime))
           ),
         },
