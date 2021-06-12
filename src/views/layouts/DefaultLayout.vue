@@ -11,7 +11,6 @@
       <transition>
         <RouterView
           v-show="$store.getters.DOMLoaded && componentInitialized"
-          class="h-full"
           :key="$route.fullPath"
           @init="componentInitialized = true"
         ></RouterView>
