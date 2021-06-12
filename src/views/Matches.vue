@@ -14,7 +14,7 @@
           predict!
         </p>
         <BaseButton class="uppercase text-center">
-          <BaseLink :to="{ path: '/predictions' }" class="text-xl p-3">
+          <BaseLink :to="{ path: '/predictions' }" class="md:text-lg p-3">
             <BaseIcon name="arrow-circle-right" class="mr-3" />Make your
             predictions
           </BaseLink>
@@ -26,7 +26,7 @@
           upcoming matches!
         </p>
         <BaseButton class="uppercase text-center">
-          <BaseLink :to="{ path: '/predictions/edit' }" class="text-lg p-3">
+          <BaseLink :to="{ path: '/predictions/edit' }" class="md:text-lg p-3">
             <BaseIcon name="redo-alt" class="mr-3" />Update your predictions
           </BaseLink>
         </BaseButton>
