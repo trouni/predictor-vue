@@ -40,8 +40,8 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 .corner {
-  width: $spacer * 8;
-  height: $spacer * 8;
+  width: $spacer * 6;
+  height: $spacer * 6;
   border-radius: 0px $spacer 0px 100%;
   color: white;
   position: absolute;
@@ -50,8 +50,8 @@ export default {
   .num {
     margin: 0;
     position: absolute;
-    top: 10%;
-    right: 14%;
+    top: 16%;
+    right: 22%;
   }
 }
 </style>
