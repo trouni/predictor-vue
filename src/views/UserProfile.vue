@@ -103,7 +103,7 @@ export default {
   },
   async mounted() {
     this.fetchCompetitions()
-    await this.fetchUser()
+    this.user = await this.fetchUser({ userId: this.id })
     this.$emit('init')
   },
 
@@ -129,14 +129,8 @@ export default {
     ...mapActions({
       patchUser: 'users/patchUser',
       fetchCompetitions: 'competitions/fetchCompetitions',
+      fetchUser: 'users/fetchUser',
     }),
-    async fetchUser() {
-      this.loading = true
-      this.user = await this.$store.dispatch('users/fetchUser', {
-        userId: this.id,
-      })
-      this.loading = false
-    },
     async submit() {
       this.processingForm = true
       const formData = {
