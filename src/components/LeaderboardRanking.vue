@@ -2,7 +2,7 @@
   <div class="d-flex ranking w-100 mt-1">
     <div class="d-flex min-w-0">
       <div v-if="position !== null" class="position w-50">
-        <p>{{ ordinalize(position) }}</p>
+        <p>{{ ordinalize(position + 1) }}</p>
       </div>
       <!-- <div class="direction w-50">
         <p><BaseIcon name="caret-up" /></p>
@@ -141,9 +141,6 @@ export default {
 }
 
 .position {
-  .tie & {
-    @apply opacity-30;
-  }
   padding: 0 4px;
   color: $purple;
 }

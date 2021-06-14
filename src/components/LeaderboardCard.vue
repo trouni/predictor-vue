@@ -1,19 +1,17 @@
 <template>
   <div>
     <LeaderboardRanking
-      v-for="(user, index) in rankedUsers"
+      v-for="(user, index) in sortedUsers"
       :key="user.id"
       :user="user"
-      :position="user.rank"
+      :position="index"
       :link-predictions="true"
-      :class="{ tie: index && user.rank === rankedUsers[index - 1].rank }"
     />
   </div>
 </template>
 
 <script>
 import LeaderboardRanking from '@/components/LeaderboardRanking'
-import uniq from 'lodash/uniq'
 
 export default {
   components: { LeaderboardRanking },
@@ -25,17 +23,13 @@ export default {
     },
   },
   computed: {
-    rankedUsers() {
-      return this.sortedUsers.map(u => {
-        u.rank = this.uniqScores.findIndex(s => u.points === s) + 1
-        return u
-      })
-    },
-    uniqScores() {
-      return uniq(this.sortedUsers.map(u => u.points))
-    },
     sortedUsers: function () {
-      return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
+      function compare(a, b) {
+        if (a.points < b.points) return 1
+        if (a.points > b.points) return -1
+        return 0
+      }
+      return this.leaderboard.users.slice().sort(compare)
     },
   },
 }
