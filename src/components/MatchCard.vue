@@ -33,7 +33,7 @@
         @click.native="setPrediction('away')"
       />
     </div>
-    <CornerPoints :correct="correctPrediction" />
+    <CornerPoints v-if="finished" :correct="correctPrediction" :number="3" />
     <p class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
@@ -87,6 +87,9 @@ export default {
   computed: {
     disabled() {
       return !this.selectable || this.loading
+    },
+    finished() {
+      return this.match.status === 'finished'
     },
     matchDate() {
       if (this.match.status === 'finished') {
