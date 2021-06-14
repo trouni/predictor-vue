@@ -2,8 +2,10 @@
   <div :class="['corner', bgStyle]">
 
     <div class="num flex flex-col">
-      <p :class="['font-bold', 'm-0', textColor]">PTS</p>
-      <p :class="['m-0', textColor]">{{ number }}</p>
+      <!-- <p :class="['font-bold', 'm-0', textColor]">PTS</p>
+      <p :class="['m-0', textColor]">{{ number }}</p> -->
+      <p v-if="correct" :class="['m-0', textColor]"><BaseIcon name="check" /></p>
+      <p v-else :class="['m-0', textColor]"><BaseIcon name="times" /></p>
     </div>
   </div>
 </template>
@@ -13,10 +15,6 @@ export default {
   props: {
     correct: {
       type: Boolean,
-      required: true,
-    },
-    number: {
-      type: Number,
       required: true,
     },
   },

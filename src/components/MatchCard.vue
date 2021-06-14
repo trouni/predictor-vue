@@ -33,7 +33,7 @@
         @click.native="setPrediction('away')"
       />
     </div>
-    <CornerPoints v-if="finished" :correct="correctPrediction" :number="correctPrediction ? 3 : 0" />
+    <CornerPoints v-if="finished" :correct="correctPrediction" />
     <p class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
