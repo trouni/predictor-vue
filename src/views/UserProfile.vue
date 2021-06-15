@@ -4,9 +4,12 @@
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
           <div class="relative rounded-full h-24 w-24">
-            <cld-context v-if="user.photoKey" :cloudName="cloudName">
+            <cld-context
+              v-if="user.photoKey || user.photo_key"
+              :cloudName="cloudName"
+            >
               <div>
-                <cld-image :publicId="user.photoKey">
+                <cld-image :publicId="user.photoKey || user.photo_key">
                   <cld-transformation
                     width="150"
                     height="150"
