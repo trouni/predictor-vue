@@ -1,8 +1,6 @@
 <template>
   <div :class="['corner', bgStyle]">
     <div class="num flex flex-col">
-      <!-- <p :class="['font-bold', 'm-0', textColor]">PTS</p>
-      <p :class="['m-0', textColor]">{{ number }}</p> -->
       <p v-if="correct" :class="['m-0', textColor]"
         ><BaseIcon name="check"
       /></p>
