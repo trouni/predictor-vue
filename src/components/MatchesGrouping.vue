@@ -4,7 +4,7 @@
       <div v-if="dayMatches.length">
         <h4
           v-if="date !== formatDate(new Date())"
-          class="text-center font-light m-12"
+          class="text-center font-light m-8"
           >{{ date }}
         </h4>
         <MatchCard
