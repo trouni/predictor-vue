@@ -1,6 +1,6 @@
 <template>
-  <div class="header-container">
-      <p> {{ text }}</p>
+  <div class="header-container" @click="selectTab">
+      <p>{{ text }}</p>
     </div>
     <slot />
   </div>
@@ -16,6 +16,11 @@ export default {
     selected: {
       type: Boolean,
       required: true,
+    },
+  },
+  methods: {
+    selectTab() {
+      this.$emit('selectTabEvent', this.text)
     },
   },
 }

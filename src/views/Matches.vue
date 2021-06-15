@@ -34,14 +34,14 @@
     </div>
     <MatchTab v-for="tab in tabs" :key="tab" :text="tab" :selected="false" />
     <MatchesGrouping
-      v-if="tab === 'past'"
+      v-if="selectedTab === 'past'"
       v-for="group in pastMatches"
       :key="group.title"
       :title="group.title"
       :matches="group.matches"
     />
     <MatchesGrouping
-      v-if="tab === 'ongoing'"
+      v-if="selectedTab === 'ongoing'"
       v-for="group in ongoingMatches"
       :key="group.title"
       :title="group.title"
