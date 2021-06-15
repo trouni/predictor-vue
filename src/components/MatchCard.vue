@@ -5,7 +5,7 @@
       borderStyle,
     ]"
   >
-    <div class="flex align justify-evenly">
+    <div class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
         :team="match.teamHome"
@@ -16,7 +16,7 @@
       <div
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
-        <p class="mb-1 h-8 leading-none flex items-center text-sm">vs</p>
+        <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
             :status="status('draw')"
