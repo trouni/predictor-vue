@@ -32,6 +32,7 @@
         </BaseButton>
       </div>
     </div>
+    <MatchTab v-for="tab in tabs" :key="tab" :text="tab" :selected="false" />
     <MatchesGrouping
       v-if="tab === 'past'"
       v-for="group in pastMatches"
@@ -92,7 +93,8 @@ export default {
         name: null,
         points: null,
       },
-      tab: 'past',
+      selectedTab: 'upcoming',
+      tabs: ['upcoming', 'past'],
     }
   },
 
