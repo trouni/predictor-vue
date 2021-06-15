@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300',
+      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300 relative',
       borderStyle,
     ]"
   >
@@ -33,6 +33,7 @@
         @click.native="setPrediction('away')"
       />
     </div>
+    <CornerPoints v-if="finished" :correct="correctPrediction" />
     <p class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
@@ -40,10 +41,11 @@
 <script>
 import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
+import CornerPoints from './CornerPoints'
 import { formatTime } from '@/utils/helpers'
 
 export default {
-  components: { PredictionChoiceTeam, PredictionChoiceDraw },
+  components: { PredictionChoiceTeam, PredictionChoiceDraw, CornerPoints },
 
   props: {
     match: {
@@ -85,6 +87,9 @@ export default {
   computed: {
     disabled() {
       return !this.selectable || this.loading
+    },
+    finished() {
+      return this.match.status === 'finished'
     },
     matchDate() {
       if (this.match.status === 'finished') {

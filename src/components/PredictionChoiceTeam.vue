@@ -1,5 +1,5 @@
 <template>
-  <div :class="['flex flex-col my-2 items-center px-3', clickableStyle]">
+  <div :class="['flex flex-col mt-2 items-center px-3', clickableStyle]">
     <p class="uppercase mb-1 h-8 leading-none flex items-center">
       {{ team.name }}
     </p>
