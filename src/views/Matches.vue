@@ -32,7 +32,9 @@
         </BaseButton>
       </div>
     </div>
-    <MatchTab v-for="tab in tabs" :key="tab" :text="tab" :selected="false" />
+    <div class="flex justify-around">
+      <MatchTab v-for="tab in tabs" :key="tab" :text="tab" :selected="false" />
+    </div>
     <MatchesGrouping
       v-if="selectedTab === 'past'"
       v-for="(group, index) in pastMatches"

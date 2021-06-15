@@ -1,6 +1,5 @@
 <template>
   <div v-if="Object.keys(matches).length" class="mb-10">
-    <h3 class="text-center uppercase font-normal">{{ title }}</h3>
     <div v-for="(dayMatches, date) in matches" :key="date">
       <div v-if="dayMatches.length">
         <h4
@@ -31,7 +30,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    title: String,
   },
 
   methods: {

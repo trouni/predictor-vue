@@ -1,6 +1,6 @@
 <template>
   <div class="" :id="text" @click="selectTab">
-    <p>{{ text }}</p>
+    <h3 class="text-center uppercase font-normal">{{ text }}</h3>
   </div>
 </template>
 
