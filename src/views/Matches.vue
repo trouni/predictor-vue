@@ -33,7 +33,13 @@
       </div>
     </div>
     <div class="flex justify-around">
-      <MatchTab v-for="tab in tabs" :key="tab" :text="tab" :selected="false" />
+      <MatchTab
+        v-for="tab in tabs"
+        :key="tab"
+        :text="tab"
+        :selected="selectedTab == tab"
+        @selectTabEvent="changeTab"
+      />
     </div>
     <MatchesGrouping
       v-if="selectedTab === 'past'"
@@ -162,6 +168,9 @@ export default {
       fetchUser: 'users/fetchUser',
     }),
     pluralize,
+    changeTab(tabName) {
+      this.selectedTab = tabName
+    },
   },
 }
 </script>
