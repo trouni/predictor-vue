@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     tabStyle() {
-      return this.selected ? 'selected-tab' : 'opacity-60'
+      return this.selected ? 'selected-tab' : 'opacity-50'
     },
   },
 }

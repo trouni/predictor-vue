@@ -75,7 +75,6 @@ export default {
       this.user = await this.fetchUser({ userId: this.userId })
     }
     await this.fetchMatches({ userId: this.userId })
-    // console.log(this.ongoingMatches()[0].matches)
     if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
       // 'No ongoing games'
       const tabIndex = this.tabs.indexOf('ongoing')
