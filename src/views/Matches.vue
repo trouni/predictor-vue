@@ -60,6 +60,7 @@
 <script>
 import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
+import MatchTab from '@/components/MatchTab'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
 import { pluralize, formatDate } from '@/utils/helpers'
@@ -68,7 +69,7 @@ import groupBy from 'lodash/groupBy'
 export default {
   name: 'Matches',
 
-  components: { MatchesGrouping, LeaderboardRanking },
+  components: { MatchesGrouping, LeaderboardRanking, MatchTab },
 
   props: {
     userId: {
