@@ -1,5 +1,5 @@
 <template>
-  <div class="" :id="text" @click="selectTab">
+  <div class="cursor-pointer flex-1" :id="text" @click="selectTab">
     <h3 class="text-center uppercase font-normal">{{ text }}</h3>
   </div>
 </template>
