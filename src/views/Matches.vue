@@ -119,7 +119,6 @@ export default {
         return this.pastMatches()
       } else if (this.selectedTab == 'ongoing') {
         return this.ongoingMatches()
-        return matches
       } else {
         return this.upcomingMatches()
       }
