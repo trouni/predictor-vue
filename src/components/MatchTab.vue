@@ -1,8 +1,6 @@
 <template>
-  <div class="header-container" @click="selectTab">
-      <p>{{ text }}</p>
-    </div>
-    <slot />
+  <div class="" :id="text" @click="selectTab">
+    <p>{{ text }}</p>
   </div>
 </template>
 
@@ -28,5 +26,4 @@ export default {
 
 <style lang="scss" scoped>
 // @import '@/styles';
-
 </style>

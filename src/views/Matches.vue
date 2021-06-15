@@ -35,23 +35,20 @@
     <MatchTab v-for="tab in tabs" :key="tab" :text="tab" :selected="false" />
     <MatchesGrouping
       v-if="selectedTab === 'past'"
-      v-for="group in pastMatches"
-      :key="group.title"
-      :title="group.title"
+      v-for="(group, index) in pastMatches"
+      :key="index"
       :matches="group.matches"
     />
     <MatchesGrouping
       v-if="selectedTab === 'ongoing'"
-      v-for="group in ongoingMatches"
-      :key="group.title"
-      :title="group.title"
+      v-for="(group, index) in ongoingMatches"
+      :key="index"
       :matches="group.matches"
     />
     <MatchesGrouping
       v-else
-      v-for="group in upcomingMatches"
-      :key="group.title"
-      :title="group.title"
+      v-for="(group, index) in upcomingMatches"
+      :key="index"
       :matches="group.matches"
     />
   </div>
@@ -119,7 +116,7 @@ export default {
     ongoingMatches() {
       return [
         {
-          title: 'Ongoing Matches',
+          // title: 'Ongoing Matches',
           matches: groupBy(
             this.matches.filter(m => m.status === 'started'),
             m => formatDate(new Date(m.kickoffTime))
@@ -130,7 +127,7 @@ export default {
     upcomingMatches() {
       return [
         {
-          title: 'Upcoming Matches',
+          // title: 'Upcoming Matches',
           matches: groupBy(
             this.matches.filter(
               m => m.status === 'upcoming' && 'prediction' in m
@@ -143,7 +140,7 @@ export default {
     pastMatches() {
       return [
         {
-          title: 'Past Matches',
+          // title: 'Past Matches',
           matches: groupBy(
             this.matches
               .filter(m => m.status === 'finished')
