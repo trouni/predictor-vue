@@ -52,6 +52,7 @@ export default {
     position: absolute;
     top: 5%;
     right: 16%;
+    font-size: 12px;
   }
 }
 // Small devices (landscape phones, 576px and up)
@@ -65,6 +66,7 @@ export default {
       position: absolute;
       top: 16%;
       right: 22%;
+      font-size: 16px;
     }
   }
 }
