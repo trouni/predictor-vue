@@ -4,9 +4,12 @@
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
           <div class="relative rounded-full h-24 w-24">
-            <cld-context v-if="user.photoKey" :cloudName="cloudName">
+            <cld-context
+              v-if="user.photoKey || user.photo_key"
+              :cloudName="cloudName"
+            >
               <div>
-                <cld-image :publicId="user.photoKey">
+                <cld-image :publicId="user.photoKey || user.photo_key">
                   <cld-transformation
                     width="150"
                     height="150"
@@ -103,7 +106,7 @@ export default {
   },
   async mounted() {
     this.fetchCompetitions()
-    await this.fetchUser()
+    this.user = await this.fetchUser({ userId: this.id })
     this.$emit('init')
   },
 
@@ -129,14 +132,8 @@ export default {
     ...mapActions({
       patchUser: 'users/patchUser',
       fetchCompetitions: 'competitions/fetchCompetitions',
+      fetchUser: 'users/fetchUser',
     }),
-    async fetchUser() {
-      this.loading = true
-      this.user = await this.$store.dispatch('users/fetchUser', {
-        userId: this.id,
-      })
-      this.loading = false
-    },
     async submit() {
       this.processingForm = true
       const formData = {
