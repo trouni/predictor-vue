@@ -75,6 +75,13 @@ export default {
       this.user = await this.fetchUser({ userId: this.userId })
     }
     await this.fetchMatches({ userId: this.userId })
+    // console.log(this.ongoingMatches()[0].matches)
+    if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
+      // 'No ongoing games'
+      const tabIndex = this.tabs.indexOf('ongoing')
+      this.tabs.splice(tabIndex, 1)
+      this.selectedTab = this.tabs[0]
+    }
     this.$emit('init')
   },
 
@@ -86,7 +93,7 @@ export default {
         name: null,
         points: null,
       },
-      selectedTab: 'upcoming',
+      selectedTab: 'ongoing',
       tabs: ['ongoing', 'upcoming', 'past'],
     }
   },
@@ -94,7 +101,6 @@ export default {
   watch: {
     matches(newValue) {
       if (newValue.length) this.$emit('init')
-      if (this.ongoingMatches.length > 0) console.log('ongoing games')
     },
   },
 
@@ -113,11 +119,7 @@ export default {
       if (this.selectedTab == 'past') {
         return this.pastMatches()
       } else if (this.selectedTab == 'ongoing') {
-        const matches = this.ongoingMatches()
-        if (matches.length === 0) {
-          const tabIndex = this.tabs.indexOf('ongoing')
-          this.tabs.splice(tabIndex, 1)
-        }
+        return this.ongoingMatches()
         return matches
       } else {
         return this.upcomingMatches()
@@ -137,7 +139,6 @@ export default {
     ongoingMatches() {
       return [
         {
-          // title: 'Ongoing Matches',
           matches: groupBy(
             this.matches.filter(m => m.status === 'started'),
             m => formatDate(new Date(m.kickoffTime))
@@ -148,7 +149,6 @@ export default {
     pastMatches() {
       return [
         {
-          // title: 'Past Matches',
           matches: groupBy(
             this.matches
               .filter(m => m.status === 'finished')
@@ -163,7 +163,6 @@ export default {
     upcomingMatches() {
       return [
         {
-          // title: 'Upcoming Matches',
           matches: groupBy(
             this.matches.filter(
               m => m.status === 'upcoming' && 'prediction' in m
