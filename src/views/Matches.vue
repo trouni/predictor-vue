@@ -76,7 +76,7 @@ export default {
     }
     await this.fetchMatches({ userId: this.userId })
     if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
-      // 'No ongoing games'
+      // Removing 'ONGOING' tab because no ongoing games'
       const tabIndex = this.tabs.indexOf('ongoing')
       this.tabs.splice(tabIndex, 1)
       this.selectedTab = this.tabs[0]
