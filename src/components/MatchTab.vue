@@ -3,9 +3,17 @@
     :class="['cursor-pointer', 'flex-1', 'flex', 'justify-center']"
     @click="selectTab"
   >
-    <h3 :class="['text-center', 'uppercase', 'font-normal', tabStyle]">{{
-      text
-    }}</h3>
+    <h3
+      :class="[
+        'text-center',
+        'uppercase',
+        'font-normal',
+        'text-base',
+        'leading-7',
+        tabStyle,
+      ]"
+      >{{ text }}</h3
+    >
   </div>
 </template>
 
@@ -38,5 +46,6 @@ export default {
 @import '@/styles';
 .selected-tab {
   border-bottom: 2px solid $purple;
+  transition: border-bottom 0.2s ease-in-out;
 }
 </style>

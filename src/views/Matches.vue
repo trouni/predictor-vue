@@ -42,20 +42,7 @@
       />
     </div>
     <MatchesGrouping
-      v-if="selectedTab === 'past'"
-      v-for="(group, index) in pastMatches"
-      :key="index"
-      :matches="group.matches"
-    />
-    <MatchesGrouping
-      v-if="selectedTab === 'ongoing'"
-      v-for="(group, index) in ongoingMatches"
-      :key="index"
-      :matches="group.matches"
-    />
-    <MatchesGrouping
-      v-else
-      v-for="(group, index) in upcomingMatches"
+      v-for="(group, index) in groupedMatches"
       :key="index"
       :matches="group.matches"
     />
@@ -100,13 +87,14 @@ export default {
         points: null,
       },
       selectedTab: 'upcoming',
-      tabs: ['upcoming', 'past'],
+      tabs: ['ongoing', 'upcoming', 'past'],
     }
   },
 
   watch: {
     matches(newValue) {
       if (newValue.length) this.$emit('init')
+      if (this.ongoingMatches.length > 0) console.log('ongoing games')
     },
   },
 
@@ -121,25 +109,37 @@ export default {
         m => !('prediction' in m) && m.status === 'upcoming'
       )
     },
+    groupedMatches() {
+      if (this.selectedTab == 'past') {
+        return this.pastMatches()
+      } else if (this.selectedTab == 'ongoing') {
+        const matches = this.ongoingMatches()
+        if (matches.length === 0) {
+          const tabIndex = this.tabs.indexOf('ongoing')
+          this.tabs.splice(tabIndex, 1)
+        }
+        return matches
+      } else {
+        return this.upcomingMatches()
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      fetchMatches: 'matches/fetchMatches',
+      fetchUser: 'users/fetchUser',
+    }),
+    pluralize,
+    changeTab(tabName) {
+      this.selectedTab = tabName
+    },
     ongoingMatches() {
       return [
         {
           // title: 'Ongoing Matches',
           matches: groupBy(
             this.matches.filter(m => m.status === 'started'),
-            m => formatDate(new Date(m.kickoffTime))
-          ),
-        },
-      ]
-    },
-    upcomingMatches() {
-      return [
-        {
-          // title: 'Upcoming Matches',
-          matches: groupBy(
-            this.matches.filter(
-              m => m.status === 'upcoming' && 'prediction' in m
-            ),
             m => formatDate(new Date(m.kickoffTime))
           ),
         },
@@ -160,16 +160,18 @@ export default {
         },
       ]
     },
-  },
-
-  methods: {
-    ...mapActions({
-      fetchMatches: 'matches/fetchMatches',
-      fetchUser: 'users/fetchUser',
-    }),
-    pluralize,
-    changeTab(tabName) {
-      this.selectedTab = tabName
+    upcomingMatches() {
+      return [
+        {
+          // title: 'Upcoming Matches',
+          matches: groupBy(
+            this.matches.filter(
+              m => m.status === 'upcoming' && 'prediction' in m
+            ),
+            m => formatDate(new Date(m.kickoffTime))
+          ),
+        },
+      ]
     },
   },
 }
