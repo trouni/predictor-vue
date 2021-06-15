@@ -33,7 +33,7 @@
       </div>
     </div>
     <MatchesGrouping
-      v-for="group in groupedMatches"
+      v-for="group in upcomingMatches"
       :key="group.title"
       :title="group.title"
       :matches="group.matches"
@@ -77,6 +77,7 @@ export default {
         name: null,
         points: null,
       },
+      pastTab: false,
     }
   },
 
@@ -97,7 +98,7 @@ export default {
         m => !('prediction' in m) && m.status === 'upcoming'
       )
     },
-    groupedMatches() {
+    upcomingMatches() {
       return [
         {
           title: 'Ongoing Matches',
@@ -115,6 +116,10 @@ export default {
             m => formatDate(new Date(m.kickoffTime))
           ),
         },
+      ]
+    },
+    pastMatches() {
+      return [
         {
           title: 'Past Matches',
           matches: groupBy(
