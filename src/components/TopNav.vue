@@ -58,7 +58,6 @@ export default {
 @import '@/styles';
 
 #top-nav {
-  background-color: $purple;
   display: none;
   justify-content: space-between;
   align-items: center;
