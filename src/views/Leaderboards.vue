@@ -4,6 +4,8 @@
       v-if="leaderboard"
       :leaderboard="leaderboard"
       :userId="userId"
+      @selectTabEvent="changeTab"
+      :selectedTab="selectedTab"
     />
     <LeaderboardCard
       :key="leaderboard.id"
@@ -60,6 +62,14 @@ export default {
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
+    changeTab(tabName) {
+      this.selectedTab = tabName
+    },
+  },
+  data() {
+    return {
+      selectedTab: 'All',
+    }
   },
 }
 </script>

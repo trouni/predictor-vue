@@ -1,7 +1,14 @@
 <template>
-  <div class="flex justify-around">
+  <div class="flex justify-around px-2 pb-2 mb-2">
     <!-- <LeaderboardTab :leaderboard="leaderboard" /> -->
-    <div class="leaderboard-tab" v-for="tab in tabs">{{ tab.text }}</div>
+    <div
+      class="leaderboard-tab flex-1 text-center"
+      v-for="tab in tabs"
+      :key="tab.text"
+      @click="selectTab(tab)"
+    >
+      <span class="">{{ tab.text }}</span>
+    </div>
   </div>
 </template>
 
@@ -16,10 +23,13 @@ export default {
       type: Object,
       required: true,
     },
+    selectedTab: {
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
-      selectedTab: 'all',
       tabs: [
         {
           text: 'All',
@@ -56,7 +66,17 @@ export default {
       ],
     }
   },
+  methods: {
+    selectTab(tab) {
+      this.$emit('selectTabEvent', tab.text)
+    },
+  },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/styles';
+.tab-active {
+  background-color: $purple;
+}
+</style>
