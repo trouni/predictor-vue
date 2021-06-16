@@ -73,12 +73,16 @@ export default {
   async mounted() {
     if (!this.viewingOwnMatches) {
       this.user = await this.fetchUser({ userId: this.userId })
+      // Removing 'UPCOMING' for other users' pages
+      const upcomingIndex = this.tabs.indexOf('upcoming')
+      this.tabs.splice(upcomingIndex, 1)
+      this.selectedTab = this.tabs[0]
     }
     await this.fetchMatches({ userId: this.userId })
     if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
       // Removing 'ONGOING' tab because no ongoing games'
-      const tabIndex = this.tabs.indexOf('ongoing')
-      this.tabs.splice(tabIndex, 1)
+      const ongoingIndex = this.tabs.indexOf('ongoing')
+      this.tabs.splice(ongoingIndex, 1)
       this.selectedTab = this.tabs[0]
     }
     this.$emit('init')
