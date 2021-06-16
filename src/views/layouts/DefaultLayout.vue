@@ -4,25 +4,27 @@
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
-    <main
-      class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12 relative"
-      ref="main"
-    >
-      <transition>
-        <RouterView
-          v-show="$store.getters.DOMLoaded && componentInitialized"
-          class="h-full"
-          :key="$route.fullPath"
-          @init="componentInitialized = true"
-        ></RouterView>
-      </transition>
-      <div
-        v-if="!$store.getters.DOMLoaded || !componentInitialized"
-        class="flex justify-center items-center h-full w-full"
+    <div class="flex justify-center w-full h-full overflow-scroll">
+      <main
+        class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12 relative max-w-screen-md"
+        ref="main"
       >
-        <BaseSpinner class="text-gray-600" />
-      </div>
-    </main>
+        <transition>
+          <RouterView
+            v-show="$store.getters.DOMLoaded && componentInitialized"
+            class="h-full"
+            :key="$route.fullPath"
+            @init="componentInitialized = true"
+          ></RouterView>
+        </transition>
+        <div
+          v-if="!$store.getters.DOMLoaded || !componentInitialized"
+          class="flex justify-center items-center h-full w-full"
+        >
+          <BaseSpinner class="text-gray-600" />
+        </div>
+      </main>
+    </div>
     <FooterNav />
   </div>
 </template>
