@@ -4,7 +4,7 @@
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
-    <div class="flex justify-center w-full h-full">
+    <div class="flex justify-center w-full h-full overflow-scroll">
       <main
         class="bg-wrapper overflow-y-auto rounded-t-3xl flex-grow p-4 pb-12 relative max-w-screen-md"
         ref="main"
