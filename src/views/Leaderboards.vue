@@ -64,6 +64,7 @@ export default {
     }),
     changeTab(tabName) {
       this.selectedTab = tabName
+      // trigger some action to show the other page
     },
   },
   data() {

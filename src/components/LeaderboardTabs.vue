@@ -7,7 +7,10 @@
       @click="selectTab(tab)"
       class="leaderboard-tab flex-1 flex justify-center items-center cursor-pointer"
     >
-      <p :class="activeStyle(tab)">{{ tab.text }}</p>
+      <p :class="['transition', activeStyle(tab)]">
+        <BaseIcon v-if="tab.icon" :name="tab.icon" />
+        <span v-else>{{ tab.text }}</span>
+      </p>
     </div>
   </div>
 </template>
@@ -34,6 +37,7 @@ export default {
         {
           text: 'All',
           name: 'Leaderboard',
+          icon: 'trophy',
         },
         {
           text: 'A',
