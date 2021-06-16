@@ -1,12 +1,11 @@
 <template>
   <div>
-    <LeaderboardTabs
+    <!-- Uncomment when we can load the content for the tabs -->
+    <!-- <LeaderboardTabs
       v-if="leaderboard"
-      :leaderboard="leaderboard"
-      :userId="userId"
       @selectTabEvent="changeTab"
       :selectedTab="selectedTab"
-    />
+    /> -->
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
@@ -64,7 +63,7 @@ export default {
     }),
     changeTab(tabName) {
       this.selectedTab = tabName
-      // trigger some action to show the other page
+      // TODO: trigger action to show the leaderboard's predictions for this Group
     },
   },
   data() {

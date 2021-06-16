@@ -1,6 +1,5 @@
 <template>
   <div class="flex justify-around px-2 pb-2 mb-2">
-    <!-- <LeaderboardTab :leaderboard="leaderboard" /> -->
     <div
       v-for="tab in tabs"
       :key="tab.text"
@@ -18,14 +17,6 @@
 <script>
 export default {
   props: {
-    userId: {
-      type: Number,
-      required: false,
-    },
-    leaderboard: {
-      type: Object,
-      required: true,
-    },
     selectedTab: {
       type: String,
       required: false,
