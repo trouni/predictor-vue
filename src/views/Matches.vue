@@ -32,10 +32,18 @@
         </BaseButton>
       </div>
     </div>
+    <div class="flex justify-around">
+      <MatchTab
+        v-for="tab in tabs"
+        :key="tab"
+        :text="tab"
+        :selected="selectedTab == tab"
+        @selectTabEvent="changeTab"
+      />
+    </div>
     <MatchesGrouping
-      v-for="group in groupedMatches"
-      :key="group.title"
-      :title="group.title"
+      v-for="(group, index) in groupedMatches"
+      :key="index"
       :matches="group.matches"
     />
   </div>
@@ -44,6 +52,7 @@
 <script>
 import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
+import MatchTab from '@/components/MatchTab'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
 import { pluralize, formatDate } from '@/utils/helpers'
@@ -52,7 +61,7 @@ import groupBy from 'lodash/groupBy'
 export default {
   name: 'Matches',
 
-  components: { MatchesGrouping, LeaderboardRanking },
+  components: { MatchesGrouping, LeaderboardRanking, MatchTab },
 
   props: {
     userId: {
@@ -64,8 +73,18 @@ export default {
   async mounted() {
     if (!this.viewingOwnMatches) {
       this.user = await this.fetchUser({ userId: this.userId })
+      // Removing 'UPCOMING' for other users' pages
+      const upcomingIndex = this.tabs.indexOf('upcoming')
+      this.tabs.splice(upcomingIndex, 1)
+      this.selectedTab = this.tabs[0]
     }
     await this.fetchMatches({ userId: this.userId })
+    if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
+      // Removing 'ONGOING' tab because no ongoing games'
+      const ongoingIndex = this.tabs.indexOf('ongoing')
+      this.tabs.splice(ongoingIndex, 1)
+      this.selectedTab = this.tabs[0]
+    }
     this.$emit('init')
   },
 
@@ -77,6 +96,8 @@ export default {
         name: null,
         points: null,
       },
+      selectedTab: 'ongoing',
+      tabs: ['ongoing', 'upcoming', 'past'],
     }
   },
 
@@ -98,25 +119,38 @@ export default {
       )
     },
     groupedMatches() {
+      if (this.selectedTab == 'past') {
+        return this.pastMatches()
+      } else if (this.selectedTab == 'ongoing') {
+        return this.ongoingMatches()
+      } else {
+        return this.upcomingMatches()
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      fetchMatches: 'matches/fetchMatches',
+      fetchUser: 'users/fetchUser',
+    }),
+    pluralize,
+    changeTab(tabName) {
+      this.selectedTab = tabName
+    },
+    ongoingMatches() {
       return [
         {
-          title: 'Ongoing Matches',
           matches: groupBy(
             this.matches.filter(m => m.status === 'started'),
             m => formatDate(new Date(m.kickoffTime))
           ),
         },
+      ]
+    },
+    pastMatches() {
+      return [
         {
-          title: 'Upcoming Matches',
-          matches: groupBy(
-            this.matches.filter(
-              m => m.status === 'upcoming' && 'prediction' in m
-            ),
-            m => formatDate(new Date(m.kickoffTime))
-          ),
-        },
-        {
-          title: 'Past Matches',
           matches: groupBy(
             this.matches
               .filter(m => m.status === 'finished')
@@ -128,14 +162,18 @@ export default {
         },
       ]
     },
-  },
-
-  methods: {
-    ...mapActions({
-      fetchMatches: 'matches/fetchMatches',
-      fetchUser: 'users/fetchUser',
-    }),
-    pluralize,
+    upcomingMatches() {
+      return [
+        {
+          matches: groupBy(
+            this.matches.filter(
+              m => m.status === 'upcoming' && 'prediction' in m
+            ),
+            m => formatDate(new Date(m.kickoffTime))
+          ),
+        },
+      ]
+    },
   },
 }
 </script>
