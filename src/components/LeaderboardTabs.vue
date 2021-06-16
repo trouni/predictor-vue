@@ -2,12 +2,12 @@
   <div class="flex justify-around px-2 pb-2 mb-2">
     <!-- <LeaderboardTab :leaderboard="leaderboard" /> -->
     <div
-      class="leaderboard-tab flex-1 text-center"
       v-for="tab in tabs"
       :key="tab.text"
       @click="selectTab(tab)"
+      class="leaderboard-tab flex-1 flex justify-center items-center"
     >
-      <span class="">{{ tab.text }}</span>
+      <p :class="activeStyle(tab)">{{ tab.text }}</p>
     </div>
   </div>
 </template>
@@ -70,13 +70,33 @@ export default {
     selectTab(tab) {
       this.$emit('selectTabEvent', tab.text)
     },
+    activeStyle(tab) {
+      return tab.text === this.selectedTab ? 'selected-tab' : ''
+    },
   },
+  computed: {},
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles';
-.tab-active {
+.leaderboard-tab {
+  p {
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+.selected-tab {
   background-color: $purple;
+  padding: 4px;
+  color: white;
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>
