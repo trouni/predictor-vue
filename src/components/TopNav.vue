@@ -7,8 +7,8 @@
         class="logo-img"
     /></BaseLink>
     <ul class="top-nav-container">
-      <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
-      <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
+      <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" :top="true" />
+      <NavBarRoutes v-else :routes="loggedOutNavRoutes" :top="true" />
     </ul>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-wrapper">
     <TopNav />
     <main>
       <div class="banner">
@@ -63,6 +63,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles';
+.home-wrapper {
+  background: linear-gradient(167.4deg, #3e3b7d 0%, #6690b7 88.73%);
+}
+
 .banner {
   background-size: cover;
   background-position: center;
