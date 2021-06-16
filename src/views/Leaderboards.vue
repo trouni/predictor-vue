@@ -1,6 +1,10 @@
 <template>
   <div>
-    <LeaderboardTabs v-if="leaderboard" />
+    <LeaderboardTabs
+      v-if="leaderboard"
+      :leaderboard="leaderboard"
+      :userId="userId"
+    />
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
