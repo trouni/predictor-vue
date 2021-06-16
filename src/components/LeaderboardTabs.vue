@@ -5,7 +5,7 @@
       v-for="tab in tabs"
       :key="tab.text"
       @click="selectTab(tab)"
-      class="leaderboard-tab flex-1 flex justify-center items-center"
+      class="leaderboard-tab flex-1 flex justify-center items-center cursor-pointer"
     >
       <p :class="activeStyle(tab)">{{ tab.text }}</p>
     </div>
