@@ -21,13 +21,14 @@
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
 import LeaderboardActions from '@/components/LeaderboardActions'
-import LeaderboardTabs from '@/components/LeaderboardTabs'
+// import LeaderboardTabs from '@/components/LeaderboardTabs'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
-  components: { LeaderboardCard, LeaderboardActions, LeaderboardTabs },
+  // components: { LeaderboardCard, LeaderboardActions, LeaderboardTabs },
+  components: { LeaderboardCard, LeaderboardActions },
 
   props: {
     userId: {
