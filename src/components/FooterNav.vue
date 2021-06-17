@@ -2,6 +2,15 @@
   <div id="footer-nav" class="h-16 shadow-2xl">
     <ul class="footer-container flex h-full items-center">
       <NavBarRoutes :routes="persistentNavRoutes" />
+      <div
+        v-if="loggedIn"
+        @click="goBack"
+        class="text-gray-600 flex-grow h-full no-underline cursor-pointer"
+      >
+        <li class="flex h-full w-full items-center justify-center">
+          <BaseIcon name="chevron-left" />
+        </li>
+      </div>
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
     </ul>
@@ -17,11 +26,6 @@ export default {
   data() {
     return {
       persistentNavRoutes: [
-        {
-          name: 'home',
-          title: 'Home',
-          fontAwesomeClass: 'home',
-        },
         // {
         //   name: 'competition',
         //   params: { id: 1 },
@@ -47,6 +51,11 @@ export default {
       ],
       loggedOutNavRoutes: [
         {
+          name: 'home',
+          title: 'Home',
+          fontAwesomeClass: 'home',
+        },
+        {
           name: 'login',
           title: 'Log in',
           fontAwesomeClass: 'sign-in-alt',
@@ -56,6 +65,11 @@ export default {
   },
   computed: {
     ...authComputed,
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
   },
 }
 </script>
