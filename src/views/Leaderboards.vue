@@ -1,5 +1,11 @@
 <template>
   <div>
+    <!-- Uncomment when we can load the content for the tabs -->
+    <!-- <LeaderboardTabs
+      v-if="leaderboard"
+      @selectTabEvent="changeTab"
+      :selectedTab="selectedTab"
+    /> -->
     <LeaderboardCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
@@ -15,11 +21,13 @@
 <script>
 import LeaderboardCard from '@/components/LeaderboardCard'
 import LeaderboardActions from '@/components/LeaderboardActions'
+// import LeaderboardTabs from '@/components/LeaderboardTabs'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
+  // components: { LeaderboardCard, LeaderboardActions, LeaderboardTabs },
   components: { LeaderboardCard, LeaderboardActions },
 
   props: {
@@ -54,6 +62,15 @@ export default {
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
+    changeTab(tabName) {
+      this.selectedTab = tabName
+      // TODO: trigger action to show the leaderboard's predictions for this Group
+    },
+  },
+  data() {
+    return {
+      selectedTab: 'All',
+    }
   },
 }
 </script>
