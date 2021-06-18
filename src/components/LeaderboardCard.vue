@@ -27,7 +27,7 @@ export default {
   computed: {
     rankedUsers() {
       return this.sortedUsers.map(u => {
-        u.rank = this.uniqScores.findIndex(s => u.points === s) + 1
+        u.rank = this.sortedUsers.findIndex(usr => u.points === usr.points) + 1
         return u
       })
     },
