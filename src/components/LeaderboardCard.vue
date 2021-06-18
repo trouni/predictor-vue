@@ -13,7 +13,6 @@
 
 <script>
 import LeaderboardRanking from '@/components/LeaderboardRanking'
-import uniq from 'lodash/uniq'
 
 export default {
   components: { LeaderboardRanking },
@@ -30,9 +29,6 @@ export default {
         u.rank = this.sortedUsers.findIndex(usr => u.points === usr.points) + 1
         return u
       })
-    },
-    uniqScores() {
-      return uniq(this.sortedUsers.map(u => u.points))
     },
     sortedUsers: function () {
       return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
