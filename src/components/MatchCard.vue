@@ -14,6 +14,7 @@
         @click.native="setPrediction('home')"
       />
       <div
+        v-if="match.groupId"
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
         <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>

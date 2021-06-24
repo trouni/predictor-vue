@@ -103,7 +103,8 @@ export default {
     choice() {
       let choice
       if (
-        (this.confidenceRateY >= 1 &&
+        (this.match.groupId &&
+          this.confidenceRateY >= 1 &&
           this.confidenceRateY > this.confidenceRateX) ||
         (Math.abs(this.velocityY) > this.velocityThreshold &&
           this.velocityConfidenceRate >= 1)
