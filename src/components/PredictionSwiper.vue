@@ -16,6 +16,9 @@
           <p class="text-gray-500 font-light text-xs md:text-lg">{{
             currentMatch.location
           }}</p>
+          <div class="my-3 pill-pts py-1 px-3 text-white">
+            {{ currentMatch.roundNumber + 2 }} points
+          </div>
         </div>
       </div>
       <div class="flex flex-col items-center justify-end z-50 h-2/5">
@@ -164,3 +167,10 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import '@/styles';
+.pill-pts {
+  background: linear-gradient(167.4deg, $purple 0%, $teal 88.73%);
+  border-radius: $spacer * 2;
+}
+</style>
