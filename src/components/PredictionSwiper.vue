@@ -13,6 +13,9 @@
             <span class="font-light text-gray-500">v.</span>
             {{ currentMatch.teamAway.name }}
           </h2>
+          <p class="text-gray-500 font-light text-xs md:text-lg">{{
+            currentMatch.location
+          }}</p>
         </div>
       </div>
       <div class="flex flex-col items-center justify-end z-50 h-2/5">
