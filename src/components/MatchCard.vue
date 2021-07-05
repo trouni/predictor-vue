@@ -111,9 +111,13 @@ export default {
         ((this.match.prediction.choice === 'draw' &&
           this.match.teamAway.score === this.match.teamHome.score) ||
           (this.match.prediction.choice === 'away' &&
-            this.match.teamAway.score > this.match.teamHome.score) ||
+            (this.match.teamAway.score > this.match.teamHome.score ||
+              this.match.teamAway.etScore > this.match.teamHome.etScore ||
+              this.match.teamAway.psScore > this.match.teamHome.psScore)) ||
           (this.match.prediction.choice === 'home' &&
-            this.match.teamAway.score < this.match.teamHome.score))
+            (this.match.teamAway.score < this.match.teamHome.score ||
+              this.match.teamAway.etScore < this.match.teamHome.etScore ||
+              this.match.teamAway.psScore < this.match.teamHome.psScore)))
       )
     },
     borderStyle() {
