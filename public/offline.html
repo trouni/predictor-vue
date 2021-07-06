@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="194x194"
+      href="/favicon-194x194.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/android-chrome-192x192.png"
+    />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <!-- <link rel="manifest" href="/site.webmanifest" /> -->
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#29275c" />
+    <meta
+      name="viewport"
+      content="user-scalable=no,width=device-width,initial-scale=1,maximum-scale=1"
+    />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title>Octacle - No internet</title>
+  </head>
+  <body
+    style="
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      overscroll-behavior: none;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(167.4deg, #3e3b7d 0%, #6690b7 88.73%);
+      "
+    >
+      <h4
+        style="
+          font-family: 'Quicksand', -apple-system, 'BlinkMacSystemFont',
+            'Segoe UI', 'Helvetica', 'Arial', sans-serif, 'Apple Color Emoji',
+            'Segoe UI Emoji', 'Segoe UI Symbol';
+          font-size: 2rem;
+          font-weight: lighter;
+          margin: 0 1rem;
+          color: white;
+          margin-bottom: -2rem;
+        "
+      >
+        Sorry buddy,<br />
+        <small>I kinda need the internet to do my thing...</small>
+      </h4>
+      <img
+        src="/logo.png"
+        alt="Octacle"
+        style="width: 100%; max-width: 600px"
+      />
+    </div>
+  </body>
+</html>
