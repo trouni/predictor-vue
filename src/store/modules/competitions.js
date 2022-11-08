@@ -43,7 +43,12 @@ export const actions = {
     return CompetitionsRepository.getCompetitions().then(response => {
       commit('SET_COMPETITIONS', response.data)
       if (!state.currentCompetitionId && response.data.length > 0) {
-        dispatch('selectCompetition', response.data[0].id)
+        // TODO: The comepetition id was default at first [0], now last.
+        console.log(response.data)
+        dispatch(
+          'selectCompetition',
+          response.data[response.data.length - 1].id
+        )
       }
       return response.data
     })
