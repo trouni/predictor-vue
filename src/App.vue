@@ -49,7 +49,7 @@ html {
   @apply fixed md:static w-screen md:w-auto h-screen md:h-auto;
 }
 body {
-  background: $color-body-bg;
+  background: linear-gradient(196deg, #6690b7 0%, #3e3b7d 88.73%);
   overscroll-behavior: none;
 }
 #app {
