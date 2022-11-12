@@ -22,8 +22,11 @@ export const getters = {
   },
   currentCompetitionId(state, getters) {
     if (getters.competitionsCount === 0) return null
-
-    return state.currentCompetitionId || getters.competitions[0].id
+    // TODO: The comepetition id was default at first [0], now last.
+    return (
+      state.currentCompetitionId ||
+      getters.competitions[getters.competitions.length - 1].id
+    )
   },
 }
 
