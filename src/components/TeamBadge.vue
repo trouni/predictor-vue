@@ -4,7 +4,7 @@
       'shadow-inner-lg rounded-full h-20 w-20 flex items-center justify-center overflow-hidden bg-contain',
       highlight,
     ]"
-    :style="`background-image: url(${flag});`"
+    :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
     <p class="text-glow text-4xl select-none">{{ score }}</p>
   </div>
