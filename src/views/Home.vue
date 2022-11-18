@@ -64,6 +64,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 .home-wrapper {
+  min-height: 100vh;
   background: linear-gradient(167.4deg, #3e3b7d 0%, #6690b7 88.73%);
 }
 
@@ -99,7 +100,6 @@ export default {
   width: 100%;
 }
 .steps {
-  background: linear-gradient(167.4deg, #3e3b7d 0%, #6690b7 88.73%);
   display: flex;
   flex-direction: column;
   align-items: center;
