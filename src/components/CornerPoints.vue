@@ -53,8 +53,8 @@ export default {
     font-size: 12px;
   }
 }
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {
+// Small devices (landscape phones, 640px and up)
+@media (min-width: 640px) {
   .corner {
     width: $spacer * 6;
     height: $spacer * 6;

@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 h3 {
-  margin: ($spacer / 2);
+  margin: calc($spacer / 2);
   color: $white;
   font-weight: lighter;
 }
