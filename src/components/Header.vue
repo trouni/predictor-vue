@@ -7,7 +7,7 @@
         :src="require('../assets/' + img)"
         class="header-img"
       />
-      <h1 v-if="title"> {{ title }}</h1>
+      <h2 class="text-white" v-if="title"> {{ title }}</h2>
     </div>
     <slot />
   </div>
@@ -49,16 +49,12 @@ export default {
   height: 24px;
 }
 
-h1 {
-  color: $white;
-}
-
 img {
   margin-right: $spacer;
 }
 
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {
+// Small devices (landscape phones, 640px and up)
+@media (min-width: 640px) {
   .header-container {
     padding: $spacer * 2;
   }

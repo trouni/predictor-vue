@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-center items-center text-purple">
     <BaseIcon name="futbol" class="animate-bounce fa-3x"></BaseIcon>
     <div
       class="animate-bounce-opacity bg-black w-6 h-1 rounded-full filter blur-sm"

@@ -29,9 +29,7 @@ export default {
       return route
     }
     function customStyle() {
-      return props.top
-        ? 'text-black shadow-inner cursor-default leading-none'
-        : 'text-black shadow-inner bg-gray-100 cursor-default leading-none'
+      return '!text-white cursor-default leading-none'
     }
     // Functional components are the only components allowed
     // to return an array of children, rather than a single
@@ -40,11 +38,12 @@ export default {
       <BaseLink
         key={route.name}
         to={processRoute(route)}
-        class='text-gray-600 flex-grow h-full no-underline'
+        class='text-white/50 flex-grow h-full no-underline w-full'
         exact-active-class={customStyle()}
       >
-        <li class='flex h-full w-full items-center justify-center'>
+        <li class='flex h-full w-full items-center justify-center flex-col gap-1'>
           <BaseIcon name={route.fontAwesomeClass} />
+          <p class='text-xs'>{route.title}</p>
         </li>
       </BaseLink>
     ))
