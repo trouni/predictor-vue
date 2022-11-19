@@ -1,5 +1,9 @@
 <template>
-  <div id="footer-nav" class="h-20 shadow-2xl z-50" :class="{'bg-gradient': !transparent}">
+  <div
+    id="footer-nav"
+    class="h-20 shadow-2xl z-50"
+    :class="{ 'bg-gradient': !transparent }"
+  >
     <ul class="footer-container flex h-full items-center">
       <NavBarRoutes :routes="persistentNavRoutes" />
       <div
@@ -27,7 +31,7 @@ import NavBarRoutes from './NavBarRoutes'
 export default {
   components: { NavBarRoutes },
   props: {
-    transparent: Boolean
+    transparent: Boolean,
   },
   data() {
     return {
