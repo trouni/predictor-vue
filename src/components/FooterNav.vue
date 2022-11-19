@@ -88,7 +88,7 @@ export default {
 @import '@/styles';
 
 #footer-nav {
-  .bg-gradient {
+  &.bg-gradient {
     background: linear-gradient(167.4deg, #3e3b7d 0%, #6690b7 88.73%);
   }
   position: fixed;
