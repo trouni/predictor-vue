@@ -95,7 +95,7 @@ export default {
 }
 
 // TODO: Hide when mobile
-@media (min-width: 576px) {
+@media (min-width: 640px) {
   #top-nav {
     display: flex;
   }

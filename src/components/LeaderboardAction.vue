@@ -81,10 +81,10 @@ export default {
 .action-pill {
   background-color: $light-gray;
   color: $purple;
-  padding: $spacer / 2 $spacer * 2;
+  padding: calc($spacer / 2) $spacer * 2;
   flex: 1;
   border-radius: $spacer * 2;
-  margin: $spacer $spacer / 2;
+  margin: $spacer calc($spacer / 2);
   text-align: center;
 }
 </style>

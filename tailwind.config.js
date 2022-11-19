@@ -1,6 +1,7 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
+  mode: 'jit',
   purge: {
     content: ['./public/**/*.html', './src/**/*.vue'],
     options: {
@@ -29,7 +30,7 @@ module.exports = {
       green: colors.emerald,
       blue: colors.blue,
       indigo: colors.indigo,
-      purple: '#3e3b7d',
+      purple: '#201e46',
       pink: colors.pink,
       prediction: {
         default: colors.coolGray,
