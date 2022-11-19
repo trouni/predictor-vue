@@ -22,8 +22,11 @@ export const getters = {
   },
   currentCompetitionId(state, getters) {
     if (getters.competitionsCount === 0) return null
-
-    return state.currentCompetitionId || getters.competitions[0].id
+    // TODO: The comepetition id was default at first [0], now last.
+    return (
+      state.currentCompetitionId ||
+      getters.competitions[getters.competitions.length - 1].id
+    )
   },
 }
 
@@ -43,7 +46,11 @@ export const actions = {
     return CompetitionsRepository.getCompetitions().then(response => {
       commit('SET_COMPETITIONS', response.data)
       if (!state.currentCompetitionId && response.data.length > 0) {
-        dispatch('selectCompetition', response.data[0].id)
+        // TODO: The comepetition id was default at first [0], now last.
+        dispatch(
+          'selectCompetition',
+          response.data[response.data.length - 1].id
+        )
       }
       return response.data
     })
