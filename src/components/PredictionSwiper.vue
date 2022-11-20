@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col items-center justify-end z-50 h-2/5">
+      <div class="flex flex-col items-center justify-end z-50">
         <transition>
           <PredictionSwiperStatus
             v-if="prediction.choice"
