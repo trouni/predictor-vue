@@ -2,7 +2,7 @@
   <div class="pb-20">
     <div v-if="!viewingOwnMatches" class="mb-12">
       <p class="text-center text-xl font-normal m-3">Predictions made by</p>
-      <LeaderboardRanking :user="user" class="m-auto max-w-xs" />
+      <LeaderboardRanking :users="[user]" class="m-auto max-w-xs" />
     </div>
     <div v-else class="flex items-center justify-center my-8">
       <div

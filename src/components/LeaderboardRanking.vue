@@ -1,46 +1,49 @@
 <template>
-  <div class="d-flex ranking w-100 mt-1">
+  <div class="d-flex ranking bg-white/50 w-[95%] mx-auto px-1 py-2 bg-white rounded-lg shadow-lg">
     <div class="d-flex min-w-0">
-      <div v-if="position !== null" class="position w-50">
-        <p>{{ ordinalize(position) }}</p>
+      <div class="position text-center flex-shrink-0" :class="{ 'w-12': !!position }">
+        <p v-if="!!position" v-html="ordinalize(position)"></p>
       </div>
-      <!-- <div class="direction w-50">
+      <!-- <div class="direction w-12 text-center flex-shrink-0">
         <p><BaseIcon name="caret-up" /></p>
         <p><BaseIcon name="caret-down" /></p>
         <p>-</p>
       </div> -->
-      <div class="w-50 d-flex">
-        <div class="relative rounded-full">
-          <cld-context v-if="user.photoKey" :cloudName="cloudName">
-            <div class="w-36">
-              <cld-image :publicId="user.photoKey">
-                <cld-transformation
-                  width="100"
-                  height="100"
-                  gravity="face"
-                  radius="max"
-                  crop="fill"
-                />
-              </cld-image>
+      <div class="flex flex-col gap-2">
+        <div v-for="user in users" :key="user.id" class="d-flex">
+          <div class="user-avatar text-center flex-shrink-0">
+            <div class="relative rounded-full overflow-hidden">
+              <cld-context v-if="user.photoKey" :cloudName="cloudName">
+                <div class="">
+                  <cld-image :publicId="user.photoKey">
+                    <cld-transformation
+                      width="100"
+                      height="100"
+                      gravity="face"
+                      radius="max"
+                      crop="fill"
+                    />
+                  </cld-image>
+                </div>
+              </cld-context>
+              <img
+                v-else
+                alt="football graphic"
+                :src="require('../assets/player.png')"
+              />
             </div>
-          </cld-context>
-          <img
-            v-else
-            alt="football graphic"
-            width="36px"
-            :src="require('../assets/player.png')"
-          />
+          </div>
+          <BaseLink
+            :to="{ path: '/matches', query: { userId: user.userId } }"
+            :disabled="!linkPredictions"
+            class="p-2 name w-full truncate"
+          >
+            {{ user.name }}
+          </BaseLink>
         </div>
       </div>
-      <BaseLink
-        :to="{ path: '/matches', query: { userId: user.userId } }"
-        :disabled="!linkPredictions"
-        class="name w-100 truncate"
-      >
-        {{ user.name }}
-      </BaseLink>
     </div>
-    <div class="points w-50"> {{ user.points }}</div>
+    <div class="points w-12 text-center flex-shrink-0  py-1"> {{ users[0].points }}</div>
   </div>
 </template>
 
@@ -50,10 +53,14 @@ import { config } from '@/constants'
 
 export default {
   props: {
-    user: {
-      type: Object,
+    users: {
+      type: Array,
     },
     position: {
+      type: Number,
+      default: null,
+    },
+    points: {
       type: Number,
       default: null,
     },
@@ -74,16 +81,15 @@ export default {
   },
   methods: {
     ordinalize(num) {
-      if (num > 3 && num < 21) return num.toString() + 'th'
       switch (num % 10) {
         case 1:
-          return num.toString() + 'st'
+          return num.toString() + '<sup>st</sup>'
         case 2:
-          return num.toString() + 'nd'
+          return num.toString() + '<sup>nd</sup>'
         case 3:
-          return num.toString() + 'rd'
+          return num.toString() + '<sup>rd</sup>'
         default:
-          return num.toString() + 'th'
+          return num.toString() + '<sup>th</sup>'
       }
     },
   },
@@ -101,7 +107,6 @@ export default {
 .ranking {
   justify-content: space-between;
   align-items: center;
-  border-radius: 16px;
 }
 
 .w-50 {
@@ -109,8 +114,9 @@ export default {
   text-align: center;
   flex-shrink: 0;
 }
-.w-36 {
-  width: 36px;
+.user-avatar {
+  @apply w-12;
+  & > div { @apply w-9 border border-white; }
 }
 
 .w-30 {
@@ -126,11 +132,6 @@ export default {
   display: flex;
 }
 
-.ranking {
-  background-color: white;
-  padding: 8px 4px;
-}
-
 .ranking p {
   margin: 0;
 }
@@ -141,16 +142,12 @@ export default {
 }
 
 .position {
-  .tie & {
-    @apply opacity-30;
-  }
-  padding: 0 4px;
   color: $purple;
+  font-size: 1.1em;
 }
 
 .name {
   font-weight: lighter;
-  padding-left: 8px;
 }
 
 .points {
@@ -164,5 +161,33 @@ export default {
 
 .fa-caret-down {
   color: $red;
+}
+
+.ranking:nth-child(1) {
+  @apply min-h-[80px] w-[100%] bg-white/80;
+  .name, .points {font-size: 1.3em;}
+  .user-avatar {
+    @apply w-16;
+    & > div { @apply w-16 }
+  }
+  .position { @apply scale-[150%]; }
+}
+.ranking:nth-child(2) {
+  @apply min-h-[70px] w-[98%] bg-white/70;
+  .name, .points {font-size: 1.2em;}
+  .user-avatar {
+    @apply w-14;
+    & > div { @apply w-14 }
+  }
+  .position { @apply scale-[125%]; }
+}
+.ranking:nth-child(3) {
+  @apply min-h-[60px] w-[96%] bg-white/60;
+  .name, .points {font-size: 1.1em;}
+  .user-avatar {
+    @apply w-12;
+    & > div { @apply w-12 }
+  }
+  .position { @apply scale-[110%]; }
 }
 </style>

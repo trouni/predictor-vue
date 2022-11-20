@@ -3,7 +3,7 @@
     <div class="flex flex-col justify-center items-center">
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
-          <div class="relative rounded-full h-24 w-24">
+          <div class="relative rounded-full overflow-hidden h-24 w-24">
             <cld-context
               v-if="user.photoKey || user.photo_key"
               :cloudName="cloudName"

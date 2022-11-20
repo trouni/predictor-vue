@@ -1,19 +1,11 @@
 <template>
   <div class="flex items-center justify-between sm:justify-center">
-    <div class="mx-5">
-      <BaseIcon
-        name="angle-left"
-        v-if="previousLeaderboard"
-        @click.native="selectLeaderboard(previousLeaderboard.id)"
-      />
+    <div class="px-5" @click="selectLeaderboard(previousLeaderboard.id)">
+      <BaseIcon name="angle-left" v-if="previousLeaderboard" />
     </div>
     <h3 v-if="leaderboard"> {{ leaderboard.name }} </h3>
-    <div class="mx-5">
-      <BaseIcon
-        name="angle-right"
-        v-if="nextLeaderboard"
-        @click.native="selectLeaderboard(nextLeaderboard.id)"
-      />
+    <div class="px-5" @click="selectLeaderboard(nextLeaderboard.id)">
+      <BaseIcon name="angle-right" v-if="nextLeaderboard" />
     </div>
   </div>
 </template>

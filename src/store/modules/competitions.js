@@ -44,7 +44,10 @@ export const actions = {
     })
   },
 
-  selectCompetition({ commit }, competitionId) {
+  selectCompetition({ commit, getters, dispatch }, competitionId) {
+    if (getters.currentCompetitionId !== competitionId) {
+      dispatch('leaderboards/resetLeaderboards', {}, { root: true })
+    }
     commit('SET_CURRENT_COMPETITION_ID', competitionId)
     return competitionId
   },

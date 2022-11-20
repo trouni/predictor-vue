@@ -1,12 +1,13 @@
 <template>
   <div>
     <LeaderboardRanking
-      v-for="(user, index) in rankedUsers"
-      :key="user.id"
-      :user="user"
-      :position="user.rank"
+      v-for="{ position, points } in ranks"
+      :key="position"
+      :users="rankedUsers.filter(user => user.rank === position)"
+      :position="position"
       :link-predictions="true"
-      :class="{ tie: index && user.rank === rankedUsers[index - 1].rank }"
+      :points="points"
+      class="mt-1"
     />
   </div>
 </template>
@@ -29,6 +30,14 @@ export default {
         u.rank = this.sortedUsers.findIndex(usr => u.points === usr.points) + 1
         return u
       })
+    },
+    ranks() {
+      return this.rankedUsers.reduce((accumulator, u) => {
+        if (!accumulator.find(rank => rank.position === u.rank)) {
+          accumulator.push({ position: u.rank, points: u.points })
+        }
+        return accumulator
+      }, [])
     },
     sortedUsers: function () {
       return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
