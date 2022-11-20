@@ -27,12 +27,12 @@ export function signUp(credentials) {
   })
 }
 
-export function resetPassword(email) {
+export function resetPassword({ email, redirectUrl }) {
   return request({
     baseURL: config.apiURL,
     url: '/auth/password',
     method: 'post',
-    data: { email, redirect_url: `${process.env.VUE_APP_HOST}/reset-password` },
+    data: { email, redirect_url: redirectUrl },
   })
 }
 

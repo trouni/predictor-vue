@@ -88,8 +88,8 @@ export const actions = {
       })
   },
 
-  resetPassword(_, email) {
-    return resetPassword(email)
+  resetPassword(_, { email, redirectUrl }) {
+    return resetPassword({ email, redirectUrl })
       .then(response => {
         if (response.status !== 200) {
           throw response.data.errors

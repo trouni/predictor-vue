@@ -51,7 +51,10 @@ export default {
     async submit() {
       this.processingForm = true
       try {
-        await this.$store.dispatch('auth/resetPassword', this.email)
+        await this.$store.dispatch('auth/resetPassword', {
+          email: this.email,
+          redirectUrl: `http://${window.location.host}/reset-password`
+        })
         this.success = true
       } catch (errors) {
         this.authErrors = errors
