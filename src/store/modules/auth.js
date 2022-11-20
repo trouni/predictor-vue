@@ -52,7 +52,7 @@ export const actions = {
 
       // Fetch competitions and set current competition if missing
       if (!rootGetters['competitions/currentCompetitionId']) {
-        dispatch('competitions/setDefaultCompetition', {}, { root: true })
+        await dispatch('competitions/setDefaultCompetition', {}, { root: true })
       }
 
       return user
