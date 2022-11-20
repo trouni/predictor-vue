@@ -101,9 +101,7 @@ export default {
         })
     },
     isJoinLink() {
-      return location.search.split('redirectFrom=')[1].match(/join/)
-        ? true
-        : false
+      return !!location.search.match(/redirectFrom=%2Fjoin/)
     },
   },
 }
