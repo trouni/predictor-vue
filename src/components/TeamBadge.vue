@@ -24,7 +24,16 @@ export default {
 
   computed: {
     highlight() {
-      return `border-4 border-prediction-${this.status}`
+      switch (this.status) {
+        case 'correct':
+          return 'border-4 border-prediction-correct'
+        case 'incorrect':
+          return 'border-4 border-prediction-incorrect'
+        case 'selected':
+          return 'border-4 border-prediction-selected'
+        default:
+          return 'border-4 border-prediction-default'
+      }
     },
   },
 }
