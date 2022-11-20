@@ -42,16 +42,9 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchCompetitions({ dispatch, commit, state }) {
+  fetchCompetitions({ commit }) {
     return CompetitionsRepository.getCompetitions().then(response => {
       commit('SET_COMPETITIONS', response.data)
-      if (!state.currentCompetitionId && response.data.length > 0) {
-        // TODO: The comepetition id was default at first [0], now last.
-        dispatch(
-          'selectCompetition',
-          response.data[response.data.length - 1].id
-        )
-      }
       return response.data
     })
   },

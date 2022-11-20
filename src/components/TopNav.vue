@@ -29,7 +29,6 @@ export default {
         },
         {
           name: 'leaderboards',
-          params: { id: 1 },
           title: 'Leaderboards',
           fontAwesomeClass: 'trophy',
         },
