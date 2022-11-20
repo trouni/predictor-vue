@@ -74,8 +74,8 @@ export default {
 .bg-wrapper {
   background: linear-gradient(
     155.48deg,
-    rgba(255, 255, 255, 0.87) 0%,
-    $white 68.96%
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.67) 68.96%
   );
 }
 

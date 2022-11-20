@@ -58,14 +58,14 @@ export const mutations = {
 
 export const actions = {
   fetchLeaderboards(
-    { commit, state, dispatch, rootGetters },
-    competitionId = rootGetters['competitions/currentCompetition'].id
+    { commit, getters, dispatch, rootGetters },
+    competitionId = rootGetters['competitions/currentCompetitionId']
   ) {
     return LeaderboardsRepository.getLeaderboards(competitionId).then(
       response => {
         commit('SET_LEADERBOARDS', response.data)
         // check if current board exists
-        if (!state.currentLeaderboardId && response.data.length > 0) {
+        if (!getters.currentLeaderboard && response.data.length > 0) {
           dispatch('selectLeaderboard', response.data[0].id)
         }
         return response.data
@@ -113,4 +113,8 @@ export const actions = {
       }
     )
   },
+  resetLeaderboards({ commit }) {
+    commit('SET_CURRENT_LEADERBOARD_ID', null)
+    commit('SET_LEADERBOARDS', [])
+  }
 }
