@@ -3,7 +3,7 @@
     <div class="mx-5">
       <!-- <BaseIcon name="angle-left" /> -->
     </div>
-    <h3> Group Stage </h3>
+    <h3> Predictions </h3>
     <div class="mx-5">
       <!-- <BaseIcon name="angle-right" /> -->
     </div>
@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles';
 h3 {
-  margin: ($spacer / 2);
+  margin: calc($spacer / 2);
   color: $white;
   font-weight: lighter;
 }

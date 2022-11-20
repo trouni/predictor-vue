@@ -1,6 +1,7 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
+  mode: 'jit',
   purge: {
     content: ['./public/**/*.html', './src/**/*.vue'],
     options: {
@@ -29,7 +30,7 @@ module.exports = {
       green: colors.emerald,
       blue: colors.blue,
       indigo: colors.indigo,
-      purple: '#3e3b7d',
+      purple: '#201e46',
       pink: colors.pink,
       prediction: {
         default: colors.coolGray,
@@ -175,12 +176,9 @@ module.exports = {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       DEFAULT:
         '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-      md:
-        '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      lg:
-        '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-      xl:
-        '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       'inner-md': 'inset 2px 2px 2px rgba(0, 0, 0, 0.33)',
@@ -887,6 +885,7 @@ module.exports = {
       'focus-within',
       'hover',
       'focus',
+      'active',
     ],
     backgroundImage: ['responsive'],
     backgroundOpacity: [
@@ -927,7 +926,7 @@ module.exports = {
     brightness: ['responsive'],
     clear: ['responsive'],
     container: ['responsive'],
-    contrast: ['responsive'],
+    contrast: ['responsive', 'first'],
     cursor: ['responsive'],
     display: ['responsive'],
     divideColor: ['responsive', 'dark'],
@@ -1004,7 +1003,7 @@ module.exports = {
     ringWidth: ['responsive', 'focus-within', 'focus'],
     rotate: ['responsive', 'hover', 'focus'],
     saturate: ['responsive'],
-    scale: ['responsive', 'hover', 'focus', 'first'],
+    scale: ['responsive', 'hover', 'focus', 'first', 'active'],
     sepia: ['responsive'],
     skew: ['responsive', 'hover', 'focus'],
     space: ['responsive'],

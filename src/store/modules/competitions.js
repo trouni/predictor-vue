@@ -20,10 +20,8 @@ export const getters = {
   competitionsCount(_, getters) {
     return getters.competitions.length
   },
-  currentCompetitionId(state, getters) {
-    if (getters.competitionsCount === 0) return null
-
-    return state.currentCompetitionId || getters.competitions[0].id
+  currentCompetitionId(state) {
+    return state.currentCompetitionId
   },
 }
 
@@ -39,12 +37,9 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchCompetitions({ dispatch, commit, state }) {
+  fetchCompetitions({ commit }) {
     return CompetitionsRepository.getCompetitions().then(response => {
       commit('SET_COMPETITIONS', response.data)
-      if (!state.currentCompetitionId && response.data.length > 0) {
-        dispatch('selectCompetition', response.data[0].id)
-      }
       return response.data
     })
   },
@@ -52,5 +47,15 @@ export const actions = {
   selectCompetition({ commit }, competitionId) {
     commit('SET_CURRENT_COMPETITION_ID', competitionId)
     return competitionId
+  },
+
+  async setDefaultCompetition({ dispatch }) {
+    const competitions = await dispatch('fetchCompetitions')
+    if (competitions.length > 0) {
+      const competitionId =
+        process.env.VUE_APP_COMPETITION_ID ||
+        competitions[competitions.length - 1].id
+      dispatch('selectCompetition', competitionId)
+    }
   },
 }

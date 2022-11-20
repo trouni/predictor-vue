@@ -1,21 +1,21 @@
 <template>
   <div
     :class="[
-      'swiper-card w-11/12 md:w-4/5 lg:w-3/4 max-w-5xl absolute transition duration-500 flex overflow-visible filter blur-sm first:blur-0',
+      'swiper-card w-full md:w-4/5 lg:w-3/4 max-w-5xl absolute transition duration-500 flex overflow-visible filter blur-sm first:blur-0 contrast-75 first:contrast-100',
     ]"
     :style="cardStyle"
   >
     <div
-      class="relative max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80 w-full transform scale-75 transition"
+      class="max-h-1/2 h-56 sm:h-64 md:h-72 lg:h-80 w-full transform scale-75 transition"
     >
       <img
         :src="match.teamHome.flagUrl"
-        class="flag z-20 left-0 rounded-l-xl -mt-3 left-flag-clip"
+        class="flag z-20 left-0 rounded-l-xl mb-4 left-flag-clip"
         :style="homeFlagStyle"
       />
       <img
         :src="match.teamAway.flagUrl"
-        class="flag z-10 right-0 rounded-r-xl mt-3 right-flag-clip"
+        class="flag z-10 right-0 rounded-r-xl mt-4 right-flag-clip"
         :style="awayFlagStyle"
       />
     </div>
@@ -56,13 +56,12 @@ export default {
     },
     cardStyle() {
       return {
-        zIndex: 100 - this.index,
+        zIndex: 30 - this.index,
         transform: `translate(${this.deltaX}px, ${this.deltaY}px)
                     rotate(${this.rotation}deg)
-                    scale(${(20 - this.index) / 20})
-                    translateY(-${15 * this.index}px)`,
-        // opacity: (10 - this.index) / 10,
+                    scale(${(20 - this.index) / 20})`,
         'transition-property': this.moving ? 'none' : 'all',
+        display: this.index > 3 ? 'none' : 'unset',
         cursor: this.cursor,
         'will-change': 'transform',
       }
@@ -102,17 +101,23 @@ export default {
       }
     },
     choice() {
-      let choice = ''
+      let choice
       if (
-        Math.abs(this.deltaX) < this.distanceThreshold * 0.5 &&
-        Math.abs(this.deltaY) < this.distanceThreshold * 0.5
+        (this.match.groupId &&
+          this.confidenceRateY >= 1 &&
+          this.confidenceRateY > this.confidenceRateX) ||
+        (Math.abs(this.velocityY) > this.velocityThreshold &&
+          this.velocityConfidenceRate >= 1)
       )
-        choice = ''
-      else if (Math.abs(this.deltaY) > Math.abs(this.deltaX) * 1.5)
         choice = 'draw'
-      else if (this.deltaX > this.distanceThreshold * 0.5) choice = 'away'
-      else if (this.deltaX < -this.distanceThreshold * 0.5) choice = 'home'
-      this.$emit('input', choice)
+      else if (
+        (this.confidenceRateX >= 1 &&
+          this.confidenceRateX > this.confidenceRateY) ||
+        (Math.abs(this.velocityX) > this.velocityThreshold &&
+          this.velocityConfidenceRate >= 1)
+      )
+        choice = this.deltaX < 0 ? 'home' : 'away'
+      else choice = ''
       return choice
     },
     confidenceRateX() {
@@ -120,6 +125,15 @@ export default {
     },
     confidenceRateY() {
       return Math.min(Math.abs(this.deltaY) / this.distanceThreshold, 1)
+    },
+    velocityConfidenceRate() {
+      return Math.min(
+        Math.max(
+          Math.abs(this.velocityX / this.velocityY),
+          Math.abs(this.velocityY / this.velocityX)
+        ) / 3,
+        1
+      )
     },
     confidenceRate() {
       return (
@@ -140,21 +154,29 @@ export default {
     return {
       deltaX: 0,
       deltaY: 0,
+      velocityX: 0,
+      velocityY: 0,
       moving: false,
-      distanceThreshold: 100,
+      distanceThreshold: 120,
+      velocityThreshold: 2.5,
       confidenceThreshold: 0.5,
     }
   },
 
   watch: {
-    choice(newChoice) {
-      if (this.confidenceRate > this.confidenceThreshold)
-        this.$emit('input', newChoice)
-      else this.$emit('input', '')
+    choice(choice) {
+      this.$emit('input', { choice, match: this.match })
     },
   },
 
   methods: {
+    resetCard() {
+      this.deltaX = 0
+      this.deltaY = 0
+      this.velocityX = 0
+      this.velocityY = 0
+      this.$el.style.opacity = 1
+    },
     dragCard(e) {
       if (!this.active) return
 
@@ -163,18 +185,20 @@ export default {
       this.deltaY = e.deltaY
     },
     dropCard(e) {
+      this.moving = false
       if (!this.active) return
 
-      this.moving = false
-      if (this.confidenceRate > this.confidenceThreshold) {
+      this.velocityX = e.velocityX
+      this.velocityY = e.velocityY
+
+      if (this.choice) {
         this.$el.style.opacity = 0
-        this.deltaX = Math.abs(e.velocityX + 0.5) * this.deltaX * 10
-        this.deltaY = Math.abs(e.velocityY + 0.5) * this.deltaY * 10
-        this.$emit('remove', this.choice)
+        this.$el.style.transform = `translate(${
+          Math.abs(e.velocityX + 0.5) * this.deltaX * 10
+        }px, ${Math.abs(e.velocityY + 0.5) * this.deltaY * 10}px`
+        this.$emit('submit', this.choice)
       } else {
-        this.deltaX = 0
-        this.deltaY = 0
-        this.$emit('input', '')
+        this.resetCard()
       }
     },
   },

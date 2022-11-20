@@ -103,7 +103,7 @@
     }
   } @else {
     // Loop through bending points
-    $t: 1 / ($bending-points + 1);
+    $t: calc(1 / ($bending-points + 1));
     $i: 1;
     $prev-screen: $min-screen;
     $prev-value: $min-value;
@@ -147,7 +147,7 @@
   $max-screen,
   $max-value
 ) {
-  $a: ($max-value - $min-value) / ($max-screen - $min-screen);
+  $a: calc(($max-value - $min-value) / ($max-screen - $min-screen));
   $b: $min-value - $a * $min-screen;
 
   $sign: '+';
@@ -245,7 +245,7 @@
       $result: $result * 10 + map-get($numbers, $character);
     } @else {
       $digits: $digits * 10;
-      $result: $result + map-get($numbers, $character) / $digits;
+      $result: $result + calc(map-get($numbers, $character) / $digits);
     }
   }
 

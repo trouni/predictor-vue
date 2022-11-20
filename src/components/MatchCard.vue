@@ -1,11 +1,11 @@
 <template>
   <div
     :class="[
-      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300',
+      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300 relative',
       borderStyle,
     ]"
   >
-    <div class="flex align justify-evenly">
+    <div class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
         :team="match.teamHome"
@@ -14,9 +14,10 @@
         @click.native="setPrediction('home')"
       />
       <div
+        v-if="match.groupId"
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
-        <p class="mb-1 h-8 leading-none flex items-center text-sm">vs</p>
+        <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
             :status="status('draw')"
@@ -33,6 +34,7 @@
         @click.native="setPrediction('away')"
       />
     </div>
+    <CornerPoints v-if="finished" :correct="correctPrediction" />
     <p class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
@@ -40,10 +42,11 @@
 <script>
 import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
-import { formatDateTime } from '@/utils/helpers'
+import CornerPoints from './CornerPoints'
+import { formatTime } from '@/utils/helpers'
 
 export default {
-  components: { PredictionChoiceTeam, PredictionChoiceDraw },
+  components: { PredictionChoiceTeam, PredictionChoiceDraw, CornerPoints },
 
   props: {
     match: {
@@ -79,12 +82,15 @@ export default {
         return 'default'
       }
     },
-    formatDateTime,
+    formatTime,
   },
 
   computed: {
     disabled() {
       return !this.selectable || this.loading
+    },
+    finished() {
+      return this.match.status === 'finished'
     },
     matchDate() {
       if (this.match.status === 'finished') {
@@ -92,7 +98,7 @@ export default {
       } else if (this.match.status === 'started') {
         return 'In Progress'
       } else {
-        return this.formatDateTime(this.match.kickoffTime)
+        return 'Kick-off at ' + this.formatTime(this.match.kickoffTime)
       }
     },
     madePrediction() {
@@ -105,9 +111,13 @@ export default {
         ((this.match.prediction.choice === 'draw' &&
           this.match.teamAway.score === this.match.teamHome.score) ||
           (this.match.prediction.choice === 'away' &&
-            this.match.teamAway.score > this.match.teamHome.score) ||
+            (this.match.teamAway.score > this.match.teamHome.score ||
+              this.match.teamAway.etScore > this.match.teamHome.etScore ||
+              this.match.teamAway.psScore > this.match.teamHome.psScore)) ||
           (this.match.prediction.choice === 'home' &&
-            this.match.teamAway.score < this.match.teamHome.score))
+            (this.match.teamAway.score < this.match.teamHome.score ||
+              this.match.teamAway.etScore < this.match.teamHome.etScore ||
+              this.match.teamAway.psScore < this.match.teamHome.psScore)))
       )
     },
     borderStyle() {

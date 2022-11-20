@@ -46,6 +46,40 @@ export default [
         },
       },
       {
+        path: '/forgot-password',
+        name: 'forgot_password',
+        component: () => import('@/views/ForgotPassword'),
+        meta: {
+          title: 'Reset Password',
+          img: 'player.png',
+        },
+      },
+      {
+        path: '/reset-password',
+        name: 'reset_password',
+        component: () => import('@/views/ResetPassword'),
+        meta: {
+          title: 'Reset Password',
+          img: 'player.png',
+          beforeResolve(routeTo, routeFrom, next) {
+            const headers = {
+              'access-token': routeTo.query['access-token'],
+              client: routeTo.query.client,
+              uid: routeTo.query.uid,
+            }
+            // If the access token is present
+            if (headers['access-token']) {
+              // Set headers and continue to the activation page
+              store.dispatch('auth/updateHeaders', headers)
+              next()
+            } else {
+              // Redirect to the homepage
+              next({ name: 'home' })
+            }
+          },
+        },
+      },
+      {
         path: '/join/:password',
         name: 'join',
         meta: {
@@ -95,12 +129,25 @@ export default [
             path: 'predictions',
             name: 'predictions',
             component: () => import('@/views/PredictionsNew'),
+            props: true,
             meta: {
               authRequired: true,
-              title: 'Who will win?',
+              title: 'Pick a result',
               img: 'trophy.png',
             },
             alias: '/predictions',
+          },
+          {
+            path: 'predictions/edit',
+            name: 'edit_predictions',
+            component: () => import('@/views/PredictionsNew'),
+            props: { allMatches: true },
+            meta: {
+              authRequired: true,
+              title: 'Pick a result',
+              img: 'trophy.png',
+            },
+            alias: '/predictions/edit',
           },
           {
             path: 'leaderboards/new',

@@ -7,4 +7,9 @@ export const authComputed = {
   ...mapGetters('auth', ['loggedIn']),
 }
 
-export const authMethods = mapActions('auth', ['logIn', 'logOut', 'signUp'])
+export const authMethods = mapActions('auth', [
+  'logIn',
+  'logOut',
+  'signUp',
+  'resetPassword',
+])

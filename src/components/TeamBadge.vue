@@ -4,7 +4,7 @@
       'shadow-inner-lg rounded-full h-20 w-20 flex items-center justify-center overflow-hidden bg-contain',
       highlight,
     ]"
-    :style="`background-image: url(${flag});`"
+    :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
     <p class="text-glow text-4xl select-none">{{ score }}</p>
   </div>
@@ -24,7 +24,16 @@ export default {
 
   computed: {
     highlight() {
-      return `border-4 border-prediction-${this.status}`
+      switch (this.status) {
+        case 'correct':
+          return 'border-4 border-prediction-correct'
+        case 'incorrect':
+          return 'border-4 border-prediction-incorrect'
+        case 'selected':
+          return 'border-4 border-prediction-selected'
+        default:
+          return 'border-4 border-prediction-default'
+      }
     },
   },
 }

@@ -1,11 +1,13 @@
 <template>
   <FontAwesomeIcon
     v-if="source === 'font-awesome'"
+    v-on="$listeners"
     v-bind="$attrs"
     :icon="name"
   />
   <span
     v-else-if="source === 'custom'"
+    v-on="$listeners"
     v-bind="$attrs"
     :class="customIconClass"
   />

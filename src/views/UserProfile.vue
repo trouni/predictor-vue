@@ -4,9 +4,12 @@
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
           <div class="relative rounded-full h-24 w-24">
-            <cld-context v-if="user.photoKey" :cloudName="cloudName">
+            <cld-context
+              v-if="user.photoKey || user.photo_key"
+              :cloudName="cloudName"
+            >
               <div>
-                <cld-image :publicId="user.photoKey">
+                <cld-image :publicId="user.photoKey || user.photo_key">
                   <cld-transformation
                     width="150"
                     height="150"
@@ -40,8 +43,10 @@
           @keypress.enter="submit"
         />
 
-        <p>Display Name</p>
-        <div class="flex">
+        <p id="name-label"
+          >Display Name <BaseIcon v-if="userNameUpdated" name="check"
+        /></p>
+        <div class="relative">
           <BaseInputText
             v-model="user.name"
             label="Name"
@@ -49,12 +54,11 @@
             type="text"
             autofocus
             @keypress.enter="submit"
+            @keypress="userNameUpdated = false"
           />
-          <div>
-            <BaseButton :disabled="processingForm" @click="submit">
-              Update
-            </BaseButton>
-          </div>
+          <BaseButton :disabled="processingForm" @click="submit" class="absolute top-0 right-0 h-full">
+            Update
+          </BaseButton>
         </div>
         <div class="flex items-start w-full">
           <BaseLink :to="{ name: 'logout' }">
@@ -101,7 +105,7 @@ export default {
   },
   async mounted() {
     this.fetchCompetitions()
-    await this.fetchUser()
+    this.user = await this.fetchUser({ userId: this.id })
     this.$emit('init')
   },
 
@@ -118,6 +122,7 @@ export default {
       loading: false,
       processingForm: false,
       user: null,
+      userNameUpdated: false,
       cloudName: config.cloudName,
     }
   },
@@ -126,14 +131,8 @@ export default {
     ...mapActions({
       patchUser: 'users/patchUser',
       fetchCompetitions: 'competitions/fetchCompetitions',
+      fetchUser: 'users/fetchUser',
     }),
-    async fetchUser() {
-      this.loading = true
-      this.user = await this.$store.dispatch('users/fetchUser', {
-        userId: this.id,
-      })
-      this.loading = false
-    },
     async submit() {
       this.processingForm = true
       const formData = {
@@ -143,8 +142,8 @@ export default {
       }
       this.user = await this.patchUser(formData)
       this.name = this.user.name
+      this.userNameUpdated = true
       this.processingForm = false
-      // show success?
     },
     openUploadModal() {
       window.cloudinary

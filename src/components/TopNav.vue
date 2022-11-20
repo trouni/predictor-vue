@@ -7,8 +7,8 @@
         class="logo-img"
     /></BaseLink>
     <ul class="top-nav-container">
-      <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
-      <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
+      <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" :top="true" />
+      <NavBarRoutes v-else :routes="loggedOutNavRoutes" :top="true" />
     </ul>
   </div>
 </template>
@@ -29,7 +29,6 @@ export default {
         },
         {
           name: 'leaderboards',
-          params: { id: 1 },
           title: 'Leaderboards',
           fontAwesomeClass: 'trophy',
         },
@@ -58,7 +57,6 @@ export default {
 @import '@/styles';
 
 #top-nav {
-  background-color: $purple;
   display: none;
   justify-content: space-between;
   align-items: center;
@@ -96,7 +94,7 @@ export default {
 }
 
 // TODO: Hide when mobile
-@media (min-width: 576px) {
+@media (min-width: 640px) {
   #top-nav {
     display: flex;
   }

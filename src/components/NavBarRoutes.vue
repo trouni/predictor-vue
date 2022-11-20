@@ -12,6 +12,10 @@ export default {
       type: Array,
       required: true,
     },
+    top: {
+      type: Boolean,
+      default: false,
+    },
   },
   // Render functions are an alternative to templates
   render(h, { props }) {
@@ -24,6 +28,9 @@ export default {
       )
       return route
     }
+    function customStyle() {
+      return '!text-white cursor-default leading-none'
+    }
     // Functional components are the only components allowed
     // to return an array of children, rather than a single
     // root node.
@@ -31,27 +38,15 @@ export default {
       <BaseLink
         key={route.name}
         to={processRoute(route)}
-        exact-active-class='active'
+        class='text-white/50 flex-grow h-full no-underline w-full'
+        exact-active-class={customStyle()}
       >
-        <li>
+        <li class='flex h-full w-full items-center justify-center flex-col gap-1'>
           <BaseIcon name={route.fontAwesomeClass} />
+          <p class='text-xs'>{route.title}</p>
         </li>
       </BaseLink>
     ))
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles';
-
-a.active {
-  color: $dark-gray;
-  text-decoration: none;
-  cursor: default;
-}
-
-a {
-  color: $gray;
-}
-</style>

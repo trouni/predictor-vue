@@ -29,10 +29,11 @@
           type="password"
           @keypress.enter="submit"
         />
-        <div>
+        <div class="flex justify-between items-center">
           <BaseButton :disabled="processingForm" @click="submit">
             {{ register ? 'Sign up' : 'Login' }}
           </BaseButton>
+          <BaseLink :to="{ name: 'forgot_password' }">Forgot password?</BaseLink>
         </div>
       </div>
     </div>
@@ -55,6 +56,7 @@ export default {
 
   mounted() {
     this.$emit('init')
+    if (this.isJoinLink()) this.register = true
   },
 
   methods: {
@@ -98,6 +100,9 @@ export default {
           this.processingForm = false
           this.authError = error.full_messages.join('<br/>')
         })
+    },
+    isJoinLink() {
+      return !!location.search.match(/redirectFrom=%2Fjoin/)
     },
   },
 }
