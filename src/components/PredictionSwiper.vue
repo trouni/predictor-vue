@@ -37,7 +37,7 @@
         </transition>
       </div>
       <div
-        class="w-full text-center flex flex-col justify-center items-center h-2/5"
+        class="w-full text-center flex flex-col justify-start items-center h-2/5"
       >
         <div v-if="showConfirm" class="contents">
           <h4 class="text-xl mb-3 text-glow z-50"
