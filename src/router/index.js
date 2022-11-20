@@ -20,10 +20,6 @@ router.beforeEach(async (routeTo, routeFrom, next) => {
     NProgress.start()
   }
 
-  // Fetch competitions if missing
-  if (!store.getters['competitions/currentCompetition'])
-    await store.dispatch('competitions/fetchCompetitions')
-
   // Check if auth is required on this route
   // (including nested routes).
   const authRequired = routeTo.matched.some(route => route.meta.authRequired)
