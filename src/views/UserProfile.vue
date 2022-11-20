@@ -46,7 +46,7 @@
         <p id="name-label"
           >Display Name <BaseIcon v-if="userNameUpdated" name="check"
         /></p>
-        <div class="flex">
+        <div class="relative">
           <BaseInputText
             v-model="user.name"
             label="Name"
@@ -54,12 +54,11 @@
             type="text"
             autofocus
             @keypress.enter="submit"
+            @keypress="userNameUpdated = false"
           />
-          <div>
-            <BaseButton :disabled="processingForm" @click="submit">
-              Update
-            </BaseButton>
-          </div>
+          <BaseButton :disabled="processingForm" @click="submit" class="absolute top-0 right-0 h-full">
+            Update
+          </BaseButton>
         </div>
         <div class="flex items-start w-full">
           <BaseLink :to="{ name: 'logout' }">

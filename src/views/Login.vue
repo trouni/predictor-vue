@@ -29,10 +29,11 @@
           type="password"
           @keypress.enter="submit"
         />
-        <div>
+        <div class="flex justify-between items-center">
           <BaseButton :disabled="processingForm" @click="submit">
             {{ register ? 'Sign up' : 'Login' }}
           </BaseButton>
+          <BaseLink :to="{ name: 'forgot_password' }">Forgot password?</BaseLink>
         </div>
       </div>
     </div>

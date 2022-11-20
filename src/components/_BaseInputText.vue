@@ -54,6 +54,7 @@ input {
   display: block;
   width: 100%;
   padding: $size-input-padding-vertical $size-input-padding-horizontal;
+  margin-top: 0.5em;
   margin-bottom: $size-grid-padding;
   line-height: 1;
   border: $size-input-border solid $color-input-border;

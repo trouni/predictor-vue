@@ -20,13 +20,8 @@ export const getters = {
   competitionsCount(_, getters) {
     return getters.competitions.length
   },
-  currentCompetitionId(state, getters) {
-    if (getters.competitionsCount === 0) return null
-    // TODO: The comepetition id was default at first [0], now last.
-    return (
-      state.currentCompetitionId ||
-      getters.competitions[getters.competitions.length - 1].id
-    )
+  currentCompetitionId(state) {
+    return state.currentCompetitionId
   },
 }
 
@@ -52,5 +47,15 @@ export const actions = {
   selectCompetition({ commit }, competitionId) {
     commit('SET_CURRENT_COMPETITION_ID', competitionId)
     return competitionId
+  },
+
+  async setDefaultCompetition({ dispatch }) {
+    const competitions = await dispatch('fetchCompetitions')
+    if (competitions.length > 0) {
+      const competitionId =
+        process.env.VUE_APP_COMPETITION_ID ||
+        competitions[competitions.length - 1].id
+      dispatch('selectCompetition', competitionId)
+    }
   },
 }

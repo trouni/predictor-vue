@@ -1,4 +1,10 @@
-import { logIn, logOut, signUp } from '@/api/auth'
+import {
+  logIn,
+  logOut,
+  signUp,
+  resetPassword,
+  updatePassword,
+} from '@/api/auth'
 import { saveState, getSavedState, clearLocalStorage } from '@/utils/helpers'
 import router from '@/router'
 
@@ -38,7 +44,7 @@ export const actions = {
 
   // Logs in the current user.
   logIn({ commit, rootGetters, dispatch }, { email, password } = {}) {
-    return logIn({ email, password }).then(async (response) => {
+    return logIn({ email, password }).then(async response => {
       const user = response.data.data
       const headers = response.headers
       commit('SET_CURRENT_USER', user)
@@ -46,17 +52,7 @@ export const actions = {
 
       // Fetch competitions and set current competition if missing
       if (!rootGetters['competitions/currentCompetitionId']) {
-        const competitions = await dispatch(
-          'competitions/fetchCompetitions',
-          {},
-          { root: true }
-        )
-        if (competitions.length > 0) {
-          const competitionId =
-            process.env.VUE_APP_COMPETITION_ID ||
-            competitions[competitions.length - 1].id
-          dispatch('competitions/selectCompetition', competitionId, { root: true })
-        }
+        dispatch('competitions/setDefaultCompetition', {}, { root: true })
       }
 
       return user
@@ -83,7 +79,46 @@ export const actions = {
   signUp(_, credentials) {
     return signUp(credentials)
       .then(response => {
-        if (response.data.status !== 'success') {
+        if (response.status !== 200) {
+          throw response.data.errors
+        }
+      })
+      .catch(error => {
+        throw error.response.data.errors
+      })
+  },
+
+  resetPassword(_, { email, redirectUrl }) {
+    return resetPassword({ email, redirectUrl })
+      .then(response => {
+        if (response.status !== 200) {
+          throw response.data.errors
+        }
+      })
+      .catch(error => {
+        throw error.response.data.errors
+      })
+  },
+
+  updatePassword(
+    { commit, dispatch, rootGetters },
+    { password, confirmation }
+  ) {
+    return updatePassword({ password, confirmation })
+      .then(async response => {
+        if (response.status === 200) {
+          commit('SET_CURRENT_USER', response.data.data)
+          dispatch('updateHeaders', response.headers)
+          // Fetch competitions and set current competition if missing
+          if (!rootGetters['competitions/currentCompetitionId']) {
+            await dispatch(
+              'competitions/setDefaultCompetition',
+              {},
+              { root: true }
+            )
+          }
+          return response
+        } else {
           throw response.data.errors
         }
       })
