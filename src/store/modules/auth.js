@@ -1,4 +1,4 @@
-import { logIn, logOut, signUp } from '@/api/auth'
+import { logIn, logOut, signUp, resetPassword, updatePassword } from '@/api/auth'
 import { saveState, getSavedState, clearLocalStorage } from '@/utils/helpers'
 import router from '@/router'
 
@@ -46,17 +46,7 @@ export const actions = {
 
       // Fetch competitions and set current competition if missing
       if (!rootGetters['competitions/currentCompetitionId']) {
-        const competitions = await dispatch(
-          'competitions/fetchCompetitions',
-          {},
-          { root: true }
-        )
-        if (competitions.length > 0) {
-          const competitionId =
-            process.env.VUE_APP_COMPETITION_ID ||
-            competitions[competitions.length - 1].id
-          dispatch('competitions/selectCompetition', competitionId, { root: true })
-        }
+        dispatch('competitions/setDefaultCompetition', {}, { root: true })
       }
 
       return user
@@ -83,7 +73,7 @@ export const actions = {
   signUp(_, credentials) {
     return signUp(credentials)
       .then(response => {
-        if (response.data.status !== 'success') {
+        if (response.status !== 200) {
           throw response.data.errors
         }
       })
@@ -91,4 +81,39 @@ export const actions = {
         throw error.response.data.errors
       })
   },
+
+  resetPassword(_, email) {
+    return resetPassword(email)
+      .then(response => {
+        if (response.status !== 200) {
+          throw response.data.errors
+        }
+      })
+      .catch(error => {
+        throw error.response.data.errors
+      })
+  },
+
+  updatePassword(
+    { commit, dispatch, rootGetters },
+    { password, confirmation }
+  ) {
+    return updatePassword({ password, confirmation })
+      .then(async response => {
+        if (response.status === 200) {
+          commit('SET_CURRENT_USER', response.data.data)
+          dispatch('updateHeaders', response.headers)
+          // Fetch competitions and set current competition if missing
+          if (!rootGetters['competitions/currentCompetitionId']) {
+            await dispatch('competitions/setDefaultCompetition', {}, { root: true })
+          }
+          return response
+        } else {
+          throw response.data.errors
+        }
+      })
+      .catch(error => {
+        throw error.response.data.errors
+      })
+  }
 }

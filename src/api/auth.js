@@ -26,3 +26,21 @@ export function signUp(credentials) {
     data: credentials,
   })
 }
+
+export function resetPassword(email) {
+  return request({
+    baseURL: config.apiURL,
+    url: '/auth/password',
+    method: 'post',
+    data: { email, redirect_url: `${process.env.VUE_APP_HOST}/reset-password` },
+  })
+}
+
+export function updatePassword({ password, confirmation }) {
+  return request({
+    baseURL: config.apiURL,
+    url: '/auth/password',
+    method: 'patch',
+    data: { password, password_confirmation: confirmation },
+  })
+}
