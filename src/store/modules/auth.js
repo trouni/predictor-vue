@@ -1,4 +1,10 @@
-import { logIn, logOut, signUp, resetPassword, updatePassword } from '@/api/auth'
+import {
+  logIn,
+  logOut,
+  signUp,
+  resetPassword,
+  updatePassword,
+} from '@/api/auth'
 import { saveState, getSavedState, clearLocalStorage } from '@/utils/helpers'
 import router from '@/router'
 
@@ -38,7 +44,7 @@ export const actions = {
 
   // Logs in the current user.
   logIn({ commit, rootGetters, dispatch }, { email, password } = {}) {
-    return logIn({ email, password }).then(async (response) => {
+    return logIn({ email, password }).then(async response => {
       const user = response.data.data
       const headers = response.headers
       commit('SET_CURRENT_USER', user)
@@ -105,7 +111,11 @@ export const actions = {
           dispatch('updateHeaders', response.headers)
           // Fetch competitions and set current competition if missing
           if (!rootGetters['competitions/currentCompetitionId']) {
-            await dispatch('competitions/setDefaultCompetition', {}, { root: true })
+            await dispatch(
+              'competitions/setDefaultCompetition',
+              {},
+              { root: true }
+            )
           }
           return response
         } else {
@@ -115,5 +125,5 @@ export const actions = {
       .catch(error => {
         throw error.response.data.errors
       })
-  }
+  },
 }

@@ -57,5 +57,5 @@ export const actions = {
         competitions[competitions.length - 1].id
       dispatch('selectCompetition', competitionId)
     }
-  }
+  },
 }
