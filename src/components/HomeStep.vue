@@ -27,7 +27,7 @@ export default {
   h5 {
     color: $white;
     font-weight: bolder;
-    margin: $spacer 0 ($spacer / 2) 0;
+    margin: $spacer 0 calc($spacer / 2) 0;
   }
   p {
     color: $white;
