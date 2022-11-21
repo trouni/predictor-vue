@@ -90,7 +90,7 @@ export const actions = {
     { competitionId, name } = {}
   ) {
     competitionId =
-      competitionId || rootGetters['competitions/currentCompetition'].id
+      competitionId || rootGetters['competitions/currentCompetitionId']
     return LeaderboardsRepository.postLeaderboard(competitionId, name).then(
       response => {
         commit('ADD_LEADERBOARD', response.data)

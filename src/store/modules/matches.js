@@ -41,7 +41,7 @@ export const actions = {
 
     const filters = {
       competitionId:
-        competitionId || rootGetters['competitions/currentCompetition'].id,
+        competitionId || rootGetters['competitions/currentCompetitionId'],
     }
     if (userId) filters['userId'] = userId
     return MatchesRepository.get(filters).then(response => {
