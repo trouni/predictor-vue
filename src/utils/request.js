@@ -32,6 +32,7 @@ service.interceptors.response.use(
     return response
   },
   error => {
+    console.warn(error)
     if (
       store.getters['auth/loggedIn'] &&
       error.response &&
