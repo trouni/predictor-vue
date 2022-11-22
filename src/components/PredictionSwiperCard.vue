@@ -1,5 +1,6 @@
 <template>
   <div
+    @click.once="showInstructions"
     :class="[
       'swiper-card w-full md:w-4/5 lg:w-3/4 max-w-5xl absolute transition duration-500 flex overflow-visible filter blur-sm first:blur-0 contrast-75 first:contrast-100',
     ]"
@@ -170,6 +171,9 @@ export default {
   },
 
   methods: {
+    showInstructions() {
+      document.querySelector('#swiper-instructions').classList.remove('hidden')
+    },
     resetCard() {
       this.deltaX = 0
       this.deltaY = 0

@@ -19,6 +19,9 @@
           <div class="my-3 pill-pts py-1 px-3 text-white">
             {{ currentMatch.roundNumber + 2 }} points
           </div>
+          <p class="text-gray-500 font-light text-xs md:text-lg hidden" id="swiper-instructions">
+            Swipe left/right for the winning team, down/up for a draw.
+          </p>
         </div>
       </div>
       <div class="flex flex-col items-center justify-end z-50">
