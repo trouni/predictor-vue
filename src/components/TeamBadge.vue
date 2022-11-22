@@ -27,8 +27,8 @@ export default {
       switch (this.status) {
         case 'correct':
           return 'border-4 border-prediction-correct'
-        case 'incorrect':
-          return 'border-4 border-prediction-incorrect'
+        case 'wrong':
+          return 'border-4 border-prediction-wrong'
         case 'selected':
           return 'border-4 border-prediction-selected'
         default:
