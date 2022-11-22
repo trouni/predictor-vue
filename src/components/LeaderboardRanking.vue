@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="points w-12 text-center flex-shrink-0  py-1"> {{ users[0].points }}</div>
+    <div class="points w-12 text-center flex-shrink-0  py-1"> {{ users[0].points }}<span v-if="users[0].possiblePoints" class="font-light text-xs"> / {{ users[0].possiblePoints }}</span></div>
   </div>
 </template>
 
