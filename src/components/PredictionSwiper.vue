@@ -86,7 +86,7 @@ export default {
     PredictionSwiperStatus,
     UndoButton,
     ConfirmButton,
-    PredictionHint
+    PredictionHint,
 },
 
   props: {
@@ -110,6 +110,7 @@ export default {
         this.prediction.choice = newMatch.prediction.choice
         this.prediction.match = newMatch
         this.awaitingConfirmation = true
+        this.showHint = false
       }
     },
   },
