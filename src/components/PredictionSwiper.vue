@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col">
+  <div class="w-full h-full flex flex-col" @click="showHint = false">
     <div
       class="overflow-hidden flex flex-col justify-around items-center flex-grow h-full"
     >
@@ -65,6 +65,9 @@
         v-model="prediction"
       />
     </div>
+    <transition name="fade">
+      <PredictionHint v-if="showHint" />
+    </transition>
   </div>
 </template>
 
@@ -73,6 +76,7 @@ import UndoButton from '@/components/UndoButton'
 import ConfirmButton from '@/components/ConfirmButton'
 import PredictionSwiperCard from '@/components/PredictionSwiperCard'
 import PredictionSwiperStatus from '@/components/PredictionSwiperStatus'
+import PredictionHint from '@/components/PredictionHint.vue'
 import { formatDateTime } from '@/utils/helpers'
 import { mapActions } from 'vuex'
 
@@ -82,7 +86,8 @@ export default {
     PredictionSwiperStatus,
     UndoButton,
     ConfirmButton,
-  },
+    PredictionHint,
+},
 
   props: {
     matches: Array,
@@ -95,6 +100,7 @@ export default {
         match: {},
       },
       awaitingConfirmation: false,
+      showHint: true,
     }
   },
 
@@ -104,6 +110,7 @@ export default {
         this.prediction.choice = newMatch.prediction.choice
         this.prediction.match = newMatch
         this.awaitingConfirmation = true
+        this.showHint = false
       }
     },
   },
