@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LeaderboardCard
+    <LeaderboardRankingsCard
       :key="leaderboard.id"
       :leaderboard="leaderboard"
       v-if="leaderboard"
@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import LeaderboardCard from '@/components/LeaderboardCard'
+import LeaderboardRankingsCard from '@/components/LeaderboardRankingsCard'
 import LeaderboardActions from '@/components/LeaderboardActions'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
-  components: { LeaderboardCard, LeaderboardActions },
+  components: { LeaderboardRankingsCard, LeaderboardActions },
 
   props: {
     userId: {
@@ -54,10 +54,6 @@ export default {
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
-    changeTab(tabName) {
-      this.selectedTab = tabName
-      // TODO: trigger action to show the leaderboard's predictions for this Group
-    },
   },
   data() {
     return {
