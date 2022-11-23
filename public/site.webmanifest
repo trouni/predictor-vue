@@ -15,7 +15,7 @@
     ],
     "theme_color": "#29275c",
     "background_color": "#29275c",
-    "start_url": "https://www.octacle.app/matches",
+    "start_url": "https://www.octacle.app/predictions",
     "display": "standalone",
     "orientation": "portrait",
     "scope_url": "https://www.octacle.app/",

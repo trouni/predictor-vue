@@ -22,14 +22,19 @@ export default {
   data() {
     return {
       loggedInNavRoutes: [
-        {
-          name: 'matches',
-          title: 'Matches',
-          fontAwesomeClass: 'futbol',
+      {
+          name: 'predictions',
+          title: 'Predict',
+          fontAwesomeClass: 'bullseye',
         },
         {
-          name: 'leaderboards',
-          title: 'Leaderboards',
+          name: 'results',
+          title: 'Results',
+          fontAwesomeClass: 'square-poll-vertical',
+        },
+        {
+          name: 'rankings',
+          title: 'Rankings',
           fontAwesomeClass: 'trophy',
         },
         {

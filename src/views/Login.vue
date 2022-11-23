@@ -76,7 +76,7 @@ export default {
           this.processingForm = false
           // Redirect to the originally requested page, or to the matches page
           this.$router.push(
-            this.$route.query.redirectFrom || { path: '/matches' }
+            this.$route.query.redirectFrom || { name: 'predictions' }
           )
         })
         .catch(error => {
