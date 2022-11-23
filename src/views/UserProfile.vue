@@ -170,8 +170,9 @@ p {
 .avatar-btn {
   position: absolute;
   color: $red;
-  top: 0;
-  left: 0;
+  top: 12px;
+  left: 12px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   &:hover {
     cursor: pointer;
   }
