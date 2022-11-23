@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-stretch fixed w-80 top-1/2 -translate-y-1/2 opacity-80 w-full left-1/2 -translate-x-1/2 bg-white/50 rounded-lg overflow-hidden drop-shadow-2xl">
+  <div class="flex items-stretch fixed w-80 top-1/2 -translate-y-1/2 opacity-90 w-full left-1/2 -translate-x-1/2 rounded-lg overflow-hidden drop-shadow-2xl">
     <div class="w-1/5 flex items-center justify-center bg-gradient">
       <BaseIcon name="fa-info-circle" class="fa-2x text-white"></BaseIcon>
     </div>
