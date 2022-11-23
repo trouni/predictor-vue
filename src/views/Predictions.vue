@@ -14,7 +14,7 @@
           predict!
         </p>
         <BaseButton class="uppercase text-center">
-          <BaseLink :to="{ name: 'predictions' }" class="md:text-lg p-3">
+          <BaseLink :to="{ name: 'predict' }" class="md:text-lg p-3">
             <BaseIcon name="arrow-circle-right" class="mr-3" />Make your
             predictions
           </BaseLink>
