@@ -63,7 +63,7 @@ export default {
           confirmation: this.confirmation,
         })
         this.processingForm = false
-        this.$router.push({ name: 'matches' })
+        this.$router.push({ name: 'predictions' })
       } catch (error) {
         this.authErrors = error.full_messages
         this.processingForm = false

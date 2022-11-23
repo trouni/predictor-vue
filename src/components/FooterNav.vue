@@ -6,18 +6,6 @@
   >
     <ul class="footer-container flex h-full items-center">
       <NavBarRoutes :routes="persistentNavRoutes" />
-      <div
-        v-if="loggedIn"
-        @click="goBack"
-        class="text-white/50 flex-grow h-full no-underline cursor-pointer w-full"
-      >
-        <li
-          class="flex h-full w-full items-center justify-center flex-col gap-1"
-        >
-          <BaseIcon name="chevron-left" />
-          <p class="text-xs">Back</p>
-        </li>
-      </div>
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
     </ul>
@@ -43,13 +31,18 @@ export default {
         // },
       ],
       loggedInNavRoutes: [
-        {
-          path: '/matches',
-          title: 'Matches',
-          fontAwesomeClass: 'futbol',
+      {
+          name: 'predictions',
+          title: 'Predict',
+          fontAwesomeClass: 'bullseye',
         },
         {
-          path: '/leaderboards',
+          name: 'results',
+          title: 'Results',
+          fontAwesomeClass: 'square-poll-vertical',
+        },
+        {
+          name: 'rankings',
           title: 'Rankings',
           fontAwesomeClass: 'trophy',
         },

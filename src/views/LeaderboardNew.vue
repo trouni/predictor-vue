@@ -43,7 +43,7 @@ export default {
       await this.postLeaderboard(formData)
       this.processingForm = false
       this.$router.push(
-        this.$route.query.redirectFrom || { name: 'leaderboards' }
+        this.$route.query.redirectFrom || { name: 'rankings' }
       )
     },
   },

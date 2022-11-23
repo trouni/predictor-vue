@@ -20,7 +20,7 @@ export default {
 
   watch: {
     missingPredictions(newValue) {
-      if (!newValue.length) this.$router.push({ path: '/matches' })
+      if (!newValue.length) this.$router.push({ name: 'predictions' })
     },
   },
 

@@ -90,7 +90,7 @@ export default [
               routeTo.params.password
             )
             next({
-              name: 'leaderboards',
+              name: 'rankings',
               params: { id: membership.competitionId },
             })
           },
@@ -114,33 +114,45 @@ export default [
         },
         children: [
           {
-            path: 'leaderboards',
-            name: 'leaderboards',
-            component: () => import('@/views/Leaderboards'),
+            path: 'results',
+            name: 'results',
+            component: () => import('@/views/Results'),
             meta: {
               authRequired: true,
-              title: 'Leaderboards',
+              title: 'Results',
+              img: 'trophy.png', // TODO: change this icon
+              subHeader: 'LeaderboardSubHeader',
+            },
+            alias: '/results',
+          },
+          {
+            path: 'rankings',
+            name: 'rankings',
+            component: () => import('@/views/Rankings'),
+            meta: {
+              authRequired: true,
+              title: 'Rankings',
               img: 'trophy.png',
               subHeader: 'LeaderboardSubHeader',
             },
-            alias: '/leaderboards',
+            alias: '/rankings',
           },
           {
-            path: 'predictions',
-            name: 'predictions',
-            component: () => import('@/views/PredictionsNew'),
+            path: 'predict',
+            name: 'predict',
+            component: () => import('@/views/Predict'),
             props: true,
             meta: {
               authRequired: true,
               title: 'Pick a result',
               img: 'trophy.png',
             },
-            alias: '/predictions',
+            alias: '/predict',
           },
           {
             path: 'predictions/edit',
             name: 'edit_predictions',
-            component: () => import('@/views/PredictionsNew'),
+            component: () => import('@/views/Predict'),
             props: { allMatches: true },
             meta: {
               authRequired: true,
@@ -161,9 +173,9 @@ export default [
             alias: '/leaderboards/new',
           },
           {
-            path: 'matches',
-            name: 'matches',
-            component: () => import('@/views/Matches'),
+            path: 'predictions',
+            name: 'predictions',
+            component: () => import('@/views/Predictions'),
             props: route => ({
               userId: parseInt(route.query.userId) || undefined,
             }),
@@ -173,20 +185,9 @@ export default [
               img: 'football.png',
               subHeader: 'MatchesSubHeader',
             },
-            alias: '/matches',
+            alias: '/predictions',
           },
         ],
-      },
-      {
-        path: '/leaderboards/:id',
-        name: 'leaderboard',
-        component: () => import('@/views/Leaderboard'),
-        props: route => ({ id: parseInt(route.params.id) }),
-        meta: {
-          authRequired: true,
-          title: 'Leaderboard',
-          img: 'trophy.png',
-        },
       },
       {
         path: '/profile',
@@ -197,15 +198,6 @@ export default [
           authRequired: true,
           title: 'Profile',
           img: 'player.png',
-        },
-      },
-      {
-        path: '/users/:id',
-        name: 'user',
-        component: () => import('@/views/UserProfile'),
-        props: route => ({ id: parseInt(route.params.id) }),
-        meta: {
-          authRequired: true,
         },
       },
     ],

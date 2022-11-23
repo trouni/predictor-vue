@@ -116,5 +116,5 @@ export const actions = {
   resetLeaderboards({ commit }) {
     commit('SET_CURRENT_LEADERBOARD_ID', null)
     commit('SET_LEADERBOARDS', [])
-  }
+  },
 }

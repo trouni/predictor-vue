@@ -74,7 +74,7 @@
             :key="competition.id"
             class="mr-3 last:mr-0"
           >
-            <BaseLink :to="{ name: 'matches', params: { id: competition.id } }">
+            <BaseLink :to="{ name: 'predictions', params: { id: competition.id } }">
               <BaseButton>
                 {{ competition.name }}
               </BaseButton>

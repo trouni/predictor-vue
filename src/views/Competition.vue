@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-if="$route.name === 'competition'">
-      <BaseLink :to="{ name: 'leaderboards' }">
+      <BaseLink :to="{ name: 'rankings' }">
         <BaseButton>View Leaderboards</BaseButton>
       </BaseLink>
 
-      <BaseLink :to="{ name: 'matches' }">
+      <BaseLink :to="{ name: 'predictions' }">
         <BaseButton>View Matches</BaseButton>
       </BaseLink>
 
