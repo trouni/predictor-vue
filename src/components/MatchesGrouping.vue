@@ -11,7 +11,8 @@
           v-for="match in dayMatches"
           :key="match.id"
           :match="match"
-          :selectable="match.status == 'upcoming'"
+          :selectable="selectable ?? match.status == 'upcoming'"
+          :predictions="predictions?.[match.id]"
         />
       </div>
     </div>
@@ -29,6 +30,14 @@ export default {
     matches: {
       type: Object,
       default: () => {},
+    },
+    selectable: {
+      type: Boolean,
+      required: false,
+    },
+    predictions: {
+      type: Object,
+      required: false,
     },
   },
 
