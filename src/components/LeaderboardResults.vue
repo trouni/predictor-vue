@@ -40,7 +40,7 @@ export default {
       Object.values(this.matchesWithResults).forEach(dayMatches => {
         dayMatches.forEach(match => {
           const results = {}
-          Object.keys(this.leaderboard.results[match.id]).forEach(choice => {
+          Object.keys(this.leaderboard.results[match.id] ?? {}).forEach(choice => {
             results[choice] = this.leaderboard.results[match.id][choice].map(
               userId => {
                 return this.leaderboard.users.find(u => u.userId === userId)
