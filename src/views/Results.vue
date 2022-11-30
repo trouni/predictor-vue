@@ -1,26 +1,20 @@
 <template>
-  <div>
-    <LeaderboardResults
-      :key="leaderboard.id"
-      :leaderboard="leaderboard"
-      v-if="leaderboard"
-    />
-    <p v-else class="placeholder-text">
-      Join or create a leaderboard to get started!
-    </p>
-    <LeaderboardActions :leaderboard="leaderboard" />
-  </div>
+  <SnapNavigationLayout :items="leaderboards" ref="snapNav" @change-item="changeLeaderboard">
+    <template v-slot:item="{ item: leaderboard }"> 
+      <LeaderboardResults :leaderboard="leaderboard" :key="leaderboard.id" />
+    </template>
+  </SnapNavigationLayout>
 </template>
 
 <script>
 import LeaderboardResults from '@/components/LeaderboardResults'
-import LeaderboardActions from '@/components/LeaderboardActions'
+import SnapNavigationLayout from '@/views/layouts/SnapNavigationLayout.vue'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
-  components: { LeaderboardResults, LeaderboardActions },
+  components: { LeaderboardResults, SnapNavigationLayout },
 
   props: {
     userId: {
@@ -30,23 +24,26 @@ export default {
   },
 
   async mounted() {
-    if (this.leaderboard) this.$emit('init')
+    if (this.currentLeaderboard) this.$emit('init')
 
     await this.fetchLeaderboards()
     this.$emit('init')
   },
 
-  // The state is managed from the store, we don't want to be reassigning these variables
-  // directly in here (defeats the purpose of the store). Instead of declaring them in data (state)
-  // for the component, we use computed properties.
-
   computed: {
     ...mapGetters({
-      // This syncs the store getters to the component as computed properties. You never have to reassign
-      // them within this component, any changes to them should happen at the store level.
-      // We only need the current leaderboard in this component.
-      leaderboard: 'leaderboards/currentLeaderboard',
+      currentLeaderboard: 'leaderboards/currentLeaderboard',
+      leaderboards: 'leaderboards/leaderboards',
     }),
+  },
+
+  watch: {
+    // This is a watcher that will fire when the leaderboard changes. We want to scroll to the
+    // leaderboard that is currently selected.
+    currentLeaderboard(leaderboard) {
+      const index = this.leaderboards.findIndex(l => l.id === leaderboard.id)
+      this.$refs.snapNav.goToPage(index)
+    },
   },
 
   methods: {
@@ -54,19 +51,9 @@ export default {
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
-  },
-  data() {
-    return {
-      selectedTab: 'All',
-    }
+    changeLeaderboard(index) {
+      this.selectLeaderboard(this.leaderboards[index].id)
+    },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles';
-.placeholder-text {
-  color: $purple;
-  text-align: center;
-}
-</style>

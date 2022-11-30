@@ -9,14 +9,16 @@
       :points="points"
       class="mt-1"
     />
+    <LeaderboardActions :leaderboard="leaderboard" />
   </div>
 </template>
 
 <script>
 import LeaderboardRanking from '@/components/LeaderboardRanking'
+import LeaderboardActions from '@/components/LeaderboardActions'
 
 export default {
-  components: { LeaderboardRanking },
+  components: { LeaderboardRanking, LeaderboardActions },
 
   props: {
     leaderboard: {
