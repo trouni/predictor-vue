@@ -1,5 +1,10 @@
 <template>
-  <SnapNavigationLayout :items="leaderboards" ref="snapNav" @change-item="changeLeaderboard">
+  <SnapNavigationLayout
+    :items="leaderboards"
+    ref="snapNav"
+    @change-item="changeLeaderboard"
+    watched-tutorial-state-key="watchedResultsTutorial"
+  >
     <template v-slot:item="{ item: leaderboard }"> 
       <LeaderboardResults :leaderboard="leaderboard" :key="leaderboard.id" />
     </template>
@@ -48,6 +53,7 @@ export default {
 
   methods: {
     ...mapActions({
+      selectLeaderboard: 'leaderboards/selectLeaderboard',
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),

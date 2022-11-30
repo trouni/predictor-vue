@@ -1,6 +1,11 @@
 <template>
-  <SnapNavigationLayout :items="leaderboards" ref="snapNav" @change-item="changeLeaderboard">
-    <template v-slot:item="{ item: leaderboard }"> 
+  <SnapNavigationLayout
+    :items="leaderboards"
+    ref="snapNav"
+    @change-item="changeLeaderboard"
+    watched-tutorial-state-key="watchedRankingsTutorial"
+  >
+    <template v-slot:item="{ item: leaderboard }">
       <LeaderboardRankingsCard
         :leaderboard="leaderboard"
         :key="leaderboard.id"
