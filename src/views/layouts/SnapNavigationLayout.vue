@@ -1,15 +1,19 @@
 <template>
-  <div ref="snapContainer" class="flex w-screen snap-container">
+  <div ref="snapContainer" class="flex snap-container h-full">
     <div
       v-for="(item, index) in items"
-      class="min-w-[100vw] w-screen p-4 snap-section"
+      class="snap-section min-w-[100%]"
       :key="index"
       ref="items"
       :data-item-idx="index"
     >
-      <slot name="item" :item="item">
-        {{ item.id }}
-      </slot>
+    <div class="h-full overflow-hidden">
+      <div class="hide-scrollbar h-full overflow-y-scroll p-4">
+        <slot name="item" :item="item">
+          {{ item.id }}
+        </slot>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -24,19 +28,19 @@ export default {
   },
 
   mounted() {
-    // var observer = new IntersectionObserver(
-    //   entries => {
-    //     if (entries[0].isIntersecting === true) {
-    //       this.$emit('change-item', entries[0].target.dataset.itemIdx)
-    //     }
-    //   },
-    //   {
-    //     root: this.$refs.snapContainer,
-    //     threshold: [0.9],
-    //   }
-    // )
+    var observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting === true) {
+          this.$emit('change-item', entries[0].target.dataset.itemIdx)
+        }
+      },
+      {
+        root: this.$refs.snapContainer,
+        threshold: [1],
+      }
+    )
 
-    // this.$refs.items.forEach(i => observer.observe(i))
+    this.$refs.items.forEach(i => observer.observe(i))
   },
 
   methods: {
@@ -57,5 +61,13 @@ export default {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar { /* Chrome, Safari and Opera */
+    display: none;
+  }
 }
 </style>

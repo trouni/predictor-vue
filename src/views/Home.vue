@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 home-wrapper">
+  <div class="home-wrapper">
     <TopNav />
     <main>
       <div class="banner">

@@ -13,8 +13,6 @@
 import LeaderboardRankingsCard from '@/components/LeaderboardRankingsCard'
 import SnapNavigationLayout from '@/views/layouts/SnapNavigationLayout.vue'
 import { mapGetters, mapActions } from 'vuex'
-// mapGetters is used to import Getters from your store into your component
-// There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
   components: { LeaderboardRankingsCard, SnapNavigationLayout },
@@ -41,8 +39,6 @@ export default {
   },
 
   watch: {
-    // This is a watcher that will fire when the leaderboard changes. We want to scroll to the
-    // leaderboard that is currently selected.
     currentLeaderboard(leaderboard) {
       const index = this.leaderboards.findIndex(l => l.id === leaderboard.id)
       this.$refs.snapNav.goToPage(index)
