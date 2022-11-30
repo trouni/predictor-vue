@@ -35,18 +35,31 @@
       />
     </div>
     <CornerPoints v-if="finished" :correct="correctPrediction" />
-    <p class="text-xs text-gray-400">{{ matchDate }}</p>
+    <div v-if="predictions">
+      <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{ matchDate }}</p>
+      <MatchPredictions
+        :predictions="predictions"
+        :match="match"
+      />
+    </div>
+    <p v-else class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
 
 <script>
 import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
+import MatchPredictions from './MatchPredictions'
 import CornerPoints from './CornerPoints'
 import { formatTime } from '@/utils/helpers'
 
 export default {
-  components: { PredictionChoiceTeam, PredictionChoiceDraw, CornerPoints },
+  components: {
+    PredictionChoiceTeam,
+    PredictionChoiceDraw,
+    CornerPoints,
+    MatchPredictions,
+  },
 
   props: {
     match: {
@@ -56,6 +69,10 @@ export default {
     selectable: {
       type: Boolean,
       default: true,
+    },
+    predictions: {
+      type: Object,
+      required: false,
     },
   },
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LeaderboardResultsCard
+    <LeaderboardResults
       :key="leaderboard.id"
       :leaderboard="leaderboard"
       v-if="leaderboard"
@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import LeaderboardResultsCard from '@/components/LeaderboardResultsCard'
+import LeaderboardResults from '@/components/LeaderboardResults'
 import LeaderboardActions from '@/components/LeaderboardActions'
 import { mapGetters, mapActions } from 'vuex'
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 
 export default {
-  components: { LeaderboardResultsCard, LeaderboardActions },
+  components: { LeaderboardResults, LeaderboardActions },
 
   props: {
     userId: {
