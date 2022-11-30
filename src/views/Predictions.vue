@@ -1,6 +1,5 @@
 <template>
-  <div class="pb-20">
-    <div v-if="!viewingOwnMatches" class="mb-12">
+  <div class="p-4 pb-20">
       <p class="text-center text-xl font-normal m-3">Predictions made by</p>
       <LeaderboardRanking :users="[user]" class="m-auto max-w-xs" />
     </div>
