@@ -5,7 +5,6 @@ const LeaderboardsRepository = RepositoryFactory.get('leaderboards')
 
 // Not really sure about this
 export const state = {
-  cached: [],
   leaderboards: getSavedState('leaderboards'),
   currentLeaderboardId: getSavedState('currentLeaderboardId'),
 }
