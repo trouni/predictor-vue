@@ -66,13 +66,13 @@
       />
     </div>
     <transition name="fade">
-      <PredictionHint v-if="showHint" :roundNumber='currentMatch.roundNumber'/>
-          </transition>
-        </div>
-      </template>
+      <PredictionHint v-if="showHint" :roundNumber="currentMatch.roundNumber" />
+    </transition>
+  </div>
+</template>
 
-      <script>
-      import UndoButton from '@/components/UndoButton'
+<script>
+import UndoButton from '@/components/UndoButton'
 import ConfirmButton from '@/components/ConfirmButton'
 import PredictionSwiperCard from '@/components/PredictionSwiperCard'
 import PredictionSwiperStatus from '@/components/PredictionSwiperStatus'
