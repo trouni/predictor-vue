@@ -66,7 +66,7 @@
       />
     </div>
     <transition name="fade">
-      <PredictionHint v-if="showHint" :roundNumber="currentMatch.roundNumber" />
+      <PredictionHint v-if="showHint" :match="currentMatch" />
     </transition>
   </div>
 </template>
