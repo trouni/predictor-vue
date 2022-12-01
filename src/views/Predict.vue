@@ -1,5 +1,5 @@
 <template>
-  <PredictionSwiper :matches="missingPredictions" @remove="removeMatch" />
+  <PredictionSwiper :matches="missingPredictions" @remove="removeMatch" class="p-4" />
 </template>
 
 <script>

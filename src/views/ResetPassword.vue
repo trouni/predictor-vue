@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-center items-center p-4">
     <div class="w-full md:w-6/12">
       <div>
         <p>New password</p>

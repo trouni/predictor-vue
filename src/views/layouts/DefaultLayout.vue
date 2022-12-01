@@ -6,7 +6,7 @@
     </Header>
     <div class="flex justify-center w-full h-full overflow-scroll">
       <main
-        class="bg-wrapper overflow-y-auto rounded-t-lg flex-grow p-4 pb-20 relative max-w-screen-md"
+        class="bg-wrapper overflow-y-auto rounded-t-lg flex-grow pb-20 md:pb-0 relative max-w-screen-md"
         ref="main"
       >
         <transition>
@@ -35,7 +35,6 @@ import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 import MatchesSubHeader from '@/components/MatchesSubHeader'
-import Hammer from 'hammerjs'
 
 export default {
   components: {
@@ -44,14 +43,6 @@ export default {
     TopNav,
     LeaderboardSubHeader,
     MatchesSubHeader,
-  },
-
-  mounted() {
-    if (this.$refs.subHeader) {
-      const hammer = new Hammer(this.$refs.main)
-      hammer.on('swipeleft', () => this.$refs.subHeader.onSwipeLeft())
-      hammer.on('swiperight', () => this.$refs.subHeader.onSwipeRight())
-    }
   },
 
   data() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="p-4 flex flex-col justify-center items-center">
     <div class="w-full md:w-6/12">
       <p v-if="register">
         Already got an account?
