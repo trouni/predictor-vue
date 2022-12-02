@@ -105,12 +105,10 @@ export default {
       this.$refs.teamHomeText.style.width = this.percentageHomeWin
     }
     if (this.$refs.draw) {
-      console.log('draw ref exists')
       this.$refs.draw.style.width = this.percentageDraw
       this.$refs.drawText.style.width = this.percentageDraw
     }
     if (this.$refs.teamAway) {
-      console.log('team away ref exists')
       this.$refs.teamAway.style.width = this.percentageAwayWin
       this.$refs.teamAway.style.backgroundColor = this.getColorFromTeamName(
         this.match.teamAway.name
