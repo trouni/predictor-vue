@@ -7,79 +7,76 @@
       >
         <div v-if="hasHomeWinPredictions" ref="teamHome" class="if-home h-full">
           <div
-            class="home-win text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
+            class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
           >
-            {{ percentageHomeWin }}%
+            {{ percentageHomeWin }}
           </div>
         </div>
         <div
           ref="draw"
           v-if="hasDrawPredictions"
-          class="if-draw h-full bg-gray-100"
+          class="h-full bg-gray-100 flex-auto"
         >
           <div
-            class="draw text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center uppercase"
+            class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center uppercase"
           >
-            {{
-              this.predictions.draw
-                ? calculatePercentage(this.predictions.draw.length)
-                : 0
-            }}%
+            {{ percentageDraw }}
           </div>
         </div>
-        <div ref="teamAway" v-if="hasAwayWinPredictions" class="if-away h-full">
+        <div
+          ref="teamAway"
+          v-if="hasAwayWinPredictions"
+          class="h-full flex-auto"
+        >
           <div
-            class="away-win text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
+            class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
           >
-            {{
-              this.predictions.away
-                ? calculatePercentage(this.predictions.away.length)
-                : 0
-            }}%
+            {{ percentageAwayWin }}
           </div>
         </div>
       </div>
-      <div ref="numbersRow" class="w-full h-6 flex mt-1">
+      <div ref="numbersRow" class="w-full min-h-6 flex mt-1">
         <div
           v-if="hasHomeWinPredictions"
           ref="teamHomeText"
-          class="uppercase text-xs text-gray-500"
+          class="uppercase text-gray-600 truncate flex flex-col"
         >
-          {{ match.teamHome.name }}</div
-        >
+          <span class="text-md mb-2"> {{ teamHomeName }}</span>
+          <div
+            v-for="user in predictions['home']"
+            :key="user.userId"
+            class="text-sm truncate"
+          >
+            {{ user.name }}
+          </div>
+        </div>
         <div
           v-if="hasDrawPredictions"
           ref="drawText"
-          class="uppercase text-xs text-gray-500"
+          class="uppercase text-md text-gray-600 truncate flex flex-col"
         >
-          draw</div
+          <span class="text-md mb-2"> DRAW</span>
+          <div
+            v-for="user in predictions['draw']"
+            :key="user.userId"
+            class="text-sm truncate"
+          >
+            {{ user.name }}
+          </div></div
         >
         <div
           v-if="hasAwayWinPredictions"
           ref="teamAwayText"
-          class="uppercase text-xs text-gray-500"
+          class="uppercase text-md text-gray-600 text-center truncate flex flex-col"
         >
-          {{ match.teamAway.name }}</div
-        >
-      </div>
-    </div>
-    <div class="flex justify-between">
-      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-        <h4 class="uppercase">{{ match['teamHome'].abbrev }}</h4>
-        <div v-for="user in predictions['home']" :key="user.userId">
-          {{ user.name }}
-        </div>
-      </div>
-      <div v-if="match.groupId" class="w-1/3">
-        <h4 class="uppercase">Draw</h4>
-        <div v-for="user in predictions['draw']" :key="user.userId">
-          {{ user.name }}
-        </div>
-      </div>
-      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-        <h4 class="uppercase">{{ match['teamAway'].abbrev }}</h4>
-        <div v-for="user in predictions['away']" :key="user.userId">
-          {{ user.name }}
+          <span class="text-md mb-2"> {{ teamAwayName }}</span>
+          <div
+            v-for="user in predictions['away']"
+            :key="user.userId"
+            class="text-sm truncate"
+          >
+            {{ user.name }}
+          </div>
         </div>
       </div>
     </div>
@@ -100,18 +97,26 @@ export default {
   },
 
   mounted() {
-    this.$refs.teamHome.style.width = `${this.percentageHomeWin}%`
-    this.$refs.teamHome.style.backgroundColor = `${this.getColorFromTeamName(
-      this.match.teamHome.name
-    )}`
-    this.$refs.teamHomeText.style.width = `${this.percentageHomeWin}%`
-    this.$refs.draw.style.width = `${this.percentageDraw}%`
-    this.$refs.drawText.style.width = `${this.percentageDraw}%`
-    this.$refs.teamAway.style.width = `${this.percentageAwayWin}%`
-    this.$refs.teamAwayText.style.width = `${this.percentageAwayWin}%`
-    this.$refs.teamAway.style.backgroundColor = `${this.getColorFromTeamName(
-      this.match.teamAway.name
-    )}`
+    if (this.$refs.teamHome) {
+      this.$refs.teamHome.style.width = this.percentageHomeWin
+      this.$refs.teamHome.style.backgroundColor = this.getColorFromTeamName(
+        this.match.teamHome.name
+      )
+      this.$refs.teamHomeText.style.width = this.percentageHomeWin
+    }
+    if (this.$refs.draw) {
+      console.log('draw ref exists')
+      this.$refs.draw.style.width = this.percentageDraw
+      this.$refs.drawText.style.width = this.percentageDraw
+    }
+    if (this.$refs.teamAway) {
+      console.log('team away ref exists')
+      this.$refs.teamAway.style.width = this.percentageAwayWin
+      this.$refs.teamAway.style.backgroundColor = this.getColorFromTeamName(
+        this.match.teamAway.name
+      )
+      this.$refs.teamAwayText.style.width = this.percentageAwayWin
+    }
   },
 
   data() {
@@ -134,7 +139,7 @@ export default {
         iran: '#E11C23',
         japan: '#000080',
         mexico: '#03a154',
-        morocco: '#FF6F48',
+        morocco: '#17A376',
         netherlands: '#FE6702',
         poland: '#FF0001',
         portugal: '#ff0000',
@@ -172,15 +177,15 @@ export default {
     },
     percentageHomeWin() {
       if (!this.hasHomeWinPredictions) return 0
-      return this.calculatePercentage(this.predictions.home.length)
+      return `${this.calculatePercentage(this.predictions.home.length)}%`
     },
     percentageAwayWin() {
       if (!this.hasAwayWinPredictions) return 0
-      return this.calculatePercentage(this.predictions.away.length)
+      return `${this.calculatePercentage(this.predictions.away.length)}%`
     },
     percentageDraw() {
       if (!this.hasDrawPredictions) return 0
-      return this.calculatePercentage(this.predictions.draw.length)
+      return `${this.calculatePercentage(this.predictions.draw.length)}%`
     },
     hasDrawPredictions() {
       return Object.keys(this.predictions).includes('draw')
@@ -191,9 +196,15 @@ export default {
     hasAwayWinPredictions() {
       return Object.keys(this.predictions).includes('away')
     },
-    calculateHomeWinBox() {
-      if (!this.hasHomeWinPredictions) return 0
-      return this.calculatePercentage(this.predictions.home.length)
+    teamHomeName() {
+      return this.percentageHomeWin.slice(0, -1) < 20
+        ? this.match.teamHome.abbrev
+        : this.match.teamHome.name
+    },
+    teamAwayName() {
+      return this.percentageAwayWin.slice(0, -1) < 20
+        ? this.match.teamAway.abbrev
+        : this.match.teamAway.name
     },
   },
 }
