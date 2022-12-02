@@ -66,7 +66,7 @@
       />
     </div>
     <transition name="fade">
-      <PredictionHint v-if="showHint" />
+      <PredictionHint v-if="showHint" :match="currentMatch" />
     </transition>
   </div>
 </template>
@@ -87,7 +87,7 @@ export default {
     UndoButton,
     ConfirmButton,
     PredictionHint,
-},
+  },
 
   props: {
     matches: Array,

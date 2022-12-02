@@ -7,11 +7,19 @@
       <h4 class="font-bold mb-3">Swipe to make a prediction</h4>
       <ul>
         <li class="flex items-center gap-1"><BaseIcon name="fa-arrow-left"></BaseIcon><BaseIcon name="fa-arrow-right"></BaseIcon><p class="ml-1">for the winning team</p></li>
-        <li class="flex items-center gap-1"><BaseIcon name="fa-arrow-up"></BaseIcon><BaseIcon name="fa-arrow-down"></BaseIcon><p class="ml-1">for a draw</p></li>
+        <li v-if='match.groupId' class="flex items-center gap-1"><BaseIcon name="fa-arrow-up"></BaseIcon><BaseIcon name="fa-arrow-down"></BaseIcon><p class="ml-1">for a draw</p></li>
       </ul>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    match: Object,
+  }
+}
+</script>
 
 <style lang="scss">
 @import '@/styles';
