@@ -36,11 +36,10 @@
     </div>
     <CornerPoints v-if="finished" :correct="correctPrediction" />
     <div v-if="predictions">
-      <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{ matchDate }}</p>
-      <MatchPredictions
-        :predictions="predictions"
-        :match="match"
-      />
+      <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{
+        matchDate
+      }}</p>
+      <MatchPredictions :predictions="predictions" :match="match" />
     </div>
     <p v-else class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>

@@ -45,7 +45,7 @@
           <div
             v-for="user in predictions['home']"
             :key="user.userId"
-            class="text-sm truncate"
+            class="text-xs md:text-sm truncate"
           >
             {{ user.name }}
           </div>
@@ -59,7 +59,7 @@
           <div
             v-for="user in predictions['draw']"
             :key="user.userId"
-            class="text-sm truncate"
+            class="text-xs md:text-sm truncate"
           >
             {{ user.name }}
           </div></div
@@ -73,7 +73,7 @@
           <div
             v-for="user in predictions['away']"
             :key="user.userId"
-            class="text-sm truncate"
+            class="text-xs md:text-sm truncate"
           >
             {{ user.name }}
           </div>
