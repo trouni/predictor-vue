@@ -1,6 +1,9 @@
 <template>
-  <div class="pb-20">
-    <div v-if="!viewingOwnMatches" class="mb-12">
+  <div class="p-4 pb-20">
+    <div v-if="userId" class="mb-12">
+      <p @click="() => $router.go(-1)">
+        <BaseIcon name="chevron-left" /> Back to Rankings
+      </p>
       <p class="text-center text-xl font-normal m-3">Predictions made by</p>
       <LeaderboardRanking :users="[user]" class="m-auto max-w-xs" />
     </div>
@@ -71,7 +74,7 @@ export default {
   },
 
   async mounted() {
-    if (!this.viewingOwnMatches) {
+    if (this.userId) {
       this.user = await this.fetchUser({ userId: this.userId })
       // Removing 'UPCOMING' for other users' pages
       const upcomingIndex = this.tabs.indexOf('upcoming')
@@ -110,9 +113,6 @@ export default {
   computed: {
     ...authComputed,
     ...mapGetters({ matches: 'matches/matches' }),
-    viewingOwnMatches() {
-      return this.currentUser.userId === this.userId
-    },
     missingPredictions() {
       return this.matches.filter(
         m => !('prediction' in m) && m.status === 'upcoming'

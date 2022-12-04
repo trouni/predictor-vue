@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4">
     <p>Name</p>
     <BaseInputText
       v-model="name"
