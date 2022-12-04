@@ -144,7 +144,7 @@ export default [
             props: true,
             meta: {
               authRequired: true,
-              title: 'Pick a result',
+              title: 'Swipe to predict',
               img: 'trophy.png',
             },
             alias: '/predict',
@@ -156,7 +156,7 @@ export default [
             props: { allMatches: true },
             meta: {
               authRequired: true,
-              title: 'Pick a result',
+              title: 'Swipe to predict',
               img: 'trophy.png',
             },
             alias: '/predictions/edit',

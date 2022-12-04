@@ -10,26 +10,33 @@
     <div v-else class="flex items-center justify-center my-8">
       <div
         v-if="missingPredictions.length"
-        class="rounded-2xl text-center py-8 px-8 shadow bg-white"
+        class="rounded-sm text-center py-4 px-8 shadow bg-white"
       >
-        <p class="flex items-center justify-center text-center text-lg mb-5">
-          {{ pluralize(missingPredictions.length, 'match', 'matches') }} left to
-          predict!
+        <p
+          v-if="timeLeftForPrediction"
+          class="text-2xl font-mono"
+          :class="{ 'text-red-500': timeLeftForPrediction < 86400 * 1000 }"
+        >
+          {{ formatDuration(timeLeftForPrediction) }}
         </p>
-        <BaseButton class="uppercase text-center">
+        <p class="flex items-center justify-center text-center text-lg my-3">
+          {{ pluralize(missingPredictions.length, 'match', 'matches') }} left to
+          predict
+        </p>
+        <BaseButton class="uppercase text-center mb-2">
           <BaseLink :to="{ name: 'predict' }" class="md:text-lg p-3">
             <BaseIcon name="arrow-circle-right" class="mr-3" />Make your
             predictions
           </BaseLink>
         </BaseButton>
       </div>
-      <div v-else class="rounded-2xl text-center py-8 px-8 shadow bg-white">
-        <p class="flex items-center justify-center text-center text-lg mb-5">
-          <span class="text-5xl">🥳</span> You've made predictions for all
-          upcoming matches!
+      <div v-else class="flex flex-col items-center justify-center pb-8">
+        <p class="flex items-center justify-center lg:text-center text-lg mb-5 gap-2 px-4 w-full md:w-auto leading-none">
+          <BaseIcon name="circle-check" class="fa-2x" />
+          <small>You've made predictions for all upcoming matches!</small>
         </p>
-        <BaseButton class="uppercase text-center">
-          <BaseLink :to="{ name: 'edit_predictions' }" class="md:text-lg p-3">
+        <BaseButton class="uppercase text-center secondary small">
+          <BaseLink :to="{ name: 'edit_predictions' }">
             <BaseIcon name="redo-alt" class="mr-3" />Update your predictions
           </BaseLink>
         </BaseButton>
@@ -58,7 +65,7 @@ import LeaderboardRanking from '@/components/LeaderboardRanking'
 import MatchTab from '@/components/MatchTab'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
-import { pluralize, formatDate } from '@/utils/helpers'
+import { pluralize, formatDate, formatDuration } from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
 export default {
@@ -101,12 +108,23 @@ export default {
       },
       selectedTab: 'ongoing',
       tabs: ['ongoing', 'upcoming', 'past'],
+      timeLeftForPrediction: null,
     }
   },
 
   watch: {
     matches(newValue) {
       if (newValue.length) this.$emit('init')
+    },
+    timeLeftForPrediction: {
+      handler(newValue) {
+        if (newValue >= 0) {
+          setTimeout(() => {
+            this.timeLeftForPrediction = this.getTimeLeftForPrediction()
+          }, 1000)
+        }
+      },
+      immediate: true,
     },
   },
 
@@ -135,6 +153,7 @@ export default {
       fetchUser: 'users/fetchUser',
     }),
     pluralize,
+    formatDuration,
     changeTab(tabName) {
       this.selectedTab = tabName
     },
@@ -173,6 +192,15 @@ export default {
           ),
         },
       ]
+    },
+    getTimeLeftForPrediction() {
+      if (!this.missingPredictions.length) return null
+      else {
+        const nextMatch = this.missingPredictions.reduce((prev, curr) => {
+            return new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
+        })
+        return Math.abs(new Date(nextMatch.kickoffTime) - new Date())
+      }
     },
   },
 }
