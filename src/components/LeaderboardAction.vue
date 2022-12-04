@@ -1,14 +1,20 @@
 <template>
-  <div class="action-pill">
+  <div class="flex flex-col gap-3 text-center p-8">
     <BaseLink v-if="path" :to="{ name: path }">
       <span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
     </BaseLink>
     <ShareButton
       v-else-if="action === 'invite'"
       :password="leaderboard.password"
+      :text="text"
+      :icon="icon"
     />
-    <div v-else-if="action === 'leave'" @click="showModal = true"
-      ><span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
+    <div
+      v-else-if="action === 'leave'"
+      @click="showModal = true"
+      class="cursor-pointer"
+    >
+      <BaseIcon :name="icon" /> <span class="mr-1">{{ text }} </span>
     </div>
     <ConfirmDelete
       v-if="showModal"
@@ -75,16 +81,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles';
-.action-pill {
-  background-color: $light-gray;
-  color: $purple;
-  padding: calc($spacer / 2) $spacer * 2;
-  flex: 1;
-  border-radius: $spacer * 2;
-  margin: $spacer calc($spacer / 2);
-  text-align: center;
-}
-</style>

@@ -1,11 +1,11 @@
 <template>
-  <div
-    class="visibility-hidden tooltip"
+  <BaseButton
+    class="visibility-hidden tooltip secondary"
     data-tooltip="URL Copied!"
     @click="copy($event)"
   >
-    <span class="mr-1">Invite </span><BaseIcon name="share" />
-  </div>
+    <BaseIcon :name="icon" /> <span class="ml-2">{{ text }}</span>
+  </BaseButton>
 </template>
 
 <script>
@@ -15,6 +15,16 @@ export default {
       type: String,
       default: null,
       required: true,
+    },
+    text: {
+      type: String,
+      default: 'Share',
+      required: false,
+    },
+    icon: {
+      type: String,
+      default: 'share',
+      required: false,
     },
   },
   methods: {

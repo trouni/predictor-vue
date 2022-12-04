@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between pb-20">
+  <div class="pb-20">
     <LeaderboardAction
       v-for="(button, index) in buttons"
       :key="index"
@@ -29,20 +29,14 @@ export default {
     return {
       buttons: [
         {
-          text: 'Invite',
-          icon: 'Matches',
+          text: 'Invite players',
+          icon: 'user-plus',
           action: 'invite',
         },
         {
-          text: 'Leave',
+          text: 'Leave this leaderboard',
           icon: 'sign-out-alt',
           action: 'leave',
-        },
-        {
-          text: 'New',
-          icon: 'plus',
-          path: 'new_leaderboard',
-          action: 'new_leaderboard',
         },
       ],
     }
