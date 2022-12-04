@@ -1,15 +1,15 @@
 <template>
-  <div ref="snapContainer" class="flex snap-container h-full">
+  <div ref="snapContainer" class="flex snap-container h-full relative">
     <transition>
       <div
-        v-if="showTutorial"
+        v-if="showTutorial && isTouchDevice"
         @click="hideTutorial"
-        class="fixed w-full h-full bg-black/50 z-40"
+        class="fixed md:absolute w-full h-full bg-black/50 z-40 top-0 left-0"
       >
         <AnimatedArrow
           :left="!!previousItem"
           :right="!!nextItem"
-          class="text-xl fixed top-1/2 -translate-y-1/2 z-50 uppercase"
+          class="text-lg fixed md:absolute top-1/2 md:top-[40%] -translate-y-full z-50 uppercase"
           :class="{
             'left-0': previousItem,
             'right-0': nextItem,
@@ -100,6 +100,13 @@ export default {
       if (this.watchedTutorialStateKey) {
         saveState(this.watchedTutorialStateKey, true)
       }
+    },
+    isTouchDevice() {
+      return (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        navigator.msMaxTouchPoints > 0
+      )
     },
   },
 }
