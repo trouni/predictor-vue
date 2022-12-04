@@ -20,13 +20,13 @@
           </BaseLink>
         </BaseButton>
       </div>
-      <div v-else class="rounded-2xl text-center py-8 px-8 shadow bg-white">
-        <p class="flex items-center justify-center text-center text-lg mb-5">
-          <span class="text-5xl">🥳</span> You've made predictions for all
-          upcoming matches!
+      <div v-else class="flex flex-col items-center justify-center pb-8">
+        <p class="flex items-center justify-center lg:text-center text-lg mb-5 gap-2 px-4 w-full md:w-auto leading-none">
+          <BaseIcon name="circle-check" class="fa-2x" /> <small>You've made predictions for all
+          upcoming matches!</small>
         </p>
-        <BaseButton class="uppercase text-center">
-          <BaseLink :to="{ name: 'edit_predictions' }" class="md:text-lg p-3">
+        <BaseButton class="uppercase text-center secondary small">
+          <BaseLink :to="{ name: 'edit_predictions' }">
             <BaseIcon name="redo-alt" class="mr-3" />Update your predictions
           </BaseLink>
         </BaseButton>
