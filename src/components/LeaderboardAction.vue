@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col gap-3 text-center p-8">
-    <BaseLink v-if="path" :to="{ name: path }">
-      <span class="mr-1">{{ text }} </span><BaseIcon :name="icon" />
+  <div class="flex flex-col gap-3 text-center m-3 py-1">
+    <BaseLink v-if="to" :to="to">
+      <BaseIcon :name="icon" /> <span class="mr-1">{{ text }} </span>
     </BaseLink>
     <ShareButton
       v-else-if="action === 'invite'"
@@ -37,27 +37,22 @@ export default {
   props: {
     leaderboard: {
       type: Object,
-      default: null,
       required: false,
     },
     text: {
       type: String,
-      default: null,
       required: false,
     },
     icon: {
       type: String,
-      default: null,
       required: false,
     },
-    path: {
-      type: String,
-      default: null,
+    to: {
+      type: Object,
       required: false,
     },
     action: {
       type: String,
-      default: null,
       required: false,
     },
   },
