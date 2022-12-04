@@ -1,24 +1,12 @@
 <template>
   <div ref="snapContainer" class="flex snap-container h-full relative">
-    <transition>
-      <div
-        v-if="showTutorial && isTouchDevice"
-        @click="hideTutorial"
-        class="fixed md:absolute w-full h-full bg-black/50 z-40 top-0 left-0"
-      >
-        <AnimatedArrow
-          :left="!!previousItem"
-          :right="!!nextItem"
-          class="text-lg fixed md:absolute top-1/2 md:top-[40%] -translate-y-full z-50 uppercase"
-          :class="{
-            'left-0': previousItem,
-            'right-0': nextItem,
-          }"
-          text="Swipe Next"
-          color="white"
-        />
-      </div>
-    </transition>
+    <SwipeTutorial
+      v-if="previousItem || nextItem"
+      :arrows="{
+        left: !!previousItem ? `Swipe for previous leaderboard<br><strong>${previousItem.name}</strong>` : null,
+        right: !!nextItem ? `Swipe for next leaderboard<br><strong>${nextItem.name}</strong>` : null,
+      }"
+    />
     <div
       v-for="(item, index) in items"
       class="snap-section min-w-[100%]"
@@ -38,38 +26,38 @@
 </template>
 
 <script>
-import AnimatedArrow from '@/components/AnimatedArrow.vue'
-import { saveState, getSavedState } from '@/utils/helpers'
+import SwipeTutorial from '@/components/SwipeTutorial.vue'
 
 export default {
-  components: { AnimatedArrow },
+  components: { SwipeTutorial },
 
   props: {
     items: {
       type: Array,
       required: true,
     },
-    watchedTutorialStateKey: {
-      type: String,
-      required: false,
-    },
   },
 
   data() {
     return {
-      currentItem: this.items[0],
-      showTutorial:
-        this.items.length > 0 && (!this.watchedTutorialStateKey || !getSavedState(this.watchedTutorialStateKey)),
+      pageIdx: 0,
     }
+  },
+
+  watch: {
+    pageIdx: {
+      handler(newIdx) {
+        this.$emit('change-item', newIdx)
+      },
+      immediate: true,
+    },
   },
 
   mounted() {
     var observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting === true) {
-          const index = entries[0].target.dataset.itemIdx
-          this.currentItem = this.items[index]
-          this.$emit('change-item', index)
+        if (entries[0].isIntersecting) {
+          this.pageIdx = parseInt(entries[0].target.dataset.itemIdx)
         }
       },
       {
@@ -82,6 +70,9 @@ export default {
   },
 
   computed: {
+    currentItem() {
+      return this.items[this.pageIdx]
+    },
     previousItem() {
       return this.items[this.items.indexOf(this.currentItem) - 1]
     },
@@ -92,21 +83,8 @@ export default {
 
   methods: {
     goToPage(pageIdx) {
-      this.currentItem = this.items[pageIdx]
+      this.pageIdx = pageIdx
       this.$refs.items[pageIdx].scrollIntoView()
-    },
-    hideTutorial() {
-      this.showTutorial = false
-      if (this.watchedTutorialStateKey) {
-        saveState(this.watchedTutorialStateKey, true)
-      }
-    },
-    isTouchDevice() {
-      return (
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        navigator.msMaxTouchPoints > 0
-      )
     },
   },
 }

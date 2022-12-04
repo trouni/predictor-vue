@@ -1,7 +1,9 @@
 <template>
-  <div :class="direction" :style="cssProps">
-    <span class="arrow"></span>
-    <p v-html="text"></p>
+  <div>
+    <div :class="direction" :style="cssProps">
+      <span class="arrow"></span>
+      <p v-html="text" class="border-[0.5px] text-center rounded-md p-2 bg-white/10"></p>
+    </div>
   </div>
 </template>
 
@@ -28,11 +30,11 @@ export default {
     },
     text: {
       type: String,
-      required: false
+      required: false,
     },
     color: {
       type: String,
-      default: 'black'
+      default: 'black',
     }
   },
 
@@ -59,7 +61,7 @@ export default {
 @keyframes uparrow {
   0% {
     -webkit-transform: translateY(0);
-    opacity: 0.4;
+    opacity: 0.6;
   }
   100% {
     -webkit-transform: translateY(-0.4em);
@@ -69,7 +71,7 @@ export default {
 @keyframes downarrow {
   0% {
     -webkit-transform: translateY(0);
-    opacity: 0.4;
+    opacity: 0.6;
   }
   100% {
     -webkit-transform: translateY(0.4em);
@@ -79,7 +81,7 @@ export default {
 @keyframes leftarrow {
   0% {
     -webkit-transform: translateX(0);
-    opacity: 0.4;
+    opacity: 0.6;
   }
   100% {
     -webkit-transform: translateX(-0.4em);
@@ -89,7 +91,7 @@ export default {
 @keyframes rightarrow {
   0% {
     -webkit-transform: translateX(0);
-    opacity: 0.4;
+    opacity: 0.6;
   }
   100% {
     -webkit-transform: translateX(0.4em);
@@ -103,7 +105,7 @@ export default {
   border-width: 1em;
   display: block;
   height: 0;
-  opacity: 0.4;
+  // opacity: 0.6;
   text-indent: -9999px;
   transform-origin: 50% 50%;
   width: 0;
@@ -120,19 +122,23 @@ export default {
   animation: uparrow 0.6s infinite alternate ease-in-out;
   & .arrow { border-bottom: 1em solid var(--color); }
   @apply flex-col text-center;
+  p { @apply -mt-3; }
 }
 .down {
   animation: downarrow 0.6s infinite alternate ease-in-out;
   & .arrow { border-top: 1em solid var(--color); }
   @apply flex-col flex-col-reverse text-center;
+  p { @apply -mb-3; }
 }
 .left {
   animation: leftarrow 0.6s infinite alternate ease-in-out;
   & .arrow { border-right: 1em solid var(--color); }
+  p { @apply -ml-3; }
 }
 .right {
   & .arrow { border-left: 1em solid var(--color); }
   animation: rightarrow 0.6s infinite alternate ease-in-out;
   @apply flex-row-reverse text-right;
+  p { @apply -mr-3; }
 }
 </style>

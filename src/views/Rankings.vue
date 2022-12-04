@@ -3,7 +3,6 @@
     :items="leaderboards"
     ref="snapNav"
     @change-item="changeLeaderboard"
-    watched-tutorial-state-key="watchedRankingsTutorial"
   >
     <template v-slot:item="{ item: leaderboard }">
       <LeaderboardRankingsCard
