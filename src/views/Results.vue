@@ -5,7 +5,7 @@
     @change-item="changeLeaderboard"
     watched-tutorial-state-key="watchedResultsTutorial"
   >
-    <template v-slot:item="{ item: leaderboard }"> 
+    <template v-slot:item="{ item: leaderboard }">
       <LeaderboardResults :leaderboard="leaderboard" :key="leaderboard.id" />
     </template>
   </SnapNavigationLayout>
@@ -15,6 +15,7 @@
 import LeaderboardResults from '@/components/LeaderboardResults'
 import SnapNavigationLayout from '@/views/layouts/SnapNavigationLayout.vue'
 import { mapGetters, mapActions } from 'vuex'
+
 // mapGetters is used to import Getters from your store into your component
 // There are also similar mapState, mapActions, mapMutations methods.
 

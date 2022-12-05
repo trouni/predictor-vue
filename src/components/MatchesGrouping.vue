@@ -14,6 +14,7 @@
             :match="match"
             :selectable="false"
             :predictions="predictions?.[match.id]"
+            :currentUserId="currentUser.id"
           />
         </template>
         <template v-else>
@@ -34,6 +35,7 @@
 import MatchCard from '@/components/MatchCard'
 import ResultCard from '@/components/ResultCard'
 import { formatDate } from '@/utils/helpers'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { MatchCard, ResultCard },
@@ -56,6 +58,10 @@ export default {
       required: false,
       default: false,
     },
+  },
+
+  computed: {
+    ...mapGetters({ currentUser: 'auth/currentUser' }),
   },
 
   methods: {

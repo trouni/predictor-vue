@@ -5,7 +5,7 @@
       borderStyle,
     ]"
   >
-    <p class="border-b pt-2 mt-2 pb-4 mb-4 text-gray-400">{{ matchDate }}</p>
+    <p class="border-b pt-2 mt-2 pb-4 mb-4 text-gray-500">{{ matchDate }}</p>
     <div class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
@@ -38,8 +38,13 @@
       />
     </div>
     <CornerPoints v-if="finished" :correct="correctPrediction" />
-    <div>
-      <MatchPredictions :predictions="predictions" :match="match" />
+    <div class="mt-5">
+      <MatchPredictions
+        :predictions="predictions"
+        :match="match"
+        :result="matchResult"
+        :currentUserId="currentUserId"
+      />
     </div>
   </div>
 </template>
@@ -71,6 +76,10 @@ export default {
     predictions: {
       type: Object,
       required: false,
+    },
+    currentUserId: {
+      type: Number,
+      required: true,
     },
   },
 
