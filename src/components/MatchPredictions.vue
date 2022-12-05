@@ -1,56 +1,66 @@
 <template>
-  <div class="flex justify-between">
-    <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-      <span
-        :class="[
-          'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
-          currentUserId === user.userId
-            ? currentUserPillColor('home')
-            : pillColor('home'),
-        ]"
-        v-for="user in predictions['home']"
-        :key="user.userId"
-      >
-        {{ user.name }}
-      </span>
-      <div v-if="!hasPredictions('home')" class="px-2"> No Predictions </div>
+  <div class="flex flex-col px-1">
+    <div class="flex justify-between">
+      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
+        <span
+          :class="[
+            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+            currentUserId === user.userId
+              ? currentUserPillColor('home')
+              : pillColor('home'),
+          ]"
+          v-for="user in predictions['home']"
+          :key="user.userId"
+        >
+          {{ user.name }}
+        </span>
+        <div v-if="!hasPredictions('home')" class="px-2"> No Predictions </div>
+      </div>
+      <div v-if="match.groupId" class="w-1/3">
+        <span
+          v-for="user in predictions['draw']"
+          :key="user.userId"
+          :class="[
+            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+            currentUserId === user.userId
+              ? currentUserPillColor('draw')
+              : pillColor('draw'),
+            ,
+          ]"
+        >
+          {{ user.name }}
+        </span>
+        <div v-if="!hasPredictions('draw')" class="px-2"> No Predictions </div>
+      </div>
+      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
+        <span
+          v-for="user in predictions['away']"
+          :key="user.userId"
+          :class="[
+            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+            currentUserId === user.userId
+              ? currentUserPillColor('away')
+              : pillColor('away'),
+          ]"
+        >
+          {{ user.name }}
+        </span>
+        <div v-if="!hasPredictions('away')" class="px-2"> No Predictions </div>
+      </div>
     </div>
-    <div v-if="match.groupId" class="w-1/3">
-      <span
-        v-for="user in predictions['draw']"
-        :key="user.userId"
-        :class="[
-          'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
-          currentUserId === user.userId
-            ? currentUserPillColor('draw')
-            : pillColor('draw'),
-          ,
-        ]"
-      >
-        {{ user.name }}
-      </span>
-      <div v-if="!hasPredictions('draw')" class="px-2"> No Predictions </div>
-    </div>
-    <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-      <span
-        v-for="user in predictions['away']"
-        :key="user.userId"
-        :class="[
-          'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
-          currentUserId === user.userId
-            ? currentUserPillColor('away')
-            : pillColor('away'),
-        ]"
-      >
-        {{ user.name }}
-      </span>
-      <div v-if="!hasPredictions('away')" class="px-2"> No Predictions </div>
+    <div class="my-4">
+      <MatchPredictionsBar :predictions="predictions" :result="result" />
     </div>
   </div>
 </template>
 
 <script>
+import MatchPredictionsBar from '@/components/MatchPredictionsBar'
 export default {
+  components: {
+    MatchPredictionsBar,
+  },
+
   props: {
     match: {
       type: Object,
@@ -69,14 +79,7 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      userStyle: {
-        color: 'white',
-        backgroundColor: 'black',
-      },
-    }
-  },
+
   methods: {
     pillColor(column) {
       if (
@@ -100,15 +103,10 @@ export default {
         return 'text-white border-gray-500 bg-gray-500 font-semibold shadow-md'
       }
     },
+
     hasPredictions(column) {
       return Object.keys(this.predictions).includes(column)
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-#my-pill {
-  @apply bg-prediction-correct text-white;
-}
-</style>
