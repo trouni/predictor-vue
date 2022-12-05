@@ -1,9 +1,16 @@
 <template>
   <div>
-    <MatchesGrouping
+    <!-- <MatchesGrouping
       :matches="matchesWithResults"
       :selectable="false"
       :predictions="predictions"
+    /> -->
+    <ResultCard
+      v-for="match in matchesWithResults"
+      :key="match.id"
+      :match="match"
+      :selectable="false"
+      :predictions="predictions?.[match.id]"
     />
   </div>
 </template>
@@ -12,10 +19,10 @@
 import groupBy from 'lodash/groupBy'
 import { formatDate } from '@/utils/helpers'
 import { mapGetters } from 'vuex'
-import MatchesGrouping from '@/components/MatchesGrouping'
+import ResultCard from '@/components/ResultCard'
 
 export default {
-  components: { MatchesGrouping },
+  components: { ResultCard },
 
   props: {
     leaderboard: {
@@ -28,7 +35,8 @@ export default {
     ...mapGetters({ matches: 'matches/matches' }),
     matchesWithResults() {
       return groupBy(
-        this.matches.filter(m => m.status === 'finished' || m.status === 'started')
+        this.matches
+          .filter(m => m.status === 'finished' || m.status === 'started')
           .sort(
             (m1, m2) => new Date(m2.kickoffTime) - new Date(m1.kickoffTime)
           ),
@@ -40,13 +48,15 @@ export default {
       Object.values(this.matchesWithResults).forEach(dayMatches => {
         dayMatches.forEach(match => {
           const results = {}
-          Object.keys(this.leaderboard.results[match.id] ?? {}).forEach(choice => {
-            results[choice] = this.leaderboard.results[match.id][choice].map(
-              userId => {
-                return this.leaderboard.users.find(u => u.userId === userId)
-              }
-            )
-          })
+          Object.keys(this.leaderboard.results[match.id] ?? {}).forEach(
+            choice => {
+              results[choice] = this.leaderboard.results[match.id][choice].map(
+                userId => {
+                  return this.leaderboard.users.find(u => u.userId === userId)
+                }
+              )
+            }
+          )
           predictions[match.id] = results
         })
       })
