@@ -36,11 +36,10 @@
     </div>
     <CornerPoints v-if="finished" :correct="correctPrediction" />
     <div v-if="predictions">
-      <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{ matchDate }}</p>
-      <MatchPredictions
-        :predictions="predictions"
-        :match="match"
-      />
+      <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{
+        matchDate
+      }}</p>
+      <MatchPredictions :predictions="predictions" :match="match" />
     </div>
     <p v-else class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
@@ -51,7 +50,7 @@ import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
 import MatchPredictions from './MatchPredictions'
 import CornerPoints from './CornerPoints'
-import { formatTime } from '@/utils/helpers'
+import { formatTime, homeTeamWon, awayTeamWon } from '@/utils/helpers'
 
 export default {
   components: {
@@ -100,6 +99,8 @@ export default {
       }
     },
     formatTime,
+    homeTeamWon,
+    awayTeamWon,
   },
 
   computed: {
@@ -128,15 +129,12 @@ export default {
         ((this.match.prediction.choice === 'draw' &&
           this.match.teamAway.score === this.match.teamHome.score) ||
           (this.match.prediction.choice === 'away' &&
-            (this.match.teamAway.score > this.match.teamHome.score ||
-              this.match.teamAway.etScore > this.match.teamHome.etScore ||
-              this.match.teamAway.psScore > this.match.teamHome.psScore)) ||
+            this.awayTeamWon(this.match)) ||
           (this.match.prediction.choice === 'home' &&
-            (this.match.teamAway.score < this.match.teamHome.score ||
-              this.match.teamAway.etScore < this.match.teamHome.etScore ||
-              this.match.teamAway.psScore < this.match.teamHome.psScore)))
+            this.homeTeamWon(this.match)))
       )
     },
+
     borderStyle() {
       if (this.match.status === 'finished') {
         // Game finished - Prediction is either right or wrong/missing

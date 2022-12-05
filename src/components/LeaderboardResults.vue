@@ -1,16 +1,10 @@
 <template>
   <div>
-    <!-- <MatchesGrouping
+    <MatchesGrouping
       :matches="matchesWithResults"
       :selectable="false"
       :predictions="predictions"
-    /> -->
-    <ResultCard
-      v-for="match in matchesWithResults"
-      :key="match.id"
-      :match="match"
-      :selectable="false"
-      :predictions="predictions?.[match.id]"
+      :results="true"
     />
   </div>
 </template>
@@ -19,10 +13,10 @@
 import groupBy from 'lodash/groupBy'
 import { formatDate } from '@/utils/helpers'
 import { mapGetters } from 'vuex'
-import ResultCard from '@/components/ResultCard'
+import MatchesGrouping from '@/components/MatchesGrouping'
 
 export default {
-  components: { ResultCard },
+  components: { MatchesGrouping },
 
   props: {
     leaderboard: {

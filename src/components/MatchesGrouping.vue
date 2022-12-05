@@ -7,13 +7,24 @@
           class="text-center font-light m-8"
           >{{ date }}
         </h4>
-        <MatchCard
-          v-for="match in dayMatches"
-          :key="match.id"
-          :match="match"
-          :selectable="selectable ?? match.status == 'upcoming'"
-          :predictions="predictions?.[match.id]"
-        />
+        <template v-if="results">
+          <ResultCard
+            v-for="match in dayMatches"
+            :key="match.id"
+            :match="match"
+            :selectable="false"
+            :predictions="predictions?.[match.id]"
+          />
+        </template>
+        <template v-else>
+          <MatchCard
+            v-for="match in dayMatches"
+            :key="match.id"
+            :match="match"
+            :selectable="selectable ?? match.status == 'upcoming'"
+            :predictions="predictions?.[match.id]"
+          />
+        </template>
       </div>
     </div>
   </div>
@@ -21,10 +32,11 @@
 
 <script>
 import MatchCard from '@/components/MatchCard'
+import ResultCard from '@/components/ResultCard'
 import { formatDate } from '@/utils/helpers'
 
 export default {
-  components: { MatchCard },
+  components: { MatchCard, ResultCard },
 
   props: {
     matches: {
@@ -38,6 +50,11 @@ export default {
     predictions: {
       type: Object,
       required: false,
+    },
+    results: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 

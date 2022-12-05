@@ -1,34 +1,160 @@
 <template>
-  <div v-if="Object.keys(matches).length" class="mb-10">
-    <div v-for="(dayMatches, date) in matches" :key="date">
-      <div v-if="dayMatches.length">
-        <h4
-          v-if="date !== formatDate(new Date())"
-          class="text-center font-light m-8"
-          >{{ date }}
-        </h4>
-        <MatchCard
-          v-for="match in dayMatches"
-          :key="match.id"
-          :match="match"
-          :selectable="selectable ?? match.status == 'upcoming'"
-          :predictions="predictions?.[match.id]"
-        />
+  <div
+    :class="[
+      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300 relative',
+      borderStyle,
+    ]"
+  >
+    <p class="border-b pt-2 mt-2 pb-4 mb-4 text-gray-400">{{ matchDate }}</p>
+    <div class="flex align justify-evenly items-center">
+      <PredictionChoiceTeam
+        class="w-1/3"
+        :team="match.teamHome"
+        :status="status('home')"
+        :clickable="false"
+        :greyOut="this.matchResult !== 'home'"
+      />
+      <div
+        v-if="match.groupId"
+        class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
+      >
+        <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
+        <div class="flex-grow">
+          <PredictionChoiceDraw
+            :greyOut="this.matchResult !== 'draw'"
+            :status="status('draw')"
+            :clickable="!disabled"
+            @click.native="setPrediction('draw')"
+          />
+        </div>
       </div>
+      <PredictionChoiceTeam
+        class="w-1/3"
+        :team="match.teamAway"
+        :status="status('away')"
+        :clickable="!disabled"
+        :greyOut="this.matchResult !== 'away'"
+        @click.native="setPrediction('away')"
+      />
+    </div>
+    <CornerPoints v-if="finished" :correct="correctPrediction" />
+    <div>
+      <MatchPredictions :predictions="predictions" :match="match" />
     </div>
   </div>
 </template>
 
 <script>
+import PredictionChoiceTeam from './PredictionChoiceTeam'
+import PredictionChoiceDraw from './PredictionChoiceDraw'
+import MatchPredictions from './MatchPredictions'
+import CornerPoints from './CornerPoints'
+import { formatTime, homeTeamWon, awayTeamWon } from '@/utils/helpers'
+
 export default {
+  components: {
+    PredictionChoiceTeam,
+    PredictionChoiceDraw,
+    CornerPoints,
+    MatchPredictions,
+  },
+
   props: {
     match: {
       type: Object,
-      default: () => {},
+      required: true,
+    },
+    selectable: {
+      type: Boolean,
+      default: true,
     },
     predictions: {
       type: Object,
       required: false,
+    },
+  },
+
+  methods: {
+    async setPrediction(choice) {
+      if (this.disabled) return
+
+      this.loading = true
+      const prediction = await this.$store.dispatch(`matches/setPrediction`, {
+        match: this.match,
+        choice,
+      })
+      this.$set(this.match, 'prediction', prediction)
+      this.loading = false
+    },
+    status(choice) {
+      if (this.match.status === 'finished') {
+        return this.matchResult === choice ? 'correct' : 'default'
+      } else {
+        return 'default'
+      }
+    },
+    formatTime,
+    homeTeamWon,
+    awayTeamWon,
+  },
+
+  computed: {
+    matchResult() {
+      if (this.homeTeamWon(this.match)) {
+        return 'home'
+      } else if (this.awayTeamWon(this.match)) {
+        return 'away'
+      } else {
+        return 'draw'
+      }
+    },
+    disabled() {
+      return !this.selectable || this.loading
+    },
+    finished() {
+      return this.match.status === 'finished'
+    },
+    matchDate() {
+      if (this.match.status === 'finished') {
+        return 'Full Time'
+      } else if (this.match.status === 'started') {
+        return 'In Progress'
+      } else {
+        return 'Kick-off at ' + this.formatTime(this.match.kickoffTime)
+      }
+    },
+    madePrediction() {
+      return 'prediction' in this.match
+    },
+    correctPrediction() {
+      return (
+        this.match.status === 'finished' &&
+        this.madePrediction &&
+        ((this.match.prediction.choice === 'draw' &&
+          this.match.teamAway.score === this.match.teamHome.score) ||
+          (this.match.prediction.choice === 'away' &&
+            (this.match.teamAway.score > this.match.teamHome.score ||
+              this.match.teamAway.etScore > this.match.teamHome.etScore ||
+              this.match.teamAway.psScore > this.match.teamHome.psScore)) ||
+          (this.match.prediction.choice === 'home' &&
+            (this.match.teamAway.score < this.match.teamHome.score ||
+              this.match.teamAway.etScore < this.match.teamHome.etScore ||
+              this.match.teamAway.psScore < this.match.teamHome.psScore)))
+      )
+    },
+    borderStyle() {
+      if (this.match.status === 'finished') {
+        // Game finished - Prediction is either right or wrong/missing
+        return this.correctPrediction
+          ? 'border-prediction-correct border-opacity-20'
+          : 'border-prediction-wrong border-opacity-20'
+      } else if (this.match.status === 'upcoming' && !this.madePrediction) {
+        // Game upcoming and no prediction made
+        return 'border-prediction-default'
+      } else {
+        // Game upcoming and prediction already made
+        return 'border-white'
+      }
     },
   },
 }
