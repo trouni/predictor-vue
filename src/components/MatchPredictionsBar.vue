@@ -3,7 +3,10 @@
     ref="predictionsBar"
     class="w-full h-6 rounded-md border-gray-300 border mt-5 flex overflow-hidden"
   >
-    <div ref="teamHome" class="min-w-[2.5em] h-full">
+    <div
+      ref="teamHome"
+      :class="['min-w-[2.5em] h-full', rightSideBorderIfStarted]"
+    >
       <div
         class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
       >
@@ -84,6 +87,11 @@ export default {
   },
 
   computed: {
+    rightSideBorderIfStarted() {
+      if (this.match.status === 'started') {
+        return 'border-r border-gray-300'
+      } else return ''
+    },
     totalNumberOfUserPredictions() {
       return Object.keys(this.predictions).reduce((acc, key) => {
         return acc + this.predictions[key].length
