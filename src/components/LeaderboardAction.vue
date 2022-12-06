@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-3 text-center m-3 py-1">
     <BaseLink v-if="to" :to="to">
-      <BaseIcon :name="icon" /> <span class="mr-1">{{ text }} </span>
+      <BaseIcon :name="icon" /> <span class="ml-1">{{ text }}</span>
     </BaseLink>
     <ShareButton
       v-else-if="action === 'invite'"
@@ -10,11 +10,11 @@
       :icon="icon"
     />
     <div
-      v-else-if="action === 'leave'"
+      v-else-if="action === 'leave' && !leaderboard.leaveDisabled"
       @click="showModal = true"
       class="cursor-pointer"
     >
-      <BaseIcon :name="icon" /> <span class="mr-1">{{ text }} </span>
+      <BaseIcon :name="icon" /> <span class="ml-1">{{ text }}</span>
     </div>
     <ConfirmDelete
       v-if="showModal"
