@@ -97,7 +97,16 @@ export default {
     },
     status(choice) {
       if (this.match.status === 'finished') {
-        return this.matchResult === choice ? 'correct' : 'default'
+        if (this.matchResult === choice) {
+          return 'correct'
+        } else if (
+          this.match.prediction &&
+          this.match.prediction.choice === choice
+        ) {
+          return 'wrong'
+        } else {
+          return 'default'
+        }
       } else {
         return 'default'
       }

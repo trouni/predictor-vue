@@ -104,7 +104,7 @@ export default {
       ) {
         return 'text-white border-prediction-correct bg-prediction-correct font-semibold shadow-md'
       } else {
-        return 'text-white border-gray-500 bg-gray-500 font-semibold shadow-md'
+        return 'text-white border-prediction-wrong bg-prediction-wrong font-semibold shadow-md'
       }
     },
 
