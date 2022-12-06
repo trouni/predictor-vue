@@ -30,6 +30,11 @@ router.beforeEach(async (routeTo, routeFrom, next) => {
   // If auth is required
   store.getters['auth/loggedIn'] ? next() : redirectToLogin()
 
+  // Fetch competitions and set current competition if missing
+  if (!store.getters['competitions/currentCompetitionId']) {
+    await store.dispatch('competitions/setDefaultCompetition')
+  }
+
   function redirectToLogin() {
     // Pass the original route to the login component
     next({ name: 'login', query: { redirectFrom: routeTo.fullPath } })

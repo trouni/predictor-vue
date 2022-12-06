@@ -3,6 +3,7 @@
     <div
       v-if="showTutorial && isTouchDevice"
       @click="hideTutorial"
+      @touchstart="hideTutorial"
       class="fixed md:absolute w-full h-full bg-black/70 z-[60] top-0 left-0 pb-20 backdrop-blur-[2px]"
     >
       <AnimatedArrow
@@ -66,7 +67,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.showTutorial = !getSavedState(`watched${capitalize(this.$route.name)}Tutorial`)
-    }, 2000)
+    }, 500)
   },
 
   methods: {

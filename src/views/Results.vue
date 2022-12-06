@@ -32,6 +32,7 @@ export default {
     if (this.currentLeaderboard) this.$emit('init')
 
     await this.fetchLeaderboards()
+    await this.fetchMatches()
     this.$emit('init')
   },
 
@@ -55,6 +56,7 @@ export default {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
+      fetchMatches: 'matches/fetchMatches',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
     changeLeaderboard(index) {

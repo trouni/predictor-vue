@@ -9,8 +9,8 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   components: { PredictionSwiper },
 
-  async mounted() {
-    await this.fetchMatches()
+  mounted() {
+    this.fetchMatches()
     this.$emit('init')
   },
 

@@ -1,7 +1,7 @@
 <template>
   <div
     id="footer-nav"
-    class="h-20 shadow-2xl z-50"
+    class="h-20 shadow-2xl z-[100]"
     :class="{ 'bg-gradient': !transparent }"
   >
     <ul class="footer-container flex h-full items-center">
