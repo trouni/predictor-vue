@@ -6,6 +6,7 @@ command = "yarn build"
 # Build Previews
 NODE_ENV = "production"
 YARN_FLAGS = "--production=false"
+NETLIFY_USE_YARN = true
 VUE_APP_API_URL = "https://predict-to-win.herokuapp.com"
 
 [context.production.environment]
