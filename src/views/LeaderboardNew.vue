@@ -28,7 +28,7 @@ export default {
       leaderboardId: null,
     }
   },
-  async mounted() {
+  mounted() {
     this.$emit('init')
   },
   methods: {
