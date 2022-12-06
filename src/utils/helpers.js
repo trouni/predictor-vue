@@ -28,6 +28,22 @@ export function formatDate(date) {
   })
 }
 
+export function homeTeamWon(match) {
+  return (
+    match.teamAway.score < match.teamHome.score ||
+    match.teamAway.etScore < match.teamHome.etScore ||
+    match.teamAway.psScore < match.teamHome.psScore
+  )
+}
+
+export function awayTeamWon(match) {
+  return (
+    match.teamAway.score > match.teamHome.score ||
+    match.teamAway.etScore > match.teamHome.etScore ||
+    match.teamAway.psScore > match.teamHome.psScore
+  )
+}
+
 export function formatDateTime(date) {
   return new Date(date).toLocaleTimeString(navigator.language || 'en-GB', {
     weekday: 'long',

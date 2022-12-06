@@ -4,6 +4,7 @@
       'flex flex-col py-2 px-3 h-full rounded-full shadow-inner-md bg-gray-400',
       highlightStyle,
       clickableStyle,
+      opacityStyle,
     ]"
   >
     <span class="uppercase text-sm leading-none text-white select-none">
@@ -23,11 +24,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    greyOut: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
     highlightStyle() {
       return `border-6 border-prediction-${this.status}`
+    },
+    opacityStyle() {
+      if (this.greyOut) {
+        return 'opacity-40'
+      } else if (this.clickable) {
+        return 'opacity-80'
+      } else {
+        return 'opacity-100'
+      }
     },
     clickableStyle() {
       return this.clickable ? 'cursor-pointer' : 'cursor-default'

@@ -1,28 +1,66 @@
 <template>
-  <div class="flex justify-between">
-    <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-      <h4 class="uppercase">{{ match['teamHome'].abbrev }}</h4>
-      <div v-for="user in predictions['home']" :key="user.userId">
-        {{ user.name }}
+  <div class="flex flex-col px-1">
+    <div class="flex justify-between">
+      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
+        <span
+          :class="[
+            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+            currentUserId === user.userId
+              ? currentUserPillColor('home')
+              : pillColor('home'),
+          ]"
+          v-for="user in predictions['home']"
+          :key="user.userId"
+        >
+          {{ user.name }}
+        </span>
+        <div v-if="!hasPredictions('home')" class="px-2"> No Predictions </div>
+      </div>
+      <div v-if="match.groupId" class="w-1/3">
+        <span
+          v-for="user in predictions['draw']"
+          :key="user.userId"
+          :class="[
+            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+            currentUserId === user.userId
+              ? currentUserPillColor('draw')
+              : pillColor('draw'),
+            ,
+          ]"
+        >
+          {{ user.name }}
+        </span>
+        <div v-if="!hasPredictions('draw')" class="px-2"> No Predictions </div>
+      </div>
+      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
+        <span
+          v-for="user in predictions['away']"
+          :key="user.userId"
+          :class="[
+            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+            currentUserId === user.userId
+              ? currentUserPillColor('away')
+              : pillColor('away'),
+          ]"
+        >
+          {{ user.name }}
+        </span>
+        <div v-if="!hasPredictions('away')" class="px-2"> No Predictions </div>
       </div>
     </div>
-    <div v-if="match.groupId" class="w-1/3">
-      <h4 class="uppercase">Draw</h4>
-      <div v-for="user in predictions['draw']" :key="user.userId">
-        {{ user.name }}
-      </div>
-    </div>
-    <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-      <h4 class="uppercase">{{ match['teamAway'].abbrev }}</h4>
-      <div v-for="user in predictions['away']" :key="user.userId">
-        {{ user.name }}
-      </div>
+    <div class="my-4">
+      <MatchPredictionsBar :predictions="predictions" :result="result" />
     </div>
   </div>
 </template>
 
 <script>
+import MatchPredictionsBar from '@/components/MatchPredictionsBar'
 export default {
+  components: {
+    MatchPredictionsBar,
+  },
+
   props: {
     match: {
       type: Object,
@@ -31,6 +69,43 @@ export default {
     predictions: {
       type: Object,
       required: false,
+    },
+    result: {
+      type: String,
+      required: true,
+    },
+    currentUserId: {
+      type: Number,
+      required: true,
+    },
+  },
+
+  methods: {
+    pillColor(column) {
+      if (
+        (column === 'draw' && this.result === 'draw') ||
+        (column == 'away' && this.result === 'away') ||
+        (column == 'home' && this.result === 'home')
+      ) {
+        return 'text-prediction-correct border-prediction-correct'
+      } else {
+        return 'text-gray-500 border-gray-400 bg-gray-50'
+      }
+    },
+    currentUserPillColor(column) {
+      if (
+        (column === 'draw' && this.result === 'draw') ||
+        (column == 'away' && this.result === 'away') ||
+        (column == 'home' && this.result === 'home')
+      ) {
+        return 'text-white border-prediction-correct bg-prediction-correct font-semibold shadow-md'
+      } else {
+        return 'text-white border-gray-500 bg-gray-500 font-semibold shadow-md'
+      }
+    },
+
+    hasPredictions(column) {
+      return Object.keys(this.predictions).includes(column)
     },
   },
 }

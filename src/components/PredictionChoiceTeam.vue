@@ -1,5 +1,11 @@
 <template>
-  <div :class="['flex flex-col mt-2 items-center px-3', clickableStyle]">
+  <div
+    :class="[
+      'flex flex-col mt-2 items-center px-3',
+      clickableStyle,
+      opacityStyle,
+    ]"
+  >
     <p class="uppercase mb-1 h-8 leading-none flex items-center">
       {{ team.name }}
     </p>
@@ -23,11 +29,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    greyOut: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
     clickableStyle() {
-      return this.clickable ? 'cursor-pointer' : 'cursor-default opacity-80'
+      return this.clickable ? 'cursor-pointer' : 'cursor-default'
+    },
+    opacityStyle() {
+      if (this.greyOut) {
+        return 'opacity-40'
+      } else if (this.clickable) {
+        return 'opacity-80'
+      } else {
+        return 'opacity-100'
+      }
     },
   },
 }
