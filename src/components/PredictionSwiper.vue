@@ -66,6 +66,7 @@
       />
     </div>
     <SwipeTutorial
+      v-if="!currentMatchHasPrediction"
       :arrows="{
         left: `<small>Swipe left to predict</small><br><strong>${matches[0].teamHome.name} Wins</strong>`,
         right: `<small>Swipe right to predict</small><br><strong>${matches[0].teamAway.name} Wins</strong>`,

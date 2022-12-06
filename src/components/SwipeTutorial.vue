@@ -3,7 +3,7 @@
     <div
       v-if="showTutorial && isTouchDevice"
       @click="hideTutorial"
-      class="fixed md:absolute w-full h-full bg-black/70 z-40 top-0 left-0 pb-20 backdrop-blur-[2px]"
+      class="fixed md:absolute w-full h-full bg-black/70 z-[60] top-0 left-0 pb-20 backdrop-blur-[2px]"
     >
       <AnimatedArrow
         v-if="arrows.left"
