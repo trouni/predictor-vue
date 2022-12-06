@@ -17,6 +17,8 @@
         v-if="match.groupId"
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
+        <p class="text-md text-red-300" v-if="finished && !madePrediction">
+        No prediction made</p>
         <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
@@ -34,7 +36,7 @@
         @click.native="setPrediction('away')"
       />
     </div>
-    <CornerPoints v-if="finished" :correct="correctPrediction" />
+    <CornerPoints v-if="finished && madePrediction" :correct="correctPrediction" />
     <div v-if="predictions">
       <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{
         matchDate
@@ -137,6 +139,10 @@ export default {
 
     borderStyle() {
       if (this.match.status === 'finished') {
+        // Game finished - Didn't make a prediction
+        if (!this.madePrediction) {
+          return 'border-prediction-default'
+        }
         // Game finished - Prediction is either right or wrong/missing
         return this.correctPrediction
           ? 'border-prediction-correct border-opacity-20'
