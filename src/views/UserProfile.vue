@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4">
     <div class="flex flex-col justify-center items-center">
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
@@ -74,7 +74,7 @@
             :key="competition.id"
             class="mr-3 last:mr-0"
           >
-            <BaseLink :to="{ name: 'matches', params: { id: competition.id } }">
+            <BaseLink :to="{ name: 'predictions', params: { id: competition.id } }">
               <BaseButton>
                 {{ competition.name }}
               </BaseButton>

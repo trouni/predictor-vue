@@ -3,7 +3,7 @@
     v-if="source === 'font-awesome'"
     v-on="$listeners"
     v-bind="$attrs"
-    :icon="name"
+    :icon="[prefix, name]"
   />
   <span
     v-else-if="source === 'custom'"
@@ -20,6 +20,8 @@ import camelCase from 'lodash/camelCase'
 // https://fontawesome.com/icons
 fontAwesomeIconLibrary.add(
   require('@fortawesome/free-solid-svg-icons/faSync').definition,
+  require('@fortawesome/free-solid-svg-icons/faBullseye').definition,
+  require('@fortawesome/free-solid-svg-icons/faSquarePollVertical').definition,
   require('@fortawesome/free-solid-svg-icons/faUser').definition
 )
 export default {
@@ -36,6 +38,10 @@ export default {
       type: String,
       required: true,
     },
+    prefix: {
+      type: String,
+      default: 'fa',
+    }
   },
   computed: {
     // Gets a CSS module class, e.g. iconCustomLogo

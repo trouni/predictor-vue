@@ -5,7 +5,6 @@ const LeaderboardsRepository = RepositoryFactory.get('leaderboards')
 
 // Not really sure about this
 export const state = {
-  cached: [],
   leaderboards: getSavedState('leaderboards'),
   currentLeaderboardId: getSavedState('currentLeaderboardId'),
 }
@@ -116,5 +115,5 @@ export const actions = {
   resetLeaderboards({ commit }) {
     commit('SET_CURRENT_LEADERBOARD_ID', null)
     commit('SET_LEADERBOARDS', [])
-  }
+  },
 }

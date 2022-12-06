@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-center items-center p-4">
     <div class="w-full md:w-6/12">
       <div>
         <p>New password</p>
@@ -63,7 +63,7 @@ export default {
           confirmation: this.confirmation,
         })
         this.processingForm = false
-        this.$router.push({ name: 'matches' })
+        this.$router.push({ name: 'predictions' })
       } catch (error) {
         this.authErrors = error.full_messages
         this.processingForm = false

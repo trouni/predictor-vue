@@ -1,21 +1,24 @@
 import axios from 'axios'
 import { config } from '@/constants'
 import store from '@/store'
+import NProgress from 'nprogress/nprogress'
 
 // create an axios instance
 const service = axios.create({
   baseURL: config.authUrl,
-  timeout: 5000, // request timeout
+  timeout: 15000, // request timeout
 })
 
 // request interceptor
 service.interceptors.request.use(
   serviceConfig => {
+    NProgress.start()
     const authHeaders = store.getters['auth/headers']
     serviceConfig.headers = { ...serviceConfig.headers, ...authHeaders }
     return serviceConfig
   },
   error => {
+    NProgress.done()
     Promise.reject(error)
   }
 )
@@ -23,6 +26,7 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
+    NProgress.done()
     if (response.status < 200 || response.status >= 300) console.warn(response)
 
     // Seems like cached requests don't generate new tokens.
@@ -32,6 +36,7 @@ service.interceptors.response.use(
     return response
   },
   error => {
+    NProgress.done()
     console.warn(error)
     if (
       store.getters['auth/loggedIn'] &&

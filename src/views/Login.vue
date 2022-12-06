@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="p-4 flex flex-col justify-center items-center">
     <div class="w-full md:w-6/12">
       <p v-if="register">
         Already got an account?
@@ -76,7 +76,7 @@ export default {
           this.processingForm = false
           // Redirect to the originally requested page, or to the matches page
           this.$router.push(
-            this.$route.query.redirectFrom || { path: '/matches' }
+            this.$route.query.redirectFrom || { name: 'predictions' }
           )
         })
         .catch(error => {

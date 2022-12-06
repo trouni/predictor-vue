@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="p-4 flex flex-col justify-center items-center">
     <div class="w-full md:w-6/12">
       <div v-if="success">
         <p>We've sent you an email with a link to reset your password.</p>

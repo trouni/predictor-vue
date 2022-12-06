@@ -34,7 +34,7 @@
             </div>
           </div>
           <BaseLink
-            :to="{ path: '/matches', query: { userId: user.userId } }"
+            :to="{ name: 'predictions', query: { userId: user.userId } }"
             :disabled="!linkPredictions"
             class="p-2 name w-full truncate"
           >

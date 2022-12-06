@@ -5,23 +5,23 @@
       borderStyle,
     ]"
   >
+    <p class="border-b pt-2 mt-2 pb-4 mb-4 text-gray-500">{{ matchDate }}</p>
     <div class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
         :team="match.teamHome"
         :status="status('home')"
-        :clickable="!disabled"
-        @click.native="setPrediction('home')"
+        :clickable="false"
+        :greyOut="this.matchResult !== 'home'"
       />
       <div
         v-if="match.groupId"
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
-        <p class="text-md text-red-300" v-if="finished && !madePrediction">
-        No prediction made</p>
         <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
+            :greyOut="this.matchResult !== 'draw'"
             :status="status('draw')"
             :clickable="!disabled"
             @click.native="setPrediction('draw')"
@@ -33,17 +33,19 @@
         :team="match.teamAway"
         :status="status('away')"
         :clickable="!disabled"
+        :greyOut="this.matchResult !== 'away'"
         @click.native="setPrediction('away')"
       />
     </div>
-    <CornerPoints v-if="finished && madePrediction" :correct="correctPrediction" />
-    <div v-if="predictions">
-      <p class="border-t border-b py-3 my-3 text-xs text-gray-400">{{
-        matchDate
-      }}</p>
-      <MatchPredictions :predictions="predictions" :match="match" />
+    <CornerPoints v-if="finished" :correct="correctPrediction" />
+    <div class="mt-5">
+      <MatchPredictions
+        :predictions="predictions"
+        :match="match"
+        :result="matchResult"
+        :currentUserId="currentUserId"
+      />
     </div>
-    <p v-else class="text-xs text-gray-400">{{ matchDate }}</p>
   </div>
 </template>
 
@@ -75,6 +77,10 @@ export default {
       type: Object,
       required: false,
     },
+    currentUserId: {
+      type: Number,
+      required: true,
+    },
   },
 
   methods: {
@@ -90,11 +96,16 @@ export default {
       this.loading = false
     },
     status(choice) {
-      if (this.madePrediction && this.match.prediction.choice === choice) {
-        if (this.match.status === 'finished') {
-          return this.correctPrediction ? 'correct' : 'wrong'
+      if (this.match.status === 'finished') {
+        if (this.matchResult === choice) {
+          return 'correct'
+        } else if (
+          this.match.prediction &&
+          this.match.prediction.choice === choice
+        ) {
+          return 'wrong'
         } else {
-          return 'selected'
+          return 'default'
         }
       } else {
         return 'default'
@@ -106,6 +117,15 @@ export default {
   },
 
   computed: {
+    matchResult() {
+      if (this.homeTeamWon(this.match)) {
+        return 'home'
+      } else if (this.awayTeamWon(this.match)) {
+        return 'away'
+      } else {
+        return 'draw'
+      }
+    },
     disabled() {
       return !this.selectable || this.loading
     },
@@ -131,18 +151,17 @@ export default {
         ((this.match.prediction.choice === 'draw' &&
           this.match.teamAway.score === this.match.teamHome.score) ||
           (this.match.prediction.choice === 'away' &&
-            this.awayTeamWon(this.match)) ||
+            (this.match.teamAway.score > this.match.teamHome.score ||
+              this.match.teamAway.etScore > this.match.teamHome.etScore ||
+              this.match.teamAway.psScore > this.match.teamHome.psScore)) ||
           (this.match.prediction.choice === 'home' &&
-            this.homeTeamWon(this.match)))
+            (this.match.teamAway.score < this.match.teamHome.score ||
+              this.match.teamAway.etScore < this.match.teamHome.etScore ||
+              this.match.teamAway.psScore < this.match.teamHome.psScore)))
       )
     },
-
     borderStyle() {
       if (this.match.status === 'finished') {
-        // Game finished - Didn't make a prediction
-        if (!this.madePrediction) {
-          return 'border-prediction-default'
-        }
         // Game finished - Prediction is either right or wrong/missing
         return this.correctPrediction
           ? 'border-prediction-correct border-opacity-20'

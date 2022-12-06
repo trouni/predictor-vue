@@ -43,17 +43,12 @@ export const actions = {
   // init({ state, dispatch }) {},
 
   // Logs in the current user.
-  logIn({ commit, rootGetters, dispatch }, { email, password } = {}) {
+  logIn({ commit }, { email, password } = {}) {
     return logIn({ email, password }).then(async response => {
       const user = response.data.data
       const headers = response.headers
       commit('SET_CURRENT_USER', user)
       commit('SET_AUTH_HEADERS', headers)
-
-      // Fetch competitions and set current competition if missing
-      if (!rootGetters['competitions/currentCompetitionId']) {
-        await dispatch('competitions/setDefaultCompetition', {}, { root: true })
-      }
 
       return user
     })

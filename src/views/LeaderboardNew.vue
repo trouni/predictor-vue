@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4">
     <p>Name</p>
     <BaseInputText
       v-model="name"
@@ -28,7 +28,7 @@ export default {
       leaderboardId: null,
     }
   },
-  async mounted() {
+  mounted() {
     this.$emit('init')
   },
   methods: {
@@ -43,7 +43,7 @@ export default {
       await this.postLeaderboard(formData)
       this.processingForm = false
       this.$router.push(
-        this.$route.query.redirectFrom || { name: 'leaderboards' }
+        this.$route.query.redirectFrom || { name: 'rankings' }
       )
     },
   },

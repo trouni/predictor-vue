@@ -1,5 +1,5 @@
 <template>
-  <PredictionSwiper :matches="missingPredictions" @remove="removeMatch" />
+  <PredictionSwiper :matches="missingPredictions" @remove="removeMatch" class="p-4" />
 </template>
 
 <script>
@@ -9,8 +9,8 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   components: { PredictionSwiper },
 
-  async mounted() {
-    await this.fetchMatches()
+  mounted() {
+    this.fetchMatches()
     this.$emit('init')
   },
 
@@ -20,7 +20,7 @@ export default {
 
   watch: {
     missingPredictions(newValue) {
-      if (!newValue.length) this.$router.push({ path: '/matches' })
+      if (!newValue.length) this.$router.push({ name: 'predictions' })
     },
   },
 
