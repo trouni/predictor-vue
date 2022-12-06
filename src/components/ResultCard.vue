@@ -12,7 +12,7 @@
         :team="match.teamHome"
         :status="status('home')"
         :clickable="false"
-        :greyOut="this.matchResult !== 'home'"
+        :greyOut="greyOutOrNot('home')"
       />
       <div
         v-if="match.groupId"
@@ -21,7 +21,7 @@
         <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
-            :greyOut="this.matchResult !== 'draw'"
+            :greyOut="greyOutOrNot('draw')"
             :status="status('draw')"
             :clickable="!disabled"
             @click.native="setPrediction('draw')"
@@ -33,7 +33,7 @@
         :team="match.teamAway"
         :status="status('away')"
         :clickable="!disabled"
-        :greyOut="this.matchResult !== 'away'"
+        :greyOut="greyOutOrNot('away')"
         @click.native="setPrediction('away')"
       />
     </div>
@@ -84,6 +84,12 @@ export default {
   },
 
   methods: {
+    greyOutOrNot(column) {
+      if (this.match.status === 'started') {
+        return false
+      }
+      return column !== this.matchResult
+    },
     async setPrediction(choice) {
       if (this.disabled) return
 
