@@ -2,18 +2,22 @@
   <div class="flex flex-col px-1">
     <div class="flex justify-between">
       <div :class="match.groupId ? 'w-1/3' : 'w-1/2'">
-        <span
-          :class="[
-            'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
-            currentUserId === user.userId
-              ? currentUserPillColor('home')
-              : pillColor('home'),
-          ]"
+        <BaseLink
           v-for="user in predictions['home']"
+          :to="{ name: 'predictions', query: { userId: user.userId } }"
           :key="user.userId"
         >
-          {{ user.name }}
-        </span>
+          <span
+            :class="[
+              'inline-block mx-1 my-0.5 px-2 py-1.5 leading-3 rounded-full border truncate max-w-[100px] sm:max-w-[200px] overflow-hidden whitespace-nowrap	',
+              currentUserId === user.userId
+                ? currentUserPillColor('home')
+                : pillColor('home'),
+            ]"
+          >
+            {{ user.name }}
+          </span>
+        </BaseLink>
         <div v-if="!hasPredictions('home')" class="px-2"> No Predictions </div>
       </div>
       <div v-if="match.groupId" class="w-1/3">
