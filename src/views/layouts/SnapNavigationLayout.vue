@@ -62,7 +62,7 @@ export default {
       },
       {
         root: this.$refs.snapContainer,
-        threshold: [1],
+        threshold: [0.95],
       }
     )
 
