@@ -47,6 +47,7 @@ export default {
     },
     selectable: {
       type: Boolean,
+      default: null,
       required: false,
     },
     predictions: {
