@@ -49,7 +49,11 @@
       </div>
     </div>
     <div class="my-4">
-      <MatchPredictionsBar :predictions="predictions" :result="result" />
+      <MatchPredictionsBar
+        :predictions="predictions"
+        :result="result"
+        :match="match"
+      />
     </div>
   </div>
 </template>
