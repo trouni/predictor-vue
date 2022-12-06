@@ -12,6 +12,7 @@
     </div>
 
     <div
+      v-if="match.groupId"
       ref="draw"
       :class="['min-w-[2.5em] h-full border-gray-300 border-r border-l']"
     >
@@ -36,6 +37,10 @@ export default {
   components: {},
 
   props: {
+    match: {
+      type: Object,
+      required: true,
+    },
     predictions: {
       type: Object,
       required: true,
