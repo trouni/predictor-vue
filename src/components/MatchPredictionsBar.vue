@@ -37,7 +37,7 @@ export default {
 
   props: {
     predictions: {
-      type: Array,
+      type: Object,
       required: true,
     },
     result: {
