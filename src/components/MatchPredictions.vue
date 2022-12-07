@@ -101,7 +101,9 @@ export default {
       }
     },
     currentUserPillColor(column) {
-      if (
+      if (this.match.status === 'started') {
+        return 'text-white border-gray-400 bg-gray-400 font-semibold shadow-md'
+      } else if (
         (column === 'draw' && this.result === 'draw') ||
         (column == 'away' && this.result === 'away') ||
         (column == 'home' && this.result === 'home')
