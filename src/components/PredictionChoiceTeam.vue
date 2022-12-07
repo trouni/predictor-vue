@@ -9,7 +9,7 @@
     <p class="uppercase mb-1 h-8 leading-none flex items-center">
       {{ team.name }}
     </p>
-    <TeamBadge :flag="team.badgeUrl" :score="team.score" :status="status" />
+    <TeamBadge :flag="team.badgeUrl" :score="team.score" :etScore="team.etScore" :psScore="team.psScore" :status="status" />
   </div>
 </template>
 

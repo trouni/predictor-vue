@@ -6,7 +6,9 @@
     ]"
     :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
-    <p class="text-glow text-4xl select-none">{{ score }}</p>
+    <p v-if="psScore" class="text-glow text-4xl select-none">{{ etScore }}<small>({{ psScore }})</small></p>
+    <p v-else-if="etScore" class="text-glow text-4xl select-none">{{ etScore }}</p>
+    <p v-else class="text-glow text-4xl select-none">{{ score }}</p>
   </div>
 </template>
 
@@ -15,6 +17,8 @@ export default {
   props: {
     flag: String,
     score: Number,
+    etScore: Number,
+    psScore: Number,
     status: {
       type: String,
       default: 'default',
@@ -45,5 +49,8 @@ export default {
     0.07em -0.07em 0.04em #fffc, 0.07em 0 0.04em #fffc,
     0.07em 0.07em 0.04em #fffc, 0 0.07em 0.04em #fffc,
     -0.07em 0.07em 0.04em #fffc, -0.07em 0 0.04em #fffc;
+}
+small {
+  font-size: 0.5em;
 }
 </style>
