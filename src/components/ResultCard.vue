@@ -172,7 +172,10 @@ export default {
         return this.correctPrediction
           ? 'border-prediction-correct border-opacity-20'
           : 'border-prediction-wrong border-opacity-20'
-      } else if (this.match.status === 'upcoming' && !this.madePrediction) {
+      } else if (
+        (this.match.status === 'upcoming' && !this.madePrediction) ||
+        this.match.status === 'started'
+      ) {
         // Game upcoming and no prediction made
         return 'border-prediction-default'
       } else {
