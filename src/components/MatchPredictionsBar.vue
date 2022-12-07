@@ -88,7 +88,7 @@ export default {
 
   computed: {
     rightSideBorderIfStarted() {
-      if (this.match.status === 'started') {
+      if (this.match.status === 'started' && this.match.roundNumber > 1) {
         return 'border-r border-gray-300'
       } else return ''
     },
