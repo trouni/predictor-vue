@@ -6,7 +6,7 @@
     ]"
   >
     <p class="border-b pt-2 mt-2 pb-4 mb-4 text-gray-500">{{ matchDate }}</p>
-    <div class="flex align justify-evenly items-center">
+    <div class="flex align justify-around items-center">
       <PredictionChoiceTeam
         class="w-1/3"
         :team="match.teamHome"
