@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex ranking bg-white/50 w-[95%] mx-auto px-1 py-2 bg-white rounded-lg shadow-lg">
+  <div
+    class="d-flex ranking bg-white/50 w-[95%] mx-auto px-1 py-2 bg-white rounded-lg shadow-lg"
+  >
     <div class="d-flex min-w-0">
       <div class="position text-center flex-shrink-0" :class="{ 'w-12': !!position }">
         <p v-if="!!position" v-html="ordinalize(position)"></p>
@@ -13,9 +15,9 @@
         <div v-for="user in users" :key="user.id" class="d-flex">
           <div class="user-avatar text-center flex-shrink-0">
             <div class="relative rounded-full overflow-hidden">
-              <cld-context v-if="user.photoKey" :cloudName="cloudName">
+              <cld-context v-if="user.photoKey || user.photo_key" :cloudName="cloudName">
                 <div class="">
-                  <cld-image :publicId="user.photoKey">
+                  <cld-image :publicId="user.photoKey || user.photo_key">
                     <cld-transformation
                       width="100"
                       height="100"
@@ -26,11 +28,7 @@
                   </cld-image>
                 </div>
               </cld-context>
-              <img
-                v-else
-                alt="football graphic"
-                :src="require('../assets/player.png')"
-              />
+              <img v-else alt="football graphic" :src="require('../assets/player.png')" />
             </div>
           </div>
           <BaseLink
@@ -43,13 +41,19 @@
         </div>
       </div>
     </div>
-    <div class="points w-12 text-center flex-shrink-0  py-1"> {{ users[0].points }}<span v-if="users[0].possiblePoints" class="font-light text-xs"> / {{ users[0].possiblePoints }}</span></div>
+    <div  class="points w-12 text-center flex-shrink-0 py-1">
+      {{ users[0].points || firstUser.points }}
+      <span v-if="users[0].possiblePoints" class="font-light text-xs">
+        / {{ users[0].possiblePoints }}</span
+      >
+    </div>
   </div>
 </template>
 
 <script>
-import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
-import { config } from '@/constants'
+import { CldContext, CldImage, CldTransformation } from "cloudinary-vue";
+import { config } from "@/constants";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -77,27 +81,38 @@ export default {
   data() {
     return {
       cloudName: config.cloudName,
-    }
+    };
+  },
+  computed: {
+    ...mapGetters({
+      leaderboard: "leaderboards/currentLeaderboard",
+    }),
+    firstUser() {
+      const user = this.leaderboard.users.find(
+        (user) => user.userId === this.users[0].id
+      );
+      return user;
+    },
   },
   methods: {
     ordinalize(num) {
       switch (num % 10) {
         case 1:
-          return num.toString() + '<sup>st</sup>'
+          return num.toString() + "<sup>st</sup>";
         case 2:
-          return num.toString() + '<sup>nd</sup>'
+          return num.toString() + "<sup>nd</sup>";
         case 3:
-          return num.toString() + '<sup>rd</sup>'
+          return num.toString() + "<sup>rd</sup>";
         default:
-          return num.toString() + '<sup>th</sup>'
+          return num.toString() + "<sup>th</sup>";
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles';
+@import "@/styles";
 
 .d-flex {
   display: flex;
@@ -116,7 +131,9 @@ export default {
 }
 .user-avatar {
   @apply w-12;
-  & > div { @apply w-9 border border-white; }
+  & > div {
+    @apply w-9 border border-white;
+  }
 }
 
 .w-30 {
@@ -165,29 +182,50 @@ export default {
 
 .ranking:nth-child(1) {
   @apply min-h-[80px] w-[100%] bg-white/80;
-  .name, .points {font-size: 1.3em;}
+  .name,
+  .points {
+    font-size: 1.3em;
+  }
   .user-avatar {
     @apply w-16;
-    & > div { @apply w-16 }
+    & > div {
+      @apply w-16;
+    }
   }
-  .position { @apply scale-[150%]; }
+  .position {
+    @apply scale-[150%];
+  }
 }
 .ranking:nth-child(2) {
   @apply min-h-[70px] w-[98%] bg-white/70;
-  .name, .points {font-size: 1.2em;}
+  .name,
+  .points {
+    font-size: 1.2em;
+  }
   .user-avatar {
     @apply w-14;
-    & > div { @apply w-14 }
+    & > div {
+      @apply w-14;
+    }
   }
-  .position { @apply scale-[125%]; }
+  .position {
+    @apply scale-[125%];
+  }
 }
 .ranking:nth-child(3) {
   @apply min-h-[60px] w-[96%] bg-white/60;
-  .name, .points {font-size: 1.1em;}
+  .name,
+  .points {
+    font-size: 1.1em;
+  }
   .user-avatar {
     @apply w-12;
-    & > div { @apply w-12 }
+    & > div {
+      @apply w-12;
+    }
   }
-  .position { @apply scale-[110%]; }
+  .position {
+    @apply scale-[110%];
+  }
 }
 </style>
