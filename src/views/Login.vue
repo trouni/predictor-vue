@@ -1,14 +1,12 @@
 <template>
-  <div class="p-4 flex flex-col justify-center items-center">
+  <div class="p-4 flex flex-col items-center">
+    <BaseLink :to="{ name: 'home' }" class="opacity-100"
+      ><img
+        alt="football graphic"
+        :src="require('../assets/logo.png')"
+        class="logo-img"
+    /></BaseLink>
     <div class="w-full md:w-6/12">
-      <p v-if="register">
-        Already got an account?
-        <BaseButton @click="register = false">Log in</BaseButton>
-      </p>
-      <p v-else>
-        Need an account?
-        <BaseButton @click="register = true">Register</BaseButton>
-      </p>
       <div>
         <p>Email</p>
         <p v-if="authError" v-html="authError"></p>
@@ -34,6 +32,16 @@
             {{ register ? 'Sign up' : 'Login' }}
           </BaseButton>
           <BaseLink :to="{ name: 'forgot_password' }">Forgot password?</BaseLink>
+        </div>
+      </div>
+      <div class="pt-4">
+        <div v-if="register">
+          <p class="pb-2">Already got an account?</p>
+          <BaseButton @click="register = false">Log in</BaseButton>
+        </div>
+        <div v-else>
+          <p class="pb-2"> Need an account?</p>
+          <BaseButton @click="register = true">Register</BaseButton>
         </div>
       </div>
     </div>
@@ -110,7 +118,15 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles';
+
+.logo-img {
+  width: 200px;
+  opacity: 1;
+}
+
 p {
   color: $purple;
 }
+
+
 </style>
