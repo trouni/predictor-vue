@@ -128,5 +128,4 @@ p {
   color: $purple;
 }
 
-
 </style>
