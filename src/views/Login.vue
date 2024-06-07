@@ -1,10 +1,10 @@
 <template>
   <div class="p-4 flex flex-col items-center">
     <BaseLink :to="{ name: 'home' }" class="opacity-100"
-    ><img
-    alt="football graphic"
-    :src="require('../assets/logo.png')"
-    class="logo-img"
+      ><img
+        alt="football graphic"
+        :src="require('../assets/logo.png')"
+        class="logo-img"
     /></BaseLink>
     <div class="w-full md:w-6/12">
       <div>
