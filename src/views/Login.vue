@@ -9,24 +9,24 @@
     <div class="w-full md:w-6/12">
       <div>
         <p>Email</p>
-        <p v-if="authError" v-html="authError"></p>
         <BaseInputText
-          v-model="email"
-          label="Email"
-          name="email"
-          type="text"
-          autofocus
-          @keypress.enter="submit"
+        v-model="email"
+        label="Email"
+        name="email"
+        type="text"
+        autofocus
+        @keypress.enter="submit"
         />
         <p>Password</p>
         <BaseInputText
-          id="password"
-          v-model="password"
-          label="Password"
-          name="password"
-          type="password"
-          @keypress.enter="submit"
+        id="password"
+        v-model="password"
+        label="Password"
+        name="password"
+        type="password"
+        @keypress.enter="submit"
         />
+        <p class="text-red-500 mb-3" v-if="authError">Email or password is incorrect.</p>
         <div class="flex justify-between items-center">
           <BaseButton :disabled="processingForm" @click="submit">
             {{ register ? 'Sign up' : 'Login' }}
@@ -122,10 +122,6 @@ export default {
 .logo-img {
   width: 200px;
   opacity: 1;
-}
-
-p {
-  color: $purple;
 }
 
 </style>
