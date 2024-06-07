@@ -1,10 +1,10 @@
 <template>
   <div class="p-4 flex flex-col items-center">
     <BaseLink :to="{ name: 'home' }" class="opacity-100"
-      ><img
-        alt="football graphic"
-        :src="require('../assets/logo.png')"
-        class="logo-img"
+    ><img
+    alt="football graphic"
+    :src="require('../assets/logo.png')"
+    class="logo-img"
     /></BaseLink>
     <div class="w-full md:w-6/12">
       <div>
@@ -37,11 +37,11 @@
       <div class="pt-4">
         <div v-if="register">
           <p class="pb-2">Already got an account?</p>
-          <BaseButton @click="register = false">Log in</BaseButton>
+          <BaseButton :secondary="true" @click="register = false">Log in</BaseButton>
         </div>
         <div v-else>
           <p class="pb-2"> Need an account?</p>
-          <BaseButton @click="register = true">Register</BaseButton>
+          <BaseButton :secondary="true" @click="register = true">Register</BaseButton>
         </div>
       </div>
     </div>
