@@ -36,7 +36,7 @@
       </div>
       <div class="pt-4">
         <div v-if="register">
-          <p class="pb-2">Already got an account?</p>
+          <p class="pb-2">Already have an account?</p>
           <BaseButton :secondary="true" @click="register = false">Log in</BaseButton>
         </div>
         <div v-else>
