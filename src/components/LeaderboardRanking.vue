@@ -4,7 +4,7 @@
   >
     <div class="d-flex min-w-0">
       <div class="position text-center flex-shrink-0" :class="{ 'w-12': !!position }">
-        <p v-if="!!position" v-html="ordinalize(position)"></p>
+        <p v-if="!!position && Number.isInteger(position)" v-html="ordinalize(position)"></p>
       </div>
       <!-- <div class="direction w-12 text-center flex-shrink-0">
         <p><BaseIcon name="caret-up" /></p>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <div  class="points w-12 text-center flex-shrink-0 py-1">
-      {{ users[0].points || firstUser.points }}
+      {{ users[0].points }}
       <span v-if="users[0].possiblePoints" class="font-light text-xs">
         / {{ users[0].possiblePoints }}</span
       >
@@ -87,12 +87,6 @@ export default {
     ...mapGetters({
       leaderboard: "leaderboards/currentLeaderboard",
     }),
-    firstUser() {
-      const user = this.leaderboard.users.find(
-        (user) => user.userId === this.users[0].id
-      );
-      return user;
-    },
   },
   methods: {
     ordinalize(num) {
