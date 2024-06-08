@@ -99,4 +99,11 @@ export default {
     display: inline-block;
   }
 }
+
+// TODO: Hide when desktop
+@media (min-width: 640px) {
+  #footer-nav {
+    display: none;
+  }
+}
 </style>
