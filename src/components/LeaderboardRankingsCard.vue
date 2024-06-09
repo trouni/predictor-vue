@@ -23,6 +23,7 @@
       ]"
       :position="'-'"
       :link-predictions="false"
+      class="mt-1"
     />
     <LeaderboardActions :leaderboard="leaderboard" />
   </div>
