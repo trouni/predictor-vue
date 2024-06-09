@@ -60,7 +60,7 @@ export default {
       return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
     },
     isCurrentUserRanked() {
-      return this.rankedUsers.some(user => user.id === this.currentUser.id)
+      return this.rankedUsers.some(user => user.userId === this.currentUser.id)
     }
   },
 }
