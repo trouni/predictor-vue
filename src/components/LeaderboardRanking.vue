@@ -12,12 +12,12 @@
         <p>-</p>
       </div> -->
       <div class="flex flex-col gap-2">
-        <div v-for="user in users" :key="user.id" class="d-flex">
+        <div v-for="ranking in userRankings" :key="ranking.userId" class="d-flex">
           <div class="user-avatar text-center flex-shrink-0">
             <div class="relative rounded-full overflow-hidden">
-              <cld-context v-if="user.photoKey || user.photo_key" :cloudName="cloudName">
+              <cld-context v-if="ranking.photoKey || ranking.photo_key" :cloudName="cloudName">
                 <div class="">
-                  <cld-image :publicId="user.photoKey || user.photo_key">
+                  <cld-image :publicId="ranking.photoKey || ranking.photo_key">
                     <cld-transformation
                       width="100"
                       height="100"
@@ -32,19 +32,19 @@
             </div>
           </div>
           <BaseLink
-            :to="{ name: 'predictions', query: { userId: user.userId } }"
+            :to="{ name: 'predictions', query: { userId: ranking.userId } }"
             :disabled="!linkPredictions"
             class="p-2 name w-full truncate"
           >
-            {{ user.name }}
+            {{ ranking.name }}
           </BaseLink>
         </div>
       </div>
     </div>
     <div  class="points w-12 text-center flex-shrink-0 py-1">
-      {{ users[0].points }}
-      <span v-if="users[0].possiblePoints" class="font-light text-xs">
-        / {{ users[0].possiblePoints }}</span
+      {{ userRankings[0].points }}
+      <span v-if="userRankings[0].possiblePoints" class="font-light text-xs">
+        / {{ userRankings[0].possiblePoints }}</span
       >
     </div>
   </div>
@@ -57,7 +57,7 @@ import { mapGetters } from "vuex";
 
 export default {
   props: {
-    users: {
+    userRankings: {
       type: Array,
     },
     position: {

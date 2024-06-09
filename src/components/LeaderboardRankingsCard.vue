@@ -3,7 +3,7 @@
     <LeaderboardRanking
       v-for="{ position, points } in ranks"
       :key="position"
-      :users="rankedUsers.filter(user => user.rank === position)"
+      :userRankings="rankedUsers.filter(user => user.rank === position)"
       :position="position"
       :link-predictions="true"
       :points="points"
@@ -13,7 +13,7 @@
     <LeaderboardRanking
       v-if="!isCurrentUserRanked"
       :key="-1"
-      :users="[
+      :userRankings="[
         {
           id: currentUser.id,
           name: currentUser.name,
