@@ -1,39 +1,47 @@
 <template>
-  <div class="p-4 flex flex-col justify-center items-center">
+  <div class="p-4 flex flex-col items-center">
+    <BaseLink :to="{ name: 'home' }" class="opacity-100"
+      ><img
+        alt="football graphic"
+        :src="require('../assets/logo.png')"
+        class="logo-img"
+    /></BaseLink>
     <div class="w-full md:w-6/12">
-      <p v-if="register">
-        Already got an account?
-        <BaseButton @click="register = false">Log in</BaseButton>
-      </p>
-      <p v-else>
-        Need an account?
-        <BaseButton @click="register = true">Register</BaseButton>
-      </p>
       <div>
         <p>Email</p>
-        <p v-if="authError" v-html="authError"></p>
         <BaseInputText
-          v-model="email"
-          label="Email"
-          name="email"
-          type="text"
-          autofocus
-          @keypress.enter="submit"
+        v-model="email"
+        label="Email"
+        name="email"
+        type="text"
+        autofocus
+        @keypress.enter="submit"
         />
         <p>Password</p>
         <BaseInputText
-          id="password"
-          v-model="password"
-          label="Password"
-          name="password"
-          type="password"
-          @keypress.enter="submit"
+        id="password"
+        v-model="password"
+        label="Password"
+        name="password"
+        type="password"
+        @keypress.enter="submit"
         />
+        <p class="text-red-500 mb-3" v-if="authError">Email or password is incorrect.</p>
         <div class="flex justify-between items-center">
           <BaseButton :disabled="processingForm" @click="submit">
             {{ register ? 'Sign up' : 'Login' }}
           </BaseButton>
           <BaseLink :to="{ name: 'forgot_password' }">Forgot password?</BaseLink>
+        </div>
+      </div>
+      <div class="pt-4">
+        <div v-if="register">
+          <p class="pb-2">Already have an account?</p>
+          <BaseButton :secondary="true" @click="register = false">Log in</BaseButton>
+        </div>
+        <div v-else>
+          <p class="pb-2"> Need an account?</p>
+          <BaseButton :secondary="true" @click="register = true">Register</BaseButton>
         </div>
       </div>
     </div>
@@ -110,7 +118,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles';
-p {
-  color: $purple;
+
+.logo-img {
+  width: 200px;
+  opacity: 1;
 }
+
 </style>
