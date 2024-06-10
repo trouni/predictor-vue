@@ -126,7 +126,6 @@ export default {
       cloudName: config.cloudName,
     }
   },
-
   methods: {
     ...mapActions({
       patchUser: 'users/patchUser',
