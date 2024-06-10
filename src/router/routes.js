@@ -129,6 +129,7 @@ export default [
             path: 'rankings',
             name: 'rankings',
             component: () => import('@/views/Rankings'),
+            props: () => ({ userId: store.getters['auth/currentUser'].id }),
             meta: {
               authRequired: true,
               title: 'Rankings',
