@@ -18,6 +18,7 @@
           id: currentUser.id,
           name: currentUser.name,
           userId: currentUser.id,
+          photoKey: currentUser.photo_key,
           points: '-',
         },
       ]"
