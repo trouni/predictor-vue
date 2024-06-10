@@ -21,7 +21,7 @@
           points: '-',
         },
       ]"
-      :position="'-'"
+      :padding-start="true"
       :link-predictions="false"
       class="mt-1"
     />

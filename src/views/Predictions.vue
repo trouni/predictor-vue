@@ -5,7 +5,7 @@
         <BaseIcon name="chevron-left" /> Back to Rankings
       </p>
       <p class="text-center text-xl font-normal m-3">Predictions made by</p>
-      <LeaderboardRanking :users="[user]" class="m-auto max-w-xs" />
+      <LeaderboardRanking :userRankings="[user]" class="m-auto max-w-xs" />
     </div>
     <div v-else class="flex items-center justify-center my-8">
       <div

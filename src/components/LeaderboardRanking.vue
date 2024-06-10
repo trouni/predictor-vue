@@ -3,8 +3,11 @@
     class="d-flex ranking bg-white/50 w-[95%] mx-auto px-1 py-2 bg-white rounded-lg shadow-lg"
   >
     <div class="d-flex min-w-0">
-      <div class="position text-center flex-shrink-0" :class="{ 'w-12': !!position }">
-        <p v-if="!!position && Number.isInteger(position)" v-html="ordinalize(position)"></p>
+      <div
+        class="position text-center flex-shrink-0"
+        :class="{ 'w-12': !!position || paddingStart }"
+      >
+        <p v-if="!!position" v-html="ordinalize(position)"></p>
       </div>
       <!-- <div class="direction w-12 text-center flex-shrink-0">
         <p><BaseIcon name="caret-up" /></p>
@@ -69,6 +72,10 @@ export default {
       default: null,
     },
     linkPredictions: {
+      type: Boolean,
+      default: false,
+    },
+    paddingStart: {
       type: Boolean,
       default: false,
     },
