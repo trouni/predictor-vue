@@ -6,6 +6,15 @@
       :predictions="predictions"
       :results="true"
     />
+    <div
+      v-if="!matchesWithResults.length"
+      class="rounded-sm text-center py-4 px-8 results-placeholder"
+    >
+      <p class="flex items-center flex-col justify-center text-center text-lg my-3">
+        <BaseIcon name="stopwatch" class="fa-2x" />
+        <span class="pt-3">No matches completed yet.</span>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -59,3 +68,11 @@ export default {
   },
 }
 </script>
+
+
+<style lang="scss" scoped>
+@import "@/styles";
+.results-placeholder p {
+  color: $purple;
+}
+</style>
