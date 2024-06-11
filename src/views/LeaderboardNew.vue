@@ -44,7 +44,6 @@ export default {
       }
       this.newLeadboard = await this.postLeaderboard(formData)
       await this.fetchLeaderboards()
-      console.log(this.newLeadboard);
       this.selectLeaderboard(this.newLeadboard.id)
       this.processingForm = false
       this.$router.push(
