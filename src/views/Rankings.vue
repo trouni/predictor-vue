@@ -61,7 +61,7 @@ export default {
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
     handleChangeItem(index) {
-      if (this.currentIndex == index) {
+      if (this.currentIndex === index) {
         // says it's done loading when the change index hits the currentLeaderboard index
         this.isInitialLoad = false
       }
