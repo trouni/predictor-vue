@@ -1,9 +1,5 @@
 <template>
-  <SnapNavigationLayout
-    :items="leaderboards"
-    ref="snapNav"
-    @change-item="changeLeaderboard"
-  >
+  <SnapNavigationLayout :items="leaderboards" ref="snapNav">
     <template v-slot:item="{ item: leaderboard }">
       <LeaderboardRankingsCard
         :leaderboard="leaderboard"
@@ -33,6 +29,8 @@ export default {
 
     await this.fetchLeaderboards()
     this.$emit('init')
+    const index = this.leaderboards.findIndex(l => l.id === this.currentLeaderboard.id)
+    this.$refs.snapNav.goToPage(index)
   },
 
   computed: {
@@ -55,9 +53,6 @@ export default {
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       joinLeaderboard: 'leaderboards/joinLeaderboard',
     }),
-    changeLeaderboard(index) {
-      this.selectLeaderboard(this.leaderboards[index].id)
-    },
   },
 }
 </script>
