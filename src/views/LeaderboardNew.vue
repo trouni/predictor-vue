@@ -34,13 +34,17 @@ export default {
   methods: {
     ...mapActions({
       postLeaderboard: 'leaderboards/postLeaderboard',
+      selectLeaderboard: 'leaderboards/selectLeaderboard',
+      fetchLeaderboards: 'leaderboards/fetchLeaderboards',
     }),
     async submit() {
       this.processingForm = true
       const formData = {
         name: this.name,
       }
-      await this.postLeaderboard(formData)
+      this.newLeadboard = await this.postLeaderboard(formData)
+      await this.fetchLeaderboards()
+      this.selectLeaderboard(this.newLeadboard.id)
       this.processingForm = false
       this.$router.push(
         this.$route.query.redirectFrom || { name: 'rankings' }
