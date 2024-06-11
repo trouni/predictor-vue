@@ -35,6 +35,7 @@ export default {
     ...mapActions({
       postLeaderboard: 'leaderboards/postLeaderboard',
       selectLeaderboard: 'leaderboards/selectLeaderboard',
+      fetchLeaderboards: 'leaderboards/fetchLeaderboards',
     }),
     async submit() {
       this.processingForm = true
@@ -42,6 +43,7 @@ export default {
         name: this.name,
       }
       this.newLeadboard = await this.postLeaderboard(formData)
+      await this.fetchLeaderboards()
       console.log(this.newLeadboard);
       this.selectLeaderboard(this.newLeadboard.id)
       this.processingForm = false
