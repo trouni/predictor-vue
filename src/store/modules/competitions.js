@@ -58,7 +58,7 @@ export const actions = {
       const competitionId =
         process.env.VUE_APP_COMPETITION_ID ||
         competitions[competitions.length - 1].id
-      dispatch('selectCompetition', competitionId)
+      await dispatch('selectCompetition', competitionId)
     }
   },
 }
