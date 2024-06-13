@@ -30,13 +30,13 @@ export default {
     highlight() {
       switch (this.status) {
         case 'correct':
-          return 'border-4 border-prediction-correct'
+          return 'border-6 border-prediction-correct'
         case 'wrong':
-          return 'border-4 border-prediction-wrong'
+          return 'border-6 border-prediction-wrong'
         case 'selected':
-          return 'border-4 border-prediction-selected'
+          return 'border-6 border-prediction-selected'
         default:
-          return 'border-4 border-prediction-default'
+          return 'border-6 border-prediction-default'
       }
     },
   },
