@@ -53,9 +53,4 @@ export default {
 small {
   font-size: 0.5em;
 }
-
-// Not in Tailwind
-.border-6 {
-  border-width: 6px;
-}
 </style>
