@@ -72,13 +72,18 @@ export default {
     submit() {
       this.register ? this.tryToSignUp() : this.tryToLogIn()
     },
-    tryToLogIn() {
+    async tryToLogIn() {
       this.processingForm = true
       this.authError = null
       const credentials = {
         email: this.email,
         password: this.password,
       }
+
+      if (!this.$store.getters['competitions/currentCompetitionId']) {
+        await this.$store.dispatch('competitions/setDefaultCompetition')
+      }
+
       return this.logIn(credentials)
         .then(() => {
           this.processingForm = false
