@@ -7,7 +7,7 @@
       :results="true"
     />
     <div
-      v-if="!matchesWithResults.length"
+      v-if="matchesWithResults.length === 0"
       class="rounded-sm text-center py-4 px-8 results-placeholder"
     >
       <p class="flex items-center flex-col justify-center text-center text-lg my-3">
