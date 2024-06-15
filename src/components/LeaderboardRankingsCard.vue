@@ -19,9 +19,12 @@
           name: currentUser.name,
           userId: currentUser.id,
           photoKey: currentUser.photoKey || currentUser.photo_key,
-          points: '-',
+          points: userRank ? userRank.points : '-',
+          position: userRank ? userRank.rank : null,
         },
       ]"
+      :points="userRank ? userRank.points : '-'"
+      :position="userRank ? userRank.rank : null"
       :padding-start="true"
       :link-predictions="false"
       class="mt-1"
@@ -54,7 +57,7 @@ export default {
       return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
     },
     isCurrentUserRanked() {
-      return this.rankedUsers.some(user => user.userId === this.currentUser.id)
+      return this.rankedUsers.some(user => user.userId === this.currentUser.id && user.rank <= this.lastRank)
     },
     lastRank() {
       if (this.rankedUsers.length === 0) return 0
@@ -75,6 +78,9 @@ export default {
         }
         return accumulator
       }, [])
+    },
+    userRank() {
+      return this.sortedUsers.find(rank => rank.userId === this.currentUser.id)
     },
   },
 }
