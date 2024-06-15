@@ -35,7 +35,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ matches: 'matches/matches' }),
+    ...mapGetters({
+      matches: 'matches/matches',
+      currentUser: 'auth/currentUser',
+    }),
     matchesWithResults() {
       return groupBy(
         this.matches
@@ -53,11 +56,10 @@ export default {
           const results = {}
           Object.keys(this.leaderboard.results[match.id] ?? {}).forEach(
             choice => {
-              results[choice] = this.leaderboard.results[match.id][choice].map(
-                userId => {
-                  return this.leaderboard.users.find(u => u.userId === userId)
-                }
-              )
+              results[choice] = this.leaderboard.results[match.id][choice]
+                .map(userId => userId == this.currentUser.id ? this.rankedUsers.find(u => u.userId === userId) : this.topUsers.find(u => u.userId === userId))
+                .filter(user => user !== undefined) // Filter out undefined values
+              console.log(results)
             }
           )
           predictions[match.id] = results
@@ -65,6 +67,21 @@ export default {
       })
       return predictions
     },
+    sortedUsers: function () {
+      return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
+    },
+    rankedUsers() {
+      return this.sortedUsers.map(u => {
+        u.rank = this.sortedUsers.findIndex(usr => u.points === usr.points) + 1
+        return u
+      })
+    },
+    topUsers() {
+      if (this.leaderboard.rankingsTopN) {
+        return this.rankedUsers.slice(0, this.leaderboard.rankingsTopN)
+      }
+      return this.rankedUsers
+    }
   },
 }
 </script>
