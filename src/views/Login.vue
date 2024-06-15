@@ -10,23 +10,23 @@
       <div>
         <p>Email</p>
         <BaseInputText
-        v-model="email"
-        label="Email"
-        name="email"
-        type="text"
-        autofocus
-        @keypress.enter="submit"
+          v-model="email"
+          label="Email"
+          name="email"
+          type="text"
+          autofocus
+          @keypress.enter="submit"
         />
         <p>Password</p>
         <BaseInputText
-        id="password"
-        v-model="password"
-        label="Password"
-        name="password"
-        type="password"
-        @keypress.enter="submit"
+          id="password"
+          v-model="password"
+          label="Password"
+          name="password"
+          type="password"
+          @keypress.enter="submit"
         />
-        <p class="text-red-500 mb-3" v-if="authError">Email or password is incorrect.</p>
+        <p class="text-red-500 mb-3" v-if="authError">{{ errorMessage }}</p>
         <div class="flex justify-between items-center">
           <BaseButton :disabled="processingForm" @click="submit">
             {{ register ? 'Sign up' : 'Login' }}
@@ -66,7 +66,12 @@ export default {
     this.$emit('init')
     if (this.isJoinLink()) this.register = true
   },
-
+  computed: {
+    errorMessage() {
+      // Fallback in case the error is not a string (location change, etc.)
+      return this.authError && typeof this.authError === 'string' ? this.authError : 'An error occurred. Please try again.'
+    },
+  },
   methods: {
     ...authMethods,
     submit() {
@@ -94,7 +99,7 @@ export default {
         })
         .catch(error => {
           this.processingForm = false
-          this.authError = error
+          this.authError = error.response.data.errors[0]
         })
     },
     tryToSignUp() {
