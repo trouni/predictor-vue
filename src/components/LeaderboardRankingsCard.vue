@@ -62,7 +62,7 @@ export default {
     lastRank() {
       if (this.rankedUsers.length === 0) return 0
 
-      if (typeof this.leaderboard.rankingsTopN === 'number') {
+      if (this.leaderboard.rankingsTopN) {
         return this.rankedUsers[this.leaderboard.rankingsTopN].rank
       } else {
         return this.rankedUsers[this.rankedUsers.length - 1].rank

@@ -57,7 +57,7 @@ export default {
           Object.keys(this.leaderboard.results[match.id] ?? {}).forEach(
             choice => {
               results[choice] = this.leaderboard.results[match.id][choice]
-                .map(userId => userId == this.currentUser.id ? this.rankedUsers.find(u => u.userId === userId) : this.topUsers.find(u => u.userId === userId))
+                .map(userId => userId === this.currentUser.id ? this.rankedUsers.find(u => u.userId === userId) : this.topUsers.find(u => u.userId === userId))
                 .filter(user => user !== undefined) // Filter out undefined values
             }
           )
