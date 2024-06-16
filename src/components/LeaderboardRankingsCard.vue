@@ -19,9 +19,12 @@
           name: currentUser.name,
           userId: currentUser.id,
           photoKey: currentUser.photoKey || currentUser.photo_key,
-          points: '-',
+          points: userRank ? userRank.points : '-',
+          position: userRank ? userRank.rank : null,
         },
       ]"
+      :points="userRank ? userRank.points : '-'"
+      :position="userRank ? userRank.rank : null"
       :padding-start="true"
       :link-predictions="false"
       class="mt-1"
@@ -50,20 +53,35 @@ export default {
         return u
       })
     },
+    sortedUsers: function () {
+      return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
+    },
+    isCurrentUserRanked() {
+      return this.rankedUsers.some(user => user.userId === this.currentUser.id && user.rank <= this.lastRank)
+    },
+    lastRank() {
+      if (this.rankedUsers.length === 0) return 0
+
+      if (this.leaderboard.rankingsTopN) {
+        return this.rankedUsers[this.leaderboard.rankingsTopN].rank
+      } else {
+        return this.rankedUsers[this.rankedUsers.length - 1].rank
+      }
+    },
     ranks() {
       return this.rankedUsers.reduce((accumulator, u) => {
-        if (!accumulator.find(rank => rank.position === u.rank)) {
+        if (
+          !accumulator.find(rank => rank.position === u.rank) &&
+          u.rank <= this.lastRank
+        ) {
           accumulator.push({ position: u.rank, points: u.points })
         }
         return accumulator
       }, [])
     },
-    sortedUsers: function () {
-      return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
+    userRank() {
+      return this.sortedUsers.find(rank => rank.userId === this.currentUser.id)
     },
-    isCurrentUserRanked() {
-      return this.rankedUsers.some(user => user.userId === this.currentUser.id)
-    }
   },
 }
 </script>
