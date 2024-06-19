@@ -182,11 +182,23 @@ export default [
             }),
             meta: {
               authRequired: true,
-              title: store.getters['competitions/currentCompetition']?.name,
+              title: 'Predictions',
               img: 'football.png',
               subHeader: 'MatchesSubHeader',
             },
             alias: '/predictions',
+            beforeEnter: async (to, from, next) => {
+              try {
+                const currentCompetition =
+                  store.getters['competitions/currentCompetition']
+                if (currentCompetition) {
+                  to.meta.title = currentCompetition.name
+                }
+              } catch (error) {
+                console.error('Error fetching current competition:', error)
+              }
+              next()
+            },
           },
         ],
       },

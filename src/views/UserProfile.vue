@@ -56,7 +56,11 @@
             @keypress.enter="submit"
             @keypress="userNameUpdated = false"
           />
-          <BaseButton :disabled="processingForm" @click="submit" class="absolute top-0 right-0 h-full">
+          <BaseButton
+            :disabled="processingForm"
+            @click="submit"
+            class="absolute top-0 right-0 h-full"
+          >
             Update
           </BaseButton>
         </div>
@@ -66,16 +70,24 @@
           </BaseLink>
         </div>
       </div>
-      <div v-if="user.admin" class="w-full md:w-6/12 mt-10">
+      <div class="w-full md:w-6/12 mt-10">
         <h4>Competitions</h4>
-        <ul class="flex list-none">
+        <ul class="flex-column list-none">
           <li
             v-for="competition in competitions"
             :key="competition.id"
-            class="mr-3 last:mr-0"
+            class="mr-3 last:mr-0 mt-3"
           >
-            <BaseLink :to="{ name: 'predictions', params: { id: competition.id } }">
-              <BaseButton>
+            <BaseLink
+              :to="{ name: 'predictions', params: { id: competition.id } }"
+            >
+              <BaseButton
+                class="w-60"
+                :class="
+                  competitionEnded(competition.endDate) ? 'secondary' : ''
+                "
+                @click="handleCompetitionClick(competition.id)"
+              >
                 {{ competition.name }}
               </BaseButton>
             </BaseLink>
@@ -156,6 +168,17 @@ export default {
           }
         )
         .open()
+    },
+    competitionEnded(endDate) {
+      return (
+        new Date().setHours(0, 0, 0, 0) > new Date(endDate).setHours(0, 0, 0, 0)
+      )
+    },
+    async handleCompetitionClick(competitionId) {
+      await this.$store.dispatch(
+        'competitions/selectCompetition',
+        competitionId
+      )
     },
   },
 }
