@@ -71,28 +71,8 @@
         </div>
       </div>
       <div class="w-full md:w-6/12 mt-10">
-        <h4>Competitions</h4>
-        <ul class="flex-column list-none competitions">
-          <li
-            v-for="competition in descendingCompetitions"
-            :key="competition.id"
-            class="mt-3"
-          >
-            <BaseLink
-              :to="{ name: 'predictions', params: { id: competition.id } }"
-            >
-              <BaseButton
-                class="w-full"
-                :class="
-                  competitionEnded(competition.endDate) ? 'secondary' : ''
-                "
-                @click="handleCompetitionClick(competition.id)"
-              >
-                {{ competition.name }}
-              </BaseButton>
-            </BaseLink>
-          </li>
-        </ul>
+        <h3>Switch Competition</h3>
+        <CompetitionsList :competitions="ongoingCompetitions" />
       </div>
     </div>
   </div>
@@ -102,6 +82,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
+import CompetitionsList from '@/components/CompetitionsList'
 
 export default {
   props: {
@@ -114,6 +95,7 @@ export default {
     CldContext,
     CldImage,
     CldTransformation,
+    CompetitionsList,
   },
   async mounted() {
     this.fetchCompetitions()
@@ -126,8 +108,11 @@ export default {
       competitions: 'competitions/competitions',
     }),
     descendingCompetitions() {
-      return [...this.competitions].reverse(); // Create a copy of the array and reverse it
-    }
+      return [...this.competitions].reverse()
+    },
+    ongoingCompetitions() {
+      return this.descendingCompetitions.filter(c => !this.competitionEnded(c.endDate))
+    },
   },
 
   data() {
