@@ -20,12 +20,15 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchUser({ commit, state, rootState }, { userId, competitionId }) {
+  fetchUser(
+    { commit, state, rootState },
+    { userId, competitionId, ownPredictions }
+  ) {
     // 1. Check if we already have the user as a current user.
     const { currentUser } = rootState.auth
     const { currentCompetitionId } = rootState.competitions
     competitionId = competitionId || currentCompetitionId
-    if (currentUser && currentUser.id === userId) {
+    if (currentUser && currentUser.id === userId && !ownPredictions) {
       return Promise.resolve(currentUser)
     }
 
