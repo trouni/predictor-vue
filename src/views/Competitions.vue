@@ -45,12 +45,6 @@ export default {
       fetchCompetitions: 'competitions/fetchCompetitions',
       fetchUser: 'users/fetchUser',
     }),
-    async handleCompetitionClick(competitionId) {
-      await this.$store.dispatch(
-        'competitions/selectCompetition',
-        competitionId
-      )
-    },
     competitionEnded(endDate) {
       return (
         new Date().setHours(0, 0, 0, 0) > new Date(endDate).setHours(0, 0, 0, 0)

@@ -32,5 +32,13 @@ export default {
       required: true,
     },
   },
+  methods: {
+    async handleCompetitionClick(competitionId) {
+      await this.$store.dispatch(
+        'competitions/selectCompetition',
+        competitionId
+      )
+    },
+  },
 }
 </script>
