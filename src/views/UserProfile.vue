@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="w-full md:w-6/12 mt-10">
-        <h4>Competitions</h4>
+        <h3>Switch Competition</h3>
         <ul class="flex-column list-none competitions">
           <li
             v-for="competition in descendingCompetitions"

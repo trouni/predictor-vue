@@ -124,6 +124,18 @@ export default [
               subHeader: 'LeaderboardSubHeader',
             },
             alias: '/results',
+            beforeEnter: async (to, from, next) => {
+              try {
+                const currentCompetition =
+                  store.getters['competitions/currentCompetition']
+                if (currentCompetition) {
+                  to.meta.title = currentCompetition.name
+                }
+              } catch (error) {
+                console.error('Error fetching current competition:', error)
+              }
+              next()
+            },
           },
           {
             path: 'rankings',
@@ -137,6 +149,18 @@ export default [
               subHeader: 'LeaderboardSubHeader',
             },
             alias: '/rankings',
+            beforeEnter: async (to, from, next) => {
+              try {
+                const currentCompetition =
+                  store.getters['competitions/currentCompetition']
+                if (currentCompetition) {
+                  to.meta.title = currentCompetition.name
+                }
+              } catch (error) {
+                console.error('Error fetching current competition:', error)
+              }
+              next()
+            },
           },
           {
             path: 'predict',
