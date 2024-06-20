@@ -62,8 +62,13 @@ export default {
     lastRank() {
       if (this.rankedUsers.length === 0) return 0
 
-      if (this.leaderboard.rankingsTopN) {
+      if (
+        this.leaderboard.rankingsTopN &&
+        this.leaderboard.users.length >=  this.leaderboard.rankingsTopN
+      ) {
         return this.rankedUsers[this.leaderboard.rankingsTopN].rank
+      } else if (this.leaderboard.rankingsTopN) {
+        return this.rankedUsers[ this.leaderboard.users.length - 1].rank
       } else {
         return this.rankedUsers[this.rankedUsers.length - 1].rank
       }

@@ -7,7 +7,7 @@
       :results="true"
     />
     <div
-      v-if="matchesWithResults.length === 0"
+      v-if="matchesEmpty"
       class="rounded-sm text-center py-4 px-8 results-placeholder"
     >
       <p class="flex items-center flex-col justify-center text-center text-lg my-3">
@@ -80,7 +80,10 @@ export default {
         return this.rankedUsers.slice(0, this.leaderboard.rankingsTopN)
       }
       return this.rankedUsers
-    }
+    },
+    matchesEmpty() {
+      return Object.keys(this.matchesWithResults).length === 0
+    },
   },
 }
 </script>
