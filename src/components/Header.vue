@@ -8,7 +8,7 @@
         class="header-img"
       />
       <BaseLink v-if="title" :to="{ name: 'profile' }">
-        <h2 class="text-white" v-if="title"> {{ title }}</h2>
+        <h2 class="text-white"> {{ title }}</h2>
       </BaseLink>
     </div>
     <slot />
