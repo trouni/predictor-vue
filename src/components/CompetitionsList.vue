@@ -14,8 +14,10 @@
           @click="handleCompetitionClick(competition.id)"
         >
           <img
+            v-if="competition.photoUrl"
             alt="football graphic"
-            :src="competition.photoUrl" class="grow" key=""
+            :src="competition.photoUrl"
+            class="grow"
           />
         </div>
       </BaseLink>
