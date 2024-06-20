@@ -237,6 +237,17 @@ export default [
           img: 'player.png',
         },
       },
+      {
+        path: '/competitions',
+        name: 'competitions',
+        component: () => import('@/views/Competitions'),
+        props: () => ({ id: store.getters['auth/currentUser'].id }),
+        meta: {
+          authRequired: true,
+          title: 'Competitions',
+          img: 'player.png',
+        },
+      },
     ],
   },
 ]
