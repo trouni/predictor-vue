@@ -7,7 +7,7 @@
         :src="require('../assets/' + img)"
         class="header-img"
       />
-      <BaseLink v-if="title" :to="{ name: 'profile' }">
+      <BaseLink v-if="title" :to="{ name: 'competitions' }">
         <h2 class="text-white"> {{ title }}</h2>
       </BaseLink>
     </div>
