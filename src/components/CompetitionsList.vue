@@ -10,7 +10,7 @@
         class="grow h-full"
       >
         <div
-          class="card-competition flex flex-col justify-center p-2 h-full"
+          class="card-competition flex flex-col justify-center p-4 h-full"
           @click="handleCompetitionClick(competition.id)"
         >
           <img
