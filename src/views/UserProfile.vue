@@ -56,7 +56,11 @@
             @keypress.enter="submit"
             @keypress="userNameUpdated = false"
           />
-          <BaseButton :disabled="processingForm" @click="submit" class="absolute top-0 right-0 h-full">
+          <BaseButton
+            :disabled="processingForm"
+            @click="submit"
+            class="absolute top-0 right-0 h-full"
+          >
             Update
           </BaseButton>
         </div>
@@ -66,21 +70,9 @@
           </BaseLink>
         </div>
       </div>
-      <div v-if="user.admin" class="w-full md:w-6/12 mt-10">
-        <h4>Competitions</h4>
-        <ul class="flex list-none">
-          <li
-            v-for="competition in competitions"
-            :key="competition.id"
-            class="mr-3 last:mr-0"
-          >
-            <BaseLink :to="{ name: 'predictions', params: { id: competition.id } }">
-              <BaseButton>
-                {{ competition.name }}
-              </BaseButton>
-            </BaseLink>
-          </li>
-        </ul>
+      <div class="w-full md:w-6/12 mt-10">
+        <h3>Switch Competition</h3>
+        <CompetitionsList :competitions="ongoingCompetitions" />
       </div>
     </div>
   </div>
@@ -90,6 +82,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
+import CompetitionsList from '@/components/CompetitionsList'
 
 export default {
   props: {
@@ -102,6 +95,7 @@ export default {
     CldContext,
     CldImage,
     CldTransformation,
+    CompetitionsList,
   },
   async mounted() {
     this.fetchCompetitions()
@@ -113,6 +107,12 @@ export default {
     ...mapGetters({
       competitions: 'competitions/competitions',
     }),
+    descendingCompetitions() {
+      return [...this.competitions].reverse()
+    },
+    ongoingCompetitions() {
+      return this.descendingCompetitions.filter(c => !this.competitionEnded(c.endDate))
+    },
   },
 
   data() {
@@ -157,6 +157,17 @@ export default {
         )
         .open()
     },
+    competitionEnded(endDate) {
+      return (
+        new Date().setHours(0, 0, 0, 0) > new Date(endDate).setHours(0, 0, 0, 0)
+      )
+    },
+    async handleCompetitionClick(competitionId) {
+      await this.$store.dispatch(
+        'competitions/selectCompetition',
+        competitionId
+      )
+    },
   },
 }
 </script>
@@ -175,5 +186,9 @@ p {
   &:hover {
     cursor: pointer;
   }
+}
+
+.competitions a {
+  width: 100%;
 }
 </style>

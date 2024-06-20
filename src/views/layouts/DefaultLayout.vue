@@ -35,7 +35,6 @@ import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
 import MatchesSubHeader from '@/components/MatchesSubHeader'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -54,21 +53,6 @@ export default {
       img: img,
       subHeader: subHeader,
     }
-  },
-  computed: {
-    ...mapGetters('competitions', ['currentCompetition']),
-    competitionTitle() {
-      return this.currentCompetition?.name
-    },
-  },
-  watch: {
-    '$route.meta': {
-      immediate: true,
-      handler(meta) {
-        // Temporary fix for title not updating on route change from login
-        this.title = meta.title || this.competitionTitle
-      },
-    },
   },
 }
 </script>
