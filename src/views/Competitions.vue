@@ -1,9 +1,11 @@
 <template>
-  <div class="p-4">
-    <h3 class="text-center">Ongoing</h3>
-    <CompetitionsList :competitions="ongoingCompetitions" />
-    <h3 class="text-center mt-5">Past</h3>
-    <CompetitionsList :competitions="pastCompetitions" />
+  <div class="p-4 h-full flex justify-center">
+    <div class="w-full md:w-6/12">
+      <h3 class="text-center">Ongoing</h3>
+      <CompetitionsList :competitions="ongoingCompetitions" />
+      <h3 class="text-center mt-5">Past</h3>
+      <CompetitionsList :competitions="pastCompetitions" />
+    </div>
   </div>
 </template>
 
