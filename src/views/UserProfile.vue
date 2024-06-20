@@ -126,8 +126,8 @@ export default {
       competitions: 'competitions/competitions',
     }),
     descendingCompetitions() {
-      return [...this.competitions].reverse(); // Create a copy of the array and reverse it
-    }
+      return [...this.competitions].reverse()
+    },
   },
 
   data() {
