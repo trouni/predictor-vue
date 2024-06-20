@@ -72,17 +72,17 @@
       </div>
       <div class="w-full md:w-6/12 mt-10">
         <h4>Competitions</h4>
-        <ul class="flex-column list-none">
+        <ul class="flex-column list-none competitions">
           <li
-            v-for="competition in competitions"
+            v-for="competition in descendingCompetitions"
             :key="competition.id"
-            class="mr-3 last:mr-0 mt-3"
+            class="mt-3"
           >
             <BaseLink
               :to="{ name: 'predictions', params: { id: competition.id } }"
             >
               <BaseButton
-                class="w-60"
+                class="w-full"
                 :class="
                   competitionEnded(competition.endDate) ? 'secondary' : ''
                 "
@@ -125,6 +125,9 @@ export default {
     ...mapGetters({
       competitions: 'competitions/competitions',
     }),
+    descendingCompetitions() {
+      return [...this.competitions].reverse(); // Create a copy of the array and reverse it
+    }
   },
 
   data() {
@@ -198,5 +201,9 @@ p {
   &:hover {
     cursor: pointer;
   }
+}
+
+.competitions a {
+  width: 100%;
 }
 </style>
