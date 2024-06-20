@@ -238,7 +238,7 @@ export default [
         },
       },
       {
-        path: '/competitions',
+        path: '/all_competitions',
         name: 'competitions',
         component: () => import('@/views/Competitions'),
         props: () => ({ id: store.getters['auth/currentUser'].id }),
