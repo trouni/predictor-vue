@@ -19,12 +19,12 @@
           name: currentUser.name,
           userId: currentUser.id,
           photoKey: currentUser.photoKey || currentUser.photo_key,
-          points: userRank ? userRank.points : '-',
-          position: userRank ? userRank.rank : null,
+          points: getPoints,
+          position: getPosition,
         },
       ]"
-      :points="userRank ? userRank.points : '-'"
-      :position="userRank ? userRank.rank : null"
+      :points="getPoints"
+      :position="getPosition"
       :padding-start="true"
       :link-predictions="false"
       class="mt-1"
@@ -48,16 +48,23 @@ export default {
   computed: {
     ...mapGetters({ currentUser: 'auth/currentUser' }),
     rankedUsers() {
-      return this.sortedUsers.map(u => {
-        u.rank = this.sortedUsers.findIndex(usr => u.points === usr.points) + 1
-        return u
+      return this.sortedUsers.map(user => {
+        user.rank =
+          this.sortedUsers.findIndex(usr => user.points === usr.points) + 1
+        return user
       })
     },
-    sortedUsers: function () {
+    sortedUsers() {
       return this.leaderboard.users.slice().sort((a, b) => b.points - a.points)
     },
     isCurrentUserRanked() {
       return this.rankedUsers.some(user => user.userId === this.currentUser.id && user.rank <= this.lastRank)
+    },
+    getPoints() {
+      return this.userRank ? this.userRank.points : '-'
+    },
+    getPosition() {
+      return this.userRank ? this.userRank.rank : null
     },
     lastRank() {
       if (this.rankedUsers.length === 0) return 0

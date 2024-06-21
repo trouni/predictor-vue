@@ -82,7 +82,10 @@ export default {
 
   async mounted() {
     if (this.userId) {
-      this.user = await this.fetchUser({ userId: this.userId })
+      this.user = await this.fetchUser({
+        userId: this.userId,
+        ownPredictions: true,
+      })
       // Removing 'UPCOMING' for other users' pages
       const upcomingIndex = this.tabs.indexOf('upcoming')
       this.tabs.splice(upcomingIndex, 1)
