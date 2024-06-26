@@ -1,5 +1,8 @@
 <template>
   <div class="p-4">
+    <BaseLink class="flex justify-end p-2" :to="{ name: 'logout' }">
+      <p>Log out <BaseIcon name="sign-out-alt" /></p>
+    </BaseLink>
     <div class="flex flex-col justify-center items-center">
       <div class="w-full md:w-6/12">
         <div class="flex justify-center">
@@ -64,9 +67,9 @@
             Update
           </BaseButton>
         </div>
-        <div class="flex items-start w-full">
-          <BaseLink :to="{ name: 'logout' }">
-            <p>Log out <BaseIcon name="sign-out-alt" /></p>
+        <div class="flex items-start w-full mt-6">
+          <BaseLink :to="{ name: 'support' }">
+            <p><BaseIcon name="info-circle" /> Use on Mobile </p>
           </BaseLink>
         </div>
       </div>

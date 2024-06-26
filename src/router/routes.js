@@ -238,6 +238,16 @@ export default [
         },
       },
       {
+        path: '/support',
+        name: 'support',
+        component: () => import('@/views/Support'),
+        meta: {
+          authRequired: true,
+          title: 'Support',
+          img: 'player.png',
+        },
+      },
+      {
         path: '/all_competitions',
         name: 'competitions',
         component: () => import('@/views/Competitions'),
