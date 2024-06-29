@@ -44,7 +44,7 @@
         />
 
         <p id="name-label"
-          >Display Name <BaseIcon v-if="userNameUpdated" name="check"
+          >Display Name <BaseIcon v-if="userNameUpdated && showUpdate" name="check"
         /></p>
         <div class="relative">
           <BaseInputText
@@ -53,6 +53,7 @@
             name="name"
             type="text"
             autofocus
+            @keyup="handleKeyup"
             @keypress.enter="submit"
             @keypress="userNameUpdated = false"
           />
@@ -63,16 +64,51 @@
           >
             Update
           </BaseButton>
+
         </div>
-        <div class="flex items-start w-full">
+        <div class="flex align-center mb-2">
+          <input
+            v-model="user.notifications.email.predictionMissing"
+            type="checkbox"
+            id="predictionMissing"
+            @change="
+              () => {
+                predictionMissing = true
+                submit()
+              }
+            "
+          />
+          <label for="prediction_missing">
+            Email missing predictions
+            <BaseIcon v-if="predictionMissing && showUpdate" name="check" />
+          </label>
+        </div>
+        <div class="flex align-center mb-2">
+          <input
+            v-model="user.notifications.email.competitionNew"
+            type="checkbox"
+            id="competitionNew"
+            @change="
+              () => {
+                competitionNew = true
+                submit()
+              }
+            "
+          />
+          <label for="competition_new">
+            Email new competitions
+            <BaseIcon v-if="competitionNew && showUpdate" name="check" />
+          </label>
+        </div>
+      </div>
+      <div class="w-full md:w-6/12 mt-5">
+        <h3>Switch Competition</h3>
+        <CompetitionsList :competitions="ongoingCompetitions" />
+        <div class="flex justify-end w-full my-5">
           <BaseLink :to="{ name: 'logout' }">
             <p>Log out <BaseIcon name="sign-out-alt" /></p>
           </BaseLink>
         </div>
-      </div>
-      <div class="w-full md:w-6/12 mt-10">
-        <h3>Switch Competition</h3>
-        <CompetitionsList :competitions="ongoingCompetitions" />
       </div>
     </div>
   </div>
@@ -121,9 +157,19 @@ export default {
       email: '',
       loading: false,
       processingForm: false,
-      user: null,
+      user: {
+        notifications: {
+          email: {
+            competitionNew: false,
+            predictionMissing: false,
+          },
+        },
+      },
       userNameUpdated: false,
       cloudName: config.cloudName,
+      showUpdate: false,
+      predictionMissing: false,
+      competitionNew: false,
     }
   },
   methods: {
@@ -138,10 +184,16 @@ export default {
         userId: this.user.id,
         name: this.user.name,
         photoKey: this.user.photoKey,
-      }
+        notifications: {
+          email: {
+            competition_new: this.user.notifications.email.competitionNew,
+            prediction_missing: this.user.notifications.email.predictionMissing,
+          },
+        },
+      };
       this.user = await this.patchUser(formData)
       this.name = this.user.name
-      this.userNameUpdated = true
+      this.showUpdate = true
       this.processingForm = false
     },
     openUploadModal() {
@@ -168,6 +220,9 @@ export default {
         competitionId
       )
     },
+    handleKeyup() {
+      this.userNameUpdated = true
+    },
   },
 }
 </script>
@@ -190,5 +245,10 @@ p {
 
 .competitions a {
   width: 100%;
+}
+
+input[type=checkbox] {
+  width: fit-content;
+  margin: 0 4px 0 0;
 }
 </style>
