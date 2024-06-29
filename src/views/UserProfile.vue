@@ -63,6 +63,25 @@
           >
             Update
           </BaseButton>
+
+        </div>
+        <div class="flex align-center mb-2">
+          <input
+            v-model="user.notifications.email.predictionMissing"
+            type="checkbox"
+            id="prediction_missing"
+            @change="submit"
+          />
+          <label for="prediction_missing">Email missing predictions</label>
+        </div>
+        <div class="flex align-center mb-5">
+          <input
+            v-model="user.notifications.email.competitionNew"
+            type="checkbox"
+            id="competition_new"
+            @change="submit"
+          />
+          <label for="competition_new">Email new competitions</label>
         </div>
         <div class="flex items-start w-full">
           <BaseLink :to="{ name: 'logout' }">
@@ -121,7 +140,14 @@ export default {
       email: '',
       loading: false,
       processingForm: false,
-      user: null,
+      user: {
+        notifications: {
+          email: {
+            competitionNew: false,
+            predictionMissing: false,
+          },
+        },
+      },
       userNameUpdated: false,
       cloudName: config.cloudName,
     }
@@ -138,7 +164,13 @@ export default {
         userId: this.user.id,
         name: this.user.name,
         photoKey: this.user.photoKey,
-      }
+        notifications: {
+          email: {
+            competition_new: this.user.notifications.email.competitionNew,
+            prediction_missing: this.user.notifications.email.predictionMissing,
+          },
+        },
+      };
       this.user = await this.patchUser(formData)
       this.name = this.user.name
       this.userNameUpdated = true
@@ -190,5 +222,10 @@ p {
 
 .competitions a {
   width: 100%;
+}
+
+input[type=checkbox] {
+  width: fit-content;
+  margin: 0 4px 0 0;
 }
 </style>
