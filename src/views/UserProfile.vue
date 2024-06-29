@@ -83,7 +83,7 @@
             <BaseIcon v-if="predictionMissing && showUpdate" name="check" />
           </label>
         </div>
-        <div class="flex align-center mb-5">
+        <div class="flex align-center mb-2">
           <input
             v-model="user.notifications.email.competitionNew"
             type="checkbox"
@@ -100,15 +100,15 @@
             <BaseIcon v-if="competitionNew && showUpdate" name="check" />
           </label>
         </div>
-        <div class="flex items-start w-full">
-          <BaseLink :to="{ name: 'logout' }">
-            <p>Log out <BaseIcon name="sign-out-alt" /></p>
-          </BaseLink>
-        </div>
       </div>
-      <div class="w-full md:w-6/12 mt-10">
+      <div class="w-full md:w-6/12 mt-5">
         <h3>Switch Competition</h3>
         <CompetitionsList :competitions="ongoingCompetitions" />
+      </div>
+      <div class="flex justify-end w-full mt-5">
+        <BaseLink :to="{ name: 'logout' }">
+          <p>Log out <BaseIcon name="sign-out-alt" /></p>
+        </BaseLink>
       </div>
     </div>
   </div>
