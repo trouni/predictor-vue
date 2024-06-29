@@ -44,7 +44,7 @@
         />
 
         <p id="name-label"
-          >Display Name <BaseIcon v-if="userNameUpdated" name="check"
+          >Display Name <BaseIcon v-if="userNameUpdated && showUpdate" name="check"
         /></p>
         <div class="relative">
           <BaseInputText
@@ -53,6 +53,7 @@
             name="name"
             type="text"
             autofocus
+            @keyup="handleKeyup"
             @keypress.enter="submit"
             @keypress="userNameUpdated = false"
           />
@@ -69,19 +70,35 @@
           <input
             v-model="user.notifications.email.predictionMissing"
             type="checkbox"
-            id="prediction_missing"
-            @change="submit"
+            id="predictionMissing"
+            @change="
+              () => {
+                predictionMissing = true
+                submit()
+              }
+            "
           />
-          <label for="prediction_missing">Email missing predictions</label>
+          <label for="prediction_missing">
+            Email missing predictions
+            <BaseIcon v-if="predictionMissing && showUpdate" name="check" />
+          </label>
         </div>
         <div class="flex align-center mb-5">
           <input
             v-model="user.notifications.email.competitionNew"
             type="checkbox"
-            id="competition_new"
-            @change="submit"
+            id="competitionNew"
+            @change="
+              () => {
+                competitionNew = true
+                submit()
+              }
+            "
           />
-          <label for="competition_new">Email new competitions</label>
+          <label for="competition_new">
+            Email new competitions
+            <BaseIcon v-if="competitionNew && showUpdate" name="check" />
+          </label>
         </div>
         <div class="flex items-start w-full">
           <BaseLink :to="{ name: 'logout' }">
@@ -150,6 +167,9 @@ export default {
       },
       userNameUpdated: false,
       cloudName: config.cloudName,
+      showUpdate: false,
+      predictionMissing: false,
+      competitionNew: false,
     }
   },
   methods: {
@@ -173,7 +193,7 @@ export default {
       };
       this.user = await this.patchUser(formData)
       this.name = this.user.name
-      this.userNameUpdated = true
+      this.showUpdate = true
       this.processingForm = false
     },
     openUploadModal() {
@@ -199,6 +219,9 @@ export default {
         'competitions/selectCompetition',
         competitionId
       )
+    },
+    handleKeyup() {
+      this.userNameUpdated = true
     },
   },
 }
