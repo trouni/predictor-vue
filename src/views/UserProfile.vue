@@ -104,11 +104,11 @@
       <div class="w-full md:w-6/12 mt-5">
         <h3>Switch Competition</h3>
         <CompetitionsList :competitions="ongoingCompetitions" />
-      </div>
-      <div class="flex justify-end w-full mt-5">
-        <BaseLink :to="{ name: 'logout' }">
-          <p>Log out <BaseIcon name="sign-out-alt" /></p>
-        </BaseLink>
+        <div class="flex justify-end w-full mt-5">
+          <BaseLink :to="{ name: 'logout' }">
+            <p>Log out <BaseIcon name="sign-out-alt" /></p>
+          </BaseLink>
+        </div>
       </div>
     </div>
   </div>
