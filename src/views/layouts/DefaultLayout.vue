@@ -21,7 +21,7 @@
           v-if="!$store.getters.DOMLoaded || !componentInitialized"
           class="flex justify-center items-center h-full w-full"
         >
-          <BaseSpinner class="text-gray-600" />
+          <BaseSpinner class="text-white" />
         </div>
       </main>
     </div>
