@@ -1,43 +1,51 @@
 <template>
-  <div
-    ref="predictionsBar"
-    class="w-full h-6 rounded-md border-gray-300 border mt-5 flex overflow-hidden"
-  >
+  <div class="w-full h-5 rounded-full overflow-hidden flex border border-gray-200">
+
+    <!-- Home -->
     <div
-      ref="teamHome"
-      :class="['min-w-[2.5em] h-full', rightSideBorderIfStarted]"
+      class="h-full flex items-center justify-center text-xs font-semibold transition-all duration-700 overflow-hidden"
+      :style="{
+        width: percentageHomeWin,
+        minWidth: hasPicks('home') ? '2.5rem' : '0',
+        background: result === 'home' ? '#84CC16' : '#f3f4f6',
+        color: result === 'home' ? 'white' : '#9ca3af',
+      }"
     >
-      <div
-        class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
-      >
-        {{ percentageHomeWin }}
-      </div>
+      <span v-if="hasPicks('home')">{{ percentageHomeWin }}</span>
     </div>
 
+    <!-- Draw (group stage only) -->
     <div
       v-if="match.groupId"
-      ref="draw"
-      :class="['min-w-[2.5em] h-full border-gray-300 border-r border-l']"
+      class="h-full flex items-center justify-center text-xs font-semibold transition-all duration-700 overflow-hidden border-x border-gray-200"
+      :style="{
+        width: percentageDraw,
+        minWidth: hasPicks('draw') ? '2.5rem' : '0',
+        background: result === 'draw' ? '#84CC16' : '#f3f4f6',
+        color: result === 'draw' ? 'white' : '#9ca3af',
+      }"
     >
-      <div
-        class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center uppercase"
-      >
-        {{ percentageDraw }}
-      </div>
+      <span v-if="hasPicks('draw')">{{ percentageDraw }}</span>
     </div>
-    <div ref="teamAway" class="min-w-[2.5em] h-full flex-auto">
-      <div
-        class="text-sm text-glow font-semibold text-gray-600 w-full h-full flex items-center justify-center"
-      >
-        {{ percentageAwayWin }}
-      </div>
+
+    <!-- Away — fills remaining space via flex-1 -->
+    <div
+      class="flex-1 h-full flex items-center justify-center text-xs font-semibold transition-all duration-700 overflow-hidden"
+      :style="{
+        minWidth: hasPicks('away') ? '2.5rem' : '0',
+        background: result === 'away' ? '#84CC16' : '#f3f4f6',
+        color: result === 'away' ? 'white' : '#9ca3af',
+      }"
+    >
+      <span v-if="hasPicks('away')">{{ percentageAwayWin }}</span>
     </div>
+
   </div>
 </template>
 
 <script>
 export default {
-  components: {},
+  name: 'MatchPredictionsBar',
 
   props: {
     match: {
@@ -54,60 +62,31 @@ export default {
     },
   },
 
-  mounted() {
-    if (this.$refs.teamHome) {
-      this.$refs.teamHome.style.width = this.percentageHomeWin
-      this.$refs.teamHome.classList.add(
-        this.result === 'home' ? 'bg-prediction-correct' : 'bg-gray-100'
+  computed: {
+    total() {
+      return Object.keys(this.predictions).reduce(
+        (acc, key) => acc + (this.predictions[key]?.length || 0),
+        0
       )
-    }
-    if (this.$refs.draw) {
-      this.$refs.draw.style.width = this.percentageDraw
-      this.$refs.draw.classList.add(
-        this.result === 'draw' ? 'bg-prediction-correct' : 'bg-gray-100'
-      )
-    }
-    if (this.$refs.teamAway) {
-      this.$refs.teamAway.style.width = this.percentageAwayWin
-      this.$refs.teamAway.classList.add(
-        this.result === 'away' ? 'bg-prediction-correct' : 'bg-gray-100'
-      )
-    }
+    },
+    percentageHomeWin() {
+      return this.pct('home')
+    },
+    percentageAwayWin() {
+      return this.pct('away')
+    },
+    percentageDraw() {
+      return this.pct('draw')
+    },
   },
 
   methods: {
-    calculatePercentage(numOfPredictions) {
-      return Math.round(
-        (numOfPredictions / this.totalNumberOfUserPredictions) * 100
-      )
+    hasPicks(column) {
+      return this.predictions[column] && this.predictions[column].length > 0
     },
-    hasPredictions(column) {
-      return Object.keys(this.predictions).includes(column)
-    },
-  },
-
-  computed: {
-    rightSideBorderIfStarted() {
-      if (this.match.status === 'started' && this.match.roundNumber > 1) {
-        return 'border-r border-gray-300'
-      } else return ''
-    },
-    totalNumberOfUserPredictions() {
-      return Object.keys(this.predictions).reduce((acc, key) => {
-        return acc + this.predictions[key].length
-      }, 0)
-    },
-    percentageHomeWin() {
-      if (!this.hasPredictions('home')) return '0%'
-      return `${this.calculatePercentage(this.predictions.home.length)}%`
-    },
-    percentageAwayWin() {
-      if (!this.hasPredictions('away')) return '0%'
-      return `${this.calculatePercentage(this.predictions.away.length)}%`
-    },
-    percentageDraw() {
-      if (!this.hasPredictions('draw')) return '0%'
-      return `${this.calculatePercentage(this.predictions.draw.length)}%`
+    pct(column) {
+      if (!this.hasPicks(column) || this.total === 0) return '0%'
+      return `${Math.round((this.predictions[column].length / this.total) * 100)}%`
     },
   },
 }

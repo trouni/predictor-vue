@@ -1,17 +1,21 @@
 <template>
-  <div class="header-container">
-    <div class="d-flex justify-content-center">
-      <img
-        v-if="img"
-        alt="football graphic"
-        :src="require('../assets/' + img)"
-        class="header-img"
-      />
-      <BaseLink v-if="title" :to="{ name: 'competitions' }">
-        <h2 class="text-white"> {{ title }}</h2>
-      </BaseLink>
+  <div class="app-header">
+
+    <div :class="$slots.default ? 'px-5 pt-5 pb-0' : 'px-5 pt-5 pb-4'">
+      <!-- Page / competition title -->
+      <h1 v-if="title" class="text-white font-bold leading-tight truncate" style="font-size: 1.35rem; letter-spacing: -0.01em">
+        {{ title }}
+      </h1>
     </div>
-    <slot />
+
+    <!-- Sub-header slot: leaderboard tabs, competition context, etc. -->
+    <div v-if="$slots.default">
+      <slot />
+    </div>
+
+    <!-- Hairline separator -->
+    <div style="height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%)" />
+
   </div>
 </template>
 
@@ -22,6 +26,7 @@ export default {
       type: String,
       required: false,
     },
+    // Kept for backwards-compat with route meta — no longer rendered
     img: {
       type: String,
       required: false,
@@ -29,40 +34,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles';
-.header-container {
-  padding: $spacer;
-  color: $white;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.d-flex {
-  display: flex;
-  align-items: center;
-}
-
-.header-img {
-  width: 24px;
-  height: 24px;
-}
-
-img {
-  margin-right: $spacer;
-}
-
-// Small devices (landscape phones, 640px and up)
-@media (min-width: 640px) {
-  .header-container {
-    padding: $spacer * 2;
-  }
-  .header-img {
-    width: 36px;
-    height: 36px;
-  }
-}
-</style>

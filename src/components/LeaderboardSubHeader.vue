@@ -1,12 +1,42 @@
 <template>
-  <div class="flex items-center justify-between sm:justify-center">
-    <div class="px-5" @click="selectLeaderboard(previousLeaderboard.id)">
-      <BaseIcon name="angle-left" v-if="previousLeaderboard" />
+  <div v-if="leaderboards.length" class="mt-2">
+
+    <!-- Single leaderboard: just show the name, no tabs needed -->
+    <p
+      v-if="leaderboards.length === 1"
+      class="text-sm font-medium pb-3 px-5"
+      style="color: rgba(255,255,255,0.5)"
+    >
+      {{ leaderboards[0].name }}
+    </p>
+
+    <!-- Multiple leaderboards: tab strip -->
+    <div v-else class="flex overflow-x-auto hide-scrollbar px-5 gap-1">
+
+      <button
+        v-for="lb in leaderboards"
+        :key="lb.id"
+        @click="selectLeaderboard(lb.id)"
+        class="flex-shrink-0 text-sm pb-3 px-2 mr-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
+        :style="isActive(lb.id)
+          ? 'border-color: #fa5151; color: white; font-weight: 600'
+          : 'border-color: transparent; color: rgba(255,255,255,0.38)'"
+      >
+        {{ lb.name }}
+      </button>
+
+      <!-- ＋ New leaderboard pill at the far end -->
+      <BaseLink
+        :to="{ name: 'new_leaderboard' }"
+        class="flex-shrink-0 flex items-center gap-1 self-start mt-0.5 px-2.5 py-1 rounded-full text-xs font-medium transition-opacity hover:opacity-80 whitespace-nowrap"
+        style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.45)"
+      >
+        <BaseIcon name="plus" style="font-size: 0.6rem" />
+        New
+      </BaseLink>
+
     </div>
-    <h3 v-if="leaderboard"> {{ leaderboard.name }} </h3>
-    <div class="px-5" @click="selectLeaderboard(nextLeaderboard.id)">
-      <BaseIcon name="angle-right" v-if="nextLeaderboard" />
-    </div>
+
   </div>
 </template>
 
@@ -14,41 +44,32 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  mounted() {
-    window.addEventListener('keyup', this.keyboardNav)
-  },
+  name: 'LeaderboardSubHeader',
 
-  destroyed() {
-    window.removeEventListener('keyup', this.keyboardNav)
+  computed: {
+    ...mapGetters({
+      leaderboards: 'leaderboards/leaderboards',
+      currentLeaderboard: 'leaderboards/currentLeaderboard',
+    }),
   },
 
   methods: {
     ...mapActions({
       selectLeaderboard: 'leaderboards/selectLeaderboard',
     }),
-  },
-
-  computed: {
-    ...mapGetters({
-      leaderboard: 'leaderboards/currentLeaderboard',
-      previousLeaderboard: 'leaderboards/previousLeaderboard',
-      nextLeaderboard: 'leaderboards/nextLeaderboard',
-    }),
+    isActive(id) {
+      return this.currentLeaderboard && this.currentLeaderboard.id === id
+    },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-@import '@/styles';
-h3 {
-  margin: calc($spacer / 2);
-  color: $white;
-  font-weight: lighter;
+<style scoped>
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.fa-angle-left:hover {
-  cursor: pointer;
-}
-.fa-angle-right:hover {
-  cursor: pointer;
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 </style>

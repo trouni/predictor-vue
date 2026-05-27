@@ -1,67 +1,98 @@
 <template>
   <div
-    class="d-flex ranking bg-white/50 w-[95%] mx-auto px-1 py-2 bg-white rounded-lg shadow-lg"
+    class="ranking-row bg-white rounded-2xl shadow-sm overflow-hidden mx-auto"
+    :class="rowWidthClass"
   >
-    <div class="d-flex min-w-0">
-      <div
-        class="position text-center flex-shrink-0"
-        :class="{ 'w-12': !!position || paddingStart }"
-      >
-        <p v-if="!!position" v-html="ordinalize(position)"></p>
+    <div class="flex items-center gap-3 px-4" :class="paddingClass">
+
+      <!-- Medal / position -->
+      <div class="flex-shrink-0 flex items-center justify-center" :class="posColClass">
+        <span v-if="position === 1" class="text-3xl leading-none">🥇</span>
+        <span v-else-if="position === 2" class="text-2xl leading-none">🥈</span>
+        <span v-else-if="position === 3" class="text-xl leading-none">🥉</span>
+        <span
+          v-else-if="position"
+          class="font-bold text-gray-400 text-sm leading-none"
+          v-html="ordinalize(position)"
+        />
+        <!-- Unranked user placeholder (no position available) -->
+        <span
+          v-else-if="paddingStart && userRankings[0] && userRankings[0].rank"
+          class="font-bold text-gray-400 text-sm leading-none"
+          v-html="ordinalize(userRankings[0].rank)"
+        />
       </div>
-      <!-- <div class="direction w-12 text-center flex-shrink-0">
-        <p><BaseIcon name="caret-up" /></p>
-        <p><BaseIcon name="caret-down" /></p>
-        <p>-</p>
-      </div> -->
-      <div class="flex flex-col gap-2">
-        <div v-for="ranking in userRankings" :key="ranking.userId" class="d-flex">
-          <div class="user-avatar text-center flex-shrink-0">
-            <div class="relative rounded-full overflow-hidden">
-              <cld-context v-if="ranking.photoKey || ranking.photo_key" :cloudName="cloudName">
-                <div class="">
-                  <cld-image :publicId="ranking.photoKey || ranking.photo_key">
-                    <cld-transformation
-                      width="100"
-                      height="100"
-                      gravity="face"
-                      radius="max"
-                      crop="fill"
-                    />
-                  </cld-image>
-                </div>
-              </cld-context>
-              <img v-else alt="football graphic" :src="require('../assets/player.png')" />
-            </div>
+
+      <!-- User rows (handles ties: multiple users at same rank) -->
+      <div class="flex-1 min-w-0 flex flex-col" :class="position && position <= 3 ? 'gap-2.5' : 'gap-1.5'">
+        <div
+          v-for="ranking in userRankings"
+          :key="ranking.userId || ranking.id"
+          class="flex items-center gap-3"
+        >
+          <!-- Avatar -->
+          <div
+            class="flex-shrink-0 rounded-full overflow-hidden border-2 border-white shadow"
+            :class="avatarClass"
+          >
+            <cld-context v-if="ranking.photoKey || ranking.photo_key" :cloudName="cloudName">
+              <cld-image :publicId="ranking.photoKey || ranking.photo_key">
+                <cld-transformation
+                  width="100"
+                  height="100"
+                  gravity="face"
+                  radius="max"
+                  crop="fill"
+                />
+              </cld-image>
+            </cld-context>
+            <img
+              v-else
+              :src="require('../assets/player.png')"
+              :alt="ranking.name"
+              class="w-full h-full object-cover"
+            />
           </div>
+
+          <!-- Name -->
           <BaseLink
-            :to="{ name: 'predictions', query: { userId: ranking.userId } }"
+            :to="{ name: 'predictions', query: { userId: ranking.userId || ranking.id } }"
             :disabled="!linkPredictions"
-            class="p-2 name w-full truncate"
+            class="flex-1 min-w-0 truncate text-gray-800 font-medium"
+            :class="nameFontClass"
           >
             {{ ranking.name }}
           </BaseLink>
         </div>
       </div>
-    </div>
-    <div  class="points w-12 text-center flex-shrink-0 py-1">
-      {{ userRankings[0].points }}
-      <span v-if="userRankings[0].possiblePoints" class="font-light text-xs">
-        / {{ userRankings[0].possiblePoints }}</span
-      >
+
+      <!-- Points -->
+      <div class="flex-shrink-0 text-right">
+        <p class="font-black leading-none" :class="pointsFontClass" style="color: #fa5151">
+          {{ userRankings[0].points }}
+        </p>
+        <p v-if="userRankings[0].possiblePoints" class="text-xs text-gray-400 font-normal mt-0.5">
+          / {{ userRankings[0].possiblePoints }}
+        </p>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
-import { CldContext, CldImage, CldTransformation } from "cloudinary-vue";
-import { config } from "@/constants";
-import { mapGetters } from "vuex";
+import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
+import { config } from '@/constants'
 
 export default {
+  name: 'LeaderboardRanking',
+
+  components: { CldContext, CldImage, CldTransformation },
+
   props: {
     userRankings: {
       type: Array,
+      required: true,
     },
     position: {
       type: Number,
@@ -80,153 +111,70 @@ export default {
       default: false,
     },
   },
-  components: {
-    CldContext,
-    CldImage,
-    CldTransformation,
-  },
+
   data() {
     return {
       cloudName: config.cloudName,
-    };
+    }
   },
+
   computed: {
-    ...mapGetters({
-      leaderboard: "leaderboards/currentLeaderboard",
-    }),
+    rowWidthClass() {
+      if (this.position === 1) return 'w-full'
+      if (this.position === 2) return 'w-[97%]'
+      if (this.position === 3) return 'w-[94%]'
+      return 'w-[91%]'
+    },
+    paddingClass() {
+      if (this.position === 1) return 'py-4'
+      if (this.position === 2) return 'py-3.5'
+      if (this.position === 3) return 'py-3'
+      return 'py-2.5'
+    },
+    posColClass() {
+      return this.position && this.position <= 3 ? 'w-9' : 'w-7'
+    },
+    avatarClass() {
+      if (this.position === 1) return 'w-14 h-14'
+      if (this.position === 2) return 'w-12 h-12'
+      if (this.position === 3) return 'w-11 h-11'
+      return 'w-9 h-9'
+    },
+    nameFontClass() {
+      if (this.position === 1) return 'text-base'
+      return 'text-sm'
+    },
+    pointsFontClass() {
+      if (this.position === 1) return 'text-2xl'
+      if (this.position === 2) return 'text-xl'
+      if (this.position === 3) return 'text-lg'
+      return 'text-base'
+    },
   },
+
   methods: {
     ordinalize(num) {
+      if (!num) return ''
       switch (num % 10) {
-        case 1:
-          return num.toString() + "<sup>st</sup>";
-        case 2:
-          return num.toString() + "<sup>nd</sup>";
-        case 3:
-          return num.toString() + "<sup>rd</sup>";
-        default:
-          return num.toString() + "<sup>th</sup>";
+        case 1: return num + '<sup>st</sup>'
+        case 2: return num + '<sup>nd</sup>'
+        case 3: return num + '<sup>rd</sup>'
+        default: return num + '<sup>th</sup>'
       }
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles";
-
-.d-flex {
-  display: flex;
-  align-items: center;
-}
-
-.ranking {
-  justify-content: space-between;
-  align-items: center;
-}
-
-.w-50 {
-  width: 50px;
-  text-align: center;
-  flex-shrink: 0;
-}
-.user-avatar {
-  @apply w-12;
-  & > div {
-    @apply w-9 border border-white;
-  }
-}
-
-.w-30 {
-  width: 30px;
-  text-align: center;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.leaderboard-ranking {
-  display: flex;
-}
-
-.ranking p {
-  margin: 0;
-}
-
-.avatar {
-  border-radius: 50%;
-  width: 30px;
-}
-
-.position {
-  color: $purple;
-  font-size: 1.1em;
-}
-
-.name {
-  font-weight: lighter;
-}
-
-.points {
-  font-weight: bolder;
-  color: $red;
-}
-
-.fa-caret-up {
-  color: $green;
-}
-
-.fa-caret-down {
-  color: $red;
-}
-
-.ranking:nth-child(1) {
-  @apply min-h-[80px] w-[100%] bg-white/80;
-  .name,
-  .points {
-    font-size: 1.3em;
-  }
-  .user-avatar {
-    @apply w-16;
-    & > div {
-      @apply w-16;
-    }
-  }
-  .position {
-    @apply scale-[150%];
-  }
-}
-.ranking:nth-child(2) {
-  @apply min-h-[70px] w-[98%] bg-white/70;
-  .name,
-  .points {
-    font-size: 1.2em;
-  }
-  .user-avatar {
-    @apply w-14;
-    & > div {
-      @apply w-14;
-    }
-  }
-  .position {
-    @apply scale-[125%];
-  }
-}
-.ranking:nth-child(3) {
-  @apply min-h-[60px] w-[96%] bg-white/60;
-  .name,
-  .points {
-    font-size: 1.1em;
-  }
-  .user-avatar {
-    @apply w-12;
-    & > div {
-      @apply w-12;
-    }
-  }
-  .position {
-    @apply scale-[110%];
+.ranking-row {
+  // Make Cloudinary images fill their circular containers correctly
+  :deep(.cld-image),
+  :deep(.cld-image img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 }
 </style>

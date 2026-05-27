@@ -6,7 +6,7 @@
     </Header>
     <div class="flex justify-center w-full h-full overflow-scroll">
       <main
-        class="bg-wrapper overflow-y-auto rounded-t-lg flex-grow pb-20 sm:pb-0 relative max-w-screen-md"
+        class="overflow-y-auto rounded-t-lg flex-grow pb-20 sm:pb-0 relative max-w-screen-md"
         ref="main"
       >
         <transition>
