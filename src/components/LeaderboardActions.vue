@@ -6,7 +6,7 @@
       :password="leaderboard.password"
       text="Invite players"
       icon="user-plus"
-      class="action-btn invite-btn"
+      class="action-btn invite-btn rounded-2xl"
     />
 
     <!-- Leave leaderboard -->
@@ -85,8 +85,6 @@ export default {
   justify-content: center;
   gap: 0.5rem;
   width: 100%;
-  border-radius: 1rem !important;
-  padding: 0.875rem 1.25rem;
   font-size: 0.875rem;
   font-weight: 600;
   transition: all 0.2s;
