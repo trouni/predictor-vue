@@ -1,5 +1,5 @@
 <template>
-  <div class="predict-flow flex flex-col gap-4" style="max-width: 480px; margin: 0 auto;">
+  <div class="predict-flow flex flex-col gap-4 w-full" style="margin: 0 auto;">
 
     <!-- Progress bar -->
     <div class="px-1">
@@ -209,7 +209,7 @@
       </button>
 
       <!-- Dot indicators -->
-      <div class="flex items-center gap-1.5">
+      <!-- <div class="flex items-center gap-1.5 flex-wrap px-3">
         <button
           v-for="(match, i) in matches"
           :key="match.id"
@@ -223,8 +223,9 @@
               ? i === currentIndex ? 'bg-green-400' : 'bg-green-400 opacity-70'
               : i === currentIndex ? 'bg-white' : 'bg-white/30'
           ]"
+          style="width: 10px;height: 10px;"
         />
-      </div>
+      </div> -->
 
       <!-- Next -->
       <button
