@@ -175,8 +175,8 @@
               </p>
             </div>
 
-            <!-- Past badge or Switch button -->
-            <div class="flex-shrink-0">
+            <!-- Past badge + Switch button -->
+            <div class="flex-shrink-0 flex items-center gap-2">
               <span
                 v-if="competitionEnded(competition.endDate)"
                 class="text-xs font-medium px-2 py-1 rounded-full"
@@ -185,7 +185,6 @@
                 Past
               </span>
               <button
-                v-else
                 @click="switchToCompetition(competition.id)"
                 class="text-xs font-semibold px-3 py-1.5 rounded-full transition-opacity hover:opacity-80 focus:outline-none"
                 style="background: rgba(255,255,255,0.15); color: white"
