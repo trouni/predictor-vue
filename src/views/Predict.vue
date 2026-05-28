@@ -46,19 +46,28 @@ export default {
     allMatches: { type: Boolean, default: false },
   },
 
+  data() {
+    return { pendingSnapshot: null }
+  },
+
   mounted() {
-    this.fetchMatches()
+    this.fetchMatches().then(matches => {
+      this.pendingSnapshot = matches
+        .filter(m => m.status === 'upcoming' && (this.allMatches || !('prediction' in m)))
+        .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
+    })
     this.$emit('init')
   },
 
   computed: {
     ...mapGetters({ storeMatches: 'matches/matches' }),
     pendingMatches() {
+      // Use the snapshot taken at page load so the array stays stable while the user
+      // is predicting. Without this, the Vuex commit after each prediction removes the
+      // match from this list reactively, which shifts the array under PredictCard mid-save.
+      if (this.pendingSnapshot !== null) return this.pendingSnapshot
       return this.storeMatches
-        .filter(m =>
-          m.status === 'upcoming' &&
-          (this.allMatches || !('prediction' in m))
-        )
+        .filter(m => m.status === 'upcoming' && (this.allMatches || !('prediction' in m)))
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
     },
   },

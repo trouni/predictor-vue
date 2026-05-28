@@ -115,6 +115,14 @@
       :matches="group.matches"
     />
 
+    <!-- ─── No past matches placeholder ─── -->
+    <div v-if="selectedTab === 'past' && !hasPastMatches" class="rounded-sm text-center py-4 px-8 results-placeholder">
+      <p class="flex items-center flex-col justify-center text-center text-lg my-3 text-white/60">
+        <BaseIcon name="stopwatch" class="fa-2x" />
+        <span class="pt-3">No matches completed yet.</span>
+      </p>
+    </div>
+
   </div>
 </template>
 
@@ -187,6 +195,9 @@ export default {
   computed: {
     ...authComputed,
     ...mapGetters({ matches: 'matches/matches' }),
+    hasPastMatches() {
+      return this.matches.some(m => m.status === 'finished')
+    },
     missingPredictions() {
       return this.matches.filter(
         m => !('prediction' in m) && m.status === 'upcoming'

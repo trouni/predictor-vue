@@ -1,6 +1,18 @@
 <template>
   <div class="predict-flow flex flex-col gap-4 w-full" style="margin: 0 auto;">
 
+    <!-- Back link -->
+    <div class="px-1">
+      <BaseLink
+        :to="{ name: 'predictions' }"
+        class="inline-flex items-center gap-1.5 text-xs font-medium opacity-50 hover:opacity-80 transition-opacity"
+        style="color: white"
+      >
+        <BaseIcon name="arrow-left" />
+        Back to all predictions
+      </BaseLink>
+    </div>
+
     <!-- Progress bar -->
     <div class="px-1">
       <div class="flex justify-between items-center mb-2">
@@ -185,7 +197,7 @@
               <BaseIcon name="check-circle" /> {{ localChoiceLabel }}
             </p>
             <p v-else key="empty" class="text-xs text-gray-400">
-              Tap a team to make your prediction
+              Tap to make your prediction
             </p>
           </transition>
         </div>
@@ -351,20 +363,21 @@ export default {
       // Allow re-predicting in edit mode; in normal mode, skip if already saved with same choice
       if (!this.editMode && this.localChoice === choice) return
 
+      const matchId = this.currentMatch.id
       this.isSaving = true
       try {
         await this.setPrediction({ match: this.currentMatch, choice })
-        this.$set(this.savedChoices, this.currentMatch.id, choice)
+        this.$set(this.savedChoices, matchId, choice)
 
         if (!this.editMode) {
           // After brief success display, advance to next unpredicted match
           setTimeout(() => {
             const next = this.findNextUnpredicted()
-            if (next !== -1) {
+            if (next === -1) {
+              this.$emit('done')
+            } else if (next !== this.currentIndex) {
               this.slideDirection = 'slide-next'
               this.currentIndex = next
-            } else {
-              this.$emit('done')
             }
           }, 700)
         }
