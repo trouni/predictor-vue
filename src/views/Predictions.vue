@@ -26,37 +26,37 @@
         class="rounded-2xl overflow-hidden shadow-xl"
         style="background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))"
       >
-        <div class="flex items-center gap-4 px-5 py-4">
-          <!-- Icon / count badge -->
-          <div
-            class="flex-shrink-0 w-14 h-14 rounded-2xl flex flex-col items-center justify-center text-white shadow-md"
-            style="background: linear-gradient(135deg, #fa5151, #c0392b)"
-          >
-            <span class="text-2xl font-black leading-none">{{ missingPredictions.length }}</span>
-            <span class="text-xs font-medium opacity-80 leading-none mt-0.5">left</span>
-          </div>
-
-          <!-- Text block -->
-          <div class="flex-1 min-w-0">
+        <div class="px-5 pt-4 pb-3">
+          <div class="flex items-start justify-between gap-3">
             <p class="font-bold text-gray-800 text-base leading-tight">
-              {{ pluralize(missingPredictions.length, 'match', 'matches') }} to predict
+              Don't miss the next kickoff
             </p>
-            <p
-              v-if="timeLeftForPrediction"
-              class="text-sm font-mono font-semibold mt-0.5"
-              :class="timeLeftForPrediction < 86400 * 1000 ? 'text-red-500' : 'text-gray-500'"
+            <span
+              class="flex-shrink-0 text-xs font-bold text-white rounded-full px-2.5 py-1 shadow-sm"
+              style="background: linear-gradient(135deg, #fa5151, #c0392b)"
             >
-              {{ formatDuration(timeLeftForPrediction) }} until next kickoff
-            </p>
+              {{ missingPredictions.length }} left
+            </span>
           </div>
-
-          <!-- CTA -->
+          <p
+            v-if="timeLeftForPrediction"
+            class="text-sm font-semibold mt-1.5"
+            :class="
+              timeLeftForPrediction < 86400 * 1000
+                ? 'text-red-500'
+                : 'text-gray-500'
+            "
+          >
+            {{ formatDuration(timeLeftForPrediction) }} to go
+          </p>
+        </div>
+        <div class="px-5 pb-4">
           <BaseLink
             :to="{ name: 'predict' }"
-            class="flex-shrink-0 flex items-center gap-1.5 text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-md transition-opacity hover:opacity-90"
+            class="flex w-full items-center justify-center gap-1.5 text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-md transition-opacity hover:opacity-90"
             style="background: linear-gradient(135deg, #fa5151, #c0392b)"
           >
-            Predict
+            Predict now
             <BaseIcon name="arrow-right" />
           </BaseLink>
         </div>
