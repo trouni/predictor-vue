@@ -42,7 +42,7 @@
         class="inline-flex items-center justify-center gap-2 w-full max-w-xs px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
         style="background: #fa5151"
       >
-        {{ loggedIn ? 'Go to app' : 'Get started — it\'s free' }}
+        {{ loggedIn ? 'Compete' : 'Get started — it\'s free' }}
         <BaseIcon name="arrow-right" style="font-size: 0.9rem" />
       </BaseLink>
 
@@ -148,7 +148,7 @@
         class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-white font-bold transition-all duration-200 hover:opacity-90"
         style="background: #fa5151"
       >
-        {{ loggedIn ? 'Go to app' : 'Join for free' }}
+        {{ loggedIn ? 'Compete' : 'Join for free' }}
         <BaseIcon name="arrow-right" style="font-size: 0.85rem" />
       </BaseLink>
     </section>
