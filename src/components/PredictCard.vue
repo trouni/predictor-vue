@@ -360,8 +360,7 @@ export default {
 
     async predict(choice) {
       if (this.isSaving) return
-      // Allow re-predicting in edit mode; in normal mode, skip if already saved with same choice
-      if (!this.editMode && this.localChoice === choice) return
+      if (this.localChoice === choice) return
 
       const matchId = this.currentMatch.id
       this.isSaving = true

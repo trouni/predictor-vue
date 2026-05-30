@@ -206,13 +206,6 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Competitions',
 
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-  },
-
   data() {
     return {
       matchesLoaded: false,
