@@ -28,7 +28,9 @@
         <!-- Upload button -->
         <button
           @click="openUploadModal"
-          class="absolute bottom-0.5 right-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 focus:outline-none"
+          :disabled="!user"
+          class="absolute bottom-0.5 right-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 focus:outline-none"
+          :class="user ? 'hover:scale-110' : 'opacity-50 cursor-not-allowed'"
           style="background: #fa5151"
           title="Change photo"
         >

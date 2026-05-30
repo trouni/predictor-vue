@@ -42,7 +42,7 @@
         class="inline-flex items-center justify-center gap-2 w-full max-w-xs px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
         style="background: #fa5151"
       >
-        {{ loggedIn ? 'Compete' : 'Get started — it\'s free' }}
+        {{ loggedIn ? 'Get Started' : 'Get started — it\'s free' }}
         <BaseIcon name="arrow-right" style="font-size: 0.9rem" />
       </BaseLink>
 
