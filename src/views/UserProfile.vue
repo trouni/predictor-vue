@@ -285,7 +285,7 @@ export default {
         this.user = await this.patchUser({
           userId: this.user.id,
           name: trimmed,
-          photoKey: this.user.photoKey,
+          photoKey: this.user.photoKey || this.user.photo_key,
         })
         this.isEditingName = false
       } catch (err) {
