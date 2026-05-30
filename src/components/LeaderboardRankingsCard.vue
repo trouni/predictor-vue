@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col gap-1.5">
-
     <!-- Ranked rows -->
     <LeaderboardRanking
       v-for="{ position, points } in ranks"
@@ -21,14 +20,16 @@
       </div>
 
       <LeaderboardRanking
-        :userRankings="[{
-          userId: currentUser.id,
-          id: currentUser.id,
-          name: currentUser.name,
-          photoKey: currentUser.photoKey || currentUser.photo_key,
-          points: currentUserEntry.points,
-          rank: currentUserEntry.rank,
-        }]"
+        :userRankings="[
+          {
+            userId: currentUser.id,
+            id: currentUser.id,
+            name: currentUser.name,
+            photoKey: currentUser.photoKey || currentUser.photo_key,
+            points: currentUserEntry.points,
+            rank: currentUserEntry.rank,
+          },
+        ]"
         :position="currentUserEntry.rank || null"
         :padding-start="true"
         :link-predictions="false"
@@ -37,7 +38,6 @@
 
     <!-- Actions -->
     <LeaderboardActions :leaderboard="leaderboard" class="mt-4" />
-
   </div>
 </template>
 
@@ -61,11 +61,19 @@ export default {
   computed: {
     ...mapGetters({ currentUser: 'auth/currentUser' }),
 
-    // Sort by server-provided rank (ascending), then points (descending) for stability
     sortedUsers() {
-      return this.leaderboard.users.slice().sort((a, b) => {
+      const users = (this.leaderboard.users || []).slice()
+      const hasRank = users.some(u => u.rank !== null && u.rank !== undefined)
+      if (!hasRank) {
+        const byPoints = users.sort((a, b) => (b.points || 0) - (a.points || 0))
+        return byPoints.map(u => ({
+          ...u,
+          rank: byPoints.findIndex(x => x.points === u.points) + 1,
+        }))
+      }
+      return users.sort((a, b) => {
         if (a.rank !== b.rank) return (a.rank || 999) - (b.rank || 999)
-        return b.points - a.points
+        return (b.points || 0) - (a.points || 0)
       })
     },
 
@@ -77,7 +85,10 @@ export default {
         // Show up to the rank at position topN (handles ties at the boundary)
         return this.sortedUsers[topN - 1].rank || topN
       }
-      return this.sortedUsers[this.sortedUsers.length - 1].rank || this.sortedUsers.length
+      return (
+        this.sortedUsers[this.sortedUsers.length - 1].rank ||
+        this.sortedUsers.length
+      )
     },
 
     // Unique {position, points} pairs for ranks within the visible window

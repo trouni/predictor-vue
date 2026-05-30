@@ -99,8 +99,10 @@
         Your Standings
       </h3>
 
-      <div class="rounded-2xl overflow-hidden shadow-lg" style="background: rgba(255,255,255,0.12)">
-
+      <div
+        class="rounded-2xl overflow-hidden shadow-lg"
+        style="background: rgba(255, 255, 255, 0.12)"
+      >
         <!-- Competition label -->
         <div v-if="currentCompetition" class="flex items-center gap-2 px-4 pt-3 pb-2 border-b" style="border-color: rgba(255,255,255,0.08)">
           <img
@@ -131,9 +133,11 @@
             <!-- Rank pill -->
             <span
               class="text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0"
-              :style="standing.rank <= 3
-                ? 'background: rgba(250,204,21,0.2); color: #fbbf24'
-                : 'background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.55)'"
+              :style="
+                standing.rank <= 3
+                  ? 'background: rgba(250,204,21,0.2); color: #fbbf24'
+                  : 'background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.55)'
+              "
               v-html="ordinalize(standing.rank)"
             />
 
@@ -184,7 +188,6 @@
         Log out
       </BaseLink>
     </div>
-
   </div>
 </template>
 
@@ -317,12 +320,15 @@ export default {
 
     // ── Helpers ──
     ordinalize(num) {
-      if (!num) return '—'
-      switch (num % 10) {
-        case 1: return `${num}<sup>st</sup>`
-        case 2: return `${num}<sup>nd</sup>`
-        case 3: return `${num}<sup>rd</sup>`
-        default: return `${num}<sup>th</sup>`
+      const n = Number(num)
+      if (!Number.isFinite(n) || n === 0) return '—'
+      const mod100 = n % 100
+      if (mod100 >= 11 && mod100 <= 13) return `${n}<sup>th</sup>`
+      switch (n % 10) {
+        case 1: return `${n}<sup>st</sup>`
+        case 2: return `${n}<sup>nd</sup>`
+        case 3: return `${n}<sup>rd</sup>`
+        default: return `${n}<sup>th</sup>`
       }
     },
   },
