@@ -83,6 +83,7 @@
 <script>
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
+import { ordinalize } from '@/utils/helpers'
 
 export default {
   name: 'LeaderboardRanking',
@@ -153,15 +154,7 @@ export default {
   },
 
   methods: {
-    ordinalize(num) {
-      if (!num) return ''
-      switch (num % 10) {
-        case 1: return num + '<sup>st</sup>'
-        case 2: return num + '<sup>nd</sup>'
-        case 3: return num + '<sup>rd</sup>'
-        default: return num + '<sup>th</sup>'
-      }
-    },
+    ordinalize,
   },
 }
 </script>

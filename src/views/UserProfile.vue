@@ -195,6 +195,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
+import { ordinalize } from '@/utils/helpers'
 
 export default {
   name: 'UserProfile',
@@ -319,18 +320,7 @@ export default {
     },
 
     // ── Helpers ──
-    ordinalize(num) {
-      const n = Number(num)
-      if (!Number.isFinite(n) || n === 0) return '—'
-      const mod100 = n % 100
-      if (mod100 >= 11 && mod100 <= 13) return `${n}<sup>th</sup>`
-      switch (n % 10) {
-        case 1: return `${n}<sup>st</sup>`
-        case 2: return `${n}<sup>nd</sup>`
-        case 3: return `${n}<sup>rd</sup>`
-        default: return `${n}<sup>th</sup>`
-      }
-    },
+    ordinalize,
   },
 }
 </script>
