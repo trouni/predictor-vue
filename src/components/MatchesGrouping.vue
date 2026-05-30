@@ -10,7 +10,7 @@
         </h4>
         <template v-for="match in dayMatches">
           <ResultCard
-            v-if="results || match.status !== 'upcoming'"
+            v-if="results || match.status === 'finished'"
             :key="match.id"
             :match="match"
             :selectable="false"
@@ -21,7 +21,7 @@
             v-else
             :key="`mc-${match.id}`"
             :match="match"
-            :selectable="selectable ?? true"
+            :selectable="selectable ?? match.status === 'upcoming'"
             :predictions="predictions?.[match.id]"
           />
         </template>
