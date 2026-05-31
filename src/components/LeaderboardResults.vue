@@ -10,7 +10,7 @@
       v-if="matchesEmpty"
       class="rounded-sm text-center py-4 px-8 results-placeholder"
     >
-      <p class="flex items-center flex-col justify-center text-center text-lg my-3">
+      <p class="flex items-center flex-col justify-center text-center text-lg my-3 text-white">
         <BaseIcon name="stopwatch" class="fa-2x" />
         <span class="pt-3">No matches completed yet.</span>
       </p>
@@ -92,6 +92,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles";
 .results-placeholder p {
-  color: $purple;
+  color: rgba(255, 255, 255, 0.38);
 }
 </style>

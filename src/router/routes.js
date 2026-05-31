@@ -169,7 +169,7 @@ export default [
             props: true,
             meta: {
               authRequired: true,
-              title: 'Swipe to predict',
+              title: 'Predict',
               img: 'trophy.png',
             },
             alias: '/predict',
@@ -181,7 +181,7 @@ export default [
             props: { allMatches: true },
             meta: {
               authRequired: true,
-              title: 'Swipe to predict',
+              title: 'Edit Predictions',
               img: 'trophy.png',
             },
             alias: '/predictions/edit',
@@ -208,7 +208,6 @@ export default [
               authRequired: true,
               title: 'Predictions',
               img: 'football.png',
-              subHeader: 'MatchesSubHeader',
             },
             alias: '/predictions',
             beforeEnter: async (to, from, next) => {

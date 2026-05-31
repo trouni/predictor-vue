@@ -1,79 +1,192 @@
 <template>
-  <div class="p-4">
-    <div class="flex flex-col justify-center items-center">
-      <div class="w-full md:w-6/12">
-        <div class="flex justify-center">
-          <div class="relative rounded-full overflow-hidden h-24 w-24">
-            <cld-context
-              v-if="user.photoKey || user.photo_key"
-              :cloudName="cloudName"
-            >
-              <div>
-                <cld-image :publicId="user.photoKey || user.photo_key">
-                  <cld-transformation
-                    width="150"
-                    height="150"
-                    gravity="face"
-                    radius="max"
-                    crop="fill"
-                  />
-                </cld-image>
-              </div>
-            </cld-context>
-            <img
-              v-else
-              alt="football graphic"
-              :src="require('../assets/player.png')"
-            />
-            <button @click="openUploadModal" class="avatar-btn"
-              ><BaseIcon name="camera"
-            /></button>
-          </div>
-        </div>
-        <p>Email</p>
-        <!-- Not sure how to give a default value -->
-        <BaseInputText
-          v-model="user.email"
-          label="Email"
-          name="email"
-          type="text"
-          disabled="true"
-          :value="user.email"
-          autofocus
-          @keypress.enter="submit"
-        />
+  <div class="pb-24">
 
-        <p id="name-label"
-          >Display Name <BaseIcon v-if="userNameUpdated" name="check"
-        /></p>
-        <div class="relative">
-          <BaseInputText
-            v-model="user.name"
-            label="Name"
-            name="name"
-            type="text"
-            autofocus
-            @keypress.enter="submit"
-            @keypress="userNameUpdated = false"
+    <!-- ─── Hero: avatar + identity ─── -->
+    <div class="flex flex-col items-center pt-10 pb-8 px-4">
+
+      <!-- Avatar with upload trigger -->
+      <div class="relative mb-5">
+        <div class="w-28 h-28 rounded-full overflow-hidden border-4 shadow-2xl" style="border-color: rgba(255,255,255,0.3)">
+          <cld-context v-if="user && (user.photoKey || user.photo_key)" :cloudName="cloudName">
+            <cld-image :publicId="user.photoKey || user.photo_key">
+              <cld-transformation
+                width="200"
+                height="200"
+                gravity="face"
+                radius="max"
+                crop="fill"
+              />
+            </cld-image>
+          </cld-context>
+          <img
+            v-else
+            :src="require('../assets/player.png')"
+            alt="Profile photo"
+            class="w-full h-full object-cover"
           />
-          <BaseButton
-            :disabled="processingForm"
-            @click="submit"
-            class="absolute top-0 right-0 h-full"
-          >
-            Update
-          </BaseButton>
         </div>
-        <div class="flex items-start w-full">
-          <BaseLink :to="{ name: 'logout' }">
-            <p>Log out <BaseIcon name="sign-out-alt" /></p>
+        <!-- Upload button -->
+        <button
+          @click="openUploadModal"
+          :disabled="!user"
+          class="absolute bottom-0.5 right-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 focus:outline-none"
+          :class="user ? 'hover:scale-110' : 'opacity-50 cursor-not-allowed'"
+          style="background: #fa5151"
+          title="Change photo"
+        >
+          <BaseIcon name="camera" class="text-white" style="font-size: 0.8rem" />
+        </button>
+      </div>
+
+      <!-- Name: display mode -->
+      <div v-if="user && !isEditingName" class="flex items-center gap-2 mb-1">
+        <h2 class="text-white text-2xl font-bold text-center leading-tight">
+          {{ user.name }}
+        </h2>
+        <button
+          @click="startEditingName"
+          class="text-white/30 hover:text-white/70 transition-colors focus:outline-none mt-0.5"
+          title="Edit display name"
+        >
+          <BaseIcon name="pencil" style="font-size: 0.75rem" />
+        </button>
+      </div>
+
+      <!-- Name: edit mode -->
+      <div v-else-if="user && isEditingName" class="flex items-center gap-2 mb-1">
+        <input
+          ref="nameInput"
+          v-model="editableName"
+          class="text-xl font-bold text-center rounded-xl px-3 py-1.5 focus:outline-none"
+          style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.35); min-width: 0; width: 180px"
+          placeholder="Display name"
+          @keyup.enter="saveName"
+          @keyup.escape="cancelEditingName"
+        />
+        <button
+          @click="saveName"
+          :disabled="isSavingName"
+          class="w-8 h-8 rounded-full flex items-center justify-center transition-colors focus:outline-none"
+          style="background: rgba(12,245,116,0.25); color: #0cf574"
+        >
+          <BaseIcon :name="isSavingName ? 'circle-notch' : 'check'" :class="{ 'fa-spin': isSavingName }" style="font-size: 0.75rem" />
+        </button>
+        <button
+          @click="cancelEditingName"
+          class="w-8 h-8 rounded-full flex items-center justify-center transition-colors focus:outline-none"
+          style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4)"
+        >
+          <BaseIcon name="times" style="font-size: 0.75rem" />
+        </button>
+      </div>
+
+      <!-- Email (read-only) -->
+      <p v-if="user" class="text-sm" style="color: rgba(255,255,255,0.45)">
+        {{ user.email }}
+      </p>
+
+      <!-- Loading skeleton -->
+      <div v-if="!user" class="flex flex-col items-center gap-2">
+        <div class="h-7 w-40 rounded-full animate-pulse" style="background: rgba(255,255,255,0.15)" />
+        <div class="h-4 w-28 rounded-full animate-pulse" style="background: rgba(255,255,255,0.1)" />
+      </div>
+
+    </div>
+
+    <!-- ─── Your Standings ─── -->
+    <div class="px-4 mb-6">
+      <h3 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: rgba(255,255,255,0.5)">
+        Your Standings
+      </h3>
+
+      <div
+        class="rounded-2xl overflow-hidden shadow-lg"
+        style="background: rgba(255, 255, 255, 0.12)"
+      >
+        <!-- Competition label -->
+        <div v-if="currentCompetition" class="flex items-center gap-2 px-4 pt-3 pb-2 border-b" style="border-color: rgba(255,255,255,0.08)">
+          <img
+            v-if="currentCompetition.photoUrl"
+            :src="currentCompetition.photoUrl"
+            class="w-5 h-5 rounded-full object-cover"
+            :alt="currentCompetition.name"
+          />
+          <span class="text-xs font-semibold" style="color: rgba(255,255,255,0.5)">
+            {{ currentCompetition.name }}
+          </span>
+        </div>
+
+        <!-- Leaderboard rows -->
+        <template v-if="userStandings.length">
+          <div
+            v-for="(standing, i) in userStandings"
+            :key="standing.leaderboardId"
+            class="flex items-center gap-3 px-4 py-3"
+            :class="i < userStandings.length - 1 ? 'border-b' : ''"
+            :style="i < userStandings.length - 1 ? 'border-color: rgba(255,255,255,0.07)' : ''"
+          >
+            <!-- Leaderboard name -->
+            <span class="flex-1 text-white text-sm font-medium truncate">
+              {{ standing.leaderboardName }}
+            </span>
+
+            <!-- Rank pill -->
+            <span
+              class="text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0"
+              :style="
+                standing.rank <= 3
+                  ? 'background: rgba(250,204,21,0.2); color: #fbbf24'
+                  : 'background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.55)'
+              "
+              v-html="ordinalize(standing.rank)"
+            />
+
+            <!-- Points -->
+            <span class="text-sm font-black flex-shrink-0" style="color: #fa5151; min-width: 3rem; text-align: right">
+              {{ standing.points }}
+              <span class="text-xs font-normal" style="color: rgba(255,255,255,0.35)">pts</span>
+            </span>
+          </div>
+        </template>
+
+        <!-- Not yet ranked -->
+        <div v-else-if="leaderboards.length" class="px-4 py-5 text-center">
+          <p class="text-sm" style="color: rgba(255,255,255,0.35)">
+            Make some predictions to get ranked.
+          </p>
+        </div>
+
+        <!-- No leaderboards at all -->
+        <div v-else class="px-4 py-5 text-center">
+          <p class="text-sm" style="color: rgba(255,255,255,0.35)">
+            You haven't joined any leaderboards yet.
+          </p>
+          <BaseLink
+            :to="{ name: 'new_leaderboard' }"
+            class="inline-block mt-2 text-xs font-semibold"
+            style="color: rgba(255,255,255,0.6)"
+          >
+            Create one →
           </BaseLink>
         </div>
+
       </div>
-      <div class="w-full md:w-6/12 mt-10">
-        <h3>Switch Competition</h3>
-        <CompetitionsList :competitions="ongoingCompetitions" />
-      </div>
+    </div>
+
+    <!-- ─── Account actions ─── -->
+    <div class="px-4">
+      <h3 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: rgba(255,255,255,0.5)">
+        Account
+      </h3>
+
+      <BaseLink
+        :to="{ name: 'logout' }"
+        class="flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm font-semibold transition-opacity hover:opacity-80"
+        style="background: rgba(250,81,81,0.12); color: #fa5151; border: 1px solid rgba(250,81,81,0.2)"
+      >
+        <BaseIcon name="sign-out-alt" />
+        Log out
+      </BaseLink>
     </div>
   </div>
 </template>
@@ -82,23 +195,34 @@
 import { mapGetters, mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
-import CompetitionsList from '@/components/CompetitionsList'
+import { ordinalize } from '@/utils/helpers'
 
 export default {
+  name: 'UserProfile',
+
+  components: { CldContext, CldImage, CldTransformation },
+
   props: {
     id: {
       type: Number,
       required: true,
     },
   },
-  components: {
-    CldContext,
-    CldImage,
-    CldTransformation,
-    CompetitionsList,
+
+  data() {
+    return {
+      user: null,
+      isEditingName: false,
+      editableName: '',
+      isSavingName: false,
+      cloudName: config.cloudName,
+    }
   },
+
   async mounted() {
+    // Fetch in parallel — competitions for the header label, leaderboards for standings
     this.fetchCompetitions()
+    this.fetchLeaderboards()
     this.user = await this.fetchUser({ userId: this.id })
     this.$emit('init')
   },
@@ -106,89 +230,108 @@ export default {
   computed: {
     ...mapGetters({
       competitions: 'competitions/competitions',
+      currentCompetitionId: 'competitions/currentCompetitionId',
+      leaderboards: 'leaderboards/leaderboards',
+      currentUser: 'auth/currentUser',
     }),
-    descendingCompetitions() {
-      return [...this.competitions].reverse()
+
+    currentCompetition() {
+      return this.competitions.find(c => c.id === this.currentCompetitionId)
     },
-    ongoingCompetitions() {
-      return this.descendingCompetitions.filter(c => !this.competitionEnded(c.endDate))
+
+    // User's rank + points per leaderboard, derived from already-loaded store data
+    userStandings() {
+      const uid = this.currentUser?.id
+      if (!uid) return []
+
+      return this.leaderboards
+        .map(lb => {
+          const entry = lb.users?.find(u => u.userId === uid)
+          if (!entry || entry.points === null || entry.points === undefined) return null
+          return {
+            leaderboardId: lb.id,
+            leaderboardName: lb.name,
+            rank: entry.rank,
+            points: entry.points,
+          }
+        })
+        .filter(Boolean)
+        .sort((a, b) => (a.rank || 999) - (b.rank || 999))
     },
   },
 
-  data() {
-    return {
-      name: '',
-      email: '',
-      loading: false,
-      processingForm: false,
-      user: null,
-      userNameUpdated: false,
-      cloudName: config.cloudName,
-    }
-  },
   methods: {
     ...mapActions({
       patchUser: 'users/patchUser',
       fetchCompetitions: 'competitions/fetchCompetitions',
+      fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       fetchUser: 'users/fetchUser',
     }),
-    async submit() {
-      this.processingForm = true
-      const formData = {
-        userId: this.user.id,
-        name: this.user.name,
-        photoKey: this.user.photoKey,
-      }
-      this.user = await this.patchUser(formData)
-      this.name = this.user.name
-      this.userNameUpdated = true
-      this.processingForm = false
+
+    // ── Name editing ──
+    startEditingName() {
+      this.editableName = this.user.name
+      this.isEditingName = true
+      this.$nextTick(() => this.$refs.nameInput?.focus())
     },
+    cancelEditingName() {
+      this.isEditingName = false
+      this.editableName = ''
+    },
+    async saveName() {
+      const trimmed = this.editableName.trim()
+      if (!trimmed || trimmed === this.user.name) {
+        this.cancelEditingName()
+        return
+      }
+      this.isSavingName = true
+      try {
+        this.user = await this.patchUser({
+          userId: this.user.id,
+          name: trimmed,
+          photoKey: this.user.photoKey || this.user.photo_key,
+        })
+        this.isEditingName = false
+      } catch (err) {
+        console.error('Failed to update name:', err)
+      } finally {
+        this.isSavingName = false
+      }
+    },
+
+    // ── Avatar upload ──
     openUploadModal() {
       window.cloudinary
         .openUploadWidget(
           { cloud_name: this.cloudName, upload_preset: 'cb59wrvm' },
           (error, result) => {
             if (!error && result && result.event === 'success') {
-              this.$set(this.user, 'photoKey', result.info.public_id)
-              this.submit()
+              const photoKey = result.info.public_id
+              this.$set(this.user, 'photoKey', photoKey)
+              this.patchUser({
+                userId: this.user.id,
+                name: this.user.name,
+                photoKey,
+              })
             }
           }
         )
         .open()
     },
-    competitionEnded(endDate) {
-      return (
-        new Date().setHours(0, 0, 0, 0) > new Date(endDate).setHours(0, 0, 0, 0)
-      )
-    },
-    async handleCompetitionClick(competitionId) {
-      await this.$store.dispatch(
-        'competitions/selectCompetition',
-        competitionId
-      )
-    },
+
+    // ── Helpers ──
+    ordinalize,
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles';
-p {
-  color: $purple;
-}
-.avatar-btn {
-  position: absolute;
-  color: $red;
-  top: 12px;
-  left: 12px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.competitions a {
+// Ensure Cloudinary images fill the avatar circle
+:deep(.cld-image),
+:deep(.cld-image img) {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 </style>

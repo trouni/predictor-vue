@@ -1,68 +1,78 @@
 <template>
-  <div class="header-container">
-    <div class="d-flex justify-content-center">
-      <img
-        v-if="img"
-        alt="football graphic"
-        :src="require('../assets/' + img)"
-        class="header-img"
-      />
-      <BaseLink v-if="title" :to="{ name: 'competitions' }">
-        <h2 class="text-white"> {{ title }}</h2>
-      </BaseLink>
+  <div class="app-header">
+
+    <div :class="$slots.default ? 'px-5 pt-5 pb-0' : 'px-5 pt-5 pb-4'">
+      <div class="flex items-center gap-3">
+
+        <!-- Competition photo — only shown when the title is the competition name -->
+        <div
+          v-if="competitionPhoto"
+          class="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden shadow"
+          style="border: 1px solid rgba(255,255,255,0.2)"
+        >
+          <img
+            :src="competitionPhoto"
+            :alt="title"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- Page / competition title -->
+        <h1
+          v-if="title"
+          class="text-white font-bold leading-tight truncate"
+          style="font-size: 1.35rem; letter-spacing: -0.01em"
+        >
+          {{ title }}
+        </h1>
+
+      </div>
     </div>
-    <slot />
+
+    <!-- Sub-header slot: leaderboard tabs, competition context, etc. -->
+    <div v-if="$slots.default">
+      <slot />
+    </div>
+
+    <!-- Hairline separator -->
+    <div style="height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%)" />
+
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     title: {
       type: String,
       required: false,
     },
+    // Kept for backwards-compat with route meta — no longer rendered
     img: {
       type: String,
       required: false,
     },
   },
+
+  computed: {
+    ...mapGetters({
+      currentCompetition: 'competitions/currentCompetition',
+    }),
+
+    // Only surface the photo when this header is actually showing the competition name,
+    // i.e. title === competition name. Prevents it appearing on Profile, New Leaderboard, etc.
+    competitionPhoto() {
+      if (
+        this.currentCompetition &&
+        this.currentCompetition.photoUrl &&
+        this.title === this.currentCompetition.name
+      ) {
+        return this.currentCompetition.photoUrl
+      }
+      return null
+    },
+  },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles';
-.header-container {
-  padding: $spacer;
-  color: $white;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.d-flex {
-  display: flex;
-  align-items: center;
-}
-
-.header-img {
-  width: 24px;
-  height: 24px;
-}
-
-img {
-  margin-right: $spacer;
-}
-
-// Small devices (landscape phones, 640px and up)
-@media (min-width: 640px) {
-  .header-container {
-    padding: $spacer * 2;
-  }
-  .header-img {
-    width: 36px;
-    height: 36px;
-  }
-}
-</style>

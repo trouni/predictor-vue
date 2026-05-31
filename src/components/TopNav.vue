@@ -22,7 +22,12 @@ export default {
   data() {
     return {
       loggedInNavRoutes: [
-      {
+        {
+          name: 'competitions',
+          title: 'Games',
+          fontAwesomeClass: 'trophy',
+        },
+        {
           name: 'predictions',
           title: 'Predict',
           fontAwesomeClass: 'bullseye',

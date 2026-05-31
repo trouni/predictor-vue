@@ -1,101 +1,149 @@
 <template>
-  <div class="p-4 pb-20">
-    <div v-if="userId" class="mb-12">
-      <p @click="() => $router.go(-1)">
-        <BaseIcon name="chevron-left" /> Back to Rankings
+  <div class="pb-24">
+
+    <!-- ─── Viewing another user's predictions ─── -->
+    <div v-if="userId" class="px-4 pt-4 mb-6">
+      <button
+        @click="$router.go(-1)"
+        class="flex items-center gap-1.5 text-sm font-medium mb-6 transition-opacity hover:opacity-70 focus:outline-none"
+        style="color: rgba(255,255,255,0.7)"
+      >
+        <BaseIcon name="chevron-left" />
+        Back to Rankings
+      </button>
+      <p class="text-center font-medium mb-3" style="color: rgba(255,255,255,0.6)">
+        Predictions made by
       </p>
-      <p class="text-center text-xl font-normal m-3">Predictions made by</p>
       <LeaderboardRanking :userRankings="[user]" class="m-auto max-w-xs" />
     </div>
-    <div v-else class="flex items-center justify-center my-8">
+
+    <!-- ─── Current user: action banner ─── -->
+    <div v-else class="px-4 pt-4 mb-6">
+
+      <!-- Has unpredicted matches -->
       <div
         v-if="missingPredictions.length"
-        class="rounded-sm text-center py-4 px-8 shadow bg-white"
+        class="rounded-2xl overflow-hidden shadow-xl"
+        style="background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))"
       >
-        <p
-          v-if="timeLeftForPrediction"
-          class="text-2xl font-mono"
-          :class="{ 'text-red-500': timeLeftForPrediction < 86400 * 1000 }"
+        <div class="px-5 pt-4 pb-3">
+          <div class="flex items-start justify-between gap-3">
+            <p class="font-bold text-gray-800 text-base leading-tight">
+              Don't miss the next kickoff
+            </p>
+            <span
+              class="flex-shrink-0 text-xs font-bold text-white rounded-full px-2.5 py-1 shadow-sm"
+              style="background: linear-gradient(135deg, #fa5151, #c0392b)"
+            >
+              {{ missingPredictions.length }} left
+            </span>
+          </div>
+          <p
+            v-if="timeLeftForPrediction"
+            class="text-sm font-semibold mt-1.5"
+            :class="
+              timeLeftForPrediction < 86400 * 1000
+                ? 'text-red-500'
+                : 'text-gray-500'
+            "
+          >
+            {{ formatDuration(timeLeftForPrediction) }} to go
+          </p>
+        </div>
+        <div class="px-5 pb-4">
+          <BaseLink
+            :to="{ name: 'predict' }"
+            class="flex w-full items-center justify-center gap-1.5 text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-md transition-opacity hover:opacity-90"
+            style="background: linear-gradient(135deg, #fa5151, #c0392b)"
+          >
+            Predict now
+            <BaseIcon name="arrow-right" />
+          </BaseLink>
+        </div>
+      </div>
+
+      <!-- All predictions made -->
+      <div
+        v-else
+        class="rounded-2xl px-5 py-4 flex items-center gap-4"
+        style="background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))"
+      >
+        <div
+          class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow"
+          style="background: linear-gradient(135deg, #0cf574, #6690b7)"
         >
-          {{ formatDuration(timeLeftForPrediction) }}
-        </p>
-        <p class="flex items-center justify-center text-center text-lg my-3">
-          {{ pluralize(missingPredictions.length, 'match', 'matches') }} left to
-          predict
-        </p>
-        <BaseButton class="uppercase text-center mb-2">
-          <BaseLink :to="{ name: 'predict' }" class="md:text-lg p-3">
-            <BaseIcon name="arrow-circle-right" class="mr-3" />Make your
-            predictions
-          </BaseLink>
-        </BaseButton>
+          <BaseIcon name="check" class="text-white fa-lg" />
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-gray-800 text-base">All predictions in!</p>
+          <p class="text-sm text-gray-500">You've predicted all upcoming matches.</p>
+        </div>
+        <BaseLink
+          :to="{ name: 'edit_predictions' }"
+          class="flex-shrink-0 text-xs font-semibold text-gray-500 border border-gray-300 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+        >
+          Edit
+        </BaseLink>
       </div>
-      <div v-else class="flex flex-col items-center justify-center pb-8">
-        <p class="flex items-center justify-center lg:text-center text-lg mb-5 gap-2 px-4 w-full md:w-auto leading-none">
-          <BaseIcon name="circle-check" class="fa-2x" />
-          <small>You've made predictions for all upcoming matches!</small>
-        </p>
-        <BaseButton class="uppercase text-center secondary small">
-          <BaseLink :to="{ name: 'edit_predictions' }">
-            <BaseIcon name="redo-alt" class="mr-3" />Update your predictions
-          </BaseLink>
-        </BaseButton>
+
+    </div>
+
+    <!-- ─── Tabs ─── -->
+    <div class="px-4 mb-1">
+      <div
+        class="flex rounded-2xl p-1 gap-1"
+        style="background: rgba(0,0,0,0.15)"
+      >
+        <button
+          v-for="tab in tabs"
+          :key="tab"
+          @click="changeTab(tab)"
+          class="flex-1 py-2 px-3 rounded-xl text-sm font-semibold capitalize transition-all duration-200 focus:outline-none"
+          :class="selectedTab === tab
+            ? 'bg-white text-gray-800 shadow-sm'
+            : 'text-white/60 hover:text-white/80'"
+        >
+          {{ tab }}
+        </button>
       </div>
     </div>
-    <div class="flex justify-around">
-      <MatchTab
-        v-for="tab in tabs"
-        :key="tab"
-        :text="tab"
-        :selected="selectedTab == tab"
-        @selectTabEvent="changeTab"
-      />
-    </div>
+
+    <!-- ─── Match list ─── -->
     <MatchesGrouping
       v-for="(group, index) in groupedMatches"
       :key="index"
       :matches="group.matches"
     />
+
+    <!-- ─── No past matches placeholder ─── -->
+    <div v-if="selectedTab === 'past' && !hasPastMatches" class="rounded-sm text-center py-4 px-8 results-placeholder">
+      <p class="flex items-center flex-col justify-center text-center text-lg my-3 text-white/60">
+        <BaseIcon name="stopwatch" class="fa-2x" />
+        <span class="pt-3">No matches completed yet.</span>
+      </p>
+    </div>
+
   </div>
 </template>
 
 <script>
 import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
-import MatchTab from '@/components/MatchTab'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
 import { pluralize, formatDate, formatDuration } from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
 export default {
-  name: 'Matches',
+  name: 'Predictions',
 
-  components: { MatchesGrouping, LeaderboardRanking, MatchTab },
+  components: { MatchesGrouping, LeaderboardRanking },
 
   props: {
     userId: {
       type: Number,
       required: false,
     },
-  },
-
-  async mounted() {
-    if (this.userId) {
-      this.user = await this.fetchUser({ userId: this.userId })
-      // Removing 'UPCOMING' for other users' pages
-      const upcomingIndex = this.tabs.indexOf('upcoming')
-      this.tabs.splice(upcomingIndex, 1)
-      this.selectedTab = this.tabs[0]
-    }
-    await this.fetchMatches({ userId: this.userId })
-    if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
-      // Removing 'ONGOING' tab because no ongoing games'
-      const ongoingIndex = this.tabs.indexOf('ongoing')
-      this.tabs.splice(ongoingIndex, 1)
-      this.selectedTab = this.tabs[0]
-    }
-    this.$emit('init')
   },
 
   data() {
@@ -110,6 +158,22 @@ export default {
       tabs: ['ongoing', 'upcoming', 'past'],
       timeLeftForPrediction: null,
     }
+  },
+
+  async mounted() {
+    if (this.userId) {
+      this.user = await this.fetchUser({ userId: this.userId })
+      const upcomingIndex = this.tabs.indexOf('upcoming')
+      this.tabs.splice(upcomingIndex, 1)
+      this.selectedTab = this.tabs[0]
+    }
+    await this.fetchMatches({ userId: this.userId })
+    if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
+      const ongoingIndex = this.tabs.indexOf('ongoing')
+      this.tabs.splice(ongoingIndex, 1)
+      this.selectedTab = this.tabs[0]
+    }
+    this.$emit('init')
   },
 
   watch: {
@@ -131,19 +195,18 @@ export default {
   computed: {
     ...authComputed,
     ...mapGetters({ matches: 'matches/matches' }),
+    hasPastMatches() {
+      return this.matches.some(m => m.status === 'finished')
+    },
     missingPredictions() {
       return this.matches.filter(
         m => !('prediction' in m) && m.status === 'upcoming'
       )
     },
     groupedMatches() {
-      if (this.selectedTab == 'past') {
-        return this.pastMatches()
-      } else if (this.selectedTab == 'ongoing') {
-        return this.ongoingMatches()
-      } else {
-        return this.upcomingMatches()
-      }
+      if (this.selectedTab === 'past') return this.pastMatches()
+      if (this.selectedTab === 'ongoing') return this.ongoingMatches()
+      return this.upcomingMatches()
     },
   },
 
@@ -158,49 +221,37 @@ export default {
       this.selectedTab = tabName
     },
     ongoingMatches() {
-      return [
-        {
-          matches: groupBy(
-            this.matches.filter(m => m.status === 'started'),
-            m => formatDate(new Date(m.kickoffTime))
-          ),
-        },
-      ]
+      return [{
+        matches: groupBy(
+          this.matches.filter(m => m.status === 'started'),
+          m => formatDate(new Date(m.kickoffTime))
+        ),
+      }]
     },
     pastMatches() {
-      return [
-        {
-          matches: groupBy(
-            this.matches
-              .filter(m => m.status === 'finished')
-              .sort(
-                (m1, m2) => new Date(m2.kickoffTime) - new Date(m1.kickoffTime)
-              ),
-            m => formatDate(new Date(m.kickoffTime))
-          ),
-        },
-      ]
+      return [{
+        matches: groupBy(
+          this.matches
+            .filter(m => m.status === 'finished')
+            .sort((m1, m2) => new Date(m2.kickoffTime) - new Date(m1.kickoffTime)),
+          m => formatDate(new Date(m.kickoffTime))
+        ),
+      }]
     },
     upcomingMatches() {
-      return [
-        {
-          matches: groupBy(
-            this.matches.filter(
-              m => m.status === 'upcoming' && 'prediction' in m
-            ),
-            m => formatDate(new Date(m.kickoffTime))
-          ),
-        },
-      ]
+      return [{
+        matches: groupBy(
+          this.matches.filter(m => m.status === 'upcoming' && 'prediction' in m),
+          m => formatDate(new Date(m.kickoffTime))
+        ),
+      }]
     },
     getTimeLeftForPrediction() {
       if (!this.missingPredictions.length) return null
-      else {
-        const nextMatch = this.missingPredictions.reduce((prev, curr) => {
-            return new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
-        })
-        return Math.abs(new Date(nextMatch.kickoffTime) - new Date())
-      }
+      const nextMatch = this.missingPredictions.reduce((prev, curr) =>
+        new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
+      )
+      return Math.abs(new Date(nextMatch.kickoffTime) - new Date())
     },
   },
 }

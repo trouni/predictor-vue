@@ -31,7 +31,12 @@ export default {
         // },
       ],
       loggedInNavRoutes: [
-      {
+        {
+          name: 'competitions',
+          title: 'Games',
+          fontAwesomeClass: 'trophy',
+        },
+        {
           name: 'predictions',
           title: 'Predict',
           fontAwesomeClass: 'bullseye',
@@ -44,7 +49,7 @@ export default {
         {
           name: 'rankings',
           title: 'Rankings',
-          fontAwesomeClass: 'trophy',
+          fontAwesomeClass: 'ranking-star',
         },
         {
           name: 'profile',

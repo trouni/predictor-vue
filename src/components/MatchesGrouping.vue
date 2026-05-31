@@ -5,24 +5,23 @@
         <h4
           v-if="date !== formatDate(new Date())"
           class="text-center font-light m-8"
+          style="color: rgba(255,255,255,0.6)"
           >{{ date }}
         </h4>
-        <template v-if="results">
+        <template v-for="match in dayMatches">
           <ResultCard
-            v-for="match in dayMatches"
+            v-if="results || match.status === 'finished'"
             :key="match.id"
             :match="match"
             :selectable="false"
             :predictions="predictions?.[match.id]"
             :currentUserId="currentUser.id"
           />
-        </template>
-        <template v-else>
           <MatchCard
-            v-for="match in dayMatches"
-            :key="match.id"
+            v-else
+            :key="`mc-${match.id}`"
             :match="match"
-            :selectable="selectable ?? match.status == 'upcoming'"
+            :selectable="selectable ?? match.status === 'upcoming'"
             :predictions="predictions?.[match.id]"
           />
         </template>

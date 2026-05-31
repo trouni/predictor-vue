@@ -24,7 +24,7 @@ button {
 }
 
 .secondary {
-  @apply bg-transparent hover:bg-black/20 active:bg-black/10 px-4 md:px-8 py-2 text-black border-black border-solid border rounded-sm shadow transform active:scale-95;
+  @apply bg-transparent hover:bg-black/20 active:bg-black/10 rounded-2xl py-3.5 px-5 text-white border-white border-solid border shadow transform active:scale-95;
 }
 
 .small {

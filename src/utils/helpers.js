@@ -62,27 +62,30 @@ export function formatTime(date) {
   })
 }
 
+export function ordinalize(num) {
+  const n = Number(num)
+  if (!Number.isFinite(n) || n === 0) return '—'
+  const mod100 = n % 100
+  if (mod100 >= 11 && mod100 <= 13) return `${n}<sup>th</sup>`
+  switch (n % 10) {
+    case 1: return `${n}<sup>st</sup>`
+    case 2: return `${n}<sup>nd</sup>`
+    case 3: return `${n}<sup>rd</sup>`
+    default: return `${n}<sup>th</sup>`
+  }
+}
+
 export function formatDuration(duration) {
-  duration = duration / 1000
+  const totalSeconds = Math.floor(duration / 1000)
 
-  // const days = Math.floor(duration / 86400)
-  // duration -= days * 86400
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
 
-  const hours = Math.floor(duration / 3600)
-  duration -= hours * 3600
+  const parts = []
+  if (days > 0) parts.push(`${days}d`)
+  if (hours > 0) parts.push(`${hours}h`)
+  if (minutes > 0 || parts.length === 0) parts.push(`${minutes}m`)
 
-  // calculate (and subtract) whole minutes
-  const minutes = Math.floor(duration / 60) % 60
-  duration -= minutes * 60
-
-  // what's left is seconds
-  const seconds = Math.round(duration % 60)
-
-  const numberFormat = ['en-US', { minimumIntegerDigits: 2, useGrouping: false }]
-
-  return [
-    // days > 0 ? `${days}D ` : null,
-    hours > 0 ? `${hours.toLocaleString(...numberFormat)}:` : null,
-    `${minutes.toLocaleString(...numberFormat)}:${seconds.toLocaleString(...numberFormat)}`,
-  ].join('')
+  return parts.join(' ')
 }
