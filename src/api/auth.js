@@ -36,11 +36,12 @@ export function resetPassword({ email, redirectUrl }) {
   })
 }
 
-export function updatePassword({ password, confirmation }) {
+export function updatePassword({ password, confirmation, headers }) {
   return request({
     baseURL: config.apiURL,
     url: '/auth/password',
     method: 'patch',
     data: { password, password_confirmation: confirmation },
+    headers,
   })
 }
