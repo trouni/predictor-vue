@@ -87,7 +87,6 @@ export default {
   methods: {
     ...mapActions({
       postLeaderboard: 'leaderboards/postLeaderboard',
-      selectLeaderboard: 'leaderboards/selectLeaderboard',
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
     }),
     async submit() {
