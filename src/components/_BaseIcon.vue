@@ -22,7 +22,8 @@ fontAwesomeIconLibrary.add(
   require('@fortawesome/free-solid-svg-icons/faSync').definition,
   require('@fortawesome/free-solid-svg-icons/faBullseye').definition,
   require('@fortawesome/free-solid-svg-icons/faSquarePollVertical').definition,
-  require('@fortawesome/free-solid-svg-icons/faUser').definition
+  require('@fortawesome/free-solid-svg-icons/faUser').definition,
+  require('@fortawesome/free-solid-svg-icons/faCheck').definition
 )
 export default {
   components: {

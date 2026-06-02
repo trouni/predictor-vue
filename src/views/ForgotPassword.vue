@@ -85,7 +85,7 @@
           class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-white font-bold text-sm transition-all duration-200 hover:opacity-90 disabled:opacity-50 mt-1"
           style="background: #fa5151"
         >
-          <BaseIcon v-if="processingForm" name="circle-notch" class="fa-spin" />
+          <BaseIcon v-if="processingForm" name="sync" class="fa-spin" />
           <span>Send reset link</span>
         </button>
 

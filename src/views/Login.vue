@@ -55,7 +55,7 @@
           <input
             v-model="password"
             type="password"
-            autocomplete="current-password"
+            :autocomplete="register ? 'new-password' : 'current-password'"
             placeholder="••••••••"
             class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-all"
             style="background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2)"
@@ -75,7 +75,7 @@
           class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-white font-bold text-sm transition-all duration-200 hover:opacity-90 disabled:opacity-50 mt-1"
           style="background: #fa5151"
         >
-          <BaseIcon v-if="processingForm" name="circle-notch" class="fa-spin" />
+          <BaseIcon v-if="processingForm" name="sync" class="fa-spin" />
           <span>{{ register ? 'Create account' : 'Log in' }}</span>
         </button>
 
