@@ -169,6 +169,96 @@
             Create one →
           </BaseLink>
         </div>
+      </div>
+    </div>
+
+    <!-- ─── Notifications ─── -->
+    <div class="px-4 mb-6">
+      <h3 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: rgba(255,255,255,0.5)">
+        Notifications
+      </h3>
+      <div
+        class="rounded-2xl overflow-hidden shadow-lg"
+        style="background: rgba(255, 255, 255, 0.12)"
+      >
+        <!-- Missing predictions -->
+        <div
+          class="flex items-center justify-between px-4 py-3.5 border-b"
+          style="border-color: rgba(255, 255, 255, 0.08)"
+        >
+          <div>
+            <p class="text-white text-sm font-medium">Missing predictions</p>
+            <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.4)">
+              Email when you're missing predictions for a round
+            </p>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <transition name="fade">
+              <BaseIcon
+                v-if="notifSaved === 'predictionMissing'"
+                name="check"
+                style="color: #0cf574; font-size: 0.75rem"
+              />
+            </transition>
+            <button
+              @click="toggleNotification('predictionMissing')"
+              :disabled="isSavingNotifications"
+              class="relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none"
+              :style="
+                notifications.email.predictionMissing
+                  ? 'background: #fa5151'
+                  : 'background: rgba(255, 255, 255, 0.15)'
+              "
+            >
+              <span
+                class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200"
+                :style="
+                  notifications.email.predictionMissing
+                    ? 'transform: translateX(20px)'
+                    : 'transform: translateX(0)'
+                "
+              />
+            </button>
+          </div>
+        </div>
+
+        <!-- New competitions -->
+        <div class="flex items-center justify-between px-4 py-3.5">
+          <div>
+            <p class="text-white text-sm font-medium">New competitions</p>
+            <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.4)">
+              Email when a new competition is created
+            </p>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <transition name="fade">
+              <BaseIcon
+                v-if="notifSaved === 'competitionNew'"
+                name="check"
+                style="color: #0cf574; font-size: 0.75rem"
+              />
+            </transition>
+            <button
+              @click="toggleNotification('competitionNew')"
+              :disabled="isSavingNotifications"
+              class="relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none"
+              :style="
+                notifications.email.competitionNew
+                  ? 'background: #fa5151'
+                  : 'background: rgba(255, 255, 255, 0.15)'
+              "
+            >
+              <span
+                class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200"
+                :style="
+                  notifications.email.competitionNew
+                    ? 'transform: translateX(20px)'
+                    : 'transform: translateX(0)'
+                "
+              />
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -216,6 +306,14 @@ export default {
       editableName: '',
       isSavingName: false,
       cloudName: config.cloudName,
+      notifications: {
+        email: {
+          predictionMissing: false,
+          competitionNew: false,
+        },
+      },
+      isSavingNotifications: false,
+      notifSaved: null,
     }
   },
 
@@ -224,6 +322,13 @@ export default {
     this.fetchCompetitions()
     this.fetchLeaderboards()
     this.user = await this.fetchUser({ userId: this.id })
+    const emailNotifs = this.user.notifications?.email || {}
+    this.notifications.email.predictionMissing = !!(
+      emailNotifs.predictionMissing || emailNotifs.prediction_missing
+    )
+    this.notifications.email.competitionNew = !!(
+      emailNotifs.competitionNew || emailNotifs.competition_new
+    )
     this.$emit('init')
   },
 
@@ -317,6 +422,35 @@ export default {
           }
         )
         .open()
+    },
+
+    // ── Notification toggles ──
+    async toggleNotification(key) {
+      this.notifications.email[key] = !this.notifications.email[key]
+      this.isSavingNotifications = true
+      this.notifSaved = null
+      try {
+        await this.patchUser({
+          userId: this.user.id,
+          name: this.user.name,
+          photoKey: this.user.photoKey || this.user.photo_key,
+          notifications: {
+            email: {
+              competition_new: this.notifications.email.competitionNew,
+              prediction_missing: this.notifications.email.predictionMissing,
+            },
+          },
+        })
+        this.notifSaved = key
+        setTimeout(() => {
+          this.notifSaved = null
+        }, 2000)
+      } catch (err) {
+        console.error('Failed to save notification preference:', err)
+        this.notifications.email[key] = !this.notifications.email[key]
+      } finally {
+        this.isSavingNotifications = false
+      }
     },
 
     // ── Helpers ──
