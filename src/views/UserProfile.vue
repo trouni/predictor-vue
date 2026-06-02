@@ -189,7 +189,7 @@
           <div>
             <p class="text-white text-sm font-medium">Missing predictions</p>
             <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.4)">
-              Email when you're missing predictions for a round
+              Email when missing predictions for a round
             </p>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
@@ -227,7 +227,7 @@
           <div>
             <p class="text-white text-sm font-medium">New competitions</p>
             <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.4)">
-              Email when a new competition is created
+              Email when a new competition is launched
             </p>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
