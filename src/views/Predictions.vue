@@ -120,7 +120,7 @@
       v-if="selectedTab === 'upcoming' && !hasUpcomingPredictions"
       icon="bullseye"
       title="No predictions yet"
-      subtitle="Completed predictions will appear here."
+      subtitle="Your predictions will appear here."
     />
 
     <!-- ─── No past matches placeholder ─── -->

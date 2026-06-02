@@ -14,7 +14,7 @@
       v-if="!leaderboard.leaveDisabled"
       @click="showLeaveModal = true"
       class="action-btn leave-btn flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm transition-all duration-200 focus:outline-none"
-      style="color: rgba(255, 255, 255, 0.38);;"
+      style="color: rgba(255, 255, 255, 0.38);"
     >
       <BaseIcon name="sign-out-alt" />
       Leave this leaderboard
