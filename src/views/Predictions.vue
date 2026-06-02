@@ -116,17 +116,26 @@
     />
 
     <!-- ─── No past matches placeholder ─── -->
-    <div v-if="selectedTab === 'past' && !hasPastMatches" class="rounded-sm text-center py-4 px-8 results-placeholder">
-      <p class="flex items-center flex-col justify-center text-center text-lg my-3 text-white/60">
-        <BaseIcon name="stopwatch" class="fa-2x" />
-        <span class="pt-3">No matches completed yet.</span>
-      </p>
-    </div>
+    <EmptyState
+      v-if="selectedTab === 'upcoming' && !hasUpcomingPredictions"
+      icon="bullseye"
+      title="No predictions yet"
+      subtitle="Your predictions will appear here."
+    />
+
+    <!-- ─── No past matches placeholder ─── -->
+    <EmptyState
+      v-if="selectedTab === 'past' && !hasPastMatches"
+      icon="stopwatch"
+      title="No results yet"
+      subtitle="Completed matches will appear here once the whistle blows."
+    />
 
   </div>
 </template>
 
 <script>
+import EmptyState from '@/components/EmptyState'
 import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
 import { mapGetters, mapActions } from 'vuex'
@@ -137,7 +146,7 @@ import groupBy from 'lodash/groupBy'
 export default {
   name: 'Predictions',
 
-  components: { MatchesGrouping, LeaderboardRanking },
+  components: { EmptyState, MatchesGrouping, LeaderboardRanking },
 
   props: {
     userId: {
@@ -197,6 +206,9 @@ export default {
     ...mapGetters({ matches: 'matches/matches' }),
     hasPastMatches() {
       return this.matches.some(m => m.status === 'finished')
+    },
+    hasUpcomingPredictions() {
+      return this.matches.some(m => m.status === 'upcoming' && 'prediction' in m)
     },
     missingPredictions() {
       return this.matches.filter(

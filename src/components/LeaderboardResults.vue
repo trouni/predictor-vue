@@ -6,15 +6,12 @@
       :predictions="predictions"
       :results="true"
     />
-    <div
+    <EmptyState
       v-if="matchesEmpty"
-      class="rounded-sm text-center py-4 px-8 results-placeholder"
-    >
-      <p class="flex items-center flex-col justify-center text-center text-lg my-3 text-white">
-        <BaseIcon name="stopwatch" class="fa-2x" />
-        <span class="pt-3">No matches completed yet.</span>
-      </p>
-    </div>
+      icon="stopwatch"
+      title="No results yet"
+      subtitle="Completed matches will appear here once the whistle blows."
+    />
   </div>
 </template>
 
@@ -23,9 +20,10 @@ import groupBy from 'lodash/groupBy'
 import { formatDate } from '@/utils/helpers'
 import { mapGetters } from 'vuex'
 import MatchesGrouping from '@/components/MatchesGrouping'
+import EmptyState from '@/components/EmptyState'
 
 export default {
-  components: { MatchesGrouping },
+  components: { MatchesGrouping, EmptyState },
 
   props: {
     leaderboard: {

@@ -1,17 +1,7 @@
 <template>
   <div v-if="leaderboards.length" class="mt-2">
-
-    <!-- Single leaderboard: just show the name, no tabs needed -->
-    <p
-      v-if="leaderboards.length === 1"
-      class="text-sm font-medium pb-3 px-5"
-      style="color: rgba(255,255,255,0.5)"
-    >
-      {{ leaderboards[0].name }}
-    </p>
-
     <!-- Multiple leaderboards: tab strip -->
-    <div v-else class="flex overflow-x-auto hide-scrollbar px-5 gap-1">
+    <div  class="flex overflow-x-auto hide-scrollbar px-5 gap-1">
 
       <button
         v-for="lb in leaderboards"

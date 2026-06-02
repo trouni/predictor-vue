@@ -13,22 +13,12 @@
     <button
       v-if="!leaderboard.leaveDisabled"
       @click="showLeaveModal = true"
-      class="action-btn leave-btn flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm font-semibold transition-all duration-200 focus:outline-none"
-      style="background: rgba(250,81,81,0.1); color: #fa5151; border: 1px solid rgba(250,81,81,0.2)"
+      class="action-btn leave-btn flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm transition-all duration-200 focus:outline-none"
+      style="color: rgba(255, 255, 255, 0.38);"
     >
       <BaseIcon name="sign-out-alt" />
       Leave this leaderboard
     </button>
-
-    <!-- Create a new leaderboard -->
-    <BaseLink
-      :to="{ name: 'new_leaderboard' }"
-      class="action-btn create-btn flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm font-semibold transition-all duration-200"
-      style="background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7)"
-    >
-      <BaseIcon name="plus" />
-      Create a new leaderboard
-    </BaseLink>
 
     <!-- Leave confirmation modal -->
     <ConfirmDelete
