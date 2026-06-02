@@ -20,16 +20,6 @@
       Leave this leaderboard
     </button>
 
-    <!-- Create a new leaderboard -->
-    <BaseLink
-      :to="{ name: 'new_leaderboard' }"
-      class="action-btn create-btn flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm font-semibold transition-all duration-200"
-      style="background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7)"
-    >
-      <BaseIcon name="plus" />
-      Create a new leaderboard
-    </BaseLink>
-
     <!-- Leave confirmation modal -->
     <ConfirmDelete
       v-if="showLeaveModal"
