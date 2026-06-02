@@ -94,13 +94,15 @@ export default {
     async submit() {
       if (!this.name.trim()) return
       this.processingForm = true
-      this.newLeadboard = await this.postLeaderboard({ name: this.name })
-      await this.fetchLeaderboards()
-      this.selectLeaderboard(this.newLeadboard.id)
-      this.processingForm = false
-      this.$router.push(
-        this.$route.query.redirectFrom || { name: 'rankings' }
-      )
+      try {
+        await this.postLeaderboard({ name: this.name })
+        await this.fetchLeaderboards()
+        this.$router.push(
+          this.$route.query.redirectFrom || { name: 'rankings' }
+        )
+      } finally {
+        this.processingForm = false
+      }
     },
   },
 }
