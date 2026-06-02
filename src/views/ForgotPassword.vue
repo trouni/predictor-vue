@@ -94,7 +94,7 @@
 
     <!-- Back to login -->
     <p v-if="!success" class="text-center text-sm mt-6" style="color: rgba(255,255,255,0.45)">
-      Remember it?
+      Remember?
       <BaseLink
         :to="{ name: 'login' }"
         class="font-semibold ml-1"
