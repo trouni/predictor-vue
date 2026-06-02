@@ -77,7 +77,6 @@ export default {
     return {
       name: '',
       processingForm: false,
-      newLeadboard: null,
     }
   },
 
