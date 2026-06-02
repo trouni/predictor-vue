@@ -1,50 +1,110 @@
 <template>
-  <div class="p-4 flex flex-col items-center">
-    <BaseLink :to="{ name: 'home' }" class="opacity-100"
-      ><img
-        alt="football graphic"
-        :src="require('../assets/logo.png')"
-        class="logo-img"
-    /></BaseLink>
-    <div class="w-full md:w-6/12">
-      <div>
-        <p>Email</p>
-        <BaseInputText
-          v-model="email"
-          label="Email"
-          name="email"
-          type="text"
-          autofocus
-          @keypress.enter="submit"
+  <div class="min-h-full flex flex-col justify-center px-5 py-8">
+
+    <!-- Card -->
+    <div
+      class="w-full max-w-sm mx-auto rounded-3xl px-6 py-8"
+      style="background: rgba(255,255,255,0.11); border: 1px solid rgba(255,255,255,0.18)"
+    >
+
+      <!-- Branding -->
+      <div class="flex flex-col items-center mb-8">
+        <div
+          class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg"
+          style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2)"
+        >
+        <img
+          :src="require('../assets/logo.png')"
+          alt="Octacle logo"
+          class="w-8 h-8 object-contain"
         />
-        <p>Password</p>
-        <BaseInputText
-          id="password"
-          v-model="password"
-          label="Password"
-          name="password"
-          type="password"
-          @keypress.enter="submit"
-        />
-        <p class="text-red-500 mb-3" v-if="authError">{{ errorMessage }}</p>
-        <div class="flex justify-between items-center">
-          <BaseButton :disabled="processingForm" @click="submit">
-            {{ register ? 'Sign up' : 'Login' }}
-          </BaseButton>
-          <BaseLink :to="{ name: 'forgot_password' }">Forgot password?</BaseLink>
         </div>
+        <h2 class="text-white font-bold text-xl">
+          {{ register ? 'Create account' : 'Welcome back' }}
+        </h2>
+        <p class="text-sm mt-1" style="color: rgba(255,255,255,0.45)">
+          {{ register ? 'Start predicting today' : 'Sign in to continue' }}
+        </p>
       </div>
-      <div class="pt-4">
-        <div v-if="register">
-          <p class="pb-2">Already have an account?</p>
-          <BaseButton :secondary="true" @click="register = false">Log in</BaseButton>
+
+      <!-- Form -->
+      <div class="flex flex-col gap-4">
+
+        <!-- Email -->
+        <div>
+          <label class="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style="color: rgba(255,255,255,0.5)">
+            Email
+          </label>
+          <input
+            v-model="email"
+            type="email"
+            autocomplete="email"
+            autofocus
+            placeholder="you@example.com"
+            class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-all"
+            style="background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2); placeholder-color: rgba(255,255,255,0.3)"
+            @keypress.enter="submit"
+          />
         </div>
-        <div v-else>
-          <p class="pb-2"> Need an account?</p>
-          <BaseButton :secondary="true" @click="register = true">Register</BaseButton>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style="color: rgba(255,255,255,0.5)">
+            Password
+          </label>
+          <input
+            v-model="password"
+            type="password"
+            :autocomplete="register ? 'new-password' : 'current-password'"
+            placeholder="••••••••"
+            class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-all"
+            style="background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2)"
+            @keypress.enter="submit"
+          />
         </div>
+
+        <!-- Error -->
+        <p v-if="authError" class="text-sm font-medium rounded-xl px-4 py-2.5" style="background: rgba(250,81,81,0.15); color: #fa5151; border: 1px solid rgba(250,81,81,0.25)">
+          {{ errorMessage }}
+        </p>
+
+        <!-- Submit -->
+        <button
+          :disabled="processingForm"
+          @click="submit"
+          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-white font-bold text-sm transition-all duration-200 hover:opacity-90 disabled:opacity-50 mt-1"
+          style="background: #fa5151"
+        >
+          <BaseIcon v-if="processingForm" name="sync" class="fa-spin" />
+          <span>{{ register ? 'Create account' : 'Log in' }}</span>
+        </button>
+
+        <!-- Forgot password -->
+        <div v-if="!register" class="text-center">
+          <BaseLink
+            :to="{ name: 'forgot_password' }"
+            class="text-sm"
+            style="color: rgba(255,255,255,0.4)"
+          >
+            Forgot password?
+          </BaseLink>
+        </div>
+
       </div>
     </div>
+
+    <!-- Toggle login / register -->
+    <p class="text-center text-sm mt-6" style="color: rgba(255,255,255,0.45)">
+      {{ register ? 'Already have an account?' : "Don't have an account?" }}
+      <button
+        @click="register = !register"
+        class="font-semibold ml-1 focus:outline-none"
+        style="color: white"
+      >
+        {{ register ? 'Log in' : 'Sign up' }}
+      </button>
+    </p>
+
   </div>
 </template>
 
@@ -66,12 +126,15 @@ export default {
     this.$emit('init')
     if (this.isJoinLink()) this.register = true
   },
+
   computed: {
     errorMessage() {
-      // Fallback in case the error is not a string (location change, etc.)
-      return this.authError && typeof this.authError === 'string' ? this.authError : 'An error occurred. Please try again.'
+      return this.authError && typeof this.authError === 'string'
+        ? this.authError
+        : 'An error occurred. Please try again.'
     },
   },
+
   methods: {
     ...authMethods,
     submit() {
@@ -80,10 +143,7 @@ export default {
     async tryToLogIn() {
       this.processingForm = true
       this.authError = null
-      const credentials = {
-        email: this.email,
-        password: this.password,
-      }
+      const credentials = { email: this.email, password: this.password }
 
       if (!this.$store.getters['competitions/currentCompetitionId']) {
         await this.$store.dispatch('competitions/setDefaultCompetition')
@@ -92,7 +152,6 @@ export default {
       return this.logIn(credentials)
         .then(() => {
           this.processingForm = false
-          // Redirect to the originally requested page, or to the matches page
           this.$router.push(
             this.$route.query.redirectFrom || { name: 'predictions' }
           )
@@ -126,12 +185,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '@/styles';
-
-.logo-img {
-  width: 200px;
-  opacity: 1;
+<style scoped>
+input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
 }
-
+input:focus {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+}
 </style>

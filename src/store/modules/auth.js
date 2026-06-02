@@ -97,9 +97,9 @@ export const actions = {
 
   updatePassword(
     { commit, dispatch, rootGetters },
-    { password, confirmation }
+    { password, confirmation, headers }
   ) {
-    return updatePassword({ password, confirmation })
+    return updatePassword({ password, confirmation, headers })
       .then(async response => {
         if (response.status === 200) {
           commit('SET_CURRENT_USER', response.data.data)
