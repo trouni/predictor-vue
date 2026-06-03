@@ -175,7 +175,8 @@ export default {
         })
         .catch(error => {
           this.processingForm = false
-          this.authError = error.full_messages.join('<br/>')
+          const messages = Array.isArray(error) ? error : error.full_messages
+          this.authError = messages.join('<br/>')
         })
     },
     isJoinLink() {
