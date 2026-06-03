@@ -68,12 +68,21 @@
 
       <!-- Points -->
       <div class="flex-shrink-0 text-right">
-        <p class="font-black leading-none" :class="pointsFontClass" style="color: #fa5151">
-          {{ userRankings[0].points }}
-        </p>
-        <p v-if="userRankings[0].possiblePoints" class="text-xs text-gray-400 font-normal mt-0.5">
-          / {{ userRankings[0].possiblePoints }}
-        </p>
+        <template
+          v-if="
+            userRankings.some(
+              r => (r.totalPredictions || r.total_predictions) > 0
+            )
+          "
+        >
+          <p class="font-black leading-none" :class="pointsFontClass" style="color: #fa5151">
+            {{ userRankings[0].points }}
+          </p>
+          <p v-if="userRankings[0].possiblePoints" class="text-xs text-gray-400 font-normal mt-0.5">
+            / {{ userRankings[0].possiblePoints }}
+          </p>
+        </template>
+        <p v-else class="text-xs text-gray-400 italic font-normal leading-none">yet to predict</p>
       </div>
 
     </div>
