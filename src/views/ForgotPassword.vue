@@ -131,7 +131,7 @@ export default {
       try {
         await this.$store.dispatch('auth/resetPassword', {
           email: this.email,
-          redirectUrl: `http://${window.location.host}/reset-password`,
+          redirectUrl: `${window.location.origin}/reset-password`,
         })
         this.success = true
       } catch (errors) {
