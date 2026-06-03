@@ -167,7 +167,7 @@ export default {
       const credentials = {
         email: this.email,
         password: this.password,
-        confirm_success_url: this.$route.query.redirectFrom || '/',
+        confirm_success_url: this.$route.query.redirectFrom || window.location.origin + '/',
       }
       return this.signUp(credentials)
         .then(() => {
