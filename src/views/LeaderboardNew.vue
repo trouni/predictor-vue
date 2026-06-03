@@ -23,7 +23,6 @@
 
       <!-- Form -->
       <div class="flex flex-col gap-4">
-
         <!-- Name -->
         <div>
           <label class="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style="color: rgba(255,255,255,0.5)">
@@ -54,8 +53,19 @@
       </div>
     </div>
 
-    <!-- Back -->
+    <!-- Join hint -->
     <p class="text-center text-sm mt-6" style="color: rgba(255,255,255,0.45)">
+      Looking to join an existing group?
+    </p>
+    <em class="text-center text-sm mt-1" style="color: rgba(255,255,255,0.45)">
+      Ask your friend for an invite link <BaseIcon name="comment-dots" />
+    </em>
+
+    <!-- Back -->
+    <p
+      class="text-center text-sm mt-4"
+      style="color: rgba(255, 255, 255, 0.45)"
+    >
       Changed your mind?
       <BaseLink
         :to="{ name: 'rankings' }"
