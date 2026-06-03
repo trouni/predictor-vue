@@ -68,7 +68,13 @@
 
       <!-- Points -->
       <div class="flex-shrink-0 text-right">
-        <template v-if="userRankings[0].totalPredictions || userRankings[0].total_predictions">
+        <template
+          v-if="
+            userRankings.some(
+              r => (r.totalPredictions || r.total_predictions) > 0
+            )
+          "
+        >
           <p class="font-black leading-none" :class="pointsFontClass" style="color: #fa5151">
             {{ userRankings[0].points }}
           </p>
