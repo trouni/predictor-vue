@@ -34,7 +34,7 @@ export default {
         case 'wrong':
           return 'border-6 border-prediction-wrong'
         case 'selected':
-          return 'border-6 border-prediction-selected'
+          return 'badge-selected'
         default:
           return 'border-6 border-prediction-default'
       }
@@ -44,6 +44,13 @@ export default {
 </script>
 
 <style lang="scss">
+.badge-selected {
+  box-shadow:
+    0 0 0 5px #3b82f6,
+    0 0 14px 5px rgba(59, 130, 246, 0.65),
+    0 0 30px 12px rgba(102, 144, 183, 0.35);
+}
+
 .text-glow {
   text-shadow: -0.07em -0.07em 0.04em #fffc, 0 -0.07em 0.04em #fffc,
     0.07em -0.07em 0.04em #fffc, 0.07em 0 0.04em #fffc,

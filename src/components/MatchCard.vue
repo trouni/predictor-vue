@@ -11,6 +11,7 @@
         :team="match.teamHome"
         :status="status('home')"
         :clickable="!disabled"
+        :greyOut="madePrediction && match.prediction.choice !== 'home'"
         @click.native="setPrediction('home')"
       />
       <div
@@ -24,6 +25,7 @@
           <PredictionChoiceDraw
             :status="status('draw')"
             :clickable="!disabled"
+            :greyOut="madePrediction && match.prediction.choice !== 'draw'"
             @click.native="setPrediction('draw')"
           />
         </div>
@@ -33,6 +35,7 @@
         :team="match.teamAway"
         :status="status('away')"
         :clickable="!disabled"
+        :greyOut="madePrediction && match.prediction.choice !== 'away'"
         @click.native="setPrediction('away')"
       />
     </div>
