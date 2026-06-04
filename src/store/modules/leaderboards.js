@@ -14,8 +14,10 @@ export const getters = {
   // accessing the state directly when possible.
   leaderboards(state) {
     return (state.leaderboards || []).slice().sort((a, b) => {
-      if (b.autoJoin !== a.autoJoin) return b.autoJoin ? 1 : -1
-      return a.name.localeCompare(b.name)
+      const aAutoJoin = !!a?.autoJoin
+      const bAutoJoin = !!b?.autoJoin
+      if (bAutoJoin !== aAutoJoin) return bAutoJoin ? 1 : -1
+      return String(a?.name || '').localeCompare(String(b?.name || ''))
     })
   },
   currentLeaderboard(_, getters) {
