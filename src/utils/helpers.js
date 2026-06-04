@@ -47,7 +47,6 @@ export function awayTeamWon(match) {
 export function formatDateTime(date) {
   return new Date(date).toLocaleTimeString(navigator.language || 'en-GB', {
     weekday: 'long',
-    year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
