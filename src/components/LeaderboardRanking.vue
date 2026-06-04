@@ -72,7 +72,7 @@
           <p class="font-black leading-none text-xl text-shadow" style="color: #fa5151">
             {{ userRankings[0].points }}
           </p>
-          <small class="font-black leading-none text-xs text-shadow font-light" style="color: #fa5151">PTS</small>
+          <small class="font-black leading-none text-xs text-shadow font-normal" style="color: #fa5151">PTS</small>
         </template>
         <p v-else class="text-xs text-gray-400 italic font-normal leading-none">yet to predict</p>
       </div>
