@@ -100,7 +100,7 @@
           @click="changeTab(tab)"
           class="flex-1 py-2 px-3 rounded-xl text-sm font-semibold capitalize transition-all duration-200 focus:outline-none"
           :class="selectedTab === tab
-            ? 'bg-white text-gray-800 shadow-sm'
+            ? 'bg-tab text-white shadow-sm'
             : 'text-white/60 hover:text-white/80'"
         >
           {{ tab }}
@@ -272,3 +272,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.bg-tab {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+</style>
