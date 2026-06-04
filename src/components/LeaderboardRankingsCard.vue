@@ -121,8 +121,8 @@ export default {
         { key: 'r16', label: 'R16', points: 5 },
         { key: 'qf', label: 'QF', points: 6 },
         { key: 'sf', label: 'SF', points: 7 },
-        { key: '3p', label: '3P', points: 8 },
-        { key: 'final', label: 'Final', points: 9 },
+        { key: '3p', label: '3rd Place', points: 8 },
+        { key: 'final', label: 'Final', points: 9 }
       ],
     }
   },
