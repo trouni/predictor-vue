@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-white transition border-6 duration-300 relative',
+      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-prediction-card transition duration-300 relative',
       borderStyle,
     ]"
   >
@@ -46,7 +46,12 @@
       }}</p>
       <MatchPredictions :predictions="predictions" :match="match" />
     </div>
-    <p v-else class="text-xs text-gray-400">{{ matchDate }}</p>
+    <div class="flex items-center justify-center">
+      <p v-if="!predictions" class="text-xs text-white/60">{{ matchDate }}</p>
+      <p v-if="match.location" class="ml-2 text-white/60 text-xs">
+        <BaseIcon name="map-pin" /> {{ match.location }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -121,7 +126,7 @@ export default {
       } else if (this.match.status === 'started') {
         return 'In Progress'
       } else {
-        return 'Kick-off at ' + this.formatTime(this.match.kickoffTime)
+        return this.formatTime(this.match.kickoffTime)
       }
     },
     madePrediction() {
@@ -161,3 +166,12 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.bg-prediction-card {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.text-shadow {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+</style>
