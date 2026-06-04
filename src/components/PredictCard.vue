@@ -52,13 +52,12 @@
         </div>
 
         <!-- Team selection area -->
-        <div class="flex items-stretch" style="min-height: 210px;">
-
+        <div class="flex items-stretch" style="min-height: 210px">
           <!-- Home team -->
           <button
             @click="predict('home')"
             :disabled="isSaving"
-            class="team-btn group relative flex-1 flex flex-col items-center justify-center gap-3 py-8 px-4 overflow-hidden transition-all duration-200"
+            class="team-btn group relative flex-1 flex flex-col items-center justify-center gap-1 py-8 px-4 overflow-hidden transition-all duration-200"
             :class="localChoice === 'home' ? 'bg-green-50' : 'hover:bg-gray-50 active:bg-gray-100'"
           >
             <!-- Subtle flag wash -->
@@ -78,8 +77,9 @@
               <div
                 class="w-16 h-16 rounded-full overflow-hidden shadow-md border-4 transition-all duration-200"
                 :class="localChoice === 'home'
-                  ? 'border-green-400 scale-110 shadow-green-100'
-                  : 'border-gray-200 group-hover:border-gray-300 group-hover:scale-105'"
+                    ? 'border-green-400 scale-110 shadow-green-100'
+                    : 'border-gray-200 group-hover:border-gray-300 group-hover:scale-105'
+                "
               >
                 <img
                   :src="currentMatch.teamHome.badgeUrl"
@@ -101,9 +101,15 @@
               </transition>
             </div>
             <!-- Team name -->
-            <p class="relative z-10 font-bold text-gray-800 text-sm text-center leading-tight">
+            <p class="relative z-10 font-bold text-gray-800 text-sm text-center leading-tight mt-1">
               {{ currentMatch.teamHome.name }}
             </p>
+            <span
+              v-if="currentMatch.teamHome.ranking"
+              class="relative z-10 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full"
+              style="background: rgba(0, 0, 0, 0.06); color: #6b7280"
+              >FIFA #{{ currentMatch.teamHome.ranking }}</span
+            >
             <p class="relative z-10 text-xs text-gray-400">Home</p>
           </button>
 
@@ -119,8 +125,9 @@
               <div
                 class="w-11 h-11 rounded-full border-2 flex items-center justify-center transition-all duration-200"
                 :class="localChoice === 'draw'
-                  ? 'scale-110 shadow-md border-transparent'
-                  : 'bg-white border-gray-300 hover:border-gray-400'"
+                    ? 'scale-110 shadow-md border-transparent'
+                    : 'bg-white border-gray-300 hover:border-gray-400'
+                "
                 :style="localChoice === 'draw' ? 'background: #0cf574' : ''"
               >
                 <svg v-if="localChoice === 'draw'" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +148,7 @@
           <button
             @click="predict('away')"
             :disabled="isSaving"
-            class="team-btn group relative flex-1 flex flex-col items-center justify-center gap-3 py-8 px-4 overflow-hidden transition-all duration-200"
+            class="team-btn group relative flex-1 flex flex-col items-center justify-center gap-1 py-8 px-4 overflow-hidden transition-all duration-200"
             :class="localChoice === 'away' ? 'bg-green-50' : 'hover:bg-gray-50 active:bg-gray-100'"
           >
             <img
@@ -158,8 +165,9 @@
               <div
                 class="w-16 h-16 rounded-full overflow-hidden shadow-md border-4 transition-all duration-200"
                 :class="localChoice === 'away'
-                  ? 'border-green-400 scale-110 shadow-green-100'
-                  : 'border-gray-200 group-hover:border-gray-300 group-hover:scale-105'"
+                    ? 'border-green-400 scale-110 shadow-green-100'
+                    : 'border-gray-200 group-hover:border-gray-300 group-hover:scale-105'
+                "
               >
                 <img
                   :src="currentMatch.teamAway.badgeUrl"
@@ -179,9 +187,15 @@
                 </div>
               </transition>
             </div>
-            <p class="relative z-10 font-bold text-gray-800 text-sm text-center leading-tight">
+            <p class="relative z-10 font-bold text-gray-800 text-sm text-center leading-tight mt-1">
               {{ currentMatch.teamAway.name }}
             </p>
+            <span
+              v-if="currentMatch.teamAway.ranking"
+              class="relative z-10 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full"
+              style="background: rgba(0, 0, 0, 0.06); color: #6b7280"
+            >FIFA #{{ currentMatch.teamAway.ranking }}</span
+            >
             <p class="relative z-10 text-xs text-gray-400">Away</p>
           </button>
 
@@ -201,7 +215,6 @@
             </p>
           </transition>
         </div>
-
       </div>
     </transition>
 
