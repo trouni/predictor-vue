@@ -235,7 +235,9 @@ export default {
     ongoingMatches() {
       return [{
         matches: groupBy(
-          this.matches.filter(m => m.status === 'started'),
+          this.matches
+            .filter(m => m.status === 'started')
+            .sort((m1, m2) => new Date(m1.kickoffTime) - new Date(m2.kickoffTime)),
           m => formatDate(new Date(m.kickoffTime))
         ),
       }]
@@ -253,7 +255,9 @@ export default {
     upcomingMatches() {
       return [{
         matches: groupBy(
-          this.matches.filter(m => m.status === 'upcoming' && 'prediction' in m),
+          this.matches
+            .filter(m => m.status === 'upcoming' && 'prediction' in m)
+            .sort((m1, m2) => new Date(m1.kickoffTime) - new Date(m2.kickoffTime)),
           m => formatDate(new Date(m.kickoffTime))
         ),
       }]
