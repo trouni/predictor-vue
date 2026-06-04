@@ -13,7 +13,12 @@ export const getters = {
   // Getters are like attribute readers. You should favor them over
   // accessing the state directly when possible.
   leaderboards(state) {
-    return state.leaderboards || []
+    return (state.leaderboards || []).slice().sort((a, b) => {
+      const aAutoJoin = !!a?.autoJoin
+      const bAutoJoin = !!b?.autoJoin
+      if (bAutoJoin !== aAutoJoin) return bAutoJoin ? 1 : -1
+      return String(a?.name || '').localeCompare(String(b?.name || ''))
+    })
   },
   currentLeaderboard(_, getters) {
     return getters.leaderboards.find(
