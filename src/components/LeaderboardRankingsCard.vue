@@ -1,5 +1,30 @@
 <template>
   <div class="flex flex-col gap-1.5">
+    <!-- Round scoring strip -->
+    <div class="bg-white/10 rounded-2xl px-4 py-3">
+      <p class="text-white/40 text-xs uppercase tracking-widest font-semibold mb-2.5">Points per correct pick</p>
+      <div
+        ref="scoringStrip"
+        class="flex overflow-x-auto hide-scrollbar gap-1"
+      >
+        <div
+          v-for="round in scoringRounds"
+          :key="round.key"
+          :data-round="round.key"
+          class="flex-shrink-0 flex items-center px-2 py-1.5 rounded-full text-xs font-semibold transition-all"
+          :class="round.key === currentRoundKey
+            ? 'bg-white text-gray-800 shadow-sm px-3'
+            : 'text-white/40'"
+        >
+          {{ round.label }}
+          <span
+            class="font-normal"
+            :class="round.key === currentRoundKey ? 'text-gray-500' : 'text-white/25'"
+          >· {{ round.points }}pts</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Pre-tournament placeholder for the Global (auto-join) leaderboard -->
     <div
       v-if="showPreTournamentPlaceholder"
@@ -27,6 +52,9 @@
 
     <!-- Ranked rows -->
     <template v-else>
+
+
+
       <LeaderboardRanking
         v-for="{ position, points } in ranks"
         :key="position"
@@ -85,10 +113,25 @@ export default {
     },
   },
 
+  data() {
+    return {
+      scoringRounds: [
+        { key: 'group', label: 'Group', points: 3 },
+        { key: 'r32', label: 'R32', points: 4 },
+        { key: 'r16', label: 'R16', points: 5 },
+        { key: 'qf', label: 'QF', points: 6 },
+        { key: 'sf', label: 'SF', points: 7 },
+        { key: '3p', label: '3rd Place', points: 8 },
+        { key: 'final', label: 'Final', points: 9 }
+      ],
+    }
+  },
+
   computed: {
     ...mapGetters({
       currentUser: 'auth/currentUser',
       currentCompetition: 'competitions/currentCompetition',
+      matches: 'matches/matches',
     }),
 
     showPreTournamentPlaceholder() {
@@ -155,13 +198,59 @@ export default {
       if (!this.currentUserEntry) return false
       return (this.currentUserEntry.rank || 999) <= this.lastVisibleRank
     },
+
+    currentRoundKey() {
+      if (!this.matches.length) return null
+      const active = this.matches.filter(m => m.status !== 'finished')
+      if (!active.length) return 'final'
+      active.sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
+      const next = active[0]
+      if (next.groupId) return 'group'
+      const map = { 2: 'r32', 3: 'r16', 4: 'qf', 5: 'sf', 6: '3p', 7: 'final' }
+      return map[next.roundNumber] || null
+    },
+  },
+
+  watch: {
+    currentRoundKey(key) {
+      if (key) this.$nextTick(() => this.scrollActiveRoundIntoView())
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => this.scrollActiveRoundIntoView())
   },
 
   methods: {
-    // Returns all users tied at a given rank position
     usersAtRank(rank) {
       return this.sortedUsers.filter(u => u.rank === rank)
+    },
+
+    scrollActiveRoundIntoView() {
+      const strip = this.$refs.scoringStrip
+      if (!strip || !this.currentRoundKey) return
+      const pill = strip.querySelector(`[data-round="${this.currentRoundKey}"]`)
+      if (pill) {
+        const reducedMotion =
+          window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        pill.scrollIntoView({
+          behavior: reducedMotion ? 'auto' : 'smooth',
+          inline: 'center',
+          block: 'nearest',
+        })
+      }
     },
   },
 }
 </script>
+
+<style scoped>
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+</style>
