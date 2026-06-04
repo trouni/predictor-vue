@@ -1,11 +1,17 @@
 <template>
   <div
     :class="[
-      'flex flex-col mt-2 items-center px-3',
+      'flex flex-col items-center p-3 relative',
       clickableStyle,
       opacityStyle,
     ]"
   >
+    <!-- Subtle flag wash -->
+    <img
+      v-if="team.flagUrl && chosen"
+      :src="team.flagUrl"
+      class="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5 group-hover:opacity-8"
+    />
     <p class="uppercase mb-1 h-8 leading-none flex items-center text-white font-bold">
       {{ team.name }}
     </p>
@@ -35,6 +41,10 @@ export default {
       default: false,
     },
     greyOut: {
+      type: Boolean,
+      default: false,
+    },
+    chosen: {
       type: Boolean,
       default: false,
     },

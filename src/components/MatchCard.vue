@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'rounded-2xl text-center my-5 mx-2 p-2 shadow bg-prediction-card transition duration-300 relative',
+      'rounded-2xl text-center my-5 mx-2 shadow bg-prediction-card transition duration-300 relative',
       borderStyle,
     ]"
   >
@@ -12,6 +12,7 @@
         :status="status('home')"
         :clickable="!disabled"
         :greyOut="madePrediction && match.prediction.choice !== 'home'"
+        :chosen="madePrediction && match.prediction.choice === 'home'"
         @click.native="setPrediction('home')"
       />
       <div
@@ -36,6 +37,7 @@
         :status="status('away')"
         :clickable="!disabled"
         :greyOut="madePrediction && match.prediction.choice !== 'away'"
+        :chosen="madePrediction && match.prediction.choice === 'away'"
         @click.native="setPrediction('away')"
       />
     </div>
@@ -46,9 +48,9 @@
       }}</p>
       <MatchPredictions :predictions="predictions" :match="match" />
     </div>
-    <div class="flex items-center justify-center">
-      <p v-if="!predictions" class="text-xs text-white/60">{{ matchDate }}</p>
-      <p v-if="match.location" class="ml-2 text-white/60 text-xs">
+    <div class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info">
+      <p v-if="!predictions" class="text-xs text-white/70">{{ matchDate }}</p>
+      <p v-if="match.location" class="ml-2 text-white/70 text-xs">
         <BaseIcon name="map-pin" /> {{ match.location }}
       </p>
     </div>
@@ -170,6 +172,9 @@ export default {
 <style lang="scss" scoped>
 .bg-prediction-card {
   background-color: rgba(255, 255, 255, 0.08);
+}
+.bg-prediction-info {
+  background-color: rgba(255, 255, 255, 0.04);
 }
 .text-shadow {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
