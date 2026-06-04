@@ -167,7 +167,7 @@ export default {
       const credentials = {
         email: this.email,
         password: this.password,
-        confirm_success_url: this.$route.query.redirectFrom || '/',
+        confirm_success_url: this.$route.query.redirectFrom || window.location.origin + '/',
       }
       return this.signUp(credentials)
         .then(() => {
@@ -175,7 +175,8 @@ export default {
         })
         .catch(error => {
           this.processingForm = false
-          this.authError = error.full_messages.join('<br/>')
+          const errors = Array.isArray(error) ? error : (error?.full_messages || error?.errors || [])
+          this.authError = errors.join(', ') || 'Sign up failed. Please try again.'
         })
     },
     isJoinLink() {
