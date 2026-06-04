@@ -1,17 +1,13 @@
 <template>
   <div
-    class="ranking-row bg-white rounded-2xl shadow-sm overflow-hidden mx-auto"
-    :class="rowWidthClass"
+    class="ranking-row bg-ranking-card rounded-2xl shadow-sm overflow-hidden mx-auto w-full"
   >
     <div class="flex items-center gap-3 px-4" :class="paddingClass">
 
       <!-- Medal / position -->
-      <div class="flex-shrink-0 flex items-center justify-center" :class="posColClass">
-        <span v-if="position === 1" class="text-3xl leading-none">🥇</span>
-        <span v-else-if="position === 2" class="text-2xl leading-none">🥈</span>
-        <span v-else-if="position === 3" class="text-xl leading-none">🥉</span>
+      <div class="flex-shrink-0 flex items-center justify-center w-9">
         <span
-          v-else-if="position"
+          v-if="position"
           class="font-bold text-gray-400 text-sm leading-none"
           v-html="ordinalize(position)"
         />
@@ -32,8 +28,7 @@
         >
           <!-- Avatar -->
           <div
-            class="flex-shrink-0 rounded-full overflow-hidden border-2 border-white shadow"
-            :class="avatarClass"
+            class="flex-shrink-0 rounded-full overflow-hidden border-2 border-white shadow w-9 h-9"
           >
             <cld-context v-if="ranking.photoKey || ranking.photo_key" :cloudName="cloudName">
               <cld-image :publicId="ranking.photoKey || ranking.photo_key">
@@ -58,8 +53,7 @@
           <BaseLink
             :to="{ name: 'predictions', query: { userId: ranking.userId || ranking.id } }"
             :disabled="!linkPredictions"
-            class="flex-1 min-w-0 truncate text-gray-800 font-medium"
-            :class="nameFontClass"
+            class="flex-1 min-w-0 truncate text-white font-medium text-shadow text-sm"
           >
             {{ ranking.name }}
           </BaseLink>
@@ -67,7 +61,7 @@
       </div>
 
       <!-- Points -->
-      <div class="flex-shrink-0 text-right">
+      <div class="flex-shrink-0 text-right text-shadow flex flex-col items-center gap-1">
         <template
           v-if="
             userRankings.some(
@@ -75,12 +69,10 @@
             )
           "
         >
-          <p class="font-black leading-none" :class="pointsFontClass" style="color: #fa5151">
+          <p class="font-black leading-none text-xl text-shadow" style="color: #fa5151">
             {{ userRankings[0].points }}
           </p>
-          <p v-if="userRankings[0].possiblePoints" class="text-xs text-gray-400 font-normal mt-0.5">
-            / {{ userRankings[0].possiblePoints }}
-          </p>
+          <small class="leading-none text-xs text-shadow font-normal" style="color: #fa5151">PTS</small>
         </template>
         <p v-else class="text-xs text-gray-400 italic font-normal leading-none">yet to predict</p>
       </div>
@@ -129,30 +121,11 @@ export default {
   },
 
   computed: {
-    rowWidthClass() {
-      if (this.position === 1) return 'w-full'
-      if (this.position === 2) return 'w-[97%]'
-      if (this.position === 3) return 'w-[94%]'
-      return 'w-[91%]'
-    },
     paddingClass() {
       if (this.position === 1) return 'py-4'
       if (this.position === 2) return 'py-3.5'
       if (this.position === 3) return 'py-3'
       return 'py-2.5'
-    },
-    posColClass() {
-      return this.position && this.position <= 3 ? 'w-9' : 'w-7'
-    },
-    avatarClass() {
-      if (this.position === 1) return 'w-14 h-14'
-      if (this.position === 2) return 'w-12 h-12'
-      if (this.position === 3) return 'w-11 h-11'
-      return 'w-9 h-9'
-    },
-    nameFontClass() {
-      if (this.position === 1) return 'text-base'
-      return 'text-sm'
     },
     pointsFontClass() {
       if (this.position === 1) return 'text-2xl'
@@ -178,5 +151,11 @@ export default {
     object-fit: cover;
     display: block;
   }
+}
+.bg-ranking-card {
+  background: rgba(255, 255, 255, 0.07);
+}
+.text-shadow {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 </style>
