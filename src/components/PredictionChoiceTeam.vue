@@ -12,7 +12,7 @@
       :src="team.flagUrl"
       alt=""
       aria-hidden="true"
-      class="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5 group-hover:opacity-8"
+      class="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5"
     />
     <p class="uppercase mb-1 h-8 leading-none flex items-center text-white font-bold">
       {{ team.name }}
