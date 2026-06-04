@@ -103,10 +103,14 @@ export default {
   margin: $spacer * 2;
 }
 
-// TODO: Hide when mobile
 @media (min-width: 640px) {
   #top-nav {
     display: flex;
+    justify-content: flex-end;
+  }
+
+  .logo-img {
+    display: none;
   }
 }
 </style>

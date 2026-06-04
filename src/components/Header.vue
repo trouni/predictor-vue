@@ -1,7 +1,7 @@
 <template>
   <div class="app-header">
 
-    <div :class="$slots.default ? 'px-5 pt-5 pb-0' : 'px-5 pt-5 pb-4'">
+    <div :class="$slots.default ? 'px-5 pt-5 sm:pt-0 pb-0' : 'px-5 pt-5 sm:pt-0 pb-4'">
       <div class="flex items-center gap-3">
 
         <!-- Competition photo — only shown when the title is the competition name -->
