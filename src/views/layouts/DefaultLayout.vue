@@ -59,6 +59,13 @@ export default {
 
 <style lang="scss">
 @import '@/styles';
+
+main {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .bg-body {
   background: linear-gradient(167.4deg, $purple 0%, $teal 88.73%);
 }
