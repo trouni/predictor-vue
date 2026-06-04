@@ -64,7 +64,15 @@
         </div>
 
         <!-- Error -->
-        <p v-if="authError" class="text-sm font-medium rounded-xl px-4 py-2.5" style="background: rgba(250,81,81,0.15); color: #fa5151; border: 1px solid rgba(250,81,81,0.25)">
+        <p
+          v-if="authError"
+          class="text-sm font-medium rounded-xl px-4 py-2.5"
+          style="
+            background: rgba(200, 40, 40, 0.55);
+            color: #fff;
+            border: 1px solid rgba(250, 81, 81, 0.5);
+          "
+        >
           {{ errorMessage }}
         </p>
 

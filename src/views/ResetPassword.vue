@@ -65,7 +65,7 @@
         <ul
           v-if="authErrors && authErrors.length"
           class="text-sm font-medium rounded-xl px-4 py-2.5"
-          style="background: rgba(250,81,81,0.15); color: #fa5151; border: 1px solid rgba(250,81,81,0.25); list-style: none; margin: 0;"
+          style="background: rgba(200, 40, 40, 0.55); color: #fff; border: 1px solid rgba(250, 81, 81, 0.5); list-style: none; margin: 0;"
         >
           <li v-for="error in authErrors" :key="error">{{ error }}</li>
         </ul>
