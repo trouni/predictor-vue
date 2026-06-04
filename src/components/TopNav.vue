@@ -1,11 +1,5 @@
 <template>
   <div id="top-nav">
-    <BaseLink :to="{ name: 'home' }" class="opacity-100"
-      ><img
-        alt="football graphic"
-        :src="require('../assets/logo.png')"
-        class="logo-img"
-    /></BaseLink>
     <ul class="top-nav-container">
       <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" :top="true" />
       <NavBarRoutes v-else :routes="loggedOutNavRoutes" :top="true" />
@@ -93,12 +87,7 @@ export default {
   }
 }
 
-.logo-img {
-  width: 50px;
-  opacity: 1;
-  margin: $spacer * 2;
-}
-
+// TODO: Hide when mobile
 @media (min-width: 640px) {
   #top-nav {
     display: flex;
