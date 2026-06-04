@@ -155,11 +155,6 @@ export default {
 .bg-ranking-card {
   background: rgba(255, 255, 255, 0.07);
 }
-.bg-ranking-score {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 8px;
-  border-radius: 8px;
-}
 .text-shadow {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
