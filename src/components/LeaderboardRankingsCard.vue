@@ -28,13 +28,13 @@
     <!-- Pre-tournament placeholder for the Global (auto-join) leaderboard -->
     <div
       v-if="showPreTournamentPlaceholder"
-      class="bg-white rounded-2xl shadow-sm w-full px-6 py-8 text-center"
+      class="bg-ranking-card rounded-2xl shadow-sm w-full px-6 py-8 text-center"
     >
       <div class="text-4xl mb-3">🏆</div>
-      <h3 class="font-bold text-gray-800 text-lg mb-1">
+      <h3 class="font-bold text-white text-lg mb-1">
         {{ leaderboard.name }}
       </h3>
-      <p class="text-gray-500 text-sm mb-5">{{ leaderboard.description }}</p>
+      <p class="text-white/80 text-sm mb-5">{{ leaderboard.description }}</p>
       <div
         class="inline-flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 mb-5"
       >
@@ -252,5 +252,8 @@ export default {
 }
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+.bg-ranking-card {
+  background: rgba(255, 255, 255, 0.07);
 }
 </style>
