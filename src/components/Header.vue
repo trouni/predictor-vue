@@ -1,30 +1,34 @@
 <template>
   <div class="app-header">
 
-    <div :class="$slots.default ? 'px-5 pt-5 sm:pt-0 pb-0' : 'px-5 pt-5 sm:pt-0 pb-4'">
-      <div class="flex items-center gap-3">
+    <div :class="$slots.default ? 'px-5 pt-5 sm:pt-2 pb-0' : 'px-5 pt-5 sm:pt-2 pb-4'">
+      <div class="flex items-center justify-between gap-3">
 
-        <!-- Competition photo — only shown when the title is the competition name -->
-        <div
-          v-if="competitionPhoto"
-          class="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden shadow"
-          style="border: 1px solid rgba(255,255,255,0.2)"
-        >
-          <img
-            :src="competitionPhoto"
-            :alt="title"
-            class="w-full h-full object-cover"
-          />
+        <div class="flex items-center gap-3 min-w-0">
+          <!-- Competition photo — only shown when the title is the competition name -->
+          <div
+            v-if="competitionPhoto"
+            class="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden shadow"
+            style="border: 1px solid rgba(255,255,255,0.2)"
+          >
+            <img
+              :src="competitionPhoto"
+              :alt="title"
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <!-- Page / competition title -->
+          <h1
+            v-if="title"
+            class="text-white font-bold leading-tight truncate"
+            style="font-size: 1.35rem; letter-spacing: -0.01em"
+          >
+            {{ title }}
+          </h1>
         </div>
 
-        <!-- Page / competition title -->
-        <h1
-          v-if="title"
-          class="text-white font-bold leading-tight truncate"
-          style="font-size: 1.35rem; letter-spacing: -0.01em"
-        >
-          {{ title }}
-        </h1>
+        <TopNav />
 
       </div>
     </div>
@@ -42,8 +46,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import TopNav from '@/components/TopNav'
 
 export default {
+  components: { TopNav },
   props: {
     title: {
       type: String,

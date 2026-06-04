@@ -1,6 +1,5 @@
 <template>
   <div class="bg-body flex flex-col items-stretch h-screen overscroll-none">
-    <TopNav />
     <Header :title="title" :img="img">
       <component v-if="subHeader" :is="subHeader" ref="subHeader" />
     </Header>
@@ -30,7 +29,6 @@
 </template>
 
 <script>
-import TopNav from '@/components/TopNav'
 import Header from '@/components/Header'
 import FooterNav from '@/components/FooterNav'
 import LeaderboardSubHeader from '@/components/LeaderboardSubHeader'
@@ -40,7 +38,6 @@ export default {
   components: {
     Header,
     FooterNav,
-    TopNav,
     LeaderboardSubHeader,
     MatchesSubHeader,
   },

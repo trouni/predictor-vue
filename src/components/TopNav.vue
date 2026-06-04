@@ -68,11 +68,7 @@ export default {
 
 #top-nav {
   display: none;
-  justify-content: space-between;
   align-items: center;
-  padding: $spacer;
-  color: white;
-  height: 64px;
 }
 
 .top-nav-container {
@@ -106,7 +102,6 @@ export default {
 @media (min-width: 640px) {
   #top-nav {
     display: flex;
-    justify-content: flex-end;
   }
 
   .logo-img {
