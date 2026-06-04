@@ -230,12 +230,16 @@ export default {
       const strip = this.$refs.scoringStrip
       if (!strip || !this.currentRoundKey) return
       const pill = strip.querySelector(`[data-round="${this.currentRoundKey}"]`)
-      if (pill)
+      if (pill) {
+        const reducedMotion =
+          window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches
         pill.scrollIntoView({
-          behavior: 'smooth',
+          behavior: reducedMotion ? 'auto' : 'smooth',
           inline: 'center',
           block: 'nearest',
         })
+      }
     },
   },
 }
