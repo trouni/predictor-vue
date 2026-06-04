@@ -200,15 +200,14 @@ export default {
     },
 
     currentRoundKey() {
-      return 'sf'
-      // if (!this.matches.length) return null
-      // const active = this.matches.filter(m => m.status !== 'finished')
-      // if (!active.length) return 'final'
-      // active.sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
-      // const next = active[0]
-      // if (next.groupId) return 'group'
-      // const map = { 2: 'r32', 3: 'r16', 4: 'qf', 5: 'sf', 6: '3p', 7: 'final' }
-      // return map[next.roundNumber] || null
+      if (!this.matches.length) return null
+      const active = this.matches.filter(m => m.status !== 'finished')
+      if (!active.length) return 'final'
+      active.sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
+      const next = active[0]
+      if (next.groupId) return 'group'
+      const map = { 2: 'r32', 3: 'r16', 4: 'qf', 5: 'sf', 6: '3p', 7: 'final' }
+      return map[next.roundNumber] || null
     },
   },
 
