@@ -55,7 +55,7 @@
 
       <!-- Pre-tournament header for private leaderboards -->
       <div
-        v-if="isPreTournament && !leaderboard.autoJoin"
+        v-if="isPreTournament && leaderboard.autoJoin === false"
         class="bg-white/10 rounded-2xl px-4 py-3"
       >
         <p class="text-white/40 text-xs uppercase tracking-widest font-semibold"
@@ -70,7 +70,7 @@
         :position="position"
         :link-predictions="true"
         :points="points"
-        :pre-tournament="isPreTournament && !leaderboard.autoJoin"
+        :pre-tournament="isPreTournament && leaderboard.autoJoin === false"
       />
 
       <!-- "Your position" strip — shown when current user is outside the visible ranks -->
