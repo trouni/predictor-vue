@@ -8,7 +8,7 @@
       opacityStyle,
     ]"
   >
-    <span class="uppercase text-sm leading-none text-white select-none">
+    <span class="uppercase text-sm leading-none font-black select-none">
       DRAW
     </span>
   </div>
@@ -33,10 +33,10 @@ export default {
 
   computed: {
     backgroundStyle() {
-      return this.status === 'selected' ? 'bg-blue-500 draw-selected' : 'bg-gray-400'
+      return this.status === 'selected' ? 'draw-selected' : 'bg-gray-500 text-white/50'
     },
     highlightStyle() {
-      return this.status === 'selected' ? '' : `border-6 border-prediction-${this.status}`
+      return this.status === 'selected' ? '' : `border-2 border-prediction-${this.status}`
     },
     opacityStyle() {
       if (this.greyOut) {
@@ -56,8 +56,10 @@ export default {
 
 <style lang="scss">
 .draw-selected {
-  box-shadow:
-    0 0 10px 3px rgba(59, 130, 246, 0.7),
-    0 0 24px 8px rgba(102, 144, 183, 0.35);
+    box-shadow:
+    0 0 0 5px #ffff,
+    0 0 14px 5px #fffc;
+    background-color: #ffff;
+    color: #44637f
 }
 </style>

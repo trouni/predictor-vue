@@ -1,15 +1,26 @@
 <template>
   <div
     :class="[
-      'flex flex-col mt-2 items-center px-3',
+      'flex flex-col items-center p-3',
       clickableStyle,
       opacityStyle,
     ]"
   >
-    <p class="uppercase mb-1 h-8 leading-none flex items-center">
+    <!-- Subtle flag wash -->
+    <img
+      v-if="team.flagUrl && chosen"
+      :src="team.flagUrl"
+      alt=""
+      aria-hidden="true"
+      class="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5"
+    />
+    <p class="uppercase mb-1 h-8 leading-none flex items-center text-white font-bold">
       {{ team.name }}
     </p>
     <TeamBadge :flag="team.badgeUrl" :score="team.score" :etScore="team.etScore" :psScore="team.psScore" :status="status" />
+    <span v-if="team.ranking" class="relative z-10 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full mt-2 text-gray-200 bg-gray-500">
+      FIFA #{{ team.ranking }}
+    </span>
   </div>
 </template>
 
@@ -30,6 +41,10 @@ export default {
       default: false,
     },
     greyOut: {
+      type: Boolean,
+      default: false,
+    },
+    chosen: {
       type: Boolean,
       default: false,
     },
