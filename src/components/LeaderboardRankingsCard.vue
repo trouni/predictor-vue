@@ -13,13 +13,13 @@
           :data-round="round.key"
           class="flex-shrink-0 flex items-center px-2 py-1.5 rounded-full text-xs font-semibold transition-all"
           :class="round.key === currentRoundKey
-            ? 'bg-white text-gray-800 shadow-sm px-3'
-            : 'text-white/40'"
+              ? 'text-white shadow-sm px-3 font-bold drop-shadow'
+              : 'text-white/40'"
         >
           {{ round.label }}
           <span
             class="font-normal"
-            :class="round.key === currentRoundKey ? 'text-gray-500' : 'text-white/25'"
+            :class="round.key === currentRoundKey ? 'text-white drop-shadow' : 'text-white/25'"
           >· {{ round.points }}pts</span>
         </div>
       </div>
@@ -53,7 +53,15 @@
     <!-- Ranked rows -->
     <template v-else>
 
-
+      <!-- Pre-tournament header for private leaderboards -->
+      <div
+        v-if="isPreTournament && !leaderboard.autoJoin"
+        class="bg-white/10 rounded-2xl px-4 py-3"
+      >
+        <p class="text-white/40 text-xs uppercase tracking-widest font-semibold"
+          >Players ready for the first kickoff</p
+        >
+      </div>
 
       <LeaderboardRanking
         v-for="{ position, points } in ranks"
@@ -62,6 +70,7 @@
         :position="position"
         :link-predictions="true"
         :points="points"
+        :pre-tournament="isPreTournament && !leaderboard.autoJoin"
       />
 
       <!-- "Your position" strip — shown when current user is outside the visible ranks -->
@@ -134,10 +143,13 @@ export default {
       matches: 'matches/matches',
     }),
 
-    showPreTournamentPlaceholder() {
-      if (!this.leaderboard.autoJoin) return false
+    isPreTournament() {
       if (!this.currentCompetition?.startDate) return false
       return new Date(this.currentCompetition.startDate) > new Date()
+    },
+
+    showPreTournamentPlaceholder() {
+      return this.leaderboard.autoJoin && this.isPreTournament
     },
 
     playerCount() {
