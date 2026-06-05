@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-'rounded-2xl text-center my-5 mx-2 shadow bg-prediction-card transition duration-300 relative border-2',
+'rounded-2xl text-center my-5 mx-2 shadow bg-prediction-card transition duration-300 relative',
       borderStyle,
     ]"
   >
@@ -162,7 +162,7 @@ export default {
         return 'border-prediction-default'
       } else {
         // Game upcoming and prediction already made
-        return 'border-white'
+        return ''
       }
     },
   },
