@@ -48,7 +48,7 @@
       }}</p>
       <MatchPredictions :predictions="predictions" :match="match" />
     </div>
-    <div class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info">
+<div v-if="!predictions || match.location" class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info">
       <p v-if="!predictions" class="text-xs text-white/70">{{ matchDate }}</p>
       <p v-if="match.location" class="ml-2 text-white/70 text-xs">
         <BaseIcon name="map-pin" /> {{ match.location }}
