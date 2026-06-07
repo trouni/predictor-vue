@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col items-center p-3',
+      'flex flex-col items-center py-3',
       clickableStyle,
       opacityStyle,
     ]"
