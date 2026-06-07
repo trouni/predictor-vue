@@ -6,7 +6,7 @@
 
     <!-- Status bar at top -->
     <div
-      class="flex items-center justify-between px-4 py-2.5 border-gray-100"
+      class="flex items-center justify-between px-4 py-2.5"
       :class="statusBarClass"
     >
       <span class="text-xs font-semibold uppercase tracking-wider" :class="statusTextClass">
