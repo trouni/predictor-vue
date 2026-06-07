@@ -11,7 +11,11 @@
         :team="match.teamHome"
         :status="status('home')"
         :clickable="!disabled"
-        :greyOut="madePrediction && match.prediction.choice !== 'home'"
+        :greyOut="
+          madePrediction &&
+          match.prediction.choice !== 'home' &&
+          match.status !== 'started'
+        "
         :chosen="madePrediction && match.prediction.choice === 'home'"
         @click.native="setPrediction('home')"
       />
@@ -20,13 +24,19 @@
         class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
       >
         <p class="text-md text-red-300" v-if="finished && !madePrediction">
-        No prediction made</p>
+          No prediction made
+        </p>
+
         <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
             :status="status('draw')"
             :clickable="!disabled"
-            :greyOut="madePrediction && match.prediction.choice !== 'draw'"
+            :greyOut="
+              madePrediction &&
+              match.prediction.choice !== 'draw' &&
+              match.status !== 'started'
+            "
             :teamHome="match.teamHome"
             :teamAway="match.teamAway"
             :chosen="madePrediction && match.prediction.choice === 'draw'"
@@ -39,7 +49,11 @@
         :team="match.teamAway"
         :status="status('away')"
         :clickable="!disabled"
-        :greyOut="madePrediction && match.prediction.choice !== 'away'"
+        :greyOut="
+          madePrediction &&
+          match.prediction.choice !== 'away' &&
+          match.status !== 'started'
+        "
         :chosen="madePrediction && match.prediction.choice === 'away'"
         @click.native="setPrediction('away')"
       />
@@ -51,9 +65,24 @@
       }}</p>
       <MatchPredictions :predictions="predictions" :match="match" />
     </div>
-<div v-if="!predictions || match.location" class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info">
-      <p v-if="!predictions" class="text-xs text-white/70">{{ matchDate }}</p>
-      <p v-if="match.location" class="ml-2 text-white/70 text-xs">
+    <div
+      v-if="!predictions || (match.location && match.status !== 'started')"
+      class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info"
+    >
+      <p v-if="!predictions" class="text-xs text-white/70">
+        <BaseIcon
+          v-if="match.status === 'started'"
+          name="circle"
+          fade
+          class="mr-1 text-green-400"
+        />
+        {{ matchDate }}
+        <span class="ml-1 font-bold" v-if="match.minute"> {{ match.minute }}'</span>
+      </p>
+      <p
+        v-if="match.location && match.status !== 'started'"
+        class="ml-2 text-white/70 text-xs"
+      >
         <BaseIcon name="map-pin" /> {{ match.location }}
       </p>
     </div>
