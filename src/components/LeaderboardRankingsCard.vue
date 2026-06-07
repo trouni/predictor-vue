@@ -61,6 +61,7 @@
         <p class="text-white/40 text-xs uppercase tracking-widest font-semibold">
           Players ready for the first kickoff
         </p>
+
       </div>
 
       <LeaderboardRanking
