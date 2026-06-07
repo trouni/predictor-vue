@@ -20,7 +20,9 @@
         :class="
           correctPrediction
             ? 'bg-prediction-green-full prediction-green'
-            : 'bg-prediction-red-full prediction-red'
+            : madePrediction
+            ? 'bg-prediction-red-full prediction-red'
+            : 'bg-prediction-info text-white'
         "
       >
         {{
@@ -158,6 +160,7 @@ export default {
       if (this.finished && this.madePrediction) {
         return this.correctPrediction ? 'bg-prediction-green' : 'bg-prediction-red'
       }
+      if (this.finished) return 'bg-prediction-info'
       if (this.match.status === 'started') return 'bg-orange-50'
       return 'bg-gray-50'
     },
