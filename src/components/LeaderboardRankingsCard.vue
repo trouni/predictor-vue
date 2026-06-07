@@ -58,9 +58,9 @@
         v-if="isPreTournament && leaderboard.autoJoin === false"
         class="bg-white/10 rounded-2xl px-4 py-3"
       >
-        <p class="text-white/40 text-xs uppercase tracking-widest font-semibold"
-          >Players ready for the first kickoff</p
-        >
+        <p class="text-white/40 text-xs uppercase tracking-widest font-semibold">
+          Players ready for the first kickoff
+        </p>
       </div>
 
       <LeaderboardRanking
