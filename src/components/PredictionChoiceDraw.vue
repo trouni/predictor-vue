@@ -7,6 +7,20 @@
       opacityStyle,
     ]"
   >
+    <img
+      v-if="chosen && teamHome && teamHome.flagUrl"
+      :src="teamHome.flagUrl"
+      alt=""
+      aria-hidden="true"
+      class="absolute top-0 left-0 bottom-0 w-1/2 h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5"
+    />
+    <img
+      v-if="chosen && teamAway && teamAway.flagUrl"
+      :src="teamAway.flagUrl"
+      alt=""
+      aria-hidden="true"
+      class="absolute top-0 right-0 bottom-0 w-1/2 h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5"
+    />
     <span class="uppercase text-sm leading-none font-black select-none">
       DRAW
     </span>
@@ -16,6 +30,8 @@
 <script>
 export default {
   props: {
+    teamHome: Object,
+    teamAway: Object,
     status: {
       type: String,
       default: 'default',
@@ -25,6 +41,10 @@ export default {
       default: false,
     },
     greyOut: {
+      type: Boolean,
+      default: false,
+    },
+    chosen: {
       type: Boolean,
       default: false,
     },

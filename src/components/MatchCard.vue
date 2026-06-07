@@ -27,6 +27,9 @@
             :status="status('draw')"
             :clickable="!disabled"
             :greyOut="madePrediction && match.prediction.choice !== 'draw'"
+            :teamHome="match.teamHome"
+            :teamAway="match.teamAway"
+            :chosen="madePrediction && match.prediction.choice === 'draw'"
             @click.native="setPrediction('draw')"
           />
         </div>
