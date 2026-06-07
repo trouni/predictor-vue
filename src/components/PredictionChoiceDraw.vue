@@ -1,8 +1,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col py-2 px-3 h-full rounded-full shadow-inner-md',
-      backgroundStyle,
+      'flex flex-col py-2 px-3 h-full rounded-full',
       highlightStyle,
       clickableStyle,
       opacityStyle,
@@ -32,11 +31,13 @@ export default {
   },
 
   computed: {
-    backgroundStyle() {
-      return this.status === 'selected' ? 'draw-selected' : 'bg-gray-500 text-white/50'
-    },
     highlightStyle() {
-      return this.status === 'selected' ? '' : `border-2 border-prediction-${this.status}`
+      if (this.status === 'selected') {
+        return 'draw-selected'
+      } else if (this.status === 'correct' || this.status === 'wrong') {
+        return `text-white prediction-${this.status} border-prediction-${this.status} border-4`
+      }
+      return 'border-2 bg-gray-500 text-white/50 shadow-inner-md'
     },
     opacityStyle() {
       if (this.greyOut) {
@@ -56,10 +57,14 @@ export default {
 
 <style lang="scss">
 .draw-selected {
-    box-shadow:
-    0 0 0 5px #ffff,
-    0 0 14px 5px #fffc;
-    background-color: #ffff;
-    color: #44637f
+  box-shadow: 0 0 0 5px #ffff, 0 0 14px 5px #fffc;
+  background-color: #ffff;
+  color: #44637f;
+}
+.prediction-correct {
+  background-color: rgb(132, 204, 22);
+}
+.prediction-wrong {
+  background-color: rgb(248, 113, 113);
 }
 </style>

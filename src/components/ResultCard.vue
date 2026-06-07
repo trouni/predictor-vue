@@ -1,33 +1,35 @@
 <template>
   <div
-    class="result-card rounded-2xl my-3 mx-3 bg-white shadow-md overflow-hidden relative transition-all duration-300"
+    class="result-card rounded-2xl my-3 mx-3 bg-prediction-card shadow-md overflow-hidden relative transition-all duration-300"
     :class="cardBorderClass"
   >
 
     <!-- Status bar at top -->
     <div
-      class="flex items-center justify-between px-4 py-2.5 border-b border-gray-100"
+      class="flex items-center justify-between px-4 py-2.5 border-gray-100"
       :class="statusBarClass"
     >
       <span class="text-xs font-semibold uppercase tracking-wider" :class="statusTextClass">
         {{ matchDate }}
       </span>
 
-      <!-- User's outcome badge (only once game is finished and prediction was made) -->
+      <!-- User's outcome badge (once game is finished) -->
       <span
-        v-if="finished && madePrediction"
-        class="text-xs font-bold px-2.5 py-1 rounded-full"
-        :class="correctPrediction
-          ? 'bg-green-100 text-green-700'
-          : 'bg-red-100 text-red-500'"
+        v-if="finished"
+        class="text-xs font-bold px-2.5 py-1 rounded-full drop-shadow box-shadow"
+        :class="
+          correctPrediction
+            ? 'bg-prediction-green-full prediction-green'
+            : 'bg-prediction-red-full prediction-red'
+        "
       >
-        {{ correctPrediction ? '✓ Correct' : '✗ Wrong' }}
-      </span>
-      <span
-        v-else-if="finished && !madePrediction"
-        class="text-xs text-gray-400"
-      >
-        No prediction
+        {{
+          correctPrediction
+            ? `+ ${(match.roundNumber || 0) + 2} points`
+            : madePrediction
+              ? '✗ Wrong'
+              : 'No prediction'
+        }}
       </span>
       <span
         v-else-if="!finished"
@@ -154,13 +156,13 @@ export default {
     },
     statusBarClass() {
       if (this.finished && this.madePrediction) {
-        return this.correctPrediction ? 'bg-green-50' : 'bg-red-50'
+        return this.correctPrediction ? 'bg-prediction-green' : 'bg-prediction-red'
       }
       if (this.match.status === 'started') return 'bg-orange-50'
       return 'bg-gray-50'
     },
     statusTextClass() {
-      if (this.finished) return 'text-gray-500'
+      if (this.finished) return 'text-white/50'
       if (this.match.status === 'started') return 'text-orange-600'
       return 'text-gray-400'
     },
@@ -178,13 +180,14 @@ export default {
 
   methods: {
     greyOutOrNot(column) {
-      if (this.match.status === 'started') return false
+      if (this.match.status === 'started' || this.matchResult === 'draw') return false
       return column !== this.matchResult
     },
     status(choice) {
       if (!this.finished) return 'default'
-      if (this.matchResult === choice) return 'correct'
-      if (this.match.prediction?.choice === choice) return 'wrong'
+      if (this.match.prediction?.choice === choice) {
+        return this.correctPrediction ? 'correct' : 'wrong'
+      }
       return 'default'
     },
     formatTime,
@@ -197,5 +200,29 @@ export default {
 <style lang="scss" scoped>
 .result-card {
   border-left-width: 4px;
+}
+.bg-prediction-card {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.bg-prediction-info {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+.bg-prediction-red {
+  background-color: rgba(248, 113, 113, 0.06);
+}
+.bg-prediction-green {
+  background-color: rgba(132, 204, 22, 0.06);
+}
+.bg-prediction-red-full {
+  background-color: rgba(248, 113, 113, 0.1);
+}
+.bg-prediction-green-full {
+  background-color: rgba(132, 204, 22, 0.1);
+}
+.prediction-red {
+  color: #F87171;
+}
+.prediction-green {
+  color: #84CC16;
 }
 </style>

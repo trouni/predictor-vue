@@ -5,7 +5,10 @@
     <div class="flex items-center gap-3 px-4" :class="paddingClass">
 
       <!-- Medal / position -->
-      <div class="flex-shrink-0 flex items-center justify-center w-9">
+      <div
+        v-if="!preTournament"
+        class="flex-shrink-0 flex items-center justify-center w-9"
+      >
         <span
           v-if="position"
           class="font-bold text-gray-400 text-sm leading-none"
@@ -61,7 +64,10 @@
       </div>
 
       <!-- Points -->
-      <div class="flex-shrink-0 text-right text-shadow flex flex-col items-center gap-1">
+      <div
+        v-if="!preTournament"
+        class="flex-shrink-0 text-right text-shadow flex flex-col items-center gap-1"
+      >
         <template
           v-if="
             userRankings.some(
@@ -109,6 +115,10 @@ export default {
       default: false,
     },
     paddingStart: {
+      type: Boolean,
+      default: false,
+    },
+    preTournament: {
       type: Boolean,
       default: false,
     },
