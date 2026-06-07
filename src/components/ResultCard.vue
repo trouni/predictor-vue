@@ -165,7 +165,7 @@ export default {
       return 'bg-gray-50'
     },
     statusTextClass() {
-      if (this.finished) return 'text-white/50'
+      if (this.finished) return 'text-white/80'
       if (this.match.status === 'started') return 'text-orange-600'
       return 'text-gray-400'
     },
