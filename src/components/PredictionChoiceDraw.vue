@@ -9,14 +9,14 @@
     ]"
   >
     <img
-      v-if="teamHome.flagUrl && chosen"
+      v-if="chosen && teamHome && teamHome.flagUrl"
       :src="teamHome.flagUrl"
       alt=""
       aria-hidden="true"
       class="absolute top-0 left-0 bottom-0 w-1/2 h-full object-cover pointer-events-none transition-opacity duration-300 opacity-5"
     />
     <img
-      v-if="teamAway.flagUrl && chosen"
+      v-if="chosen && teamAway && teamAway.flagUrl"
       :src="teamAway.flagUrl"
       alt=""
       aria-hidden="true"
