@@ -77,6 +77,7 @@
           class="mr-1 text-green-400"
         />
         {{ matchDate }}
+        <span class="ml-1 font-bold" v-if="match.minute"> {{ match.minute }}'</span>
       </p>
       <p
         v-if="match.location && match.status !== 'started'"
