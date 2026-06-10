@@ -8,7 +8,11 @@
     <div class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
-        options="h-12 w-12"
+        :options="
+          madePrediction && match.prediction.choice === 'home'
+            ? 'h-14 w-14'
+            : 'h-12 w-12'
+        "
         :team="match.teamHome"
         :status="status('home')"
         :clickable="!disabled"
@@ -28,8 +32,7 @@
           No prediction made
         </p>
 
-        <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
-        <div class="flex-grow">
+        <div class="flex-grow mt-3">
           <PredictionChoiceDraw
             options="h-12 w-12"
             :status="status('draw')"
@@ -48,6 +51,11 @@
       </div>
       <PredictionChoiceTeam
         class="w-1/3"
+        :options="
+          madePrediction && match.prediction.choice === 'away'
+            ? 'h-14 w-14'
+            : 'h-12 w-12'
+        "
         :team="match.teamAway"
         :status="status('away')"
         :clickable="!disabled"
