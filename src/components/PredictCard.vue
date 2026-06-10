@@ -2,7 +2,7 @@
   <div class="predict-flow flex flex-col gap-4 w-full" style="margin: 0 auto;">
 
     <!-- Back link -->
-    <div class="px-1">
+    <div v-if="showBackLink" class="px-1">
       <BaseLink
         :to="{ name: 'predictions' }"
         class="inline-flex items-center gap-1.5 text-xs font-medium opacity-50 hover:opacity-80 transition-opacity"
@@ -17,10 +17,10 @@
     <div class="px-1">
       <div class="flex justify-between items-center mb-2">
         <span class="text-white text-xs font-semibold uppercase tracking-widest opacity-60">
-          Your Picks
+          Make Your Pick
         </span>
         <span class="text-white text-sm font-semibold">
-          {{ savedCount }}<span class="opacity-50 font-normal"> / {{ matches.length }} saved</span>
+          {{ remainingCount }}<span class="opacity-50 font-normal"> remaining</span>
         </span>
       </div>
       <div class="h-1.5 rounded-full overflow-hidden" style="background: rgba(255,255,255,0.2)">
@@ -138,7 +138,8 @@
               <span
                 class="text-xs font-bold transition-colors"
                 :style="localChoice === 'draw' ? 'color: #0cf574' : 'color: #9ca3af'"
-              >DRAW</span>
+                >DRAW</span
+              >
             </button>
             <span v-else class="text-gray-300 text-sm font-light tracking-widest">VS</span>
             <div class="w-px flex-1" style="background: #e5e7eb" />
@@ -255,9 +256,13 @@
       <!-- Next -->
       <button
         @click="navigate(1)"
-        :disabled="currentIndex === matches.length - 1"
+        :disabled="!canGoNext"
         class="flex items-center gap-1.5 text-sm font-medium transition-all duration-150 focus:outline-none"
-        :class="currentIndex < matches.length - 1 ? 'text-white hover:text-white/70' : 'text-white/25 cursor-not-allowed'"
+        :class="
+          canGoNext
+            ? 'text-white hover:text-white/70'
+            : 'text-white/25 cursor-not-allowed'
+        "
       >
         Next
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,24 +290,47 @@ export default {
       type: Boolean,
       default: false,
     },
+    showBackLink: {
+      type: Boolean,
+      default: true,
+    },
+    removeOnSave: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
     return {
       currentIndex: 0,
-      savedChoices: {},   // matchId → choice string
+      savedChoices: {},
       isSaving: false,
       slideDirection: 'slide-next',
+      initialMatchCount: 0,
+      lastPredictedId: null,
     }
   },
 
   mounted() {
-    // Pre-populate any existing predictions (for edit mode)
+    this.initialMatchCount = this.matches.length
     this.matches.forEach(match => {
       if (match.prediction && match.prediction.choice) {
         this.$set(this.savedChoices, match.id, match.prediction.choice)
       }
     })
+  },
+
+  watch: {
+    matches(newVal) {
+      if (!this.currentMatch) return
+      const id = this.currentMatch.id
+      const newIdx = newVal.findIndex(m => m.id === id)
+      if (newIdx !== -1) {
+        this.currentIndex = newIdx
+      } else if (this.currentIndex >= newVal.length) {
+        this.currentIndex = Math.max(0, newVal.length - 1)
+      }
+    },
   },
 
   computed: {
@@ -320,12 +348,14 @@ export default {
       if (this.localChoice === 'away') return `${this.currentMatch.teamAway.name} to win`
       return ''
     },
-    savedCount() {
-      return Object.keys(this.savedChoices).length
+    remainingCount() {
+      return this.matches.filter(m => !this.savedChoices[m.id]).length
     },
     progressPercent() {
-      if (!this.matches.length) return 0
-      return Math.round((this.savedCount / this.matches.length) * 100)
+      if (!this.initialMatchCount) return 0
+      return Math.round(
+        ((this.initialMatchCount - this.remainingCount) / this.initialMatchCount) * 100
+      )
     },
     pointsValue() {
       if (!this.currentMatch) return 0
@@ -347,6 +377,10 @@ export default {
       if (!this.currentMatch) return ''
       return formatDateTime(this.currentMatch.kickoffTime)
     },
+    canGoNext() {
+      if (this.removeOnSave && this.localChoice) return true
+      return this.currentIndex < this.matches.length - 1
+    },
   },
 
   methods: {
@@ -356,7 +390,14 @@ export default {
 
     navigate(direction) {
       const next = this.currentIndex + direction
-      if (next < 0 || next >= this.matches.length) return
+      if (next < 0 || next >= this.matches.length) {
+        // At the last match going forward: confirm it's done and hand it to the list
+        if (this.removeOnSave && direction > 0 && this.localChoice) {
+          this.$emit('predicted', this.currentMatch.id)
+          this.lastPredictedId = null
+        }
+        return
+      }
       this.slideDirection = direction > 0 ? 'slide-next' : 'slide-prev'
       this.$nextTick(() => {
         this.currentIndex = next
@@ -375,18 +416,30 @@ export default {
       if (this.isSaving) return
       if (this.localChoice === choice) return
 
-      const matchId = this.currentMatch.id
+      const match = this.currentMatch
+      const matchId = match.id
+
+      // Release the previously held prediction into the list below
+      if (
+        this.removeOnSave &&
+        this.lastPredictedId &&
+        this.lastPredictedId !== matchId
+      ) {
+        this.$emit('predicted', this.lastPredictedId)
+      }
+
       this.isSaving = true
       try {
-        await this.setPrediction({ match: this.currentMatch, choice })
+        await this.setPrediction({ match, choice })
         this.$set(this.savedChoices, matchId, choice)
 
         if (!this.editMode) {
-          // After brief success display, advance to next unpredicted match
+          if (this.removeOnSave) this.lastPredictedId = matchId
           setTimeout(() => {
             const next = this.findNextUnpredicted()
             if (next === -1) {
-              this.$emit('done')
+              if (!this.removeOnSave) this.$emit('done')
+              // removeOnSave: stay on last predicted match; Next button confirms it
             } else if (next !== this.currentIndex) {
               this.slideDirection = 'slide-next'
               this.currentIndex = next
@@ -440,32 +493,32 @@ export default {
   }
 }
 
-/* Slide forward (next) */
+/* Slide forward (next) — card exits downward, next enters from above */
 .slide-next-enter-active,
 .slide-next-leave-active {
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .slide-next-enter {
   opacity: 0;
-  transform: translateX(28px);
+  transform: translateY(-28px);
 }
 .slide-next-leave-to {
   opacity: 0;
-  transform: translateX(-28px);
+  transform: translateY(28px);
 }
 
-/* Slide backward (prev) */
+/* Slide backward (prev) — card exits upward, next enters from below */
 .slide-prev-enter-active,
 .slide-prev-leave-active {
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .slide-prev-enter {
   opacity: 0;
-  transform: translateX(-28px);
+  transform: translateY(28px);
 }
 .slide-prev-leave-to {
   opacity: 0;
-  transform: translateX(28px);
+  transform: translateY(-28px);
 }
 
 /* Fade for status footer */
