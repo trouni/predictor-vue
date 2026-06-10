@@ -35,15 +35,20 @@
       </span>
       <span
         v-else-if="!finished"
-        class="flex items-center gap-1 text-xs font-medium text-orange-500"
+        class="text-xs font-bold px-2.5 py-1 rounded-full drop-shadow box-shadow bg-prediction-info text-white"
       >
-        <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+        <BaseIcon
+          v-if="match.status === 'started'"
+          name="circle"
+          fade
+          class="mr-1 text-green-400"
+        />
         Live
       </span>
     </div>
 
     <!-- Teams row -->
-    <div class="flex items-center justify-around px-2 pt-0 pb-4">
+    <div class="flex items-center justify-around px-2 pt-0 pb-2">
       <PredictionChoiceTeam
         class="w-1/3"
         :team="match.teamHome"
@@ -79,11 +84,8 @@
     </div>
 
     <!-- Group's picks section -->
-    <div v-if="predictions" class="border-t border-gray-100">
+    <div v-if="predictions">
       <!-- Section label -->
-      <div class="flex items-center gap-2 px-4 pt-3 pb-1">
-        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Group picks</span>
-      </div>
 
       <MatchPredictions
         :predictions="predictions"
@@ -160,13 +162,12 @@ export default {
       if (this.finished && this.madePrediction) {
         return this.correctPrediction ? 'bg-prediction-green' : 'bg-prediction-red'
       }
-      if (this.finished) return 'bg-prediction-info'
-      if (this.match.status === 'started') return 'bg-orange-50'
-      return 'bg-gray-50'
+      if (this.match.status === 'started') return 'bg-prediction-card'
+      return 'bg-prediction-info'
     },
     statusTextClass() {
       if (this.finished) return 'text-white/80'
-      if (this.match.status === 'started') return 'text-orange-600'
+      if (this.match.status === 'started') return 'text-white'
       return 'text-gray-400'
     },
     // Left border color based on prediction outcome
