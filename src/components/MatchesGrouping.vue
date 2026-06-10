@@ -4,7 +4,7 @@
       <div v-if="dayMatches.length">
         <h4
           v-if="date !== formatDate(new Date())"
-          class="text-center font-light mt-8 mb-2 text-white"
+          class="text-center font-light mt-5 mb-2 text-white"
           >{{ date }}
         </h4>
         <template v-for="match in dayMatches">

@@ -1,17 +1,19 @@
 <template>
   <div class="pb-24">
-
     <!-- ─── Viewing another user's predictions ─── -->
     <div v-if="userId" class="px-4 pt-4 mb-6">
       <button
         @click="$router.go(-1)"
         class="flex items-center gap-1.5 text-sm font-medium mb-6 transition-opacity hover:opacity-70 focus:outline-none"
-        style="color: rgba(255,255,255,0.7)"
+        style="color: rgba(255, 255, 255, 0.7)"
       >
         <BaseIcon name="chevron-left" />
         Back to Rankings
       </button>
-      <p class="text-center font-medium mb-3" style="color: rgba(255,255,255,0.6)">
+      <p
+        class="text-center font-medium mb-3"
+        style="color: rgba(255, 255, 255, 0.6)"
+      >
         Predictions made by
       </p>
       <LeaderboardRanking :userRankings="[user]" class="m-auto max-w-xs" />
@@ -19,25 +21,30 @@
 
     <!-- ─── Current user: action banner ─── -->
     <div v-else class="px-4 pt-4 mb-6">
-
       <!-- Has unpredicted matches -->
       <div
         v-if="nextMissingMatch"
-        class="rounded-2xl overflow-hidden shadow-xl"
-        style="background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))"
+        class="rounded-2xl overflow-hidden shadow-xl card-gradient"
       >
         <div class="px-5 pt-4 pb-3">
           <div class="flex items-stretch justify-between gap-3">
             <div>
               <p
                 class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5"
-                >Up Next</p>
+                >Up Next</p
+              >
               <div
                 class="font-bold text-gray-800 text-base leading-tight flex items-center"
               >
-                <TeamBadge options="h-10 w-10 mr-1 border-blue" :flag="nextMissingMatch.teamHome.badgeUrl" />
+                <TeamBadge
+                  options="h-10 w-10 mr-1 border-blue"
+                  :flag="nextMissingMatch.teamHome.badgeUrl"
+                />
                 vs
-                <TeamBadge options="h-10 w-10 ml-1 border-blue" :flag="nextMissingMatch.teamAway.badgeUrl" />
+                <TeamBadge
+                  options="h-10 w-10 ml-1 border-blue"
+                  :flag="nextMissingMatch.teamAway.badgeUrl"
+                />
               </div>
             </div>
             <div class="flex flex-col justify-between items-end">
@@ -63,11 +70,11 @@
                   fade
                   class="mr-1 text-red-400"
                 />
-                {{ formatDuration(timeLeftForPrediction) }} till kickoff
+                <BaseIcon v-else name="stopwatch" class="mr-1 text-gray-500" />
+                {{ formatDuration(timeLeftForPrediction) }}
               </p>
             </div>
           </div>
-
         </div>
         <div class="px-5 pb-4">
           <BaseLink
@@ -85,7 +92,13 @@
       <div
         v-else
         class="rounded-2xl px-5 py-4 flex items-center gap-4"
-        style="background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))"
+        style="
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.92),
+            rgba(255, 255, 255, 0.78)
+          );
+        "
       >
         <div
           class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow"
@@ -95,7 +108,9 @@
         </div>
         <div class="flex-1">
           <p class="font-bold text-gray-800 text-base">All predictions in!</p>
-          <p class="text-sm text-gray-500">You've predicted all upcoming matches.</p>
+          <p class="text-sm text-gray-500"
+            >You've predicted all upcoming matches.</p
+          >
         </div>
         <BaseLink
           :to="{ name: 'edit_predictions' }"
@@ -104,25 +119,48 @@
           Edit
         </BaseLink>
       </div>
-
     </div>
 
     <!-- ─── Tabs ─── -->
     <div class="px-4 mb-1">
       <div
         class="flex rounded-2xl p-1 gap-1"
-        style="background: rgba(0,0,0,0.15)"
+        style="background: rgba(0, 0, 0, 0.15)"
       >
         <button
           v-for="tab in tabs"
           :key="tab"
           @click="changeTab(tab)"
           class="flex-1 py-2 px-3 rounded-xl text-sm font-semibold capitalize transition-all duration-200 focus:outline-none"
-          :class="selectedTab === tab
-            ? 'bg-tab text-white shadow-sm'
-            : 'text-white/60 hover:text-white/80'"
+          :class="
+            selectedTab === tab
+              ? 'bg-tab text-white shadow-sm'
+              : 'text-white/60 hover:text-white/80'
+          "
         >
           {{ tab }}
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── Group filter chips ─── -->
+    <div
+      v-if="groupFilters.length > 1"
+      class="px-4 mt-2 mb-1 overflow-x-auto scrollbar-hide"
+    >
+      <div class="flex gap-2 w-max">
+        <button
+          v-for="filter in groupFilters"
+          :key="filter.key === null ? '__all__' : filter.key"
+          @click="selectedGroup = filter.key"
+          class="py-1 px-3 rounded-full text-xs font-semibold transition-all duration-200 focus:outline-none whitespace-nowrap"
+          :class="
+            selectedGroup === filter.key
+              ? 'text-white chip-active'
+              : 'text-white/50 chip-inactive'
+          "
+        >
+          {{ filter.label }}
         </button>
       </div>
     </div>
@@ -149,7 +187,6 @@
       title="No results yet"
       subtitle="Completed matches will appear here once the whistle blows."
     />
-
   </div>
 </template>
 
@@ -160,7 +197,13 @@ import LeaderboardRanking from '@/components/LeaderboardRanking'
 import TeamBadge from '@/components/TeamBadge'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
-import { pluralize, formatDate, formatDuration } from '@/utils/helpers'
+import {
+  pluralize,
+  formatDate,
+  formatDuration,
+  buildGroupFilters,
+  applyGroupFilter,
+} from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
 export default {
@@ -185,6 +228,7 @@ export default {
       },
       selectedTab: 'ongoing',
       tabs: ['ongoing', 'upcoming', 'past'],
+      selectedGroup: null,
       timeLeftForPrediction: null,
     }
   },
@@ -226,7 +270,9 @@ export default {
       return this.matches.some(m => m.status === 'finished')
     },
     hasUpcomingPredictions() {
-      return this.matches.some(m => m.status === 'upcoming' && 'prediction' in m)
+      return this.matches.some(
+        m => m.status === 'upcoming' && 'prediction' in m
+      )
     },
     missingPredictions() {
       return this.matches.filter(
@@ -249,6 +295,18 @@ export default {
       if (this.selectedTab === 'ongoing') return this.ongoingMatches()
       return this.upcomingMatches()
     },
+    tabMatches() {
+      if (this.selectedTab === 'ongoing')
+        return this.matches.filter(m => m.status === 'started')
+      if (this.selectedTab === 'past')
+        return this.matches.filter(m => m.status === 'finished')
+      return this.matches.filter(
+        m => m.status === 'upcoming' && 'prediction' in m
+      )
+    },
+    groupFilters() {
+      return buildGroupFilters(this.tabMatches)
+    },
   },
 
   methods: {
@@ -260,36 +318,54 @@ export default {
     formatDuration,
     changeTab(tabName) {
       this.selectedTab = tabName
+      this.selectedGroup = null
     },
     ongoingMatches() {
-      return [{
-        matches: groupBy(
-          this.matches
-            .filter(m => m.status === 'started')
-            .sort((m1, m2) => new Date(m1.kickoffTime) - new Date(m2.kickoffTime)),
-          m => formatDate(new Date(m.kickoffTime))
-        ),
-      }]
+      return [
+        {
+          matches: groupBy(
+            applyGroupFilter(
+              this.matches.filter(m => m.status === 'started'),
+              this.selectedGroup
+            ).sort(
+              (m1, m2) => new Date(m1.kickoffTime) - new Date(m2.kickoffTime)
+            ),
+            m => formatDate(new Date(m.kickoffTime))
+          ),
+        },
+      ]
     },
     pastMatches() {
-      return [{
-        matches: groupBy(
-          this.matches
-            .filter(m => m.status === 'finished')
-            .sort((m1, m2) => new Date(m2.kickoffTime) - new Date(m1.kickoffTime)),
-          m => formatDate(new Date(m.kickoffTime))
-        ),
-      }]
+      return [
+        {
+          matches: groupBy(
+            applyGroupFilter(
+              this.matches.filter(m => m.status === 'finished'),
+              this.selectedGroup
+            ).sort(
+              (m1, m2) => new Date(m2.kickoffTime) - new Date(m1.kickoffTime)
+            ),
+            m => formatDate(new Date(m.kickoffTime))
+          ),
+        },
+      ]
     },
     upcomingMatches() {
-      return [{
-        matches: groupBy(
-          this.matches
-            .filter(m => m.status === 'upcoming' && 'prediction' in m)
-            .sort((m1, m2) => new Date(m1.kickoffTime) - new Date(m2.kickoffTime)),
-          m => formatDate(new Date(m.kickoffTime))
-        ),
-      }]
+      return [
+        {
+          matches: groupBy(
+            applyGroupFilter(
+              this.matches.filter(
+                m => m.status === 'upcoming' && 'prediction' in m
+              ),
+              this.selectedGroup
+            ).sort(
+              (m1, m2) => new Date(m1.kickoffTime) - new Date(m2.kickoffTime)
+            ),
+            m => formatDate(new Date(m.kickoffTime))
+          ),
+        },
+      ]
     },
     getTimeLeftForPrediction() {
       const now = new Date()
@@ -307,10 +383,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.78)
+  );
+}
 .bg-tab {
   background-color: rgba(255, 255, 255, 0.2);
 }
 .border-blue {
   border-color: #6690b7;
+}
+.chip-active {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+.chip-inactive {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>
