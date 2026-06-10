@@ -16,7 +16,7 @@
       <!-- User's outcome badge (once game is finished) -->
       <span
         v-if="finished"
-        class="text-xs font-bold px-2.5 py-1 rounded-full drop-shadow box-shadow"
+        class="text-xs font-bold px-2.5 py-1 rounded-full drop-shadow"
         :class="
           correctPrediction
             ? 'bg-prediction-green-full prediction-green'
@@ -34,15 +34,10 @@
         }}
       </span>
       <span
-        v-else-if="!finished"
-        class="text-xs font-bold px-2.5 py-1 rounded-full drop-shadow box-shadow bg-prediction-info text-white"
+        v-else-if="match.status === 'started'"
+        class="text-xs font-bold px-2.5 py-1 rounded-full drop-shadow bg-prediction-info text-white"
       >
-        <BaseIcon
-          v-if="match.status === 'started'"
-          name="circle"
-          fade
-          class="mr-1 text-green-400"
-        />
+        <BaseIcon name="circle" fade class="mr-1 text-green-400" />
         Live
       </span>
     </div>
