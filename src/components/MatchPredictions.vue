@@ -6,7 +6,10 @@
 
       <!-- Home column -->
       <div :class="match.groupId ? 'w-1/3' : 'w-1/2'" class="flex flex-col gap-1 pt-1 md:px-5">
-        <span class="text-xs font-semibold text-white/70 uppercase tracking-wider pb-2 text-center">{{match.teamHome.name}}</span>
+        <span
+          class="text-xs font-semibold uppercase tracking-wider pb-2 text-center"
+          :class="chipTextClass('home')"
+        >{{match.teamHome.name}}</span>
         <template v-if="hasPicks('home')">
           <BaseLink
             v-for="user in predictions['home']"
@@ -32,9 +35,10 @@
               />
             </div>
             <span
-              class="text-xs truncate font-medium leading-tight text-white/80"
+              class="text-xs truncate leading-tight text-white/80"
+              :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
             >
-              {{ isCurrentUser(user.userId) ? 'You' : user.name }}
+              {{ user.name }}
             </span>
           </BaseLink>
         </template>
@@ -43,7 +47,10 @@
 
       <!-- Draw column (group stage only) -->
       <div v-if="match.groupId" class="w-1/3 flex flex-col gap-1 pt-1 md:px-5">
-        <span class="text-xs font-semibold text-white/70 uppercase tracking-wider pb-2 text-center">Draw</span>
+        <span
+          class="text-xs font-semibold uppercase tracking-wider pb-2 text-center"
+          :class="chipTextClass('draw')"
+        >Draw</span>
         <template v-if="hasPicks('draw')">
           <div
             v-for="user in predictions['draw']"
@@ -68,10 +75,10 @@
               />
             </div>
             <span
-              class="text-xs truncate font-medium leading-tight"
-              :class="chipTextClass('draw', user.userId)"
+              class="text-xs truncate leading-tight text-white/80"
+              :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
             >
-              {{ isCurrentUser(user.userId) ? 'You' : user.name }}
+              {{ user.name }}
             </span>
           </div>
         </template>
@@ -80,7 +87,10 @@
 
       <!-- Away column -->
       <div :class="match.groupId ? 'w-1/3' : 'w-1/2'" class="flex flex-col gap-1 pt-1 md:px-5">
-        <span class="text-xs font-semibold text-white/70 uppercase tracking-wider pb-2 text-center">{{match.teamAway.name}}</span>
+        <span
+          class="text-xs font-semibold uppercase tracking-wider pb-2 text-center"
+          :class="chipTextClass('away')"
+        >{{match.teamAway.name}}</span>
         <template v-if="hasPicks('away')">
           <div
             v-for="user in predictions['away']"
@@ -105,10 +115,10 @@
               />
             </div>
             <span
-              class="text-xs truncate font-medium leading-tight"
-              :class="chipTextClass('away', user.userId)"
+              class="text-xs truncate leading-tight text-white/80"
+              :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
             >
-              {{ isCurrentUser(user.userId) ? 'You' : user.name }}
+              {{ user.name }}
             </span>
           </div>
         </template>
@@ -176,22 +186,19 @@ export default {
       const live = this.match.status === 'started'
 
       if (live) return 'border-gray-300'
-      if (winning) return 'border-prediction-correct'
+      if (winning && me) return 'border-prediction-correct'
       if (me) return 'border-prediction-wrong'
       return 'border-gray-200'
     },
 
     // Text color mirrors the border logic
-    chipTextClass(column, userId) {
+    chipTextClass(column) {
       const winning = this.isWinningColumn(column)
-      const me = this.isCurrentUser(userId)
       const live = this.match.status === 'started'
 
-      if (live) return 'text-white'
-      if (winning && me) return 'text-prediction-correct font-semibold'
+      if (live) return 'text-white/70'
       if (winning) return 'text-prediction-correct'
-      if (me) return 'text-prediction-wrong font-semibold'
-      return 'text-white'
+      return 'text-prediction-wrong'
     },
 
     // Build a Cloudinary thumbnail URL directly (avoids verbose CldContext wrapper for small images)
