@@ -4,9 +4,12 @@
     <!-- Progress bar -->
     <div class="px-1">
       <div class="flex justify-between items-center mb-2">
-        <span class="text-white text-xs font-semibold uppercase tracking-widest opacity-60">
-          Make Your Pick
-        </span>
+        <p
+          class="text-xs font-bold uppercase tracking-widest flex items-center gap-1.5"
+          style="color: #0cf574"
+        >
+          <BaseIcon name="bolt" /> Choose a Result
+        </p>
         <span class="text-white text-sm font-semibold">
           {{ remainingCount }}<span class="opacity-50 font-normal"> remaining</span>
         </span>
@@ -103,58 +106,6 @@
       </div>
     </transition>
 
-    <!-- Navigation row -->
-    <div class="flex justify-between items-center px-1">
-      <!-- Previous -->
-      <button
-        @click="navigate(-1)"
-        :disabled="currentIndex === 0"
-        class="flex items-center gap-1.5 text-sm font-medium transition-all duration-150 focus:outline-none"
-        :class="currentIndex > 0 ? 'text-white hover:text-white/70' : 'text-white/25 cursor-not-allowed'"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-        Previous
-      </button>
-
-      <!-- Dot indicators -->
-      <!-- <div class="flex items-center gap-1.5 flex-wrap px-3">
-        <button
-          v-for="(match, i) in matches"
-          :key="match.id"
-          @click="goTo(i)"
-          class="rounded-full transition-all duration-300 focus:outline-none"
-          :class="[
-            i === currentIndex
-              ? 'w-5 h-2.5'
-              : 'w-2.5 h-2.5 hover:opacity-80',
-            savedChoices[match.id]
-              ? i === currentIndex ? 'bg-green-400' : 'bg-green-400 opacity-70'
-              : i === currentIndex ? 'bg-white' : 'bg-white/30'
-          ]"
-          style="width: 10px;height: 10px;"
-        />
-      </div> -->
-
-      <!-- Next -->
-      <button
-        @click="navigate(1)"
-        :disabled="!canGoNext"
-        class="flex items-center gap-1.5 text-sm font-medium transition-all duration-150 focus:outline-none"
-        :class="
-          canGoNext
-            ? 'text-white hover:text-white/70'
-            : 'text-white/25 cursor-not-allowed'
-        "
-      >
-        Next
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-      </button>
-    </div>
-
   </div>
 </template>
 
@@ -209,10 +160,10 @@ export default {
   },
 
   watch: {
-    matches(newVal) {
-      if (!this.currentMatch) return
-      const id = this.currentMatch.id
-      const newIdx = newVal.findIndex(m => m.id === id)
+    matches(newVal, oldVal) {
+      const prevMatch = oldVal[this.currentIndex]
+      if (!prevMatch) return
+      const newIdx = newVal.findIndex(m => m.id === prevMatch.id)
       if (newIdx !== -1) {
         this.currentIndex = newIdx
       } else if (this.currentIndex >= newVal.length) {

@@ -21,14 +21,17 @@
 
     <!-- ─── Current user: inline predict flow or all-done state ─── -->
     <div v-else class="px-4 pt-4 mb-6">
-      <!-- Has unpredicted matches: predict inline -->
-      <PredictCard
+      <div
         v-if="pendingMatches.length"
-        :matches="pendingMatches"
-        :show-back-link="false"
-        :remove-on-save="true"
-        @predicted="removeFromPending"
-      />
+        class="predict-spotlight rounded-2xl p-4"
+      >
+        <PredictCard
+          :matches="pendingMatches"
+          :show-back-link="false"
+          :remove-on-save="true"
+          @predicted="removeFromPending"
+        />
+      </div>
     </div>
 
     <!-- ─── Tabs ─── -->
@@ -210,8 +213,7 @@ export default {
       fetchUser: 'users/fetchUser',
     }),
     removeFromPending(matchId) {
-      const idx = this.pendingSnapshot.findIndex(m => m.id === matchId)
-      if (idx !== -1) this.pendingSnapshot.splice(idx, 1)
+      this.pendingSnapshot = this.pendingSnapshot.filter(m => m.id !== matchId)
     },
     changeTab(tabName) {
       this.selectedTab = tabName
@@ -277,6 +279,12 @@ export default {
 }
 .chip-inactive {
   background-color: rgba(255, 255, 255, 0.06);
+}
+.predict-spotlight {
+  border: 1.5px solid rgba(12, 245, 116, 0.45);
+  box-shadow: 0 0 24px rgba(12, 245, 116, 0.2),
+    0 0 60px rgba(12, 245, 116, 0.08);
+  background: rgba(12, 245, 116, 0.04);
 }
 .scrollbar-hide {
   -ms-overflow-style: none;
