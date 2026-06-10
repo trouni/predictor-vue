@@ -54,6 +54,13 @@
                     : 'text-gray-500'
                 "
               >
+                <!-- Flashing red when less than 24 hours remaining -->
+                <BaseIcon
+                  v-if="timeLeftForPrediction < 86400 * 1000"
+                  name="circle"
+                  fade
+                  class="mr-1 text-red-400"
+                />
                 {{ formatDuration(timeLeftForPrediction) }} till kickoff
               </p>
             </div>
