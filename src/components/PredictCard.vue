@@ -129,10 +129,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    showBackLink: {
-      type: Boolean,
-      default: true,
-    },
     removeOnSave: {
       type: Boolean,
       default: false,

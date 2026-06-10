@@ -27,7 +27,6 @@
       >
         <PredictCard
           :matches="pendingMatches"
-          :show-back-link="false"
           :remove-on-save="true"
           @predicted="removeFromPending"
         />
@@ -213,7 +212,8 @@ export default {
       fetchUser: 'users/fetchUser',
     }),
     removeFromPending(matchId) {
-      this.pendingSnapshot = this.pendingSnapshot.filter(m => m.id !== matchId)
+      const source = this.pendingSnapshot ?? this.pendingMatches
+      this.pendingSnapshot = source.filter(m => m.id !== matchId)
     },
     changeTab(tabName) {
       this.selectedTab = tabName
