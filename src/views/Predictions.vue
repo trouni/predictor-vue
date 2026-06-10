@@ -31,8 +31,7 @@
             <div>
               <p
                 class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5"
-                >Up Next</p
-              >
+                >Up Next</p>
               <p class="font-bold text-gray-800 text-base leading-tight flex items-center">
                 <TeamBadge options="h-10 w-10 mr-1 border-blue" :flag="nextMissingMatch.teamHome.badgeUrl" />
                 vs
@@ -228,6 +227,7 @@ export default {
       )
     },
     nextMissingMatch() {
+      void this.timeLeftForPrediction
       const now = new Date()
       const upcoming = this.missingPredictions.filter(
         m => new Date(m.kickoffTime) > now
