@@ -29,38 +29,6 @@
         :remove-on-save="true"
         @predicted="removeFromPending"
       />
-
-      <!-- All predictions made -->
-      <div
-        v-else
-        class="rounded-2xl px-5 py-4 flex items-center gap-4"
-        style="
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.92),
-            rgba(255, 255, 255, 0.78)
-          );
-        "
-      >
-        <div
-          class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow"
-          style="background: linear-gradient(135deg, #0cf574, #6690b7)"
-        >
-          <BaseIcon name="check" class="text-white fa-lg" />
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-gray-800 text-base">All predictions in!</p>
-          <p class="text-sm text-gray-500"
-            >You've predicted all upcoming matches.</p
-          >
-        </div>
-        <BaseLink
-          :to="{ name: 'edit_predictions' }"
-          class="flex-shrink-0 text-xs font-semibold text-gray-500 border border-gray-300 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
-        >
-          Edit
-        </BaseLink>
-      </div>
     </div>
 
     <!-- ─── Tabs ─── -->

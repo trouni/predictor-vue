@@ -34,7 +34,7 @@
             {{ formattedMatchDate }}
           </span>
           <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-prediction-card text-white/60">
-            ⭐ {{ pointsValue }} pts
+            + {{ pointsValue }} pts
           </span>
         </div>
 
