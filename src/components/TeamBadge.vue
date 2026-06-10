@@ -17,7 +17,7 @@
 export default {
   props: {
     flag: String,
-    options: String,
+    options: { type: String, default: 'h-20 w-20' },
     score: Number,
     etScore: Number,
     psScore: Number,
