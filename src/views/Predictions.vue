@@ -32,11 +32,13 @@
               <p
                 class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5"
                 >Up Next</p>
-              <p class="font-bold text-gray-800 text-base leading-tight flex items-center">
+              <div
+                class="font-bold text-gray-800 text-base leading-tight flex items-center"
+              >
                 <TeamBadge options="h-10 w-10 mr-1 border-blue" :flag="nextMissingMatch.teamHome.badgeUrl" />
                 vs
                 <TeamBadge options="h-10 w-10 ml-1 border-blue" :flag="nextMissingMatch.teamAway.badgeUrl" />
-              </p>
+              </div>
             </div>
             <div class="flex flex-col justify-between items-end">
               <span
@@ -200,6 +202,7 @@ export default {
       this.tabs.splice(ongoingIndex, 1)
       this.selectedTab = this.tabs[0]
     }
+    this.timeLeftForPrediction = this.getTimeLeftForPrediction()
     this.$emit('init')
   },
 
@@ -207,15 +210,12 @@ export default {
     matches(newValue) {
       if (newValue.length) this.$emit('init')
     },
-    timeLeftForPrediction: {
-      handler(newValue) {
-        if (newValue >= 0) {
-          setTimeout(() => {
-            this.timeLeftForPrediction = this.getTimeLeftForPrediction()
-          }, 1000)
-        }
-      },
-      immediate: true,
+    timeLeftForPrediction(newValue) {
+      if (newValue !== null && newValue >= 0) {
+        setTimeout(() => {
+          this.timeLeftForPrediction = this.getTimeLeftForPrediction()
+        }, 1000)
+      }
     },
   },
 
