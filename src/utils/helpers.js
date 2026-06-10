@@ -67,11 +67,59 @@ export function ordinalize(num) {
   const mod100 = n % 100
   if (mod100 >= 11 && mod100 <= 13) return `${n}<sup>th</sup>`
   switch (n % 10) {
-    case 1: return `${n}<sup>st</sup>`
-    case 2: return `${n}<sup>nd</sup>`
-    case 3: return `${n}<sup>rd</sup>`
-    default: return `${n}<sup>th</sup>`
+    case 1:
+      return `${n}<sup>st</sup>`
+    case 2:
+      return `${n}<sup>nd</sup>`
+    case 3:
+      return `${n}<sup>rd</sup>`
+    default:
+      return `${n}<sup>th</sup>`
   }
+}
+
+export function roundLabel(n) {
+  if (n >= 7) return 'Final'
+  if (n === 6) return '3rd Place'
+  if (n === 5) return 'Semi-Final'
+  if (n === 4) return 'Quarter-Final'
+  if (n === 3) return 'Round of 16'
+  if (n === 2) return 'Round of 32'
+  return `Round ${n}`
+}
+
+export function buildGroupFilters(matches) {
+  const seen = new Map()
+  matches.forEach(m => {
+    if (m.groupId && !seen.has(`g:${m.groupId}`))
+      seen.set(`g:${m.groupId}`, { key: `g:${m.groupId}`, label: m.groupName })
+    else if (!m.groupId && m.roundNumber && !seen.has(`r:${m.roundNumber}`))
+      seen.set(`r:${m.roundNumber}`, {
+        key: `r:${m.roundNumber}`,
+        label: roundLabel(m.roundNumber),
+      })
+  })
+  if (seen.size <= 1) return []
+  const groups = [...seen.values()]
+    .filter(f => f.key.startsWith('g:'))
+    .sort((a, b) => a.label.localeCompare(b.label))
+  const rounds = [...seen.values()]
+    .filter(f => f.key.startsWith('r:'))
+    .sort((a, b) => Number(a.key.slice(2)) - Number(b.key.slice(2)))
+  return [{ key: null, label: 'All' }, ...groups, ...rounds]
+}
+
+export function applyGroupFilter(matches, selectedGroup) {
+  if (!selectedGroup) return matches
+  if (selectedGroup.startsWith('g:')) {
+    const id = selectedGroup.slice(2)
+    return matches.filter(m => String(m.groupId) === id)
+  }
+  if (selectedGroup.startsWith('r:')) {
+    const num = Number(selectedGroup.slice(2))
+    return matches.filter(m => !m.groupId && m.roundNumber === num)
+  }
+  return matches
 }
 
 export function formatDuration(duration) {
