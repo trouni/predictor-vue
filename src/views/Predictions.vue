@@ -63,7 +63,12 @@
                   fade
                   class="mr-1 text-red-400"
                 />
-                {{ formatDuration(timeLeftForPrediction) }} till kickoff
+                <BaseIcon
+                  v-else
+                  name="stopwatch"
+                  class="mr-1 text-gray-500"
+                />
+                {{ formatDuration(timeLeftForPrediction) }}
               </p>
             </div>
           </div>
