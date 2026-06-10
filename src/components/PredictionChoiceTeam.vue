@@ -5,6 +5,9 @@
       clickableStyle,
       opacityStyle,
     ]"
+    :role="clickable ? 'button' : undefined"
+    :tabindex="clickable ? 0 : undefined"
+    @keydown.enter.space.prevent="clickable && $emit('click')"
   >
     <!-- Subtle flag wash -->
     <img
