@@ -163,6 +163,18 @@ export default [
             },
           },
           {
+            path: 'predict',
+            redirect: { name: 'predictions' },
+            alias: '/predict',
+            meta: { authRequired: true },
+          },
+          {
+            path: 'predictions/edit',
+            redirect: { name: 'predictions' },
+            alias: '/predictions/edit',
+            meta: { authRequired: true },
+          },
+          {
             path: 'leaderboards/new',
             name: 'new_leaderboard',
             component: () => import('@/views/LeaderboardNew'),
