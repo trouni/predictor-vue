@@ -158,7 +158,7 @@ export default {
       if (this.match.status === 'finished') {
         return 'Full Time'
       } else if (this.match.status === 'started') {
-        return 'In Progress'
+        return 'Live'
       } else {
         return this.formatTime(this.match.kickoffTime)
       }

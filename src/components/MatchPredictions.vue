@@ -1,11 +1,15 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col bg-prediction-info pt-2">
 
     <!-- Three-column picks grid — aligns spatially with the team cards above -->
     <div class="flex px-3 pb-2 gap-1">
 
       <!-- Home column -->
-      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'" class="flex flex-col gap-1 pt-1">
+      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'" class="flex flex-col gap-1 pt-1 md:px-5">
+        <span
+          class="text-xs font-semibold uppercase tracking-wider pb-2 text-center"
+          :class="chipTextClass('home')"
+        >{{match.teamHome.name}}</span>
         <template v-if="hasPicks('home')">
           <BaseLink
             v-for="user in predictions['home']"
@@ -31,18 +35,22 @@
               />
             </div>
             <span
-              class="text-xs truncate font-medium leading-tight"
-              :class="chipTextClass('home', user.userId)"
+              class="text-xs truncate leading-tight text-white/80"
+              :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
             >
-              {{ isCurrentUser(user.userId) ? 'You' : user.name }}
+              {{ user.name }}
             </span>
           </BaseLink>
         </template>
-        <span v-else class="text-xs text-gray-300 italic pt-1 px-1">—</span>
+        <span v-else class="text-xs text-gray-300 italic pt-1 px-1 text-center">—</span>
       </div>
 
       <!-- Draw column (group stage only) -->
-      <div v-if="match.groupId" class="w-1/3 flex flex-col gap-1 items-center pt-1">
+      <div v-if="match.groupId" class="w-1/3 flex flex-col gap-1 pt-1 md:px-5">
+        <span
+          class="text-xs font-semibold uppercase tracking-wider pb-2 text-center"
+          :class="chipTextClass('draw')"
+        >Draw</span>
         <template v-if="hasPicks('draw')">
           <div
             v-for="user in predictions['draw']"
@@ -67,10 +75,10 @@
               />
             </div>
             <span
-              class="text-xs truncate font-medium leading-tight"
-              :class="chipTextClass('draw', user.userId)"
+              class="text-xs truncate leading-tight text-white/80"
+              :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
             >
-              {{ isCurrentUser(user.userId) ? 'You' : user.name }}
+              {{ user.name }}
             </span>
           </div>
         </template>
@@ -78,19 +86,17 @@
       </div>
 
       <!-- Away column -->
-      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'" class="flex flex-col gap-1 items-end pt-1">
+      <div :class="match.groupId ? 'w-1/3' : 'w-1/2'" class="flex flex-col gap-1 pt-1 md:px-5">
+        <span
+          class="text-xs font-semibold uppercase tracking-wider pb-2 text-center"
+          :class="chipTextClass('away')"
+        >{{match.teamAway.name}}</span>
         <template v-if="hasPicks('away')">
           <div
             v-for="user in predictions['away']"
             :key="user.userId"
             class="flex items-center gap-1.5 min-w-0"
           >
-            <span
-              class="text-xs truncate font-medium leading-tight"
-              :class="chipTextClass('away', user.userId)"
-            >
-              {{ isCurrentUser(user.userId) ? 'You' : user.name }}
-            </span>
             <div
               class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden border-2"
               :class="chipBorderClass('away', user.userId)"
@@ -108,9 +114,15 @@
                 :alt="user.name"
               />
             </div>
+            <span
+              class="text-xs truncate leading-tight text-white/80"
+              :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
+            >
+              {{ user.name }}
+            </span>
           </div>
         </template>
-        <span v-else class="text-xs text-gray-300 italic pt-1 px-1">—</span>
+        <span v-else class="text-xs text-gray-300 italic pt-1 px-1 text-center">—</span>
       </div>
 
     </div>
@@ -167,29 +179,26 @@ export default {
       return column === this.result
     },
 
-    // Avatar chip border: green for winning pick, red for wrong (current user only), gray otherwise
+    // Avatar chip border: For current user, green for winning pick, and red for wrong. Gray otherwise.
     chipBorderClass(column, userId) {
       const winning = this.isWinningColumn(column)
       const me = this.isCurrentUser(userId)
       const live = this.match.status === 'started'
 
       if (live) return 'border-gray-300'
-      if (winning) return 'border-prediction-correct'
+      if (winning && me) return 'border-prediction-correct'
       if (me) return 'border-prediction-wrong'
       return 'border-gray-200'
     },
 
-    // Text color mirrors the border logic
-    chipTextClass(column, userId) {
+    // Text color for the column headers
+    chipTextClass(column) {
       const winning = this.isWinningColumn(column)
-      const me = this.isCurrentUser(userId)
       const live = this.match.status === 'started'
 
-      if (live) return 'text-gray-500'
-      if (winning && me) return 'text-prediction-correct font-semibold'
+      if (live) return 'text-white/70'
       if (winning) return 'text-prediction-correct'
-      if (me) return 'text-prediction-wrong font-semibold'
-      return 'text-gray-400'
+      return 'text-prediction-wrong'
     },
 
     // Build a Cloudinary thumbnail URL directly (avoids verbose CldContext wrapper for small images)
@@ -199,3 +208,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.bg-prediction-info {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+</style>
