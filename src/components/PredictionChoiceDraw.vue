@@ -62,8 +62,6 @@ export default {
     opacityStyle() {
       if (this.greyOut) {
         return 'opacity-40'
-      } else if (this.clickable) {
-        return 'opacity-80'
       } else {
         return 'opacity-100'
       }
