@@ -43,7 +43,8 @@
 
         <div class="flex justify-evenly items-center">
           <PredictionChoiceTeam
-            class="w-1/3"
+          class="w-1/3"
+          options="h-20 w-20"
             :team="currentMatch.teamHome"
             :status="status('home')"
             :clickable="!isSaving"
@@ -73,6 +74,7 @@
           </div>
           <PredictionChoiceTeam
             class="w-1/3"
+            options="h-20 w-20"
             :team="currentMatch.teamAway"
             :status="status('away')"
             :clickable="!isSaving"

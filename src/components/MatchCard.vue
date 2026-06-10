@@ -8,6 +8,7 @@
     <div class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
+        options="h-12 w-12"
         :team="match.teamHome"
         :status="status('home')"
         :clickable="!disabled"
@@ -30,6 +31,7 @@
         <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
         <div class="flex-grow">
           <PredictionChoiceDraw
+            options="h-12 w-12"
             :status="status('draw')"
             :clickable="!disabled"
             :greyOut="
