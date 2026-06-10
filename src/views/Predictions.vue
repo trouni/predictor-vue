@@ -24,14 +24,7 @@
       <!-- Has unpredicted matches -->
       <div
         v-if="nextMissingMatch"
-        class="rounded-2xl overflow-hidden shadow-xl"
-        style="
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.92),
-            rgba(255, 255, 255, 0.78)
-          );
-        "
+        class="rounded-2xl overflow-hidden shadow-xl card-gradient"
       >
         <div class="px-5 pt-4 pb-3">
           <div class="flex items-stretch justify-between gap-3">
@@ -158,7 +151,7 @@
       <div class="flex gap-2 w-max">
         <button
           v-for="filter in groupFilters"
-          :key="filter.key"
+          :key="filter.key === null ? '__all__' : filter.key"
           @click="selectedGroup = filter.key"
           class="py-1 px-3 rounded-full text-xs font-semibold transition-all duration-200 focus:outline-none whitespace-nowrap"
           :class="
@@ -390,6 +383,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.78)
+  );
+}
 .bg-tab {
   background-color: rgba(255, 255, 255, 0.2);
 }

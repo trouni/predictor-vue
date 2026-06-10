@@ -8,7 +8,7 @@
       <div class="flex gap-2 w-max">
         <button
           v-for="filter in groupFilters"
-          :key="filter.key"
+          :key="filter.key === null ? '__all__' : filter.key"
           @click="selectedGroup = filter.key"
           class="py-1 px-3 rounded-full text-xs font-semibold transition-all duration-200 focus:outline-none whitespace-nowrap"
           :class="
