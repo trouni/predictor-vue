@@ -201,24 +201,9 @@ export default {
       // Points = roundNumber + 2 (from Rails model)
       return (this.currentMatch.roundNumber || 0) + 2
     },
-    roundLabel() {
-      if (!this.currentMatch) return ''
-      if (this.currentMatch.groupId) return 'Group Stage'
-      const num = this.currentMatch.roundNumber
-      if (!num) return ''
-      if (num >= 6) return 'Final'
-      if (num === 5) return 'Semi-Final'
-      if (num === 4) return 'Quarter-Final'
-      if (num === 3) return 'Round of 16'
-      return `Round ${num}`
-    },
     formattedMatchDate() {
       if (!this.currentMatch) return ''
       return formatDateTime(this.currentMatch.kickoffTime)
-    },
-    canGoNext() {
-      if (this.removeOnSave && this.localChoice) return true
-      return this.currentIndex < this.matches.length - 1
     },
   },
 
@@ -229,30 +214,6 @@ export default {
 
     status(choice) {
       return this.localChoice === choice ? 'selected' : 'default'
-    },
-
-    navigate(direction) {
-      const next = this.currentIndex + direction
-      if (next < 0 || next >= this.matches.length) {
-        // At the last match going forward: confirm it's done and hand it to the list
-        if (this.removeOnSave && direction > 0 && this.localChoice) {
-          this.$emit('predicted', this.currentMatch.id)
-          this.lastPredictedId = null
-        }
-        return
-      }
-      this.slideDirection = direction > 0 ? 'slide-next' : 'slide-prev'
-      this.$nextTick(() => {
-        this.currentIndex = next
-      })
-    },
-
-    goTo(index) {
-      if (index === this.currentIndex) return
-      this.slideDirection = index > this.currentIndex ? 'slide-next' : 'slide-prev'
-      this.$nextTick(() => {
-        this.currentIndex = index
-      })
     },
 
     async predict(choice) {
