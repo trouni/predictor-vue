@@ -1,8 +1,9 @@
 <template>
   <div
     :class="[
-      'shadow-inner-lg rounded-full h-20 w-20 flex items-center justify-center overflow-hidden bg-contain',
+      'shadow-inner-lg rounded-full  flex items-center justify-center overflow-hidden bg-contain',
       highlight,
+      options,
     ]"
     :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
@@ -16,6 +17,7 @@
 export default {
   props: {
     flag: String,
+    options: String,
     score: Number,
     etScore: Number,
     psScore: Number,

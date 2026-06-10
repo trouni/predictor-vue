@@ -22,33 +22,44 @@
 
       <!-- Has unpredicted matches -->
       <div
-        v-if="missingPredictions.length"
+        v-if="nextMissingMatch"
         class="rounded-2xl overflow-hidden shadow-xl"
         style="background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))"
       >
         <div class="px-5 pt-4 pb-3">
-          <div class="flex items-start justify-between gap-3">
-            <p class="font-bold text-gray-800 text-base leading-tight">
-              Don't miss the next kickoff
-            </p>
-            <span
-              class="flex-shrink-0 text-xs font-bold text-white rounded-full px-2.5 py-1 shadow-sm"
-              style="background: linear-gradient(135deg, #fa5151, #c0392b)"
-            >
-              {{ missingPredictions.length }} left
-            </span>
+          <div class="flex items-stretch justify-between gap-3">
+            <div>
+              <p
+                class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5"
+                >Next pick</p
+              >
+              <p class="font-bold text-gray-800 text-base leading-tight flex items-center">
+                <TeamBadge options="h-10 w-10 mr-1 border-blue" :flag="nextMissingMatch.teamHome.badgeUrl" />
+                vs
+                <TeamBadge options="h-10 w-10 ml-1 border-blue" :flag="nextMissingMatch.teamAway.badgeUrl" />
+              </p>
+            </div>
+            <div class="flex flex-col justify-between items-end">
+              <span
+                class="flex-shrink-0 text-xs font-bold text-white rounded-full px-2.5 py-1 shadow-sm"
+                style="background: linear-gradient(135deg, #fa5151, #c0392b)"
+              >
+                {{ missingPredictions.length }} remaining
+              </span>
+              <p
+                v-if="timeLeftForPrediction"
+                class="text-sm font-normal"
+                :class="
+                  timeLeftForPrediction < 86400 * 1000
+                    ? 'text-red-500'
+                    : 'text-gray-500'
+                "
+              >
+                {{ formatDuration(timeLeftForPrediction) }} till kickoff
+              </p>
+            </div>
           </div>
-          <p
-            v-if="timeLeftForPrediction"
-            class="text-sm font-semibold mt-1.5"
-            :class="
-              timeLeftForPrediction < 86400 * 1000
-                ? 'text-red-500'
-                : 'text-gray-500'
-            "
-          >
-            {{ formatDuration(timeLeftForPrediction) }} to go
-          </p>
+
         </div>
         <div class="px-5 pb-4">
           <BaseLink
@@ -138,15 +149,16 @@
 import EmptyState from '@/components/EmptyState'
 import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
+import TeamBadge from '@/components/TeamBadge'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
-import { pluralize, formatDate, formatDuration } from '@/utils/helpers'
+import { pluralize, formatDate, formatDateTime, formatDuration } from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
 export default {
   name: 'Predictions',
 
-  components: { EmptyState, MatchesGrouping, LeaderboardRanking },
+  components: { EmptyState, MatchesGrouping, LeaderboardRanking, TeamBadge },
 
   props: {
     userId: {
@@ -215,6 +227,16 @@ export default {
         m => !('prediction' in m) && m.status === 'upcoming'
       )
     },
+    nextMissingMatch() {
+      const now = new Date()
+      const upcoming = this.missingPredictions.filter(
+        m => new Date(m.kickoffTime) > now
+      )
+      if (!upcoming.length) return null
+      return upcoming.reduce((prev, curr) =>
+        new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
+      )
+    },
     groupedMatches() {
       if (this.selectedTab === 'past') return this.pastMatches()
       if (this.selectedTab === 'ongoing') return this.ongoingMatches()
@@ -229,6 +251,7 @@ export default {
     }),
     pluralize,
     formatDuration,
+    formatDateTime,
     changeTab(tabName) {
       this.selectedTab = tabName
     },
@@ -263,11 +286,15 @@ export default {
       }]
     },
     getTimeLeftForPrediction() {
-      if (!this.missingPredictions.length) return null
-      const nextMatch = this.missingPredictions.reduce((prev, curr) =>
+      const now = new Date()
+      const upcoming = this.missingPredictions.filter(
+        m => new Date(m.kickoffTime) > now
+      )
+      if (!upcoming.length) return null
+      const nextMatch = upcoming.reduce((prev, curr) =>
         new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
       )
-      return Math.abs(new Date(nextMatch.kickoffTime) - new Date())
+      return new Date(nextMatch.kickoffTime) - now
     },
   },
 }
@@ -276,5 +303,8 @@ export default {
 <style lang="scss" scoped>
 .bg-tab {
   background-color: rgba(255, 255, 255, 0.2);
+}
+.border-blue {
+  border-color: #6690b7;
 }
 </style>

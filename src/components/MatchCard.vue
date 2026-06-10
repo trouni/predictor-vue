@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-'rounded-2xl text-center my-5 mx-2 shadow bg-prediction-card transition duration-300 relative',
+'rounded-2xl text-center my-3 mx-2 shadow bg-prediction-card transition duration-300 relative',
       borderStyle,
     ]"
   >
