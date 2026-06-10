@@ -179,7 +179,7 @@ export default {
       return column === this.result
     },
 
-    // Avatar chip border: green for winning pick, red for wrong (current user only), gray otherwise
+    // Avatar chip border: For current user, green for winning pick, and red for wrong. Gray otherwise.
     chipBorderClass(column, userId) {
       const winning = this.isWinningColumn(column)
       const me = this.isCurrentUser(userId)
@@ -191,7 +191,7 @@ export default {
       return 'border-gray-200'
     },
 
-    // Text color mirrors the border logic
+    // Text color for the column headers
     chipTextClass(column) {
       const winning = this.isWinningColumn(column)
       const live = this.match.status === 'started'
