@@ -5,6 +5,9 @@
       clickableStyle,
       opacityStyle,
     ]"
+    :role="clickable ? 'button' : undefined"
+    :tabindex="clickable ? 0 : undefined"
+    @keydown.enter.space.prevent="clickable && $emit('click')"
   >
     <!-- Subtle flag wash -->
     <img
@@ -17,7 +20,7 @@
     <p class="uppercase mb-1 h-8 leading-none flex items-center text-white font-bold">
       {{ team.name }}
     </p>
-    <TeamBadge options="h-20 w-20" :flag="team.badgeUrl" :score="team.score" :etScore="team.etScore" :psScore="team.psScore" :status="status" />
+    <TeamBadge :options="options" :flag="team.badgeUrl" :score="team.score" :etScore="team.etScore" :psScore="team.psScore" :status="status" />
     <span v-if="team.ranking" class="relative z-10 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full mt-2 text-gray-200 bg-gray-500">
       FIFA #{{ team.ranking }}
     </span>
@@ -47,6 +50,10 @@ export default {
     chosen: {
       type: Boolean,
       default: false,
+    },
+    options: {
+      type: String,
+      default: 'h-16 w-16',
     },
   },
 

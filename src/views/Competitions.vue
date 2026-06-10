@@ -92,7 +92,7 @@
             {{ pendingCount === 1 ? 'prediction' : 'predictions' }} still to make
           </p>
           <BaseLink
-            :to="{ name: 'predict' }"
+            :to="{ name: 'predictions' }"
             class="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-full transition-opacity hover:opacity-80"
             style="background: #fa5151; color: white"
           >
@@ -115,7 +115,7 @@
         <!-- Quick action links -->
         <div class="flex gap-2 px-4 pt-4 pb-5">
           <BaseLink
-            :to="{ name: 'predict' }"
+            :to="{ name: 'predictions' }"
             class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80"
             style="background: rgba(255,255,255,0.12); color: white"
           >

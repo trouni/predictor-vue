@@ -19,105 +19,17 @@
       <LeaderboardRanking :userRankings="[user]" class="m-auto max-w-xs" />
     </div>
 
-    <!-- ─── Current user: action banner ─── -->
+    <!-- ─── Current user: inline predict flow or all-done state ─── -->
     <div v-else class="px-4 pt-4 mb-6">
-      <!-- Has unpredicted matches -->
       <div
-        v-if="nextMissingMatch"
-        class="rounded-2xl overflow-hidden shadow-xl card-gradient"
+        v-if="pendingMatches.length"
+        class="predict-spotlight rounded-2xl p-4"
       >
-        <div class="px-5 pt-4 pb-3">
-          <div class="flex items-stretch justify-between gap-3">
-            <div>
-              <p
-                class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5"
-                >Up Next</p
-              >
-              <div
-                class="font-bold text-gray-800 text-base leading-tight flex items-center"
-              >
-                <TeamBadge
-                  options="h-10 w-10 mr-1 border-blue"
-                  :flag="nextMissingMatch.teamHome.badgeUrl"
-                />
-                vs
-                <TeamBadge
-                  options="h-10 w-10 ml-1 border-blue"
-                  :flag="nextMissingMatch.teamAway.badgeUrl"
-                />
-              </div>
-            </div>
-            <div class="flex flex-col justify-between items-end">
-              <span
-                class="flex-shrink-0 text-xs font-bold text-white rounded-full px-2.5 py-1 shadow-sm"
-                style="background: linear-gradient(135deg, #fa5151, #c0392b)"
-              >
-                {{ missingPredictions.length }} remaining
-              </span>
-              <p
-                v-if="timeLeftForPrediction"
-                class="text-sm font-normal"
-                :class="
-                  timeLeftForPrediction < 86400 * 1000
-                    ? 'text-red-500'
-                    : 'text-gray-500'
-                "
-              >
-                <!-- Flashing red when less than 24 hours remaining -->
-                <BaseIcon
-                  v-if="timeLeftForPrediction < 86400 * 1000"
-                  name="circle"
-                  fade
-                  class="mr-1 text-red-400"
-                />
-                <BaseIcon v-else name="stopwatch" class="mr-1 text-gray-500" />
-                {{ formatDuration(timeLeftForPrediction) }}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="px-5 pb-4">
-          <BaseLink
-            :to="{ name: 'predict' }"
-            class="flex w-full items-center justify-center gap-1.5 text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-md transition-opacity hover:opacity-90"
-            style="background: linear-gradient(135deg, #fa5151, #c0392b)"
-          >
-            Predict now
-            <BaseIcon name="arrow-right" />
-          </BaseLink>
-        </div>
-      </div>
-
-      <!-- All predictions made -->
-      <div
-        v-else
-        class="rounded-2xl px-5 py-4 flex items-center gap-4"
-        style="
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.92),
-            rgba(255, 255, 255, 0.78)
-          );
-        "
-      >
-        <div
-          class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow"
-          style="background: linear-gradient(135deg, #0cf574, #6690b7)"
-        >
-          <BaseIcon name="check" class="text-white fa-lg" />
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-gray-800 text-base">All predictions in!</p>
-          <p class="text-sm text-gray-500"
-            >You've predicted all upcoming matches.</p
-          >
-        </div>
-        <BaseLink
-          :to="{ name: 'edit_predictions' }"
-          class="flex-shrink-0 text-xs font-semibold text-gray-500 border border-gray-300 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
-        >
-          Edit
-        </BaseLink>
+        <PredictCard
+          :matches="pendingMatches"
+          :remove-on-save="true"
+          @predicted="removeFromPending"
+        />
       </div>
     </div>
 
@@ -194,13 +106,11 @@
 import EmptyState from '@/components/EmptyState'
 import MatchesGrouping from '@/components/MatchesGrouping'
 import LeaderboardRanking from '@/components/LeaderboardRanking'
-import TeamBadge from '@/components/TeamBadge'
+import PredictCard from '@/components/PredictCard'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
 import {
-  pluralize,
   formatDate,
-  formatDuration,
   buildGroupFilters,
   applyGroupFilter,
 } from '@/utils/helpers'
@@ -209,7 +119,7 @@ import groupBy from 'lodash/groupBy'
 export default {
   name: 'Predictions',
 
-  components: { EmptyState, MatchesGrouping, LeaderboardRanking, TeamBadge },
+  components: { EmptyState, MatchesGrouping, LeaderboardRanking, PredictCard },
 
   props: {
     userId: {
@@ -229,7 +139,7 @@ export default {
       selectedTab: 'ongoing',
       tabs: ['ongoing', 'upcoming', 'past'],
       selectedGroup: null,
-      timeLeftForPrediction: null,
+      pendingSnapshot: null,
     }
   },
 
@@ -240,13 +150,17 @@ export default {
       this.tabs.splice(upcomingIndex, 1)
       this.selectedTab = this.tabs[0]
     }
-    await this.fetchMatches({ userId: this.userId })
+    const matches = await this.fetchMatches({ userId: this.userId })
+    if (!this.userId) {
+      this.pendingSnapshot = matches
+        .filter(m => m.status === 'upcoming' && !('prediction' in m))
+        .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
+    }
     if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
       const ongoingIndex = this.tabs.indexOf('ongoing')
       this.tabs.splice(ongoingIndex, 1)
       this.selectedTab = this.tabs[0]
     }
-    this.timeLeftForPrediction = this.getTimeLeftForPrediction()
     this.$emit('init')
   },
 
@@ -254,40 +168,23 @@ export default {
     matches(newValue) {
       if (newValue.length) this.$emit('init')
     },
-    timeLeftForPrediction(newValue) {
-      if (newValue !== null && newValue >= 0) {
-        setTimeout(() => {
-          this.timeLeftForPrediction = this.getTimeLeftForPrediction()
-        }, 1000)
-      }
-    },
   },
 
   computed: {
     ...authComputed,
     ...mapGetters({ matches: 'matches/matches' }),
+    pendingMatches() {
+      if (this.pendingSnapshot !== null) return this.pendingSnapshot
+      return this.matches
+        .filter(m => m.status === 'upcoming' && !('prediction' in m))
+        .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
+    },
     hasPastMatches() {
       return this.matches.some(m => m.status === 'finished')
     },
     hasUpcomingPredictions() {
       return this.matches.some(
         m => m.status === 'upcoming' && 'prediction' in m
-      )
-    },
-    missingPredictions() {
-      return this.matches.filter(
-        m => !('prediction' in m) && m.status === 'upcoming'
-      )
-    },
-    nextMissingMatch() {
-      void this.timeLeftForPrediction
-      const now = new Date()
-      const upcoming = this.missingPredictions.filter(
-        m => new Date(m.kickoffTime) > now
-      )
-      if (!upcoming.length) return null
-      return upcoming.reduce((prev, curr) =>
-        new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
       )
     },
     groupedMatches() {
@@ -314,8 +211,10 @@ export default {
       fetchMatches: 'matches/fetchMatches',
       fetchUser: 'users/fetchUser',
     }),
-    pluralize,
-    formatDuration,
+    removeFromPending(matchId) {
+      const source = this.pendingSnapshot ?? this.pendingMatches
+      this.pendingSnapshot = source.filter(m => m.id !== matchId)
+    },
     changeTab(tabName) {
       this.selectedTab = tabName
       this.selectedGroup = null
@@ -367,40 +266,25 @@ export default {
         },
       ]
     },
-    getTimeLeftForPrediction() {
-      const now = new Date()
-      const upcoming = this.missingPredictions.filter(
-        m => new Date(m.kickoffTime) > now
-      )
-      if (!upcoming.length) return null
-      const nextMatch = upcoming.reduce((prev, curr) =>
-        new Date(prev.kickoffTime) < new Date(curr.kickoffTime) ? prev : curr
-      )
-      return new Date(nextMatch.kickoffTime) - now
-    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.card-gradient {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(255, 255, 255, 0.78)
-  );
-}
 .bg-tab {
   background-color: rgba(255, 255, 255, 0.2);
-}
-.border-blue {
-  border-color: #6690b7;
 }
 .chip-active {
   background-color: rgba(255, 255, 255, 0.18);
 }
 .chip-inactive {
   background-color: rgba(255, 255, 255, 0.06);
+}
+.predict-spotlight {
+  border: 1.5px solid rgba(12, 245, 116, 0.45);
+  box-shadow: 0 0 24px rgba(12, 245, 116, 0.2),
+    0 0 60px rgba(12, 245, 116, 0.08);
+  background: rgba(12, 245, 116, 0.04);
 }
 .scrollbar-hide {
   -ms-overflow-style: none;

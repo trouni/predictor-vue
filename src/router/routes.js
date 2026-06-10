@@ -164,27 +164,15 @@ export default [
           },
           {
             path: 'predict',
-            name: 'predict',
-            component: () => import('@/views/Predict'),
-            props: true,
-            meta: {
-              authRequired: true,
-              title: 'Predict',
-              img: 'trophy.png',
-            },
+            redirect: { name: 'predictions' },
             alias: '/predict',
+            meta: { authRequired: true },
           },
           {
             path: 'predictions/edit',
-            name: 'edit_predictions',
-            component: () => import('@/views/Predict'),
-            props: { allMatches: true },
-            meta: {
-              authRequired: true,
-              title: 'Edit Predictions',
-              img: 'trophy.png',
-            },
+            redirect: { name: 'predictions' },
             alias: '/predictions/edit',
+            meta: { authRequired: true },
           },
           {
             path: 'leaderboards/new',
