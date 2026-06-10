@@ -81,9 +81,12 @@
       </p>
       <p
         v-if="match.location && match.status !== 'started'"
-        class="ml-2 text-white/70 text-xs"
+        class="ml-4 text-white/70 text-xs"
       >
-        <BaseIcon name="map-pin" /> {{ match.location }}
+        <BaseIcon name="map-pin" class="font-bold text-white" /> {{ match.location }}
+      </p>
+      <p v-if="match.groupName" class="ml-4 text-white/70 text-xs">
+        <BaseIcon name="people-group" class="font-bold text-white" /> {{ match.groupName }}
       </p>
     </div>
   </div>
