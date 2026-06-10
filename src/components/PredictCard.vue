@@ -141,6 +141,7 @@ export default {
       currentIndex: 0,
       savedChoices: {},
       isSaving: false,
+      locked: false,
       slideDirection: 'slide-next',
       initialMatchCount: 0,
       lastPredictedId: null,
@@ -214,7 +215,7 @@ export default {
     },
 
     async predict(choice) {
-      if (this.isSaving) return
+      if (this.isSaving || this.locked) return
       if (this.localChoice === choice) return
 
       const match = this.currentMatch
@@ -235,6 +236,7 @@ export default {
         this.$set(this.savedChoices, matchId, choice)
 
         if (!this.editMode) {
+          this.locked = true
           if (this.removeOnSave) this.lastPredictedId = matchId
           setTimeout(() => {
             const next = this.findNextUnpredicted()
@@ -249,6 +251,7 @@ export default {
               this.slideDirection = 'slide-next'
               this.currentIndex = next
             }
+            this.locked = false
           }, 1400)
         }
       } catch (err) {
