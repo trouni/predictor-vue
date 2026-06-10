@@ -152,7 +152,7 @@ import LeaderboardRanking from '@/components/LeaderboardRanking'
 import TeamBadge from '@/components/TeamBadge'
 import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
-import { pluralize, formatDate, formatDateTime, formatDuration } from '@/utils/helpers'
+import { pluralize, formatDate, formatDuration } from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
 export default {
@@ -251,7 +251,6 @@ export default {
     }),
     pluralize,
     formatDuration,
-    formatDateTime,
     changeTab(tabName) {
       this.selectedTab = tabName
     },
