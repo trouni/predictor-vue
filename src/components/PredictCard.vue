@@ -1,18 +1,6 @@
 <template>
   <div class="predict-flow flex flex-col gap-4 w-full" style="margin: 0 auto;">
 
-    <!-- Back link -->
-    <div v-if="showBackLink" class="px-1">
-      <BaseLink
-        :to="{ name: 'predictions' }"
-        class="inline-flex items-center gap-1.5 text-xs font-medium opacity-50 hover:opacity-80 transition-opacity"
-        style="color: white"
-      >
-        <BaseIcon name="arrow-left" />
-        Back to all predictions
-      </BaseLink>
-    </div>
-
     <!-- Progress bar -->
     <div class="px-1">
       <div class="flex justify-between items-center mb-2">
@@ -34,186 +22,82 @@
 
     <!-- Match card with slide transition -->
     <transition :name="slideDirection" mode="out-in">
-      <div v-if="currentMatch" :key="currentMatch.id" class="predict-card bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <div
+        v-if="currentMatch"
+        :key="currentMatch.id"
+        class="rounded-2xl text-center shadow bg-prediction-card transition duration-300 relative overflow-hidden"
+        :class="localChoice ? '' : 'border-prediction-default'"
+      >
+        <!-- Status bar -->
+        <div class="flex items-center justify-between px-4 py-2.5 bg-prediction-info">
+          <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+            {{ formattedMatchDate }}
+          </span>
+          <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-prediction-card text-white/60">
+            ⭐ {{ pointsValue }} pts
+          </span>
+        </div>
 
-        <!-- Match metadata header -->
-        <div class="text-center px-6 py-5 border-b border-gray-100">
+        <div class="flex justify-evenly items-center">
+          <PredictionChoiceTeam
+            class="w-1/3"
+            :team="currentMatch.teamHome"
+            :status="status('home')"
+            :clickable="!isSaving"
+            :greyOut="!!localChoice && localChoice !== 'home'"
+            :chosen="localChoice === 'home'"
+            @click.native="predict('home')"
+          />
           <div
-            class="inline-flex items-center gap-2 text-white text-xs font-bold px-3 py-1.5 rounded-full mb-3"
-            style="background: linear-gradient(135deg, #3e3b7d, #6690b7)"
+            v-if="currentMatch.groupId"
+            class="flex flex-col my-2 items-center justify-start px-3 h-full w-1/3"
           >
-            <span>⭐ {{ pointsValue }} pts</span>
-            <span v-if="roundLabel" class="opacity-60 font-normal">· {{ roundLabel }}</span>
+            <p class="mb-1 h-8 leading-none flex items-center text-sm"></p>
+            <div class="flex-grow">
+              <PredictionChoiceDraw
+                :status="status('draw')"
+                :clickable="!isSaving"
+                :greyOut="!!localChoice && localChoice !== 'draw'"
+                :teamHome="currentMatch.teamHome"
+                :teamAway="currentMatch.teamAway"
+                :chosen="localChoice === 'draw'"
+                @click.native="predict('draw')"
+              />
+            </div>
           </div>
-          <p class="text-gray-700 font-semibold text-sm">{{ formattedMatchDate }}</p>
-          <p v-if="currentMatch.location" class="text-gray-400 text-xs mt-1">
-            📍 {{ currentMatch.location }}
-          </p>
+          <div v-else class="flex flex-col my-2 items-center justify-center px-3 h-full w-1/3">
+            <p class="text-sm font-light tracking-widest" style="color: rgba(255,255,255,0.3)">VS</p>
+          </div>
+          <PredictionChoiceTeam
+            class="w-1/3"
+            :team="currentMatch.teamAway"
+            :status="status('away')"
+            :clickable="!isSaving"
+            :greyOut="!!localChoice && localChoice !== 'away'"
+            :chosen="localChoice === 'away'"
+            @click.native="predict('away')"
+          />
         </div>
 
-        <!-- Team selection area -->
-        <div class="flex items-stretch" style="min-height: 210px">
-          <!-- Home team -->
-          <button
-            @click="predict('home')"
-            :disabled="isSaving"
-            class="team-btn group relative flex-1 flex flex-col items-center justify-center gap-1 py-8 px-4 overflow-hidden transition-all duration-200"
-            :class="localChoice === 'home' ? 'bg-green-50' : 'hover:bg-gray-50 active:bg-gray-100'"
-          >
-            <!-- Subtle flag wash -->
-            <img
-              v-if="currentMatch.teamHome.flagUrl"
-              :src="currentMatch.teamHome.flagUrl"
-              class="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300"
-              :class="localChoice === 'home' ? 'opacity-10' : 'opacity-5 group-hover:opacity-8'"
-            />
-            <!-- Green selection border overlay -->
-            <div
-              v-if="localChoice === 'home'"
-              class="absolute inset-0 pointer-events-none border-b-4 border-green-400"
-            />
-            <!-- Badge -->
-            <div class="relative z-10">
-              <div
-                class="w-16 h-16 rounded-full overflow-hidden shadow-md border-4 transition-all duration-200"
-                :class="localChoice === 'home'
-                    ? 'border-green-400 scale-110 shadow-green-100'
-                    : 'border-gray-200 group-hover:border-gray-300 group-hover:scale-105'
-                "
-              >
-                <img
-                  :src="currentMatch.teamHome.badgeUrl"
-                  class="w-full h-full object-cover"
-                  :alt="currentMatch.teamHome.name"
-                />
-              </div>
-              <!-- Checkmark -->
-              <transition name="pop">
-                <div
-                  v-if="localChoice === 'home'"
-                  class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full flex items-center justify-center shadow-md"
-                  style="background: #0cf574"
-                >
-                  <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                  </svg>
-                </div>
-              </transition>
-            </div>
-            <!-- Team name -->
-            <p class="relative z-10 font-bold text-gray-800 text-sm text-center leading-tight mt-1">
-              {{ currentMatch.teamHome.name }}
-            </p>
-            <span
-              v-if="currentMatch.teamHome.ranking"
-              class="relative z-10 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full"
-              style="background: rgba(0, 0, 0, 0.06); color: #6b7280"
-              >FIFA #{{ currentMatch.teamHome.ranking }}</span
-            >
-            <p class="relative z-10 text-xs text-gray-400">Home</p>
-          </button>
-
-          <!-- Center column: VS or DRAW -->
-          <div class="flex flex-col items-center justify-center py-4 px-3 bg-gray-50 border-x border-gray-100 gap-3">
-            <div class="w-px flex-1" style="background: #e5e7eb" />
-            <button
-              v-if="currentMatch.groupId"
-              @click="predict('draw')"
-              :disabled="isSaving"
-              class="draw-btn flex flex-col items-center gap-1.5 transition-all duration-200 focus:outline-none"
-            >
-              <div
-                class="w-11 h-11 rounded-full border-2 flex items-center justify-center transition-all duration-200"
-                :class="localChoice === 'draw'
-                    ? 'scale-110 shadow-md border-transparent'
-                    : 'bg-white border-gray-300 hover:border-gray-400'
-                "
-                :style="localChoice === 'draw' ? 'background: #0cf574' : ''"
-              >
-                <svg v-if="localChoice === 'draw'" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span v-else class="text-gray-400 text-sm font-bold leading-none">=</span>
-              </div>
-              <span
-                class="text-xs font-bold transition-colors"
-                :style="localChoice === 'draw' ? 'color: #0cf574' : 'color: #9ca3af'"
-                >DRAW</span
-              >
-            </button>
-            <span v-else class="text-gray-300 text-sm font-light tracking-widest">VS</span>
-            <div class="w-px flex-1" style="background: #e5e7eb" />
-          </div>
-
-          <!-- Away team -->
-          <button
-            @click="predict('away')"
-            :disabled="isSaving"
-            class="team-btn group relative flex-1 flex flex-col items-center justify-center gap-1 py-8 px-4 overflow-hidden transition-all duration-200"
-            :class="localChoice === 'away' ? 'bg-green-50' : 'hover:bg-gray-50 active:bg-gray-100'"
-          >
-            <img
-              v-if="currentMatch.teamAway.flagUrl"
-              :src="currentMatch.teamAway.flagUrl"
-              class="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300"
-              :class="localChoice === 'away' ? 'opacity-10' : 'opacity-5 group-hover:opacity-8'"
-            />
-            <div
-              v-if="localChoice === 'away'"
-              class="absolute inset-0 pointer-events-none border-b-4 border-green-400"
-            />
-            <div class="relative z-10">
-              <div
-                class="w-16 h-16 rounded-full overflow-hidden shadow-md border-4 transition-all duration-200"
-                :class="localChoice === 'away'
-                    ? 'border-green-400 scale-110 shadow-green-100'
-                    : 'border-gray-200 group-hover:border-gray-300 group-hover:scale-105'
-                "
-              >
-                <img
-                  :src="currentMatch.teamAway.badgeUrl"
-                  class="w-full h-full object-cover"
-                  :alt="currentMatch.teamAway.name"
-                />
-              </div>
-              <transition name="pop">
-                <div
-                  v-if="localChoice === 'away'"
-                  class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full flex items-center justify-center shadow-md"
-                  style="background: #0cf574"
-                >
-                  <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                  </svg>
-                </div>
-              </transition>
-            </div>
-            <p class="relative z-10 font-bold text-gray-800 text-sm text-center leading-tight mt-1">
-              {{ currentMatch.teamAway.name }}
-            </p>
-            <span
-              v-if="currentMatch.teamAway.ranking"
-              class="relative z-10 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full"
-              style="background: rgba(0, 0, 0, 0.06); color: #6b7280"
-            >FIFA #{{ currentMatch.teamAway.ranking }}</span
-            >
-            <p class="relative z-10 text-xs text-gray-400">Away</p>
-          </button>
-
-        </div>
-
-        <!-- Status footer -->
-        <div class="border-t border-gray-100 px-5 py-3 text-center" style="min-height: 44px;">
+        <div class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info">
           <transition name="fade" mode="out-in">
-            <p v-if="isSaving" key="saving" class="text-xs text-gray-400 flex items-center justify-center gap-1.5">
+            <p v-if="isSaving" key="saving" class="text-xs text-white/70 flex items-center gap-1.5">
               <BaseIcon name="circle-notch" class="fa-spin" /> Saving...
             </p>
-            <p v-else-if="localChoice" key="chosen" class="text-xs font-semibold flex items-center justify-center gap-1.5" style="color: #059669">
+            <p v-else-if="localChoice" key="chosen" class="text-xs font-semibold text-green-400 flex items-center gap-1.5">
               <BaseIcon name="check-circle" /> {{ localChoiceLabel }}
             </p>
-            <p v-else key="empty" class="text-xs text-gray-400">
-              Tap to make your prediction
-            </p>
+            <div v-else key="info" class="flex items-center justify-center gap-4">
+              <p v-if="currentMatch.location" class="text-white/70 text-xs">
+                <BaseIcon name="map-pin" class="font-bold text-white" /> {{ currentMatch.location }}
+              </p>
+              <p v-if="currentMatch.groupName" class="text-white/70 text-xs">
+                <BaseIcon name="people-group" class="font-bold text-white" /> {{ currentMatch.groupName }}
+              </p>
+              <p v-if="!currentMatch.location && !currentMatch.groupName" class="text-xs text-white/40">
+                Tap to make your prediction
+              </p>
+            </div>
           </transition>
         </div>
       </div>
@@ -277,9 +161,13 @@
 <script>
 import { mapActions } from 'vuex'
 import { formatDateTime } from '@/utils/helpers'
+import PredictionChoiceTeam from './PredictionChoiceTeam'
+import PredictionChoiceDraw from './PredictionChoiceDraw'
 
 export default {
   name: 'PredictCard',
+
+  components: { PredictionChoiceTeam, PredictionChoiceDraw },
 
   props: {
     matches: {
@@ -388,6 +276,10 @@ export default {
       setPrediction: 'matches/setPrediction',
     }),
 
+    status(choice) {
+      return this.localChoice === choice ? 'selected' : 'default'
+    },
+
     navigate(direction) {
       const next = this.currentIndex + direction
       if (next < 0 || next >= this.matches.length) {
@@ -438,13 +330,17 @@ export default {
           setTimeout(() => {
             const next = this.findNextUnpredicted()
             if (next === -1) {
-              if (!this.removeOnSave) this.$emit('done')
-              // removeOnSave: stay on last predicted match; Next button confirms it
+              if (this.removeOnSave) {
+                this.$emit('predicted', matchId)
+                this.lastPredictedId = null
+              } else {
+                this.$emit('done')
+              }
             } else if (next !== this.currentIndex) {
               this.slideDirection = 'slide-next'
               this.currentIndex = next
             }
-          }, 700)
+          }, 1400)
         }
       } catch (err) {
         console.error('Failed to save prediction:', err)
@@ -471,26 +367,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.team-btn {
-  border: none;
-  cursor: pointer;
-  background: none;
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.8;
-  }
+.bg-prediction-card {
+  background-color: rgba(255, 255, 255, 0.08);
 }
-
-.draw-btn {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-
-  &:disabled {
-    cursor: not-allowed;
-  }
+.bg-prediction-info {
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 /* Slide forward (next) — card exits downward, next enters from above */
@@ -531,12 +412,4 @@ export default {
   opacity: 0;
 }
 
-/* Checkmark pop-in */
-.pop-enter-active {
-  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.4);
-}
-.pop-enter {
-  opacity: 0;
-  transform: scale(0);
-}
 </style>
