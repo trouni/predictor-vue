@@ -79,8 +79,7 @@ export function ordinalize(num) {
 }
 
 export function roundLabel(n) {
-  if (n >= 7) return 'Final'
-  if (n === 6) return '3rd Place'
+  if (n >= 6) return 'Final'
   if (n === 5) return 'Semi-Final'
   if (n === 4) return 'Quarter-Final'
   if (n === 3) return 'Round of 16'
