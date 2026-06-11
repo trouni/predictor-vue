@@ -145,8 +145,15 @@ export default {
     }),
 
     isPreTournament() {
+      const now = Date.now()
+      if (this.matches.length) {
+        const firstKickoff = Math.min(
+          ...this.matches.map(m => new Date(m.kickoffTime).getTime())
+        )
+        return firstKickoff > now
+      }
       if (!this.currentCompetition?.startDate) return false
-      return new Date(this.currentCompetition.startDate) > new Date()
+      return new Date(this.currentCompetition.startDate).getTime() > now
     },
 
     showPreTournamentPlaceholder() {

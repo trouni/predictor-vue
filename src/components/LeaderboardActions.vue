@@ -4,7 +4,7 @@
     <!-- Invite players -->
     <ShareButton
       :password="leaderboard.password"
-      text="Invite players"
+      :text="`Invite to ${leaderboard.name}`"
       icon="user-plus"
       class="action-btn invite-btn rounded-2xl"
     />
