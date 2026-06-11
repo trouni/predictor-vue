@@ -20,7 +20,7 @@
     </div>
 
     <!-- ─── Current user: inline predict flow or all-done state ─── -->
-    <div v-else class="px-4 pt-4 mb-6">
+    <div v-else class="px-4 pt-4" :class="{ 'mb-6': pendingMatches.length }">
       <div
         v-if="pendingMatches.length"
         class="predict-spotlight rounded-2xl p-4"
