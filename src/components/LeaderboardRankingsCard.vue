@@ -145,11 +145,15 @@ export default {
     }),
 
     isPreTournament() {
-      if (!this.matches.length) return true
-      const earliest = this.matches.reduce((min, m) =>
-        new Date(m.kickoffTime) < new Date(min.kickoffTime) ? m : min
-      )
-      return new Date(earliest.kickoffTime) > new Date()
+      const now = Date.now()
+      if (this.matches.length) {
+        const firstKickoff = Math.min(
+          ...this.matches.map(m => new Date(m.kickoffTime).getTime())
+        )
+        return firstKickoff > now
+      }
+      if (!this.currentCompetition?.startDate) return false
+      return new Date(this.currentCompetition.startDate).getTime() > now
     },
 
     showPreTournamentPlaceholder() {
