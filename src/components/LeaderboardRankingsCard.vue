@@ -14,7 +14,7 @@
           class="flex-shrink-0 flex items-center py-1.5 rounded-full text-xs font-semibold transition-all"
           :class="[
             round.key === currentRoundKey
-              ? 'text-white shadow-sm px-3 font-bold drop-shadow'
+              ? 'text-white shadow-sm font-bold drop-shadow'
               : 'text-white/40',
             index === 0 ? 'pl-0 pr-1.5' : 'px-1.5',
           ]"
