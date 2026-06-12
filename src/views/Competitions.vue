@@ -202,6 +202,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { isPlaceholderMatch } from '@/utils/helpers'
 
 export default {
   name: 'Competitions',
@@ -238,7 +239,7 @@ export default {
     },
 
     totalMatchCount() {
-      return this.matches.length
+      return this.matches.filter(m => !isPlaceholderMatch(m)).length
     },
 
     predictedCount() {
@@ -248,7 +249,11 @@ export default {
     // Upcoming matches with no prediction yet
     pendingCount() {
       return this.matches.filter(
-        m => !m.prediction && m.status !== 'finished' && m.status !== 'started'
+        m =>
+          !m.prediction &&
+          m.status !== 'finished' &&
+          m.status !== 'started' &&
+          !isPlaceholderMatch(m)
       ).length
     },
   },
