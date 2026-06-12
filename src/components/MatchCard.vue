@@ -5,7 +5,44 @@
       borderStyle,
     ]"
   >
-    <div class="flex align justify-evenly items-center">
+    <!-- Placeholder: one or both teams not yet determined -->
+    <div v-if="isPlaceholder" class="flex justify-evenly items-center py-5 px-3">
+      <PredictionChoiceTeam
+        v-if="match.teamHome"
+        class="w-1/3"
+        options="h-12 w-12"
+        :team="match.teamHome"
+        status="default"
+        :clickable="false"
+        :greyOut="false"
+        :chosen="false"
+      />
+      <div v-else class="w-1/3 flex flex-col items-center gap-1 opacity-40">
+        <div class="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
+          <span class="text-white text-lg font-bold">?</span>
+        </div>
+        <p class="text-xs text-white">TBD</p>
+      </div>
+      <p class="w-1/3 text-white/40 text-sm font-semibold">vs</p>
+      <PredictionChoiceTeam
+        v-if="match.teamAway"
+        class="w-1/3"
+        options="h-12 w-12"
+        :team="match.teamAway"
+        status="default"
+        :clickable="false"
+        :greyOut="false"
+        :chosen="false"
+      />
+      <div v-else class="w-1/3 flex flex-col items-center gap-1 opacity-40">
+        <div class="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
+          <span class="text-white text-lg font-bold">?</span>
+        </div>
+        <p class="text-xs text-white">TBD</p>
+      </div>
+    </div>
+
+    <div v-else class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
         :options="
@@ -107,7 +144,12 @@ import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
 import MatchPredictions from './MatchPredictions'
 import CornerPoints from './CornerPoints'
-import { formatTime, homeTeamWon, awayTeamWon } from '@/utils/helpers'
+import {
+  formatTime,
+  homeTeamWon,
+  awayTeamWon,
+  isPlaceholderMatch,
+} from '@/utils/helpers'
 
 export default {
   components: {
@@ -161,8 +203,11 @@ export default {
   },
 
   computed: {
+    isPlaceholder() {
+      return isPlaceholderMatch(this.match)
+    },
     disabled() {
-      return !this.selectable || this.loading
+      return !this.selectable || this.loading || this.isPlaceholder
     },
     finished() {
       return this.match.status === 'finished'
