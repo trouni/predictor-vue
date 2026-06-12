@@ -83,32 +83,38 @@
           />
         </div>
 
-        <div class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info">
+        <div
+          class="relative flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info"
+          style="min-height: 2.25rem"
+        >
           <transition name="fade" mode="out-in">
             <div
-              v-if="isSaving"
-              key="saving"
-              class="text-xs text-white/70 flex items-center gap-1.5"
+              :key="footerState"
+              class="absolute inset-0 flex items-center justify-center gap-4"
             >
-              <BaseIcon name="circle-notch" class="fa-spin" /> Saving...
-            </div>
-            <div
-              v-else-if="localChoice"
-              key="chosen"
-              class="text-xs font-semibold text-green-400 flex items-center gap-1.5"
-            >
-              <BaseIcon name="check-circle" /> {{ localChoiceLabel }}
-            </div>
-            <div v-else key="info" class="flex items-center justify-center gap-4">
-              <p v-if="currentMatch.location" class="text-white/70 text-xs">
-                <BaseIcon name="map-pin" class="font-bold text-white" /> {{ currentMatch.location }}
-              </p>
-              <p v-if="currentMatch.groupName" class="text-white/70 text-xs">
-                <BaseIcon name="people-group" class="font-bold text-white" /> {{ currentMatch.groupName }}
-              </p>
-              <p v-if="!currentMatch.location && !currentMatch.groupName" class="text-xs text-white/40">
-                Tap to make your prediction
-              </p>
+              <span
+                v-if="footerState === 'saving'"
+                class="flex items-center gap-1.5 text-xs text-white/70"
+              >
+                <BaseIcon name="circle-notch" class="fa-spin" /> Saving...
+              </span>
+              <span
+                v-else-if="footerState === 'chosen'"
+                class="flex items-center gap-1.5 text-xs font-semibold text-green-400"
+              >
+                <BaseIcon name="check-circle" /> {{ localChoiceLabel }}
+              </span>
+              <template v-else>
+                <p v-if="currentMatch.location" class="text-white/70 text-xs">
+                  <BaseIcon name="map-pin" class="font-bold text-white" /> {{ currentMatch.location }}
+                </p>
+                <p v-if="currentMatch.groupName" class="text-white/70 text-xs">
+                  <BaseIcon name="people-group" class="font-bold text-white" /> {{ currentMatch.groupName }}
+                </p>
+                <p v-if="!currentMatch.location && !currentMatch.groupName" class="text-xs text-white/40">
+                  Tap to make your prediction
+                </p>
+              </template>
             </div>
           </transition>
         </div>
@@ -192,6 +198,11 @@ export default {
       if (this.localChoice === 'home') return `${this.currentMatch.teamHome.name} to win`
       if (this.localChoice === 'away') return `${this.currentMatch.teamAway.name} to win`
       return ''
+    },
+    footerState() {
+      if (this.isSaving) return 'saving'
+      if (this.localChoice) return 'chosen'
+      return 'info'
     },
     remainingCount() {
       return this.matches.filter(m => !this.savedChoices[m.id]).length
