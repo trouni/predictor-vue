@@ -24,7 +24,7 @@
           :key="lb.id"
           :ref="isActive(lb.id) ? 'activeTab' : null"
           @click="selectLeaderboard(lb.id)"
-          class="flex-shrink-0 text-sm pb-3 px-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
+          class="flex-shrink-0 text-sm pt-0.5 pb-3 px-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
           :style="
             isActive(lb.id)
               ? 'border-color: #fa5151; color: white; font-weight: 600'
@@ -37,7 +37,7 @@
         <!-- ＋ New leaderboard pill at the far end -->
         <BaseLink
           :to="{ name: 'new_leaderboard' }"
-          class="flex-shrink-0 flex items-center gap-1 self-start mt-0.5 px-2.5 py-1 rounded-full text-xs font-medium transition-opacity hover:opacity-80 whitespace-nowrap"
+          class="flex-shrink-0 flex items-center gap-1 self-start px-2.5 py-1 rounded-full text-xs font-medium transition-opacity hover:opacity-80 whitespace-nowrap"
           style="
             background: rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.45);
