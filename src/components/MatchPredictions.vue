@@ -82,7 +82,7 @@
             </span>
           </div>
         </template>
-        <span v-else class="text-xs text-gray-300 italic pt-1">—</span>
+        <span v-else class="text-xs text-gray-300 italic pt-1 text-center">—</span>
       </div>
 
       <!-- Away column -->
