@@ -61,6 +61,10 @@ export function formatTime(date) {
   })
 }
 
+export function isPlaceholderMatch(match) {
+  return !match.teamHome || !match.teamAway
+}
+
 export function ordinalize(num) {
   const n = Number(num)
   if (!Number.isFinite(n) || n === 0) return '—'

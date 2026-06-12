@@ -126,6 +126,7 @@ import {
   formatDateTime,
   buildGroupFilters,
   applyGroupFilter,
+  isPlaceholderMatch,
 } from '@/utils/helpers'
 import groupBy from 'lodash/groupBy'
 
@@ -170,8 +171,7 @@ export default {
           m =>
             m.status === 'upcoming' &&
             !('prediction' in m) &&
-            m.teamHome &&
-            m.teamAway
+            !isPlaceholderMatch(m)
         )
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
     }
@@ -199,19 +199,18 @@ export default {
           m =>
             m.status === 'upcoming' &&
             !('prediction' in m) &&
-            m.teamHome &&
-            m.teamAway
+            !isPlaceholderMatch(m)
         )
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
     },
     hasPlaceholderMatches() {
       return this.matches.some(
-        m => m.status === 'upcoming' && (!m.teamHome || !m.teamAway)
+        m => m.status === 'upcoming' && isPlaceholderMatch(m)
       )
     },
     firstPlaceholderKickoff() {
       const first = this.matches
-        .filter(m => m.status === 'upcoming' && (!m.teamHome || !m.teamAway))
+        .filter(m => m.status === 'upcoming' && isPlaceholderMatch(m))
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))[0]
       return first ? formatDateTime(first.kickoffTime) : null
     },
@@ -222,7 +221,7 @@ export default {
       return this.matches.some(
         m =>
           m.status === 'upcoming' &&
-          ('prediction' in m || !m.teamHome || !m.teamAway)
+          ('prediction' in m || isPlaceholderMatch(m))
       )
     },
     groupedMatches() {
@@ -238,7 +237,7 @@ export default {
       return this.matches.filter(
         m =>
           m.status === 'upcoming' &&
-          ('prediction' in m || !m.teamHome || !m.teamAway)
+          ('prediction' in m || isPlaceholderMatch(m))
       )
     },
     groupFilters() {
@@ -297,7 +296,7 @@ export default {
               this.matches.filter(
                 m =>
                   m.status === 'upcoming' &&
-                  ('prediction' in m || !m.teamHome || !m.teamAway)
+                  ('prediction' in m || isPlaceholderMatch(m))
               ),
               this.selectedGroup
             ).sort(

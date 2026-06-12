@@ -144,7 +144,12 @@ import PredictionChoiceTeam from './PredictionChoiceTeam'
 import PredictionChoiceDraw from './PredictionChoiceDraw'
 import MatchPredictions from './MatchPredictions'
 import CornerPoints from './CornerPoints'
-import { formatTime, homeTeamWon, awayTeamWon } from '@/utils/helpers'
+import {
+  formatTime,
+  homeTeamWon,
+  awayTeamWon,
+  isPlaceholderMatch,
+} from '@/utils/helpers'
 
 export default {
   components: {
@@ -199,7 +204,7 @@ export default {
 
   computed: {
     isPlaceholder() {
-      return !this.match.teamHome || !this.match.teamAway
+      return isPlaceholderMatch(this.match)
     },
     disabled() {
       return !this.selectable || this.loading || this.isPlaceholder
