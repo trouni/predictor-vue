@@ -24,7 +24,7 @@
           :key="lb.id"
           :ref="isActive(lb.id) ? 'activeTab' : null"
           @click="selectLeaderboard(lb.id)"
-          class="flex-shrink-0 text-sm pt-0.5  pb-3 px-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
+          class="flex-shrink-0 text-sm pt-0.5 md:mr-1 pb-3 px-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
           :style="
             isActive(lb.id)
               ? 'border-color: #fa5151; color: white; font-weight: 600'
