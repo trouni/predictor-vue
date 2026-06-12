@@ -33,6 +33,18 @@
       </div>
     </div>
 
+    <!-- ─── Placeholder match notice ─── -->
+    <div
+      v-if="!userId && hasPlaceholderMatches && !pendingMatches.length"
+      class="mx-4 mb-4 px-4 py-3 rounded-xl text-xs text-center placeholder-notice"
+    >
+      <p><strong>All predictions made!</strong></p>
+      <p class="mt-0.5">
+        The next prediction opens when the teams are confirmed. Check back
+        before <span class="text-white/80">{{ firstPlaceholderKickoff }}</span>.
+      </p>
+    </div>
+
     <!-- ─── Tabs ─── -->
     <div class="px-4 mb-1">
       <div
@@ -111,6 +123,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { authComputed } from '@/store/helpers'
 import {
   formatDate,
+  formatDateTime,
   buildGroupFilters,
   applyGroupFilter,
 } from '@/utils/helpers'
@@ -153,7 +166,13 @@ export default {
     const matches = await this.fetchMatches({ userId: this.userId })
     if (!this.userId) {
       this.pendingSnapshot = matches
-        .filter(m => m.status === 'upcoming' && !('prediction' in m))
+        .filter(
+          m =>
+            m.status === 'upcoming' &&
+            !('prediction' in m) &&
+            m.teamHome &&
+            m.teamAway
+        )
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
     }
     if (Object.keys(this.ongoingMatches()[0].matches).length === 0) {
@@ -176,15 +195,30 @@ export default {
     pendingMatches() {
       if (this.pendingSnapshot !== null) return this.pendingSnapshot
       return this.matches
-        .filter(m => m.status === 'upcoming' && !('prediction' in m))
+        .filter(
+          m =>
+            m.status === 'upcoming' &&
+            !('prediction' in m) &&
+            m.teamHome &&
+            m.teamAway
+        )
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
+    },
+    hasPlaceholderMatches() {
+      return this.matches.some(m => m.status === 'upcoming' && !m.teamHome)
+    },
+    firstPlaceholderKickoff() {
+      const first = this.matches
+        .filter(m => m.status === 'upcoming' && !m.teamHome)
+        .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))[0]
+      return first ? formatDateTime(new Date(first.kickoffTime)) : null
     },
     hasPastMatches() {
       return this.matches.some(m => m.status === 'finished')
     },
     hasUpcomingPredictions() {
       return this.matches.some(
-        m => m.status === 'upcoming' && 'prediction' in m
+        m => m.status === 'upcoming' && ('prediction' in m || !m.teamHome)
       )
     },
     groupedMatches() {
@@ -198,7 +232,7 @@ export default {
       if (this.selectedTab === 'past')
         return this.matches.filter(m => m.status === 'finished')
       return this.matches.filter(
-        m => m.status === 'upcoming' && 'prediction' in m
+        m => m.status === 'upcoming' && ('prediction' in m || !m.teamHome)
       )
     },
     groupFilters() {
@@ -255,7 +289,8 @@ export default {
           matches: groupBy(
             applyGroupFilter(
               this.matches.filter(
-                m => m.status === 'upcoming' && 'prediction' in m
+                m =>
+                  m.status === 'upcoming' && ('prediction' in m || !m.teamHome)
               ),
               this.selectedGroup
             ).sort(
@@ -285,6 +320,11 @@ export default {
   box-shadow: 0 0 24px rgba(12, 245, 116, 0.2),
     0 0 60px rgba(12, 245, 116, 0.08);
   background: rgba(12, 245, 116, 0.04);
+}
+.placeholder-notice {
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .scrollbar-hide {
   -ms-overflow-style: none;

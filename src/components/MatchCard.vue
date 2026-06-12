@@ -5,7 +5,24 @@
       borderStyle,
     ]"
   >
-    <div class="flex align justify-evenly items-center">
+    <!-- Placeholder: teams not yet determined -->
+    <div v-if="isPlaceholder" class="flex justify-evenly items-center py-5 px-3">
+      <div class="w-1/3 flex flex-col items-center gap-1 opacity-40">
+        <div class="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
+          <span class="text-white text-lg font-bold">?</span>
+        </div>
+        <p class="text-xs text-white">TBD</p>
+      </div>
+      <p class="w-1/3 text-white/40 text-sm font-semibold">vs</p>
+      <div class="w-1/3 flex flex-col items-center gap-1 opacity-40">
+        <div class="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
+          <span class="text-white text-lg font-bold">?</span>
+        </div>
+        <p class="text-xs text-white">TBD</p>
+      </div>
+    </div>
+
+    <div v-else class="flex align justify-evenly items-center">
       <PredictionChoiceTeam
         class="w-1/3"
         :options="
@@ -161,8 +178,11 @@ export default {
   },
 
   computed: {
+    isPlaceholder() {
+      return !this.match.teamHome || !this.match.teamAway
+    },
     disabled() {
-      return !this.selectable || this.loading
+      return !this.selectable || this.loading || this.isPlaceholder
     },
     finished() {
       return this.match.status === 'finished'
