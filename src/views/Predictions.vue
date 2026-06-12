@@ -205,20 +205,24 @@ export default {
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
     },
     hasPlaceholderMatches() {
-      return this.matches.some(m => m.status === 'upcoming' && !m.teamHome)
+      return this.matches.some(
+        m => m.status === 'upcoming' && (!m.teamHome || !m.teamAway)
+      )
     },
     firstPlaceholderKickoff() {
       const first = this.matches
-        .filter(m => m.status === 'upcoming' && !m.teamHome)
+        .filter(m => m.status === 'upcoming' && (!m.teamHome || !m.teamAway))
         .sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))[0]
-      return first ? formatDateTime(new Date(first.kickoffTime)) : null
+      return first ? formatDateTime(first.kickoffTime) : null
     },
     hasPastMatches() {
       return this.matches.some(m => m.status === 'finished')
     },
     hasUpcomingPredictions() {
       return this.matches.some(
-        m => m.status === 'upcoming' && ('prediction' in m || !m.teamHome)
+        m =>
+          m.status === 'upcoming' &&
+          ('prediction' in m || !m.teamHome || !m.teamAway)
       )
     },
     groupedMatches() {
@@ -232,7 +236,9 @@ export default {
       if (this.selectedTab === 'past')
         return this.matches.filter(m => m.status === 'finished')
       return this.matches.filter(
-        m => m.status === 'upcoming' && ('prediction' in m || !m.teamHome)
+        m =>
+          m.status === 'upcoming' &&
+          ('prediction' in m || !m.teamHome || !m.teamAway)
       )
     },
     groupFilters() {

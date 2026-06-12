@@ -5,16 +5,36 @@
       borderStyle,
     ]"
   >
-    <!-- Placeholder: teams not yet determined -->
+    <!-- Placeholder: one or both teams not yet determined -->
     <div v-if="isPlaceholder" class="flex justify-evenly items-center py-5 px-3">
-      <div class="w-1/3 flex flex-col items-center gap-1 opacity-40">
+      <PredictionChoiceTeam
+        v-if="match.teamHome"
+        class="w-1/3"
+        options="h-12 w-12"
+        :team="match.teamHome"
+        status="default"
+        :clickable="false"
+        :greyOut="false"
+        :chosen="false"
+      />
+      <div v-else class="w-1/3 flex flex-col items-center gap-1 opacity-40">
         <div class="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
           <span class="text-white text-lg font-bold">?</span>
         </div>
         <p class="text-xs text-white">TBD</p>
       </div>
       <p class="w-1/3 text-white/40 text-sm font-semibold">vs</p>
-      <div class="w-1/3 flex flex-col items-center gap-1 opacity-40">
+      <PredictionChoiceTeam
+        v-if="match.teamAway"
+        class="w-1/3"
+        options="h-12 w-12"
+        :team="match.teamAway"
+        status="default"
+        :clickable="false"
+        :greyOut="false"
+        :chosen="false"
+      />
+      <div v-else class="w-1/3 flex flex-col items-center gap-1 opacity-40">
         <div class="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
           <span class="text-white text-lg font-bold">?</span>
         </div>
