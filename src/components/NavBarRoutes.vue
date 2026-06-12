@@ -29,7 +29,7 @@ export default {
       return route
     }
     function customStyle() {
-      return '!text-white cursor-default leading-none'
+      return '!text-white active cursor-default leading-none'
     }
     // Functional components are the only components allowed
     // to return an array of children, rather than a single
