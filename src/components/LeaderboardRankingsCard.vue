@@ -169,16 +169,18 @@ export default {
     sortedUsers() {
       const users = (this.leaderboard.users || []).slice()
       const hasRank = users.some(u => u.rank !== null && u.rank !== undefined)
-      if (!hasRank) {
-        const byPoints = users.sort((a, b) => (b.points || 0) - (a.points || 0))
-        return byPoints.map(u => ({
-          ...u,
-          rank: byPoints.findIndex(x => x.points === u.points) + 1,
-        }))
-      }
-      return users.sort((a, b) => {
-        if (a.rank !== b.rank) return (a.rank || 999) - (b.rank || 999)
-        return (b.points || 0) - (a.points || 0)
+      // Sort by points descending; use server rank as tiebreaker to preserve
+      // server-side ordering within a tied group
+      const sorted = users.sort((a, b) => {
+        const pointsDiff = (b.points || 0) - (a.points || 0)
+        if (pointsDiff !== 0) return pointsDiff
+        return hasRank ? (a.rank ?? 999) - (b.rank ?? 999) : 0
+      })
+      // Assign standard competition ranks in a single pass (1,2,2,4...)
+      let rank = 1
+      return sorted.map((u, i) => {
+        if (i > 0 && (u.points || 0) < (sorted[i - 1].points || 0)) rank = i + 1
+        return { ...u, rank }
       })
     },
 

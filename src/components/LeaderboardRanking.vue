@@ -68,19 +68,17 @@
         v-if="!preTournament"
         class="flex-shrink-0 text-right text-shadow flex flex-col items-center gap-1"
       >
-        <template
-          v-if="
-            userRankings.some(
-              r => (r.totalPredictions || r.total_predictions) > 0
-            )
-          "
+        <p
+          class="font-black leading-none text-xl text-shadow"
+          style="color: #fa5151"
         >
-          <p class="font-black leading-none text-xl text-shadow" style="color: #fa5151">
-            {{ userRankings[0].points }}
-          </p>
-          <small class="leading-none text-xs text-shadow font-normal" style="color: #fa5151">PTS</small>
-        </template>
-        <p v-else class="text-xs text-gray-400 italic font-normal leading-none">yet to predict</p>
+          {{ userRankings[0].points }}
+        </p>
+        <small
+          class="leading-none text-xs text-shadow font-normal"
+          style="color: #fa5151"
+          >PTS</small
+        >
       </div>
 
     </div>
