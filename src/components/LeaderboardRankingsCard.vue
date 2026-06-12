@@ -2,25 +2,28 @@
   <div class="flex flex-col gap-1.5">
     <!-- Round scoring strip -->
     <div class="bg-white/10 rounded-2xl px-4 py-3">
-      <p class="text-white/40 text-xs uppercase tracking-widest font-semibold mb-2.5">Points per correct pick</p>
+      <p class="text-white/40 text-xs uppercase tracking-widest font-semibold mb-1.5">Points per correct pick</p>
       <div
         ref="scoringStrip"
         class="flex overflow-x-auto hide-scrollbar gap-1"
       >
         <div
-          v-for="round in scoringRounds"
+          v-for="(round, index) in scoringRounds"
           :key="round.key"
           :data-round="round.key"
-          class="flex-shrink-0 flex items-center px-2 py-1.5 rounded-full text-xs font-semibold transition-all"
-          :class="round.key === currentRoundKey
-              ? 'text-white shadow-sm px-3 font-bold drop-shadow'
-              : 'text-white/40'"
+          class="flex-shrink-0 flex items-center py-1.5 rounded-full text-xs font-semibold transition-all"
+          :class="[
+            round.key === currentRoundKey
+              ? 'text-white shadow-sm font-bold drop-shadow'
+              : 'text-white/40',
+            index === 0 ? 'pl-0 pr-1.5' : 'px-1.5',
+          ]"
         >
           {{ round.label }}
           <span
             class="font-normal"
             :class="round.key === currentRoundKey ? 'text-white drop-shadow' : 'text-white/25'"
-          >· {{ round.points }}pts</span>
+          >&nbsp;{{ round.points }}pts</span>
         </div>
       </div>
     </div>
@@ -131,8 +134,7 @@ export default {
         { key: 'r16', label: 'R16', points: 5 },
         { key: 'qf', label: 'QF', points: 6 },
         { key: 'sf', label: 'SF', points: 7 },
-        { key: '3p', label: '3rd Place', points: 8 },
-        { key: 'final', label: 'Final', points: 9 }
+        { key: 'final', label: 'Final', points: 8 }
       ],
     }
   },
@@ -226,7 +228,7 @@ export default {
       active.sort((a, b) => new Date(a.kickoffTime) - new Date(b.kickoffTime))
       const next = active[0]
       if (next.groupId) return 'group'
-      const map = { 2: 'r32', 3: 'r16', 4: 'qf', 5: 'sf', 6: '3p', 7: 'final' }
+      const map = { 2: 'r32', 3: 'r16', 4: 'qf', 5: 'sf', 6: 'final' }
       return map[next.roundNumber] || null
     },
   },
