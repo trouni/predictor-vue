@@ -24,7 +24,7 @@
           :key="lb.id"
           :ref="isActive(lb.id) ? 'activeTab' : null"
           @click="selectLeaderboard(lb.id)"
-          class="flex-shrink-0 text-sm pt-0.5 pb-3 px-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
+          class="flex-shrink-0 text-sm pt-0.5  pb-3 px-2 border-b-2 whitespace-nowrap transition-all duration-150 focus:outline-none"
           :style="
             isActive(lb.id)
               ? 'border-color: #fa5151; color: white; font-weight: 600'
@@ -44,7 +44,7 @@
           "
         >
           <BaseIcon name="plus" style="font-size: 0.6rem" />
-          New Group
+          New Board
         </BaseLink>
       </div>
 
@@ -88,17 +88,20 @@ export default {
       this.$nextTick(this.scrollToActive)
     },
     leaderboards() {
-      this.$nextTick(this.checkScroll)
+      this.$nextTick(() => {
+        this.checkScroll()
+        if (this.$refs.scrollEl) this._ro.observe(this.$refs.scrollEl)
+      })
     },
   },
 
   mounted() {
+    this._ro = new ResizeObserver(this.checkScroll)
     this.$nextTick(() => {
       this.checkScroll()
       this.scrollToActive()
+      if (this.$refs.scrollEl) this._ro.observe(this.$refs.scrollEl)
     })
-    this._ro = new ResizeObserver(this.checkScroll)
-    if (this.$refs.scrollEl) this._ro.observe(this.$refs.scrollEl)
   },
 
   beforeUnmount() {
