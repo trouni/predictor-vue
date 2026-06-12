@@ -296,7 +296,8 @@ export default {
             applyGroupFilter(
               this.matches.filter(
                 m =>
-                  m.status === 'upcoming' && ('prediction' in m || !m.teamHome)
+                  m.status === 'upcoming' &&
+                  ('prediction' in m || !m.teamHome || !m.teamAway)
               ),
               this.selectedGroup
             ).sort(
