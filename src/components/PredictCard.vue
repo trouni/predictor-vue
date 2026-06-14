@@ -84,13 +84,16 @@
         </div>
 
         <div
-          class="relative flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info"
-          style="min-height: 2.25rem"
+          class="flex items-center justify-center p-2 rounded-b-2xl bg-prediction-info"
         >
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+            :duration="{ enter: 180, leave: 180 }"
+          >
             <div
               :key="footerState"
-              class="absolute inset-0 flex items-center justify-center gap-4"
+              class="flex items-center justify-center gap-4"
             >
               <span
                 v-if="footerState === 'saving'"
