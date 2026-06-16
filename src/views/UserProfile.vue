@@ -399,6 +399,12 @@
                   />
                 </div>
               </div>
+              <span
+                class="mt-1.5 text-xs text-center leading-tight"
+                style="color: rgba(255, 255, 255, 0.6)"
+              >
+                {{ key.charAt(0).toUpperCase() + key.slice(1) }}
+              </span>
             </button>
           </div>
         </div>
