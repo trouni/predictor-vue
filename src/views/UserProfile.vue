@@ -48,6 +48,7 @@
           "
           style="background: #6690b7"
           title="Random avatar"
+          aria-label="Random avatar"
         >
           <BaseIcon
             :name="isShuffling ? 'circle-notch' : 'shuffle'"
