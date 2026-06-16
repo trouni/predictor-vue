@@ -25,9 +25,9 @@
             class="w-full h-full object-cover"
           />
         </div>
-        <!-- Upload button -->
+        <!-- Edit photo button -->
         <button
-          @click="openUploadModal"
+          @click="openPhotoModal"
           :disabled="!user"
           class="absolute bottom-0.5 right-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 focus:outline-none"
           :class="user ? 'hover:scale-110' : 'opacity-50 cursor-not-allowed'"
@@ -35,27 +35,6 @@
           title="Change photo"
         >
           <BaseIcon name="camera" class="text-white" style="font-size: 0.8rem" />
-        </button>
-        <!-- Random avatar button -->
-        <button
-          @click="randomizeAvatar"
-          :disabled="!user || isShuffling"
-          class="absolute bottom-0.5 left-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 focus:outline-none"
-          :class="
-            user && !isShuffling
-              ? 'hover:scale-110'
-              : 'opacity-50 cursor-not-allowed'
-          "
-          style="background: #6690b7"
-          title="Random avatar"
-          aria-label="Random avatar"
-        >
-          <BaseIcon
-            :name="isShuffling ? 'circle-notch' : 'shuffle'"
-            :class="{ 'fa-spin': isShuffling }"
-            class="text-white "
-            style="font-size: 0.8rem"
-          />
         </button>
       </div>
 
@@ -299,6 +278,138 @@
         Log out
       </BaseLink>
     </div>
+
+    <!-- ─── Photo picker modal ─── -->
+    <transition name="fade">
+      <div
+        v-if="isPhotoModalOpen"
+        class="fixed inset-0 z-50 flex flex-col justify-end sm:justify-center sm:items-center mb-12 sm:mb-0 sm:p-4"
+        style="background: rgba(0, 0, 0, 0.65)"
+        @click.self="isPhotoModalOpen = false"
+      >
+        <div
+          class="rounded-t-3xl sm:rounded-3xl sm:w-full sm:max-w-md"
+          style="background: #141428"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="photo-modal-title"
+        >
+          <!-- Handle -->
+          <div class="flex justify-center pt-3 pb-2">
+            <div
+              class="w-10 h-1 rounded-full"
+              style="background: rgba(255, 255, 255, 0.2)"
+            />
+          </div>
+
+          <!-- Header -->
+          <div class="flex items-center justify-between px-5 pt-1 pb-4">
+            <h3 id="photo-modal-title" class="text-white font-bold text-lg">Change photo</h3>
+            <button
+              type="button"
+              aria-label="Close"
+              @click="isPhotoModalOpen = false"
+              class="w-8 h-8 rounded-full flex items-center justify-center focus:outline-none"
+              style="background: rgba(255, 255, 255, 0.1)"
+            >
+              <BaseIcon
+                name="times"
+                class="text-white"
+                style="font-size: 0.75rem"
+              />
+            </button>
+          </div>
+
+          <!-- Quick actions -->
+          <div class="flex gap-3 px-4 pb-5">
+            <button
+              @click="openUploadModal"
+              class="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold text-white focus:outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+              "
+            >
+              <BaseIcon name="camera" style="font-size: 0.85rem" />
+              Upload
+            </button>
+            <button
+              @click="randomizeAvatar"
+              class="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold text-white focus:outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+              "
+            >
+              <BaseIcon name="shuffle" style="font-size: 0.85rem" />
+              Random
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="flex items-center gap-3 px-4 pb-4">
+            <div
+              class="flex-1 h-px"
+              style="background: rgba(255, 255, 255, 0.08)"
+            />
+            <span class="text-xs" style="color: rgba(255, 255, 255, 0.3)">
+              or pick one</span
+            >
+            <div
+              class="flex-1 h-px"
+              style="background: rgba(255, 255, 255, 0.08)"
+            />
+          </div>
+
+          <!-- Avatar grid -->
+          <div
+            class="grid grid-cols-4 gap-3 px-4 pb-10 overflow-y-auto"
+            style="max-height: 50vh"
+          >
+            <button
+              v-for="key in defaultAvatars"
+              :key="key"
+              @click="saveAvatar(key)"
+              class="flex flex-col items-center focus:outline-none"
+              :class="isCurrentAvatar(key) ? 'p-1' : ''"
+            >
+              <div
+                class="relative w-full rounded-full overflow-hidden"
+                style="background-color: rgba(255, 255, 255, 0.1)"
+                :style="
+                  isCurrentAvatar(key)
+                    ? 'padding-bottom: 100%; outline: 2px solid #fa5151; outline-offset: 2px;'
+                    : 'padding-bottom: 100%'
+                "
+              >
+                <img
+                  :src="avatarUrl(key)"
+                  :alt="key"
+                  class="absolute inset-0 w-full h-full object-cover"
+                />
+                <div
+                  v-if="isCurrentAvatar(key)"
+                  class="absolute inset-0 flex items-center justify-center"
+                  style="background: rgba(250, 81, 81, 0.3)"
+                >
+                  <BaseIcon
+                    name="check"
+                    class="text-white"
+                    style="font-size: 0.7rem"
+                  />
+                </div>
+              </div>
+              <span
+                class="mt-1.5 text-xs text-center leading-tight"
+                style="color: rgba(255, 255, 255, 0.6)"
+              >
+                {{ key.charAt(0).toUpperCase() + key.slice(1) }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -307,6 +418,33 @@ import { mapGetters, mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
 import { ordinalize } from '@/utils/helpers'
+
+const DEFAULT_AVATARS = [
+  'caicedo',
+  'diaz',
+  'guler',
+  'gyokeres',
+  'haaland',
+  'hakimi',
+  'kane',
+  'kubo',
+  'lukaku',
+  'mane',
+  'mbappe',
+  'messi',
+  'modric',
+  'neymar',
+  'ochoa',
+  'pulisic',
+  'robertson',
+  'ronaldo',
+  'ruediger',
+  'salah',
+  'son',
+  'virgil',
+  'xhaka',
+  'yamal',
+]
 
 export default {
   name: 'UserProfile',
@@ -335,7 +473,8 @@ export default {
       },
       isSavingNotifications: false,
       notifSaved: null,
-      isShuffling: false,
+      isSavingAvatar: false,
+      isPhotoModalOpen: false,
     }
   },
 
@@ -361,6 +500,10 @@ export default {
       leaderboards: 'leaderboards/leaderboards',
       currentUser: 'auth/currentUser',
     }),
+
+    defaultAvatars() {
+      return DEFAULT_AVATARS
+    },
 
     currentCompetition() {
       return this.competitions.find(c => c.id === this.currentCompetitionId)
@@ -426,36 +569,23 @@ export default {
       }
     },
 
-    // ── Avatar upload ──
-    async randomizeAvatar() {
+    // ── Avatar ──
+    openPhotoModal() {
+      this.isPhotoModalOpen = true
+    },
+
+    randomizeAvatar() {
       if (!this.user) return
       const current = this.user.photoKey || this.user.photo_key
-      const avatars = [
-        'diaz',
-        'gyokeres',
-        'haaland',
-        'hakimi',
-        'kane',
-        'kubo',
-        'lukaku',
-        'mane',
-        'mbappe',
-        'messi',
-        'modric',
-        'neymar',
-        'ochoa',
-        'pulisic',
-        'robertson',
-        'ronaldo',
-        'ruediger',
-        'salah',
-        'son',
-        'virgil',
-        'yamal',
-      ].filter(a => a !== current)
-      const photoKey = avatars[Math.floor(Math.random() * avatars.length)]
-      const previousKey = current
-      this.isShuffling = true
+      const pool = DEFAULT_AVATARS.filter(a => a !== current)
+      this.saveAvatar(pool[Math.floor(Math.random() * pool.length)])
+    },
+
+    async saveAvatar(photoKey) {
+      if (!this.user || this.isSavingAvatar) return
+      const previousKey = this.user.photoKey || this.user.photo_key
+      this.isPhotoModalOpen = false
+      this.isSavingAvatar = true
       this.$set(this.user, 'photoKey', photoKey)
       try {
         this.user = await this.patchUser({
@@ -464,26 +594,30 @@ export default {
           photoKey,
         })
       } catch (err) {
-        console.error('Failed to set random avatar:', err)
+        console.error('Failed to set avatar:', err)
         this.$set(this.user, 'photoKey', previousKey)
       } finally {
-        this.isShuffling = false
+        this.isSavingAvatar = false
       }
     },
 
+    avatarUrl(key) {
+      return `https://res.cloudinary.com/${this.cloudName}/image/upload/c_fill,g_face,r_max/${key}`
+    },
+
+    isCurrentAvatar(key) {
+      const current = this.user?.photoKey || this.user?.photo_key
+      return current === key
+    },
+
     openUploadModal() {
+      this.isPhotoModalOpen = false
       window.cloudinary
         .openUploadWidget(
           { cloud_name: this.cloudName, upload_preset: 'cb59wrvm' },
           (error, result) => {
             if (!error && result && result.event === 'success') {
-              const photoKey = result.info.public_id
-              this.$set(this.user, 'photoKey', photoKey)
-              this.patchUser({
-                userId: this.user.id,
-                name: this.user.name,
-                photoKey,
-              })
+              this.saveAvatar(result.info.public_id)
             }
           }
         )
@@ -533,5 +667,14 @@ export default {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

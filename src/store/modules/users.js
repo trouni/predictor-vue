@@ -1,21 +1,20 @@
 import { RepositoryFactory } from '@/api/repository-factory'
 const UsersRepository = RepositoryFactory.get('users')
-import { saveState, getSavedState } from '@/utils/helpers'
 
 export const state = {
   cached: [],
-  currentUser: getSavedState('auth.currentUser'),
 }
 
 export const getters = {}
 
 export const mutations = {
   CACHE_USER(state, newUser) {
-    state.cached.push(newUser)
-  },
-  SET_CURRENT_USER(state, newValue) {
-    state.currentUser = newValue
-    saveState('auth.currentUser', newValue)
+    const idx = state.cached.findIndex(u => u.id === newUser.id)
+    if (idx !== -1) {
+      state.cached.splice(idx, 1, newUser)
+    } else {
+      state.cached.push(newUser)
+    }
   },
 }
 
@@ -47,7 +46,7 @@ export const actions = {
     return UsersRepository.patchUser(userId, name, photoKey, notifications).then(response => {
       const user = response.data
       commit('CACHE_USER', user)
-      commit('SET_CURRENT_USER', user)
+      commit('auth/SET_CURRENT_USER', user, { root: true })
       return user
     })
   },
