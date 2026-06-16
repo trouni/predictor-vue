@@ -11,7 +11,12 @@ export const getters = {}
 
 export const mutations = {
   CACHE_USER(state, newUser) {
-    state.cached.push(newUser)
+    const idx = state.cached.findIndex(u => u.id === newUser.id)
+    if (idx !== -1) {
+      state.cached.splice(idx, 1, newUser)
+    } else {
+      state.cached.push(newUser)
+    }
   },
   SET_CURRENT_USER(state, newValue) {
     state.currentUser = newValue
@@ -48,6 +53,7 @@ export const actions = {
       const user = response.data
       commit('CACHE_USER', user)
       commit('SET_CURRENT_USER', user)
+      commit('auth/SET_CURRENT_USER', user, { root: true })
       return user
     })
   },
