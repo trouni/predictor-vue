@@ -1,10 +1,8 @@
 import { RepositoryFactory } from '@/api/repository-factory'
 const UsersRepository = RepositoryFactory.get('users')
-import { saveState, getSavedState } from '@/utils/helpers'
 
 export const state = {
   cached: [],
-  currentUser: getSavedState('auth.currentUser'),
 }
 
 export const getters = {}
@@ -17,10 +15,6 @@ export const mutations = {
     } else {
       state.cached.push(newUser)
     }
-  },
-  SET_CURRENT_USER(state, newValue) {
-    state.currentUser = newValue
-    saveState('auth.currentUser', newValue)
   },
 }
 
