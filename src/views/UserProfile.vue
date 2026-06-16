@@ -427,7 +427,7 @@ export default {
 
     // ── Avatar upload ──
     async randomizeAvatar() {
-      // These are hard-coded from our API uploads
+      if (!this.user) return
       const current = this.user.photoKey || this.user.photo_key
       const avatars = [
         'diaz',
@@ -453,16 +453,18 @@ export default {
         'yamal',
       ].filter(a => a !== current)
       const photoKey = avatars[Math.floor(Math.random() * avatars.length)]
+      const previousKey = current
       this.isShuffling = true
+      this.$set(this.user, 'photoKey', photoKey)
       try {
-        this.$set(this.user, 'photoKey', photoKey)
-        await this.patchUser({
+        this.user = await this.patchUser({
           userId: this.user.id,
           name: this.user.name,
           photoKey,
         })
       } catch (err) {
         console.error('Failed to set random avatar:', err)
+        this.$set(this.user, 'photoKey', previousKey)
       } finally {
         this.isShuffling = false
       }
