@@ -36,6 +36,26 @@
         >
           <BaseIcon name="camera" class="text-white" style="font-size: 0.8rem" />
         </button>
+        <!-- Random avatar button -->
+        <button
+          @click="randomizeAvatar"
+          :disabled="!user || isShuffling"
+          class="absolute bottom-0.5 left-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 focus:outline-none"
+          :class="
+            user && !isShuffling
+              ? 'hover:scale-110'
+              : 'opacity-50 cursor-not-allowed'
+          "
+          style="background: #6690b7"
+          title="Random avatar"
+        >
+          <BaseIcon
+            :name="isShuffling ? 'circle-notch' : 'shuffle'"
+            :class="{ 'fa-spin': isShuffling }"
+            class="text-white "
+            style="font-size: 0.8rem"
+          />
+        </button>
       </div>
 
       <!-- Name: display mode -->
@@ -90,7 +110,6 @@
         <div class="h-7 w-40 rounded-full animate-pulse" style="background: rgba(255,255,255,0.15)" />
         <div class="h-4 w-28 rounded-full animate-pulse" style="background: rgba(255,255,255,0.1)" />
       </div>
-
     </div>
 
     <!-- ─── Your Standings ─── -->
@@ -315,6 +334,7 @@ export default {
       },
       isSavingNotifications: false,
       notifSaved: null,
+      isShuffling: false,
     }
   },
 
@@ -406,6 +426,47 @@ export default {
     },
 
     // ── Avatar upload ──
+    async randomizeAvatar() {
+      // These are hard-coded from our API uploads
+      const avatars = [
+        'diaz',
+        'gyokeres',
+        'haaland',
+        'hakimi',
+        'kane',
+        'kubo',
+        'lukaku',
+        'mane',
+        'mbappe',
+        'messi',
+        'modric',
+        'neymar',
+        'ochoa',
+        'pulisic',
+        'robertson',
+        'ronaldo',
+        'ruediger',
+        'salah',
+        'son',
+        'virgil',
+        'yamal',
+      ]
+      const photoKey = avatars[Math.floor(Math.random() * avatars.length)]
+      this.isShuffling = true
+      try {
+        this.$set(this.user, 'photoKey', photoKey)
+        await this.patchUser({
+          userId: this.user.id,
+          name: this.user.name,
+          photoKey,
+        })
+      } catch (err) {
+        console.error('Failed to set random avatar:', err)
+      } finally {
+        this.isShuffling = false
+      }
+    },
+
     openUploadModal() {
       window.cloudinary
         .openUploadWidget(
