@@ -272,8 +272,9 @@
       <BaseLink
         :to="{ name: 'logout' }"
         class="flex items-center justify-center gap-2 w-full rounded-2xl py-3.5 px-5 text-sm font-semibold transition-opacity hover:opacity-80"
-        style="background: rgba(250,81,81,0.12); color: #fa5151; border: 1px solid rgba(250,81,81,0.2)"
+        style="background: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.5); border: 1px solid; border-color: rgba(255, 255, 255, 0.08);"
       >
+
         <BaseIcon name="sign-out-alt" />
         Log out
       </BaseLink>
