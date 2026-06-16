@@ -428,6 +428,7 @@ export default {
     // ── Avatar upload ──
     async randomizeAvatar() {
       // These are hard-coded from our API uploads
+      const current = this.user.photoKey || this.user.photo_key
       const avatars = [
         'diaz',
         'gyokeres',
@@ -450,7 +451,7 @@ export default {
         'son',
         'virgil',
         'yamal',
-      ]
+      ].filter(a => a !== current)
       const photoKey = avatars[Math.floor(Math.random() * avatars.length)]
       this.isShuffling = true
       try {
