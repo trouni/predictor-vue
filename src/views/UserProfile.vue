@@ -290,6 +290,9 @@
         <div
           class="rounded-t-3xl sm:rounded-3xl sm:w-full sm:max-w-md"
           style="background: #141428"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="photo-modal-title"
         >
           <!-- Handle -->
           <div class="flex justify-center pt-3 pb-2">
@@ -301,8 +304,10 @@
 
           <!-- Header -->
           <div class="flex items-center justify-between px-5 pt-1 pb-4">
-            <h3 class="text-white font-bold text-lg">Change photo</h3>
+            <h3 id="photo-modal-title" class="text-white font-bold text-lg">Change photo</h3>
             <button
+              type="button"
+              aria-label="Close"
               @click="isPhotoModalOpen = false"
               class="w-8 h-8 rounded-full flex items-center justify-center focus:outline-none"
               style="background: rgba(255, 255, 255, 0.1)"
