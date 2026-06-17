@@ -7,9 +7,9 @@
     ]"
     :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
-    <p v-if="psScore" class="score-badge select-none">
-      {{ etScore }}<small>({{ psScore }})</small>
-    </p>
+    <p v-if="psScore" class="score-badge select-none"
+      >{{ etScore }}<small>({{ psScore }})</small></p
+    >
     <p v-else-if="etScore" class="score-badge select-none">{{ etScore }}</p>
     <p v-else class="score-badge select-none">{{ score }}</p>
   </div>
