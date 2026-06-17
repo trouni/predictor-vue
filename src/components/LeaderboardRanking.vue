@@ -109,10 +109,6 @@ export default {
       type: Number,
       default: null,
     },
-    points: {
-      type: Number,
-      default: null,
-    },
     linkPredictions: {
       type: Boolean,
       default: false,
