@@ -187,6 +187,7 @@ export default {
       if (this.match.prediction?.choice === choice) {
         return this.correctPrediction ? 'correct' : 'wrong'
       }
+      if (this.matchResult === choice) return 'actual'
       return 'default'
     },
     formatTime,

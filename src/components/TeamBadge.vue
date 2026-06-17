@@ -7,9 +7,11 @@
     ]"
     :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
-    <p v-if="psScore" class="text-glow text-4xl select-none">{{ etScore }}<small>({{ psScore }})</small></p>
-    <p v-else-if="etScore" class="text-glow text-4xl select-none">{{ etScore }}</p>
-    <p v-else class="text-glow text-4xl select-none">{{ score }}</p>
+    <p v-if="psScore" class="score-badge select-none"
+      >{{ etScore }}<small>({{ psScore }})</small></p
+    >
+    <p v-else-if="etScore" class="score-badge select-none">{{ etScore }}</p>
+    <p v-else class="score-badge select-none">{{ score }}</p>
   </div>
 </template>
 
@@ -52,12 +54,20 @@ export default {
     0 0 14px 5px #fffc
 }
 
-.text-glow {
-  text-shadow: -0.07em -0.07em 0.04em #fffc, 0 -0.07em 0.04em #fffc,
-    0.07em -0.07em 0.04em #fffc, 0.07em 0 0.04em #fffc,
-    0.07em 0.07em 0.04em #fffc, 0 0.07em 0.04em #fffc,
-    -0.07em 0.07em 0.04em #fffc, -0.07em 0 0.04em #fffc;
+.score-badge {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: white;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
+
 small {
   font-size: 0.5em;
 }
