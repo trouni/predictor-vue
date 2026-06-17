@@ -54,13 +54,6 @@ export default {
     0 0 14px 5px #fffc
 }
 
-.text-glow {
-  text-shadow: -0.07em -0.07em 0.04em #fffc, 0 -0.07em 0.04em #fffc,
-    0.07em -0.07em 0.04em #fffc, 0.07em 0 0.04em #fffc,
-    0.07em 0.07em 0.04em #fffc, 0 0.07em 0.04em #fffc,
-    -0.07em 0.07em 0.04em #fffc, -0.07em 0 0.04em #fffc;
-}
-
 .score-badge {
   font-size: 2.25rem;
   font-weight: 700;
