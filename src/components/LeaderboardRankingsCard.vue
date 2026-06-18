@@ -68,12 +68,11 @@
       </div>
 
       <LeaderboardRanking
-        v-for="{ position, points } in ranks"
+        v-for="{ position } in ranks"
         :key="position"
         :userRankings="usersAtRank(position)"
         :position="position"
         :link-predictions="true"
-        :points="points"
         :pre-tournament="isPreTournament && leaderboard.autoJoin === false"
       />
 
@@ -209,7 +208,7 @@ export default {
           seen.add(r)
           return true
         })
-        .map(u => ({ position: u.rank, points: u.points }))
+        .map(u => ({ position: u.rank }))
     },
 
     // Current user's entry from this leaderboard

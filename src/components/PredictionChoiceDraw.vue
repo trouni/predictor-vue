@@ -56,6 +56,8 @@ export default {
         return 'draw-selected'
       } else if (this.status === 'correct' || this.status === 'wrong') {
         return `text-white prediction-${this.status} border-prediction-${this.status} border-4`
+      } else if (this.status === 'actual') {
+        return 'border-2 bg-gray-500/50 text-white font-bold shadow-inner-md'
       }
       return 'border-2 bg-gray-500 text-white/50 shadow-inner-md'
     },
