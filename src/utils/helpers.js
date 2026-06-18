@@ -2,6 +2,10 @@ export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+export function isImageUrl(value) {
+  return typeof value === 'string' && /^https?:\/\//.test(value)
+}
+
 export function pluralize(qty, singularWord, pluralWord = singularWord + 's') {
   return `${qty} ${qty === 1 ? singularWord : pluralWord}`
 }

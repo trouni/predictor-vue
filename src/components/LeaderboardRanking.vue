@@ -32,8 +32,14 @@
         <div
           class="flex-shrink-0 rounded-full overflow-hidden border-2 border-white shadow w-9 h-9"
         >
+          <img
+            v-if="isImageUrl(ranking.photoKey || ranking.photo_key)"
+            :src="ranking.photoKey || ranking.photo_key"
+            :alt="ranking.name"
+            class="w-full h-full object-cover"
+          />
           <cld-context
-            v-if="ranking.photoKey || ranking.photo_key"
+            v-else-if="ranking.photoKey || ranking.photo_key"
             :cloudName="cloudName"
           >
             <cld-image :publicId="ranking.photoKey || ranking.photo_key">
@@ -93,7 +99,7 @@
 <script>
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
 import { config } from '@/constants'
-import { ordinalize } from '@/utils/helpers'
+import { ordinalize, isImageUrl } from '@/utils/helpers'
 
 export default {
   name: 'LeaderboardRanking',
@@ -146,6 +152,7 @@ export default {
 
   methods: {
     ordinalize,
+    isImageUrl,
   },
 }
 </script>

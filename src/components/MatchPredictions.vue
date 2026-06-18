@@ -142,6 +142,7 @@
 <script>
 import MatchPredictionsBar from '@/components/MatchPredictionsBar'
 import { config } from '@/constants'
+import { isImageUrl } from '@/utils/helpers'
 
 export default {
   name: 'MatchPredictions',
@@ -203,6 +204,7 @@ export default {
 
     // Build a Cloudinary thumbnail URL directly (avoids verbose CldContext wrapper for small images)
     avatarUrl(photoKey) {
+      if (isImageUrl(photoKey)) return photoKey
       return `https://res.cloudinary.com/${config.cloudName}/image/upload/w_56,h_56,c_fill,g_face,r_max/${photoKey}`
     },
   },
