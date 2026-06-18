@@ -352,35 +352,49 @@
             </button>
           </div>
 
+          <!-- Divider -->
+          <div class="flex items-center gap-3 px-4 pb-4">
+            <div
+              class="flex-1 h-px"
+              style="background: rgba(255, 255, 255, 0.08)"
+            ></div>
+            <span class="text-xs" style="color: rgba(255, 255, 255, 0.3)"
+              >or pick one</span
+            >
+            <div
+              class="flex-1 h-px"
+              style="background: rgba(255, 255, 255, 0.08)"
+            ></div>
+          </div>
+
           <!-- Tabs -->
-          <div
-            class="flex gap-1 mx-4 mb-4 p-1 rounded-2xl"
-            style="background: rgba(255, 255, 255, 0.06)"
-          >
+          <div class="flex mx-4 mb-4">
             <button
               @click="activePickerTab = 'players'"
-              class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold focus:outline-none transition-colors"
+              class="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium focus:outline-none transition-colors"
               :style="
                 activePickerTab === 'players'
-                  ? 'background: #fa5151; color: #ffffff'
-                  : 'background: transparent; color: rgba(255, 255, 255, 0.5)'
+                  ? 'color: #fa5151'
+                  : 'color: rgba(255, 255, 255, 0.4)'
               "
             >
-              <BaseIcon name="user" style="font-size: 0.8rem" />
+              <BaseIcon name="user" style="font-size: 0.75rem" />
               Players
             </button>
             <button
               @click="activePickerTab = 'flags'"
               :disabled="!flagOptions.length"
-              class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold focus:outline-none transition-colors"
-              :class="!flagOptions.length ? 'opacity-40 cursor-not-allowed' : ''"
+              class="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium focus:outline-none transition-colors"
+              :class="
+                !flagOptions.length ? 'opacity-30 cursor-not-allowed' : ''
+              "
               :style="
                 activePickerTab === 'flags'
-                  ? 'background: #fa5151; color: #ffffff'
-                  : 'background: transparent; color: rgba(255, 255, 255, 0.5)'
+                  ? 'color: #fa5151'
+                  : 'color: rgba(255, 255, 255, 0.4)'
               "
             >
-              <BaseIcon name="flag" style="font-size: 0.8rem" />
+              <BaseIcon name="flag" style="font-size: 0.75rem" />
               Flags
             </button>
           </div>
