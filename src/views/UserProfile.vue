@@ -7,7 +7,13 @@
       <!-- Avatar with upload trigger -->
       <div class="relative mb-5">
         <div class="w-28 h-28 rounded-full overflow-hidden border-4 shadow-2xl" style="border-color: rgba(255,255,255,0.3)">
-          <cld-context v-if="user && (user.photoKey || user.photo_key)" :cloudName="cloudName">
+          <img
+            v-if="user && isImageUrl(user.photoKey || user.photo_key)"
+            :src="user.photoKey || user.photo_key"
+            alt="Profile photo"
+            class="w-full h-full object-cover"
+          />
+          <cld-context v-else-if="user && (user.photoKey || user.photo_key)" :cloudName="cloudName">
             <cld-image :publicId="user.photoKey || user.photo_key">
               <cld-transformation
                 width="200"
@@ -346,67 +352,54 @@
             </button>
           </div>
 
-          <!-- Divider -->
-          <div class="flex items-center gap-3 px-4 pb-4">
-            <div
-              class="flex-1 h-px"
-              style="background: rgba(255, 255, 255, 0.08)"
-            />
-            <span class="text-xs" style="color: rgba(255, 255, 255, 0.3)">
-              or pick one</span
-            >
-            <div
-              class="flex-1 h-px"
-              style="background: rgba(255, 255, 255, 0.08)"
-            />
-          </div>
-
-          <!-- Avatar grid -->
+          <!-- Tabs -->
           <div
-            class="grid grid-cols-4 gap-3 px-4 pb-10 overflow-y-auto"
-            style="max-height: 50vh"
+            class="flex gap-1 mx-4 mb-4 p-1 rounded-2xl"
+            style="background: rgba(255, 255, 255, 0.06)"
           >
             <button
-              v-for="key in defaultAvatars"
-              :key="key"
-              @click="saveAvatar(key)"
-              class="flex flex-col items-center focus:outline-none"
-              :class="isCurrentAvatar(key) ? 'p-1' : ''"
+              @click="activePickerTab = 'players'"
+              class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold focus:outline-none transition-colors"
+              :style="
+                activePickerTab === 'players'
+                  ? 'background: #fa5151; color: #ffffff'
+                  : 'background: transparent; color: rgba(255, 255, 255, 0.5)'
+              "
             >
-              <div
-                class="relative w-full rounded-full overflow-hidden"
-                style="background-color: rgba(255, 255, 255, 0.1)"
-                :style="
-                  isCurrentAvatar(key)
-                    ? 'padding-bottom: 100%; outline: 2px solid #fa5151; outline-offset: 2px;'
-                    : 'padding-bottom: 100%'
-                "
-              >
-                <img
-                  :src="avatarUrl(key)"
-                  :alt="key"
-                  class="absolute inset-0 w-full h-full object-cover"
-                />
-                <div
-                  v-if="isCurrentAvatar(key)"
-                  class="absolute inset-0 flex items-center justify-center"
-                  style="background: rgba(250, 81, 81, 0.3)"
-                >
-                  <BaseIcon
-                    name="check"
-                    class="text-white"
-                    style="font-size: 0.7rem"
-                  />
-                </div>
-              </div>
-              <span
-                class="mt-1.5 text-xs text-center leading-tight"
-                style="color: rgba(255, 255, 255, 0.6)"
-              >
-                {{ key.charAt(0).toUpperCase() + key.slice(1) }}
-              </span>
+              <BaseIcon name="user" style="font-size: 0.8rem" />
+              Players
+            </button>
+            <button
+              @click="activePickerTab = 'flags'"
+              :disabled="!flagOptions.length"
+              class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold focus:outline-none transition-colors"
+              :class="!flagOptions.length ? 'opacity-40 cursor-not-allowed' : ''"
+              :style="
+                activePickerTab === 'flags'
+                  ? 'background: #fa5151; color: #ffffff'
+                  : 'background: transparent; color: rgba(255, 255, 255, 0.5)'
+              "
+            >
+              <BaseIcon name="flag" style="font-size: 0.8rem" />
+              Flags
             </button>
           </div>
+
+          <!-- Players grid -->
+          <AvatarOptionGrid
+            v-if="activePickerTab === 'players'"
+            :options="playerOptions"
+            :selected="currentPhotoKey"
+            @select="saveAvatar"
+          />
+
+          <!-- Flags grid -->
+          <AvatarOptionGrid
+            v-else-if="activePickerTab === 'flags'"
+            :options="flagOptions"
+            :selected="currentPhotoKey"
+            @select="saveAvatar"
+          />
         </div>
       </div>
     </transition>
@@ -416,8 +409,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
+import AvatarOptionGrid from '@/components/AvatarOptionGrid'
 import { config } from '@/constants'
-import { ordinalize } from '@/utils/helpers'
+import { ordinalize, isImageUrl, capitalize } from '@/utils/helpers'
 
 const DEFAULT_AVATARS = [
   'caicedo',
@@ -449,7 +443,7 @@ const DEFAULT_AVATARS = [
 export default {
   name: 'UserProfile',
 
-  components: { CldContext, CldImage, CldTransformation },
+  components: { CldContext, CldImage, CldTransformation, AvatarOptionGrid },
 
   props: {
     id: {
@@ -475,6 +469,7 @@ export default {
       notifSaved: null,
       isSavingAvatar: false,
       isPhotoModalOpen: false,
+      activePickerTab: 'players',
     }
   },
 
@@ -482,6 +477,12 @@ export default {
     // Fetch in parallel — competitions for the header label, leaderboards for standings
     this.fetchCompetitions()
     this.fetchLeaderboards()
+    // Matches feed the country-flag avatar options (teams are derived from them).
+    // Prefer the localStorage-cached matches; only hit the API when nothing is cached.
+    if (!this.matches.length)
+      this.fetchMatches({ competitionId: this.currentCompetitionId }).catch(
+        () => {}
+      )
     this.user = await this.fetchUser({ userId: this.id })
     const emailNotifs = this.user.notifications?.email || {}
     this.notifications.email.predictionMissing = !!(
@@ -499,10 +500,37 @@ export default {
       currentCompetitionId: 'competitions/currentCompetitionId',
       leaderboards: 'leaderboards/leaderboards',
       currentUser: 'auth/currentUser',
+      matches: 'matches/matches',
     }),
 
-    defaultAvatars() {
-      return DEFAULT_AVATARS
+    currentPhotoKey() {
+      return this.user?.photoKey || this.user?.photo_key || null
+    },
+
+    playerOptions() {
+      return DEFAULT_AVATARS.map(key => ({
+        value: key,
+        label: capitalize(key),
+        src: this.avatarUrl(key),
+      }))
+    },
+
+    flagOptions() {
+      const seen = new Set()
+      const flags = []
+      this.matches.forEach(match => {
+        ;[match.teamHome, match.teamAway].forEach(team => {
+          if (team && team.flagUrl && team.name && !seen.has(team.name)) {
+            seen.add(team.name)
+            flags.push({
+              value: team.flagUrl,
+              label: team.name,
+              src: team.flagUrl,
+            })
+          }
+        })
+      })
+      return flags.sort((a, b) => a.label.localeCompare(b.label))
     },
 
     currentCompetition() {
@@ -536,7 +564,10 @@ export default {
       fetchCompetitions: 'competitions/fetchCompetitions',
       fetchLeaderboards: 'leaderboards/fetchLeaderboards',
       fetchUser: 'users/fetchUser',
+      fetchMatches: 'matches/fetchMatches',
     }),
+
+    isImageUrl,
 
     // ── Name editing ──
     startEditingName() {
@@ -576,8 +607,11 @@ export default {
 
     randomizeAvatar() {
       if (!this.user) return
-      const current = this.user.photoKey || this.user.photo_key
-      const pool = DEFAULT_AVATARS.filter(a => a !== current)
+      const pool = [
+        ...this.playerOptions.map(o => o.value),
+        ...this.flagOptions.map(o => o.value),
+      ].filter(value => value !== this.currentPhotoKey)
+      if (!pool.length) return
       this.saveAvatar(pool[Math.floor(Math.random() * pool.length)])
     },
 
@@ -602,12 +636,8 @@ export default {
     },
 
     avatarUrl(key) {
+      if (isImageUrl(key)) return key
       return `https://res.cloudinary.com/${this.cloudName}/image/upload/c_fill,g_face,r_max/${key}`
-    },
-
-    isCurrentAvatar(key) {
-      const current = this.user?.photoKey || this.user?.photo_key
-      return current === key
     },
 
     openUploadModal() {
