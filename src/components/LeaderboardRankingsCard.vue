@@ -105,18 +105,26 @@
 
     <!-- Actions -->
     <LeaderboardActions :leaderboard="leaderboard" class="mt-4" />
+
+    <!-- Stats -->
+    <LeaderboardStats
+      v-if="!isPreTournament"
+      :leaderboard="leaderboard"
+      class="mt-4"
+    />
   </div>
 </template>
 
 <script>
 import LeaderboardRanking from '@/components/LeaderboardRanking'
 import LeaderboardActions from '@/components/LeaderboardActions'
+import LeaderboardStats from '@/components/LeaderboardStats'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'LeaderboardRankingsCard',
 
-  components: { LeaderboardRanking, LeaderboardActions },
+  components: { LeaderboardRanking, LeaderboardActions, LeaderboardStats },
 
   props: {
     leaderboard: {
