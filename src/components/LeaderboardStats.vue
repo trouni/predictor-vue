@@ -85,12 +85,6 @@ const CATALOG = [
     sub: s => `${Math.round(s.value * 100)}% on target`,
   },
   {
-    key: 'giantSlayer',
-    emoji: '🍀',
-    title: 'The Giant Slayer',
-    sub: s => `against the grain paid off ${s.value}x`,
-  },
-  {
     key: 'drawWhisperer',
     emoji: '🤝',
     title: 'The On the Fence',

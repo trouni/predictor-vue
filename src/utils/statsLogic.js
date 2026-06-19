@@ -65,7 +65,6 @@ export const buildStatsData = (leaderboard, matches) => {
     })
 
     const majority = strictExtreme(counts, 'max')
-    const minorityOutcome = strictExtreme(counts, 'min')
 
     matchStats.push({
       matchId: match.id,
@@ -74,7 +73,6 @@ export const buildStatsData = (leaderboard, matches) => {
       picks,
       counts,
       majority,
-      minorityOutcome,
     })
   })
 
@@ -122,7 +120,6 @@ const userAggregates = data => {
         withMajority: 0,
         againstMajAttempts: 0,
         againstMajCorrect: 0,
-        giantSlayer: 0,
       })
     }
     return aggregates.get(userId)
@@ -176,14 +173,6 @@ const userAggregates = data => {
           playerStats.againstMajAttempts += 1
           if (correct) playerStats.againstMajCorrect += 1
         }
-      }
-
-      if (
-        stat.minorityOutcome !== null &&
-        stat.outcome === stat.minorityOutcome &&
-        choice === stat.minorityOutcome
-      ) {
-        playerStats.giantSlayer += 1
       }
     })
   })
@@ -318,18 +307,6 @@ export const bestAccuracy = data => {
   return singleResult(winner, w => ratio(w.correct, w.preds))
 }
 
-export const giantSlayer = data => {
-  const candidates = [...userAggregates(data).values()].filter(
-    a => a.giantSlayer >= 2
-  )
-  const winner = bestBy(candidates, [
-    (a, b) => b.giantSlayer - a.giantSlayer,
-    (a, b) => b.points - a.points,
-    idCompare,
-  ])
-  return singleResult(winner, w => w.giantSlayer)
-}
-
 export const drawWhisperer = data => {
   const candidates = [...userAggregates(data).values()].filter(
     a => a.correctDraws >= 2
@@ -414,7 +391,6 @@ export const computeStats = (leaderboard, matches, options = {}) => {
       soulMates: soulMates(data, { maxMembers }),
       nemeses: nemeses(data, { maxMembers }),
       bestAccuracy: bestAccuracy(data),
-      giantSlayer: giantSlayer(data),
       drawWhisperer: drawWhisperer(data),
     },
   }
