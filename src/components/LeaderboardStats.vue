@@ -11,12 +11,14 @@
     </div>
     <div class="grid grid-cols-2 gap-1.5">
       <StatCard
-        v-for="card in cards"
+        v-for="(card, index) in cards"
         :key="card.key"
         :emoji="card.emoji"
         :title="card.title"
         :subtitle="card.subtitle"
         :users="card.users"
+        :wide="isLastOnOddRow(index)"
+        :class="{ 'col-span-2': isLastOnOddRow(index) }"
       />
     </div>
   </div>
@@ -149,6 +151,13 @@ export default {
           users,
         }
       })
+    },
+  },
+
+  methods: {
+    // The lone last card on an odd count fills the whole row (wide layout).
+    isLastOnOddRow(index) {
+      return this.cards.length % 2 === 1 && index === this.cards.length - 1
     },
   },
 }
