@@ -17,23 +17,12 @@
             :to="{ name: 'predictions', query: { userId: user.userId } }"
             class="flex items-center gap-1.5 min-w-0"
           >
-            <div
-              class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden border-2"
-              :class="chipBorderClass('home', user.userId)"
-            >
-              <img
-                v-if="user.photoKey || user.photo_key"
-                :src="avatarUrl(user.photoKey || user.photo_key)"
-                class="w-full h-full object-cover"
-                :alt="user.name"
-              />
-              <img
-                v-else
-                :src="require('../assets/player.png')"
-                class="w-full h-full object-cover"
-                :alt="user.name"
-              />
-            </div>
+            <UserAvatar
+              :photo-key="user.photoKey || user.photo_key"
+              :name="user.name"
+              :size="24"
+              :border-class="`border-2 ${chipBorderClass('home', user.userId)}`"
+            />
             <span
               class="text-xs truncate leading-tight text-white/80"
               :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
@@ -57,23 +46,12 @@
             :key="user.userId"
             class="flex items-center gap-1.5 min-w-0"
           >
-            <div
-              class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden border-2"
-              :class="chipBorderClass('draw', user.userId)"
-            >
-              <img
-                v-if="user.photoKey || user.photo_key"
-                :src="avatarUrl(user.photoKey || user.photo_key)"
-                class="w-full h-full object-cover"
-                :alt="user.name"
-              />
-              <img
-                v-else
-                :src="require('../assets/player.png')"
-                class="w-full h-full object-cover"
-                :alt="user.name"
-              />
-            </div>
+            <UserAvatar
+              :photo-key="user.photoKey || user.photo_key"
+              :name="user.name"
+              :size="24"
+              :border-class="`border-2 ${chipBorderClass('draw', user.userId)}`"
+            />
             <span
               class="text-xs truncate leading-tight text-white/80"
               :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
@@ -97,23 +75,12 @@
             :key="user.userId"
             class="flex items-center gap-1.5 min-w-0"
           >
-            <div
-              class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden border-2"
-              :class="chipBorderClass('away', user.userId)"
-            >
-              <img
-                v-if="user.photoKey || user.photo_key"
-                :src="avatarUrl(user.photoKey || user.photo_key)"
-                class="w-full h-full object-cover"
-                :alt="user.name"
-              />
-              <img
-                v-else
-                :src="require('../assets/player.png')"
-                class="w-full h-full object-cover"
-                :alt="user.name"
-              />
-            </div>
+            <UserAvatar
+              :photo-key="user.photoKey || user.photo_key"
+              :name="user.name"
+              :size="24"
+              :border-class="`border-2 ${chipBorderClass('away', user.userId)}`"
+            />
             <span
               class="text-xs truncate leading-tight text-white/80"
               :class="isCurrentUser(user.userId) ? 'font-bold' : 'font-medium'"
@@ -141,13 +108,12 @@
 
 <script>
 import MatchPredictionsBar from '@/components/MatchPredictionsBar'
-import { config } from '@/constants'
-import { isImageUrl } from '@/utils/helpers'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'MatchPredictions',
 
-  components: { MatchPredictionsBar },
+  components: { MatchPredictionsBar, UserAvatar },
 
   props: {
     match: {
@@ -200,12 +166,6 @@ export default {
       if (live) return 'text-white/70'
       if (winning) return 'text-prediction-correct'
       return 'text-prediction-wrong'
-    },
-
-    // Build a Cloudinary thumbnail URL directly (avoids verbose CldContext wrapper for small images)
-    avatarUrl(photoKey) {
-      if (isImageUrl(photoKey)) return photoKey
-      return `https://res.cloudinary.com/${config.cloudName}/image/upload/w_56,h_56,c_fill,g_face,r_max/${photoKey}`
     },
   },
 }

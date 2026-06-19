@@ -29,36 +29,11 @@
         </div>
 
         <!-- Avatar -->
-        <div
-          class="flex-shrink-0 rounded-full overflow-hidden border-2 border-white shadow w-9 h-9"
-        >
-          <img
-            v-if="isImageUrl(ranking.photoKey || ranking.photo_key)"
-            :src="ranking.photoKey || ranking.photo_key"
-            :alt="ranking.name"
-            class="w-full h-full object-cover"
-          />
-          <cld-context
-            v-else-if="ranking.photoKey || ranking.photo_key"
-            :cloudName="cloudName"
-          >
-            <cld-image :publicId="ranking.photoKey || ranking.photo_key">
-              <cld-transformation
-                width="100"
-                height="100"
-                gravity="face"
-                radius="max"
-                crop="fill"
-              />
-            </cld-image>
-          </cld-context>
-          <img
-            v-else
-            :src="require('../assets/player.png')"
-            :alt="ranking.name"
-            class="w-full h-full object-cover"
-          />
-        </div>
+        <UserAvatar
+          :photo-key="ranking.photoKey || ranking.photo_key"
+          :name="ranking.name"
+          :size="36"
+        />
 
         <!-- Name + secondary stat -->
         <div class="flex-1 min-w-0">
@@ -97,14 +72,13 @@
 </template>
 
 <script>
-import { CldContext, CldImage, CldTransformation } from 'cloudinary-vue'
-import { config } from '@/constants'
-import { ordinalize, isImageUrl } from '@/utils/helpers'
+import UserAvatar from '@/components/UserAvatar'
+import { ordinalize } from '@/utils/helpers'
 
 export default {
   name: 'LeaderboardRanking',
 
-  components: { CldContext, CldImage, CldTransformation },
+  components: { UserAvatar },
 
   props: {
     userRankings: {
@@ -129,12 +103,6 @@ export default {
     },
   },
 
-  data() {
-    return {
-      cloudName: config.cloudName,
-    }
-  },
-
   computed: {
     containerPaddingClass() {
       if (this.position === 1) return 'py-4'
@@ -152,21 +120,11 @@ export default {
 
   methods: {
     ordinalize,
-    isImageUrl,
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.ranking-row {
-  :deep(.cld-image),
-  :deep(.cld-image img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-}
 .bg-ranking-card {
   background: rgba(255, 255, 255, 0.07);
 }
