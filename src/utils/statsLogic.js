@@ -2,6 +2,8 @@ import { homeTeamWon, awayTeamWon, isPlaceholderMatch } from '@/utils/helpers'
 
 const CHOICES = ['home', 'away', 'draw']
 
+const MIN_PREDICTIONS = 5
+
 export const matchOutcome = match => {
   if (!match || match.status !== 'finished') return null
   if (isPlaceholderMatch(match)) return null
@@ -91,6 +93,14 @@ const aggregateCache = new WeakMap()
 const userAggregates = data => {
   if (aggregateCache.has(data)) return aggregateCache.get(data)
 
+  // non-predictors get skipped in calculations
+  const predictors = new Set()
+  data.matchStats.forEach(stat => {
+    stat.picks.forEach((_choice, userId) => {
+      if (data.userIndex.has(userId)) predictors.add(userId)
+    })
+  })
+
   const aggregates = new Map()
   const ensure = userId => {
     if (!aggregates.has(userId)) {
@@ -120,7 +130,7 @@ const userAggregates = data => {
 
   data.matchStats.forEach(stat => {
     // no skips, calculates consecutive only
-    data.userIndex.forEach((_info, userId) => {
+    predictors.forEach(userId => {
       const playerStats = ensure(userId)
       const choice = stat.picks.get(userId)
       if (choice === undefined) {
@@ -206,7 +216,7 @@ const singleResult = (winner, valueOf) =>
 
 export const longestCorrectStreak = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.bestCorrect >= 3 && a.preds >= 5
+    a => a.bestCorrect >= 3 && a.preds >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => b.bestCorrect - a.bestCorrect,
@@ -219,7 +229,7 @@ export const longestCorrectStreak = data => {
 
 export const longestIncorrectStreak = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.bestWrong >= 3 && a.preds >= 5
+    a => a.bestWrong >= 3 && a.preds >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => b.bestWrong - a.bestWrong,
@@ -232,7 +242,7 @@ export const longestIncorrectStreak = data => {
 
 export const currentCorrectStreak = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.currentCorrect >= 2 && a.preds >= 5
+    a => a.currentCorrect >= 2 && a.preds >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => b.currentCorrect - a.currentCorrect,
@@ -245,7 +255,7 @@ export const currentCorrectStreak = data => {
 
 export const currentIncorrectStreak = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.currentWrong >= 2 && a.preds >= 5
+    a => a.currentWrong >= 2 && a.preds >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => b.currentWrong - a.currentWrong,
@@ -259,7 +269,7 @@ export const currentIncorrectStreak = data => {
 export const mostWrong = data => {
   const wrongCount = a => a.preds - a.correct
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.preds >= 5 && wrongCount(a) >= 3
+    a => wrongCount(a) >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => wrongCount(b) - wrongCount(a),
@@ -271,7 +281,7 @@ export const mostWrong = data => {
 
 export const theRebel = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.againstMajCorrect >= 3 && a.preds >= 5
+    a => a.againstMajCorrect >= 3 && a.preds >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => b.againstMajCorrect - a.againstMajCorrect,
@@ -286,7 +296,7 @@ export const theRebel = data => {
 
 export const theSheep = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.preds >= 5 && a.decided >= 5
+    a => a.preds >= MIN_PREDICTIONS && a.decided >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => b.withMajority - a.withMajority,
@@ -298,7 +308,7 @@ export const theSheep = data => {
 
 export const bestAccuracy = data => {
   const candidates = [...userAggregates(data).values()].filter(
-    a => a.preds >= 8
+    a => a.preds >= MIN_PREDICTIONS
   )
   const winner = bestBy(candidates, [
     (a, b) => ratio(b.correct, b.preds) - ratio(a.correct, a.preds),
@@ -362,7 +372,7 @@ const pairwiseExtreme = (data, maxMembers, mode) => {
         }
       })
 
-      if (coPredicted < 8) continue
+      if (coPredicted < MIN_PREDICTIONS) continue
       const value = mode === 'agree' ? agreed : coPredicted - agreed
       candidates.push({
         userIds: [ids[i], ids[j]],

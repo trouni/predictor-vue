@@ -39,20 +39,20 @@ const CATALOG = [
   {
     key: 'longestIncorrectStreak',
     emoji: '🤡',
-    title: 'The Visionary',
+    title: 'The "Visionary"',
     sub: s => `${s.value} wrong in a row`,
   },
   {
     key: 'currentCorrectStreak',
     emoji: '🚀',
     title: 'The current hot sh*t',
-    sub: s => `${s.value} correct in a row`,
+    sub: s => `${s.value} correct in a row,\nsuch a poser`,
   },
   {
     key: 'currentIncorrectStreak',
     emoji: '💀',
     title: 'The current disaster',
-    sub: s => `${s.value} wrong in a row, really?`,
+    sub: s => `${s.value} wrong in a row,\nwow, really?`,
   },
   {
     key: 'theRebel',
@@ -93,13 +93,13 @@ const CATALOG = [
   {
     key: 'drawWhisperer',
     emoji: '🤝',
-    title: 'The Draw Whisperer',
+    title: 'The On the Fence',
     sub: s => `nailed ${s.value} draws`,
   },
   {
     key: 'mostWrong',
-    emoji: '🐣',
-    title: 'Most wrong',
+    emoji: '🦄',
+    title: 'My little Pony',
     sub: s => `Congratulations, ${s.value} wrong picks. I'm actually amazed`,
   },
 ]

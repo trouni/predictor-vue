@@ -12,19 +12,20 @@
 
     <div class="flex items-center justify-center mt-2.5">
       <UserAvatar
-        v-for="(user, index) in users"
+        v-for="user in users"
         :key="user.userId"
         :photo-key="user.photoKey"
         :name="user.name"
         :size="36"
-        :class="index > 0 ? '-ml-2' : ''"
       />
     </div>
 
     <p class="text-white/90 text-xs font-medium truncate max-w-full">
       {{ names }}
     </p>
-    <p class="text-white/50 text-xs leading-snug">{{ subtitle }}</p>
+    <p class="text-white/50 text-xs leading-snug whitespace-pre-line">
+      {{ subtitle }}
+    </p>
   </div>
 </template>
 
