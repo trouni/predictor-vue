@@ -36,13 +36,13 @@ const CATALOG = [
     key: 'longestCorrectStreak',
     emoji: '🔮',
     title: 'The Clairvoyant',
-    sub: s => `${s.value} correct in a row`,
+    sub: s => `${s.value} correct in a row\njust play the lotto at this point`,
   },
   {
     key: 'longestIncorrectStreak',
     emoji: '🤡',
     title: 'The "Visionary"',
-    sub: s => `${s.value} wrong in a row`,
+    sub: s => `${s.value} wrong in a row\ngreat "ball knowledge"`,
   },
   {
     key: 'currentCorrectStreak',
@@ -53,50 +53,65 @@ const CATALOG = [
   {
     key: 'currentIncorrectStreak',
     emoji: '💀',
-    title: 'The current disaster',
+    title: 'The Current Disaster',
     sub: s => `${s.value} wrong in a row,\nwow, really?`,
   },
   {
     key: 'theRebel',
     emoji: '🤘',
     title: 'The Rebel',
-    sub: s => `beat the crowd ${s.value}×`,
+    sub: s => `you beat the crowd ${s.value}×\n good for you!`,
   },
   {
     key: 'theSheep',
     emoji: '🐑',
     title: 'The Sheep',
-    sub: s => `followed the crowd ${s.value}×`,
+    sub: s => `followed the crowd ${s.value}×\n so predictable..`,
+  },
+  {
+    key: 'loneWolf',
+    emoji: '🐺',
+    title: 'The Lone Wolf',
+    sub: s => `only one to guess correct when no one else did ${s.value}×\n a true maverick!`,
+  },
+  {
+    key: 'riskItAll',
+    emoji: '🎲',
+    title: 'The Risk It All',
+    sub: s =>
+      `the only one wrong when everyone else nailed it ${s.value}×\nwas it worth it?`,
   },
   {
     key: 'soulMates',
     emoji: '👯',
     title: 'The Soul Mates',
-    sub: s => `agreed on ${s.value} picks`,
+    sub: s => `agreed on ${s.value} picks\n get a room`,
   },
   {
     key: 'nemeses',
     emoji: '⚔️',
     title: 'The Arch Rivals',
-    sub: s => `clashed on ${s.value} picks`,
+    sub: s => `clashed on ${s.value} picks\n can't stand each other, huh?`,
   },
   {
     key: 'bestAccuracy',
     emoji: '🎯',
     title: 'The Sharpshooter',
-    sub: s => `${Math.round(s.value * 100)}% on target`,
+    sub: s =>
+      `${Math.round(s.value * 100)}% on target\n quality over quantity!`,
   },
   {
     key: 'drawWhisperer',
     emoji: '🤝',
-    title: 'The On the Fence',
-    sub: s => `nailed ${s.value} draws`,
+    title: 'The Fence Sitter',
+    sub: s => `nailed ${s.value} draws\n so indecisive, yet so lucky!`,
   },
   {
     key: 'mostWrong',
     emoji: '🦄',
     title: 'My little Pony',
-    sub: s => `Congratulations, ${s.value} wrong picks. I'm actually amazed`,
+    sub: s =>
+      `Congratulations, ${s.value} wrong picks. I'm actually impressed. Keep it up!`,
   },
 ]
 

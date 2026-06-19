@@ -120,6 +120,8 @@ const userAggregates = data => {
         withMajority: 0,
         againstMajAttempts: 0,
         againstMajCorrect: 0,
+        loneWolf: 0,
+        riskItAll: 0,
       })
     }
     return aggregates.get(userId)
@@ -152,10 +154,22 @@ const userAggregates = data => {
       playerStats.currentWrong = playerStats.curWrong
     })
 
+    let predictorCount = 0
+    let correctCount = 0
+    let soleCorrectUser = null
+    let soleWrongUser = null
     stat.picks.forEach((choice, userId) => {
       if (!data.userIndex.has(userId)) return
       const playerStats = ensure(userId)
       const correct = choice === stat.outcome
+
+      predictorCount += 1
+      if (correct) {
+        correctCount += 1
+        soleCorrectUser = userId
+      } else {
+        soleWrongUser = userId
+      }
 
       playerStats.preds += 1
       if (correct) playerStats.correct += 1
@@ -175,6 +189,15 @@ const userAggregates = data => {
         }
       }
     })
+
+    // Lone Wolf: the only correct predictor when others also tried and missed.
+    if (correctCount === 1 && predictorCount >= 2) {
+      ensure(soleCorrectUser).loneWolf += 1
+    }
+    // Risk It All: the only wrong predictor when everyone else nailed it.
+    if (predictorCount - correctCount === 1 && predictorCount >= 2) {
+      ensure(soleWrongUser).riskItAll += 1
+    }
   })
 
   aggregateCache.set(data, aggregates)
@@ -320,6 +343,32 @@ export const drawWhisperer = data => {
   return singleResult(winner, w => w.correctDraws)
 }
 
+export const loneWolf = data => {
+  const candidates = [...userAggregates(data).values()].filter(
+    a => a.loneWolf >= 2 && a.preds >= MIN_PREDICTIONS
+  )
+  const winner = bestBy(candidates, [
+    (a, b) => b.loneWolf - a.loneWolf,
+    (a, b) => ratio(b.correct, b.preds) - ratio(a.correct, a.preds),
+    (a, b) => b.points - a.points,
+    idCompare,
+  ])
+  return singleResult(winner, w => w.loneWolf)
+}
+
+export const riskItAll = data => {
+  const candidates = [...userAggregates(data).values()].filter(
+    a => a.riskItAll >= 2 && a.preds >= MIN_PREDICTIONS
+  )
+  const winner = bestBy(candidates, [
+    (a, b) => b.riskItAll - a.riskItAll,
+    (a, b) => ratio(a.correct, a.preds) - ratio(b.correct, b.preds),
+    (a, b) => b.points - a.points,
+    idCompare,
+  ])
+  return singleResult(winner, w => w.riskItAll)
+}
+
 const pairwiseExtreme = (data, maxMembers, mode) => {
   const ids = data.userIds
   if (ids.length > maxMembers) return null
@@ -392,6 +441,8 @@ export const computeStats = (leaderboard, matches, options = {}) => {
       nemeses: nemeses(data, { maxMembers }),
       bestAccuracy: bestAccuracy(data),
       drawWhisperer: drawWhisperer(data),
+      loneWolf: loneWolf(data),
+      riskItAll: riskItAll(data),
     },
   }
 }
