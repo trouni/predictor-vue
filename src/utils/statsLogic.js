@@ -133,11 +133,10 @@ const userAggregates = data => {
       const playerStats = ensure(userId)
       const choice = stat.picks.get(userId)
       if (choice === undefined) {
+        // Skipping a match breaks the streak (no skips, consecutive only).
         playerStats.curCorrect = 0
         playerStats.curWrong = 0
-        return
-      }
-      if (choice === stat.outcome) {
+      } else if (choice === stat.outcome) {
         playerStats.curCorrect += 1
         playerStats.curWrong = 0
       } else {
@@ -149,7 +148,8 @@ const userAggregates = data => {
       if (playerStats.curWrong > playerStats.bestWrong)
         playerStats.bestWrong = playerStats.curWrong
 
-      // Current (still-alive) streak
+      // Active streak = run as of the LATEST finished match; captured every
+      // match (incl. skips) so a player who skipped that match expires to 0.
       playerStats.currentCorrect = playerStats.curCorrect
       playerStats.currentWrong = playerStats.curWrong
     })
