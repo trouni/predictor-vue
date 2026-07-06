@@ -7,10 +7,10 @@
     ]"
     :style="`background-image: url(${flag}); background-size: cover; background-position: center;`"
   >
-    <p v-if="psScore" class="score-badge select-none"
+    <p v-if="hasPsScore" class="score-badge select-none"
       >{{ etScore }}<small>({{ psScore }})</small></p
     >
-    <p v-else-if="etScore" class="score-badge select-none">{{ etScore }}</p>
+    <p v-else-if="hasEtScore" class="score-badge select-none">{{ etScore }}</p>
     <p v-else class="score-badge select-none">{{ score }}</p>
   </div>
 </template>
@@ -31,6 +31,12 @@ export default {
   },
 
   computed: {
+    hasEtScore() {
+      return this.etScore !== null && this.etScore !== undefined
+    },
+    hasPsScore() {
+      return this.psScore !== null && this.psScore !== undefined
+    },
     highlight() {
       switch (this.status) {
         case 'correct':
