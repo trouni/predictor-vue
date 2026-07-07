@@ -1,41 +1,28 @@
 <template>
-  <div
-    class="bg-ranking-card rounded-2xl shadow-sm px-3 py-4 flex flex-col items-center text-center gap-1.5"
-  >
-    <span class="text-4xl leading-none">{{ emoji }}</span>
-
-    <p
-      class="text-white text-xs uppercase tracking-wide font-semibold leading-tight"
-    >
-      {{ title }}
-    </p>
-
-    <div class="flex items-center justify-center mt-2.5">
-      <UserAvatar
-        v-for="user in users"
-        :key="user.userId"
-        :photo-key="user.photoKey"
-        :name="user.name"
-        :size="36"
-      />
-    </div>
-
-    <p class="text-white/90 text-xs font-medium truncate max-w-full">
-      {{ names }}
-    </p>
-    <p class="text-white/50 text-xs leading-snug whitespace-pre-line">
-      {{ subtitle }}
-    </p>
-  </div>
+  <LongCard
+    v-if="wide"
+    :emoji="emoji"
+    :title="title"
+    :subtitle="subtitle"
+    :users="users"
+  />
+  <ShortCard
+    v-else
+    :emoji="emoji"
+    :title="title"
+    :subtitle="subtitle"
+    :users="users"
+  />
 </template>
 
 <script>
-import UserAvatar from '@/components/UserAvatar'
+import ShortCard from '@/components/ShortCard'
+import LongCard from '@/components/LongCard'
 
 export default {
   name: 'StatCard',
 
-  components: { UserAvatar },
+  components: { ShortCard, LongCard },
 
   props: {
     emoji: {
@@ -54,18 +41,10 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-
-  computed: {
-    names() {
-      return this.users.map(user => user.name).join(' & ')
+    wide: {
+      type: Boolean,
+      default: false,
     },
   },
 }
 </script>
-
-<style scoped>
-.bg-ranking-card {
-  background: rgba(255, 255, 255, 0.07);
-}
-</style>
